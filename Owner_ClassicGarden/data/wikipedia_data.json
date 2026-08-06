@@ -1,0 +1,282 @@
+{
+  "meta": {
+    "fetched_at": "2026-07-25T09:50:01",
+    "total": 34,
+    "success": 31,
+    "not_found": 3
+  },
+  "entries": {
+    "zhuozheng_garden": {
+      "status": "ok",
+      "title": "拙政园",
+      "type": "garden",
+      "summary": "拙政园，是中国江南一座园林，位于江苏省苏州市姑蘇區平江街道东北街178号，始建于明朝正德年间，初為御史王獻臣改佛寺以建。它是中国园林的杰出代表，中国四大名园之一，亦是江南私家花园典范。拙政园1961年被国务院列为首批全国重点文物保护单位，1991年被国家计委、旅游局、建设部列为国家级特殊游览参观点，1997年被联合国教科文组织与其它数座园林一同列为世界文化遗产。\n",
+      "image_file": "data/wikimedia/zhuozheng_garden.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E6%8B%99%E6%94%BF%E5%9B%AD"
+    },
+    "liuyuan_garden": {
+      "status": "ok",
+      "title": "留园",
+      "type": "garden",
+      "summary": "留园是位於苏州的一個中国园林，园内有建筑以及奇石。1961年，留园被中华人民共和国国务院公布为第一批全国重点文物保护单位之一。1997年，包括留园在内的四座苏州古典园林被列为世界文化遗产。\n",
+      "image_file": "data/wikimedia/liuyuan_garden.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E7%95%99%E5%9B%AD"
+    },
+    "wangshi_garden": {
+      "status": "ok",
+      "title": "网师园",
+      "type": "garden",
+      "summary": "網師園位于江苏省苏州市姑苏区阔家头巷11号，始建於南宋時期（1127年到1279年），原本只是取名叫「漁隱」的小型私人花園，經過多次修建，清朝乾隆時期（1736年到1796年），改名為網師園。\n",
+      "image_file": "data/wikimedia/wangshi_garden.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E7%BD%91%E5%B8%88%E5%9B%AD"
+    },
+    "huanxiu_garden": {
+      "status": "ok",
+      "title": "环秀山庄",
+      "type": "garden",
+      "summary": "环秀山庄位于江苏省苏州市姑苏区金阊街道景德路上，全园面积仅1亩余，以假山为主，是清初著名造园家戈裕良的杰作，有假山\"独步江南\"之誉。\n",
+      "image_file": "data/wikimedia/huanxiu_garden.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E7%8E%AF%E7%A7%80%E5%B1%B1%E5%BA%84"
+    },
+    "canglang_garden": {
+      "status": "ok",
+      "title": "沧浪亭",
+      "type": "garden",
+      "summary": "沧浪亭位于苏州城南三元坊，是现存历史最为悠久的江南园林。与狮子林、拙政园、留园并称为苏州宋、元、明、清四大园林，代表着宋朝的艺术风格。\n",
+      "image_file": "data/wikimedia/canglang_garden.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E6%B2%A7%E6%B5%AA%E4%BA%AD"
+    },
+    "shizilin_garden": {
+      "status": "ok",
+      "title": "狮子林",
+      "type": "garden",
+      "summary": "狮子林位于中国江苏省苏州市姑苏区平江街道园林路23号，毗邻太平天国忠王府和拙政园，占地1.1公顷，开放面积0.88公顷，是苏州四大名园之一。已被列为第六批全国重点文物保护单位和世界文化遗产——苏州古典园林项目。\n",
+      "image_file": "data/wikimedia/shizilin_garden.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E7%8B%AE%E5%AD%90%E6%9E%97"
+    },
+    "yipu_garden": {
+      "status": "ok",
+      "title": "艺圃",
+      "type": "garden",
+      "summary": "艺圃，明代宅邸园林，位于中国江苏省苏州市姑苏区金阊街道阊门社区文衙弄5号。全园占地仅为五亩，以池水为中心，池岸低平。池北以建筑为主，池南以假山景观为主，园景开朗，风格质朴，较多地保存了明末清初建园时格局，是典型的文人园林。\n",
+      "image_file": "data/wikimedia/yipu_garden.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E8%89%BA%E5%9C%83"
+    },
+    "ouyuan_garden": {
+      "status": "ok",
+      "title": "耦园",
+      "type": "garden",
+      "summary": "耦园，苏式古典园林，处于平江古城保护区的腹地，座北朝南，三面环水，面积为0.8公顷。耦园包括东花园、西花园和中部住宅三个部分，其中尤以东花园之景色最胜。\n",
+      "image_file": "data/wikimedia/ouyuan_garden.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E8%80%A6%E5%9B%AD"
+    },
+    "tuisi_garden": {
+      "status": "ok",
+      "title": "退思园",
+      "type": "garden",
+      "summary": "退思园，位于江苏省苏州市吴江区同里镇，是中國江南園林代表之一，建於清朝光緒11至13年年间，取意自《左傳》“進思盡忠，退思補過”。退思园的设计者袁龙巧妙利用不到四畝面積，设计了坐春望月书楼、琴房、退思草堂、闹红一舸、眠云亭等建筑。亭阁、长廊环水而建。\n",
+      "image_file": "data/wikimedia/tuisi_garden.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E9%80%80%E6%80%9D%E5%9B%AD"
+    },
+    "wzx": {
+      "status": "ok",
+      "title": "王献臣",
+      "type": "person",
+      "summary": "王献臣（1469年—？），字敬止，号槐雨、玉泉山人。錦衣衛鎮撫司匠籍，直隸苏州府吴县人。明朝政治人物，弘治癸丑進士，仕途多舛。是蘇州園林拙政園的開創者。\n",
+      "image_file": null,
+      "source_url": "https://zh.wikipedia.org/wiki/%E7%8E%8B%E7%8C%AE%E8%87%A3"
+    },
+    "wzm": {
+      "status": "ok",
+      "title": "文徵明",
+      "type": "person",
+      "summary": "文壁（1470年11月28日—1559年3月28日），字徵明，中年後以字行，更字徵仲，号衡山居士、停云生，南直隸蘇州府長洲縣（今江苏苏州）人，祖籍湖廣衡州府衡山縣（今湖南衡東），明代画家，与唐寅、沈周、仇英合称为“明四家”（亦称“吴门四家”或“吴门四杰”）；并与唐寅、祝允明、徐祯卿并称“吴中四才子”。一生歷經成化、弘治、正德、嘉靖四朝，晚年与老师沈周并驾齐驱，继沈周之后成为吳派领袖。\n",
+      "image_file": "data/wikimedia/wzm.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E6%96%87%E5%BE%B5%E6%98%8E"
+    },
+    "czl": {
+      "status": "ok",
+      "title": "陈之遴",
+      "type": "person",
+      "summary": "陳之遴（1605年—1666年），字彥升，號素菴，浙江海寧縣人。明末清初政治人物，崇禎十年榜眼，官翰林院編修。明亡仕清，官至弘文院大學士。順治十五年，因南北黨爭，全家流放盛京尚陽堡。\n",
+      "image_file": null,
+      "source_url": "https://zh.wikipedia.org/wiki/%E9%99%88%E4%B9%8B%E9%81%B4"
+    },
+    "lxc": {
+      "status": "ok",
+      "title": "李秀成",
+      "type": "person",
+      "summary": "李秀成（1823年—1864年8月7日），原名李以文，廣西梧州人，太平天國重要將領，被封為忠王，稱榮千歲。在天京事變後，李秀成與陳玉成逐漸成為太平軍的主要統帥，李秀成曾主持第二次擊破清軍設立在天京附近的江南大營。天京被清軍攻陷後，李秀成帶領幼天王突圍，失散後被清軍捕獲，在獄中寫下數萬字的《李秀成自述》。\n",
+      "image_file": "data/wikimedia/lxc.jpeg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E6%9D%8E%E7%A7%80%E6%88%90"
+    },
+    "zzw": {
+      "status": "ok",
+      "title": "張之萬",
+      "type": "person",
+      "summary": "張之萬（1811年—1897年），字子青，號鑾坡，清朝狀元，政治人物。直隸天津府南皮縣（今屬河北省）人。為官數十年，官至太子太保、東閣大學士。卒謚文達。\n",
+      "image_file": "data/wikimedia/zzw.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E5%BC%B5%E4%B9%8B%E8%90%AC"
+    },
+    "xts": {
+      "status": "ok",
+      "title": "徐泰時",
+      "type": "person",
+      "summary": "徐泰時（1540年—1598年），中進士前名徐三錫，字大來，號漁浦，直隸蘇州府長洲縣人，民籍，明朝政治人物。蘇州留園的開創者。\n",
+      "image_file": null,
+      "source_url": "https://zh.wikipedia.org/wiki/%E5%BE%90%E6%B3%B0%E6%99%82"
+    },
+    "sk": {
+      "status": "ok",
+      "title": "盛康",
+      "type": "person",
+      "summary": "盛康（1814年—1902年10月24日），字勖存、旭人，號待雲庵主、留园主人。江蘇武進縣（今常州市）人，清朝政治人物。著有《皇朝经世文续编》，共一百二十卷。\n",
+      "image_file": null,
+      "source_url": "https://zh.wikipedia.org/wiki/%E7%9B%9B%E5%BA%B7"
+    },
+    "szz": {
+      "status": "not_found",
+      "title": "史正志",
+      "type": "person",
+      "summary": null,
+      "image_file": null,
+      "source_url": null
+    },
+    "szm": {
+      "status": "ok",
+      "title": "苏舜钦",
+      "type": "person",
+      "summary": "苏舜钦（1009年—1049年），字子美，开封（今属河南）人，曾祖父蘇協由梓州铜山（今四川中江）移家开封（今属河南），祖父蘇易簡，父親蘇耆，母親為王旦之女，岳父為杜衍。\n",
+      "image_file": "data/wikimedia/szm.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E8%8B%8F%E8%88%9C%E9%92%A6"
+    },
+    "hsz": {
+      "status": "ok",
+      "title": "韩世忠",
+      "type": "person",
+      "summary": "韓世忠（1089年—1151年9月16日），字良臣，绥德军（今陕西省绥德县）人，南宋名将。官至太傅、镇南、武安、宁国军节度使、充醴泉观使、赐号扬武翊运功臣、封咸安郡王（从一品），太师致仕，赠通义郡王，追封蕲王、谥“忠武”。元配白氏死後，梁氏成為韓的正妻（野史稱為梁紅玉）。\n",
+      "image_file": "data/wikimedia/hsz.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E9%9F%A9%E4%B8%96%E5%BF%A0"
+    },
+    "sl": {
+      "status": "ok",
+      "title": "宋犖",
+      "type": "person",
+      "summary": "宋犖（luò）（1634年—1713年11月3日），字牧仲，號漫堂，又號西陂，別署綿津山人、滄浪寓公、西陂放鴨翁等，河南歸德府商丘縣人，清朝政治人物、詩人。\n",
+      "image_file": "data/wikimedia/sl.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E5%AE%8B%E7%8A%96"
+    },
+    "nz": {
+      "status": "ok",
+      "title": "倪瓒",
+      "type": "person",
+      "summary": "倪瓚（1301年—1374年12月14日），字元镇，一字玄瑛，号云林、幻霞生、荆蛮民、风月主人、萧闲仙卿，江浙行省無錫州（今江蘇省無錫市）人。元代詩人、畫家、書法家、茶人，倪瓚是“元四家”之一，也是元代南宗山水畫的代表畫家，其作品以紙本水墨為主，間用淡色。前景中的樹木和空白處的楷書题款幾乎成了倪瓚個人的符號。\n",
+      "image_file": "data/wikimedia/nz.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E5%80%AA%E7%93%92"
+    },
+    "by": {
+      "status": "ok",
+      "title": "毕沅",
+      "type": "person",
+      "summary": "畢沅（1730年—1797年），字纕蘅，號秋帆，自號靈巖山人。江蘇鎮洋縣（今太倉市）人。清朝狀元、學者、政治人物。\n",
+      "image_file": null,
+      "source_url": "https://zh.wikipedia.org/wiki/%E6%AF%95%E6%B2%85"
+    },
+    "ssy": {
+      "status": "ok",
+      "title": "孫士毅",
+      "type": "person",
+      "summary": "孫士毅（1720年—1796年），字智冶，號補山，浙江仁和縣臨平鎮（今杭州市临平区）人，清朝政治人物，乾隆辛巳科进士，官至文華殿大學士。\n",
+      "image_file": "data/wikimedia/ssy.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E5%AD%AB%E5%A3%AB%E6%AF%85"
+    },
+    "wzm2": {
+      "status": "ok",
+      "title": "文震孟",
+      "type": "person",
+      "summary": "文震孟（1574年—1636年），原名文從鼎，字文起，號湛持，南直隸蘇州府長洲縣人，祖籍湖廣衡州府衡山縣，明末政治人物、書法家，狀元。\n",
+      "image_file": null,
+      "source_url": "https://zh.wikipedia.org/wiki/%E6%96%87%E9%9C%87%E5%AD%9F"
+    },
+    "jc": {
+      "status": "ok",
+      "title": "姜埰",
+      "type": "person",
+      "summary": "姜埰（1607年—1673年），字如农，号卿墅，門人私谥贞毅。山东莱阳人。明末政治人物。\n",
+      "image_file": null,
+      "source_url": "https://zh.wikipedia.org/wiki/%E5%A7%9C%E5%9F%B0"
+    },
+    "sbc": {
+      "status": "ok",
+      "title": "沈秉成",
+      "type": "person",
+      "summary": "沈秉成（1823年—1895年），原名秉輝，字仲復，號聽蕉，自號耦園主人，浙江湖州府歸安縣人，清朝政治人物，進士出身。\n",
+      "image_file": "data/wikimedia/sbc.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E6%B2%88%E7%A7%89%E6%88%90"
+    },
+    "rls": {
+      "status": "not_found",
+      "title": "任兰生",
+      "type": "person",
+      "summary": null,
+      "image_file": null,
+      "source_url": null
+    },
+    "shx": {
+      "status": "ok",
+      "title": "盛宣怀",
+      "type": "person",
+      "summary": "盛宣怀（1844年11月4日—1916年4月27日），字杏荪（杏生、荇生）、幼勖，号補樓，又号愚齋、次沂、止叟等，男，江苏常州府武进县龙溪人，清末官商，政治家，洋务运动的代表人物。历任招商局会办，电报局总办，津海关道，中国红十字会会长等职，累官至邮传部尚书。北洋大学堂（今天津大学）和南洋公学（今西安交通大学、上海交通大学、西南交通大学、國立交通大學）创始人，同时也是一位实业家和福利事业家。\n",
+      "image_file": "data/wikimedia/shx.jpg",
+      "source_url": "https://zh.wikipedia.org/wiki/%E7%9B%9B%E5%AE%A3%E6%80%80"
+    },
+    "qqy": {
+      "status": "ok",
+      "title": "钱谦益",
+      "type": "person",
+      "summary": "钱谦益（1582年10月22日—1664年6月17日），字受之，初號尚湖，又号牧斋，晚号绛云楼主人、蒙叟、东涧老人，又因其住址而称虞山、因其职位而称宗伯，直隶常熟县（今江蘇省苏州市常熟市）人，万历三十八年探花。作为明末清初时期文学领域的集大成者，钱谦益引领文坛长达五十年之久。在政治上钱被视为東林黨或復社人士。明朝时四次出仕，官至礼部尚书。后在南京降清，任礼部侍郎五个月，有“贰臣”之目。辞官后投入反清复明运动，为遗民义士接纳，更成为联络东南与西南抗清复明势力的总枢纽。后钱谦益的诗文被乾隆帝下诏禁毁。\n陈寅恪认为其是“复国之英雄”，“应恕其前此失节之愆，而嘉其后来赎罪之意，始可称为平心之论”，并称钱与其妻柳如是的诗文足以“表彰我民族独立之精神，自由之思想”。\n",
+      "image_file": null,
+      "source_url": "https://zh.wikipedia.org/wiki/%E9%92%B1%E8%B0%A6%E7%9B%8A"
+    },
+    "wyn": {
+      "status": "ok",
+      "title": "王永宁",
+      "type": "person",
+      "summary": "王永宁（1929年—2006年），原名王盈祥，男，陕西省宜君县人。中国人民解放军中将。\n",
+      "image_file": null,
+      "source_url": "https://zh.wikipedia.org/wiki/%E7%8E%8B%E6%B0%B8%E5%AE%81"
+    },
+    "szq": {
+      "status": "ok",
+      "title": "宋宗元",
+      "type": "person",
+      "summary": "宋宗元（1710年—1779年），字魯儒，號愨庭，堂號尚絅堂，江蘇蘇州府長洲縣人，雍正二年（1723年）後屬元和縣人，清朝政治人物，官至光祿寺少卿。乾隆年間為網師園園主。\n",
+      "image_file": null,
+      "source_url": "https://zh.wikipedia.org/wiki/%E5%AE%8B%E5%AE%97%E5%85%83"
+    },
+    "lhy": {
+      "status": "not_found",
+      "title": "李鸿裔",
+      "type": "person",
+      "summary": null,
+      "image_file": null,
+      "source_url": null
+    },
+    "lrs": {
+      "status": "ok",
+      "title": "柳如是",
+      "type": "person",
+      "summary": "柳如是（1618年—1664年），本名楊愛，後改名柳隱，字如是。浙江嘉興人，明末歌妓。因讀宋朝辛棄疾《賀新郎》中：「我見青山多嫵媚，料青山見我應如是」，故自號「如是」；又稱「河東君」、「蘼蕪君」，書畫雙絕，才氣過人，為「秦淮八豔」之首。\n",
+      "image_file": null,
+      "source_url": "https://zh.wikipedia.org/wiki/%E6%9F%B3%E5%A6%82%E6%98%AF"
+    },
+    "wsg": {
+      "status": "ok",
+      "title": "吴三桂",
+      "type": "person",
+      "summary": "吳三桂（1612年6月8日—1678年10月2日），字長伯，遼西（今遼寧綏中縣）人，明末清初政治家、軍事家，為明清改朝換代的關鍵人物之一。其祖籍南直隸高郵州（今江蘇省高郵市），為錦州總兵吳襄之子，祖大壽外甥。明崇禎年間以父蔭襲為遼東總兵，鎮守山海關並受封「平西伯」。1644年降清並引清軍入關，被滿清封為「平西王」，更於1662年絞殺南明永曆帝。1673年農曆十一月二十一日据其藩镇舉兵，奉朱三太子反清复明，自封周王、天下都招讨兵马大元帅，次年改元。1678年放弃复明，稱帝立国，是為吳周，農曆八月十七夜病死。其孫吳世璠即位，尊之為周太祖高皇帝。因為吳三桂與滿清勾結，導致前朝政權覆亡，以及處決南明永曆帝此等不義之舉措，吳三桂於後世也成了漢奸的代名詞。\n",
+      "image_file": null,
+      "source_url": "https://zh.wikipedia.org/wiki/%E5%90%B4%E4%B8%89%E6%A1%82"
+    }
+  }
+}

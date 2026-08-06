@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>苏州古典园林 · 世界文化遗产九园图志</title>
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Leaflet 地图（本地 vendor，离线可用） -->
+  <link rel="stylesheet" href="vendor/leaflet.css" />
+  <script src="vendor/leaflet.js"></script>
+
+  <!-- D3 关系图（本地 vendor，离线可用） -->
+  <script src="vendor/d3.min.js"></script>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ============ 顶部导航 ============ -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="seal">园</span>
+        <div class="brand-text">
+          <strong>苏州古典园林</strong>
+          <small>Classical Gardens of Suzhou · UNESCO World Heritage</small>
+        </div>
+      </div>
+      <nav class="top-nav" id="topNav">
+        <a href="#overview">总览</a>
+        <a href="#showcase">九园</a>
+        <a href="#map">地理</a>
+        <a href="#history">历史脉络</a>
+        <a href="#network">人物关系</a>
+        <a href="#wiki">维基</a>
+        <a href="#rag">知识库</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="菜单">☰</button>
+    </div>
+  </header>
+
+  <!-- ============ Hero ============ -->
+  <section class="hero" id="overview">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-kicker">1997 · 2000 列入《世界遗产名录》</p>
+      <h1 class="hero-title">咫尺之内 · 再造乾坤</h1>
+      <p class="hero-sub">九座入选世界文化遗产的苏州古典园林 —— 地理、历代主人、园史、人物关系与典籍知识，尽收一图。</p>
+      <div class="hero-stats">
+        <div><b>9</b><span>世界遗产园林</span></div>
+        <div><b>6</b><span>朝代更迭</span></div>
+        <div><b>20+</b><span>历代园主文人</span></div>
+        <div><b>700+</b><span>年营建历史</span></div>
+      </div>
+      <a class="hero-cta" href="#showcase">进入九园 ↓</a>
+    </div>
+    <div class="hero-scroll" aria-hidden="true"></div>
+  </section>
+
+  <!-- ============ 九园展示 ============ -->
+  <section class="section" id="showcase">
+    <div class="section-head">
+      <span class="section-index">壹</span>
+      <h2>九园览胜</h2>
+      <p>点击任一园林，可在地图与历史脉络中联动查看其地理与传承。</p>
+    </div>
+    <div class="garden-grid" id="gardenGrid"><!-- JS 注入 --></div>
+  </section>
+
+  <!-- ============ 地理信息 ============ -->
+  <section class="section section-alt" id="map">
+    <div class="section-head">
+      <span class="section-index">贰</span>
+      <h2>地理分布</h2>
+      <p>九园集中于苏州古城（除退思园位于吴江同里），以真实坐标标注于苏州地图之上。</p>
+    </div>
+    <div class="map-layout">
+      <div id="leafletMap" class="leaflet-map"></div>
+      <aside class="map-side" id="mapSide">
+        <h3>园址速览</h3>
+        <ul id="mapList"><!-- JS 注入 --></ul>
+        <p class="map-hint">点击地图标记或上方列表，可定位并查看该园地理与主人概要。</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ 历史脉络 ============ -->
+  <section class="section" id="history">
+    <div class="section-head">
+      <span class="section-index">叁</span>
+      <h2>历代主人与园史</h2>
+      <p>以时间轴呈现每座园林的创建与易主链条，可筛选单园或纵览全部。</p>
+    </div>
+    <div class="history-controls">
+      <label for="gardenFilter">选择园林：</label>
+      <select id="gardenFilter"><option value="all">全部九园</option></select>
+    </div>
+    <div class="timeline" id="timeline"><!-- JS 注入 --></div>
+  </section>
+
+  <!-- ============ 人物关系 ============ -->
+  <section class="section section-alt" id="network">
+    <div class="section-head">
+      <span class="section-index">肆</span>
+      <h2>人物关系图（CBDB）</h2>
+      <p>基于中国历代人物传记数据库（CBDB）关联结构绘制的园主 / 文人关系网络。拖动、悬停以探索亲缘、委托营造与艺术合作。</p>
+    </div>
+    <div class="network-layout">
+      <div class="network-graph" id="networkGraph"></div>
+      <aside class="network-side">
+        <div class="legend" id="networkLegend"><!-- JS 注入 --></div>
+        <div class="node-detail" id="nodeDetail">
+          <p class="nd-placeholder">悬停或点击节点查看人物 / 园林详情。</p>
+        </div>
+      </aside>
+    </div>
+    <p class="cbdb-note">数据依据 CBDB 的人物关联类型（亲属 / 委托营造 / 艺术合作 / 拥有居住）整理，可在 <code>network.js</code> 中替换为 CBDB API 实时返回的同构 JSON。</p>
+  </section>
+
+  <!-- ============ 维基百科 ============ -->
+  <section class="section" id="wiki">
+    <div class="section-head">
+      <span class="section-index">伍</span>
+      <h2>维基百科内容</h2>
+      <p>每座园林的维基百科摘要与原文链接，便于延伸阅读。</p>
+    </div>
+    <div class="wiki-grid" id="wikiGrid"><!-- JS 注入 --></div>
+  </section>
+
+  <!-- ============ RAG 知识库 ============ -->
+  <section class="section section-alt" id="rag">
+    <div class="section-head">
+      <span class="section-index">陆</span>
+      <h2>园林知识库 · RAG 检索</h2>
+      <p>输入关键词或自然语言提示词，从蒸馏自园林典籍的专业知识库中检索答案。</p>
+    </div>
+    <div class="rag-layout">
+      <div class="rag-chat" id="ragChat">
+        <div class="rag-messages" id="ragMessages">
+          <div class="msg bot">
+            <div class="msg-bubble">您好，我是园林知识助手。您可以问我关于叠山、理水、借景、某座园林或主人等任何问题，例如：“戈裕良的叠山有什么特点？”</div>
+          </div>
+        </div>
+        <form class="rag-input" id="ragForm" autocomplete="off">
+          <input type="text" id="ragInput" placeholder="输入关键词或提示词，如：借景 / 耦园 夫妻 / 退思园 贴水…" />
+          <button type="submit" id="ragSend">检索</button>
+        </form>
+        <div class="rag-status" id="ragStatus"></div>
+      </div>
+      <aside class="rag-side">
+        <h3>快速提问</h3>
+        <div class="rag-suggestions" id="ragSuggestions"></div>
+        <h3>接入您的 RAG 系统</h3>
+        <p class="rag-doc">本界面已预留后端接口。在 <code>js/rag.js</code> 中设置 <code>RAG_CONFIG.endpoint</code> 即可对接您蒸馏园林书籍后部署的检索服务（支持 OpenAI 风格 chat / 简单 query→text 两种协议）。当前为离线演示模式。</p>
+      </aside>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <p>苏州古典园林 · 世界文化遗产九园图志 ｜ 地理 / 园史 / 人物关系（CBDB）/ 维基 / RAG 知识库</p>
+    <p class="foot-note">本页为信息可视化原型，史料数据建议以 CBDB 与维基百科原文为准。</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/network.js"></script>
+  <script src="js/wiki.js"></script>
+  <script src="js/rag.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

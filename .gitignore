@@ -1,0 +1,38 @@
+# ========== macOS ==========
+.DS_Store
+
+# ========== Python ==========
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# ========== 敏感信息：环境变量 ==========
+# .env 含真实 API Key，绝不提交；仅保留 .env.example 作为模板
+.env
+.env.*
+!.env.example
+
+# ========== Reasonix 本机配置（含本机绝对路径 /Users/quill/...，不提交） ==========
+reasonix.toml
+
+# ========== 数据库与大型数据集 ==========
+*.sqlite3
+*.db
+*.sqlite
+Owner_ClassicGarden/data/CBDB_2026_7-18/
+Owner_ClassicGarden/data/chinese-poetry-master/
+Owner_ClassicGarden/data/wikimedia/
+
+# ========== 图书资源（PDF/EPUB/DJVU/MOBI，可另行获取） ==========
+SuzhouClassicGardenRag/Resource/
+*.pdf
+*.epub
+*.djvu
+*.mobi
+
+# ========== RAG 运行时产物（可由脚本重新生成） ==========
+SuzhouClassicGardenRag/Project/vendor/
+SuzhouClassicGardenRag/Project/data/
+SuzhouClassicGardenRag/Project/converted/

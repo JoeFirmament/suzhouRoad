@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拙政园 · 园主传承 | 原型</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f0eb; color: #2c2c2c; }
+  
+  .header {
+    background: linear-gradient(135deg, #2d5016 0%, #4a7c2e 100%);
+    color: #fff; padding: 32px 24px 24px;
+    position: relative; overflow: hidden;
+  }
+  .header::after {
+    content: "拙政园"; position: absolute; right: 24px; top: 8px;
+    font-size: 120px; font-weight: 700; opacity: 0.08; line-height: 1;
+    font-family: "STKaiti", "KaiTi", serif;
+  }
+  .header h1 { font-size: 28px; font-weight: 600; margin-bottom: 4px; }
+  .header .subtitle { font-size: 14px; opacity: 0.8; margin-bottom: 12px; }
+  .header .meta { font-size: 13px; opacity: 0.7; }
+  .header .meta span { margin-right: 20px; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+  .chart-card {
+    background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 20px; margin-bottom: 20px;
+  }
+  .chart-card h2 {
+    font-size: 16px; font-weight: 600; margin-bottom: 4px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .chart-card h2 .badge {
+    font-size: 11px; background: #e8f5e9; color: #2e7d32;
+    padding: 2px 8px; border-radius: 10px; font-weight: 400;
+  }
+  .chart-card p.desc { font-size: 13px; color: #666; margin-bottom: 12px; }
+
+  #timelineChart { width: 100%; height: 380px; }
+
+  .info-panel {
+    display: none; background: #fff; border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 24px; margin-bottom: 20px;
+    border-left: 4px solid #4a7c2e;
+  }
+  .info-panel.active { display: block; }
+  .info-panel h3 { font-size: 20px; margin-bottom: 8px; }
+  .info-panel .role-tag {
+    display: inline-block; font-size: 12px; padding: 2px 10px;
+    border-radius: 10px; margin-bottom: 12px;
+  }
+  .info-panel .role-tag.founder { background: #e8eaf6; color: #283593; }
+  .info-panel .role-tag.successor { background: #fff3e0; color: #e65100; }
+  .info-panel .role-tag.military { background: #fce4ec; color: #c62828; }
+  .info-panel .role-tag.friend { background: #e8f5e9; color: #2e7d32; }
+  .info-panel .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .info-panel .detail-grid .label { color: #888; font-size: 12px; }
+  .info-panel .detail-grid .value { font-size: 14px; font-weight: 500; }
+
+  .legend-bar {
+    display: flex; flex-wrap: wrap; gap: 16px; margin: 12px 0;
+    font-size: 12px; color: #555;
+  }
+  .legend-bar .item { display: flex; align-items: center; gap: 6px; }
+  .legend-bar .dot {
+    width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0;
+  }
+
+  .footer-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 20px; font-size: 12px; color: #999; border-top: 1px solid #eee;
+  }
+  .footer-bar .data-badge {
+    background: #eee; padding: 3px 10px; border-radius: 10px; color: #666;
+  }
+
+  @media (max-width: 768px) {
+    .header h1 { font-size: 22px; }
+    .header .meta span { display: block; margin: 2px 0; }
+    .info-panel .detail-grid { grid-template-columns: 1fr; }
+    #timelineChart { height: 320px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>🌳 园主传承 · 拙政园</h1>
+  <div class="subtitle">「以人串园」—— 从建园至今的 7 位主人更替</div>
+  <div class="meta">
+    <span>📍 苏州市姑苏区东北街178号</span>
+    <span>🏛 始建 1509 · 明正德四年</span>
+    <span>🎯 世界文化遗产 · 1997</span>
+  </div>
+</div>
+
+<div class="container">
+  <!-- 图例 -->
+  <div class="legend-bar">
+    <div class="item"><span class="dot" style="background:#3f51b5"></span>始建者</div>
+    <div class="item"><span class="dot" style="background:#ff6f00"></span>继任园主</div>
+    <div class="item"><span class="dot" style="background:#c62828"></span>太平天国</div>
+    <div class="item"><span class="dot" style="background:#2e7d32"></span>设计参与/友人</div>
+    <div class="item"><span class="dot" style="background:#aaa"></span>CBDB 未匹配</div>
+  </div>
+
+  <!-- 时间轴图 -->
+  <div class="chart-card">
+    <h2>
+      📅 园主更替时间轴
+      <span class="badge">原型 · 拙政园</span>
+    </h2>
+    <p class="desc">点击任意园主查看详细传记与 CBDB 关联 →</p>
+    <div id="timelineChart"></div>
+  </div>
+
+  <!-- 详情面板 -->
+  <div id="infoPanel" class="info-panel">
+    <h3 id="ownerName">—</h3>
+    <div id="ownerRoleTag" class="role-tag">—</div>
+    <p id="ownerNote" style="color:#555; font-size:14px;"></p>
+    <div class="detail-grid">
+      <div><div class="label">执园期间</div><div class="value" id="ownerPeriod">—</div></div>
+      <div><div class="label">CBDB 人物 ID</div><div class="value" id="ownerCbdbId">—</div></div>
+      <div><div class="label">消歧置信度</div><div class="value" id="ownerConfidence">—</div></div>
+      <div><div class="label">别名/字号</div><div class="value" id="ownerAliases">—</div></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-bar">
+    <span>🔗 数据来源: CBDB v20260718 · gardens.json</span>
+    <span class="data-badge">⚡ 原型 v0.1</span>
+  </div>
+</div>
+
+<script>
+// ── 数据：完全来自 data/gardens.json 拙政园条目 ──────────
+const OWNERS = [
+  {
+    id: "wangxianchen",
+    name: "王献臣",
+    nameTrad: "王獻臣",
+    periodStart: 1509,
+    periodEnd: null,
+    roleType: "founder",
+    role: "始建者",
+    note: "明弘治进士，官至御史，因官场失意归乡建园。取晋代潘岳《闲居赋》中「灌园鬻蔬，以供朝夕之膳……此亦拙者之为政也」之意，命名拙政园。",
+    cbdbId: 67807,
+    cbdbMatchName: "王獻臣",
+    confidence: "high",
+    aliases: [],
+    era: "明弘治/正德"
+  },
+  {
+    id: "wenzhengming",
+    name: "文徵明",
+    nameTrad: "文徵明",
+    periodStart: 1513,
+    periodEnd: 1559,
+    roleType: "friend",
+    role: "设计参与/友人",
+    note: "江南四大才子之一，参与拙政园规划设计，绘《拙政园三十一景图》并作《王氏拙政园记》，为后人留下最早最完整的园林文献。",
+    cbdbId: 34673,
+    cbdbMatchName: "文徵明",
+    confidence: "high",
+    aliases: ["徵仲", "文璧", "文衡山"],
+    era: "明成化/嘉靖"
+  },
+  {
+    id: "chenzhilin",
+    name: "陈之遴",
+    nameTrad: "陳之遴",
+    periodStart: 1631,
+    periodEnd: null,
+    roleType: "successor",
+    role: "继任园主",
+    note: "明崇祯进士，入清后官至大学士。购入拙政园后大加修葺，为清初拙政园的重要经营者。",
+    cbdbId: null,
+    cbdbMatchName: null,
+    confidence: "high",
+    aliases: ["彥升"],
+    era: "明末清初"
+  },
+  {
+    id: "wangyongning",
+    name: "王永宁",
+    nameTrad: "王永寧",
+    periodStart: 1662,
+    periodEnd: null,
+    roleType: "successor",
+    role: "继任园主",
+    note: "清初，吴三桂之婿。在拙政园大兴土木，改建园林面貌。后吴三桂兵败，王永宁亦随之没落。",
+    cbdbId: null,
+    cbdbMatchName: null,
+    confidence: "medium",
+    aliases: [],
+    era: "清康熙"
+  },
+  {
+    id: "lixiucheng",
+    name: "李秀成",
+    nameTrad: "李秀成",
+    periodStart: 1860,
+    periodEnd: 1863,
+    roleType: "military",
+    role: "太平天国忠王府",
+    note: "太平天国忠王，攻占苏州后将拙政园及周边合建为忠王府，为太平天国时期苏南重要根据地。",
+    cbdbId: 65633,
+    cbdbMatchName: "李秀成",
+    confidence: "high",
+    aliases: ["李以文"],
+    era: "清咸丰/同治"
+  },
+  {
+    id: "zhangzhiwan",
+    name: "张之万",
+    nameTrad: "張之萬",
+    periodStart: 1871,
+    periodEnd: null,
+    roleType: "successor",
+    role: "继任园主",
+    note: "清同治年间官至大学士、军机大臣。太平天国平定后，忠王府并入拙政园，张之万将之改为江苏巡抚行馆。",
+    cbdbId: null,
+    cbdbMatchName: null,
+    confidence: "high",
+    aliases: [],
+    era: "清同治/光绪"
+  },
+  {
+    id: "zhanglvqian",
+    name: "张履谦",
+    nameTrad: "張履謙",
+    periodStart: 1877,
+    periodEnd: null,
+    roleType: "successor",
+    role: "继任园主",
+    note: "苏州富商，同治年间购得拙政园西部，修建补园（今拙政园西部景区），建三十六鸳鸯馆、留听阁等著名建筑。",
+    cbdbId: null,
+    cbdbMatchName: null,
+    confidence: "medium",
+    aliases: [],
+    era: "清同治/光绪"
+  }
+];
+
+// ── 角色颜色映射 ─────────────────────────────────────────
+const ROLE_COLORS = {
+  founder:   { bg: "#3f51b5",  bgLight: "rgba(63,81,181,0.3)",  text: "#e8eaf6" },
+  friend:    { bg: "#2e7d32",  bgLight: "rgba(46,125,50,0.3)",  text: "#e8f5e9" },
+  successor: { bg: "#ff6f00",  bgLight: "rgba(255,111,0,0.3)",  text: "#fff3e0" },
+  military:  { bg: "#c62828",  bgLight: "rgba(198,40,40,0.3)",  text: "#fce4ec" },
+};
+
+// ── 时间轴焦点范围 ────────────────────────────────────
+const YEAR_MIN = 1490;
+const YEAR_MAX = 1930;
+
+// ── 初始化 ECharts ─────────────────────────────────────
+const chart = echarts.init(document.getElementById("timelineChart"));
+
+// 数据：每个园主一行
+const categories = OWNERS.map(o => o.name).reverse();
+const ownersData = [...OWNERS].reverse(); // 从上到下：王献臣→文徵明→...
+
+// 为 custom series 构建数据集
+const seriesData = ownersData.map((owner, idx) => {
+  const catIdx = idx;
+  const start = Math.max(owner.periodStart, YEAR_MIN);
+  const end = owner.periodEnd || YEAR_MAX;
+  return {
+    value: [catIdx, start, end, owner.name, owner.role, owner.id],
+    itemStyle: {
+      color: owner.cbdbId ? ROLE_COLORS[owner.roleType].bg : "#aaa"
+    }
+  };
+});
+
+const option = {
+  tooltip: {
+    trigger: "item",
+    formatter: function(params) {
+      const owner = OWNERS.find(o => o.id === params.data?.ownerId);
+      if (!owner) return "";
+      const matched = owner.cbdbId ? "✅ CBDB 匹配" : "❌ CBDB 未匹配";
+      const period = owner.periodEnd
+        ? `${owner.periodStart} — ${owner.periodEnd}`
+        : `${owner.periodStart} — 离园时间待考`;
+      return `<div style="font-weight:600;font-size:15px;margin-bottom:4px">${owner.name}</div>
+              <div style="font-size:12px;color:#666">${owner.role}</div>
+              <div style="font-size:12px;color:#999;margin:4px 0">${period}</div>
+              <div style="font-size:11px;color:#888">${matched}</div>`;
+    }
+  },
+  grid: {
+    left: 100,
+    right: 40,
+    top: 10,
+    bottom: 30
+  },
+  xAxis: {
+    type: "value",
+    min: YEAR_MIN,
+    max: YEAR_MAX,
+    axisLabel: { fontSize: 11, color: "#888" },
+    splitLine: { lineStyle: { color: "#eee", type: "dashed" } },
+    axisLine: { show: false },
+    axisTick: { show: false },
+    name: "年份",
+    nameTextStyle: { fontSize: 11, color: "#aaa" }
+  },
+  yAxis: {
+    type: "category",
+    data: categories,
+    axisLine: { show: false },
+    axisTick: { show: false },
+    axisLabel: {
+      fontSize: 13,
+      fontWeight: 500,
+      color: "#333",
+      padding: [0, 8, 0, 0]
+    },
+    splitLine: { show: false }
+  },
+  series: [
+    {
+      type: "custom",
+      renderItem: function(params, api) {
+        const catIdx = api.value(0);
+        const start = api.value(1);
+        const end = api.value(2);
+        const name = api.value(3);
+        
+        const yStart = api.coord([start, catIdx]);
+        const yEnd = api.coord([end, catIdx]);
+        
+        // 原始数据获取颜色
+        const dataIdx = params.dataIndex;
+        const dataItem = seriesData[dataIdx];
+        
+        const barWidth = 28;
+        const x = yStart[0];
+        const y = yStart[1] - barWidth / 2;
+        const width = Math.max(yEnd[0] - yStart[0], 3);
+        
+        const owner = ownersData[dataIdx];
+        const color = owner.cbdbId ? ROLE_COLORS[owner.roleType].bg : "#aaa";
+        const bgColor = owner.cbdbId ? ROLE_COLORS[owner.roleType].bgLight : "rgba(170,170,170,0.15)";
+
+        return {
+          type: "group",
+          children: [
+            {
+              type: "rect",
+              shape: { x: x, y: y, width: width, height: barWidth },
+              style: {
+                fill: bgColor,
+                stroke: color,
+                lineWidth: 2,
+                borderRadius: 4
+              },
+              onclick: function() { showOwnerDetail(owner.id); },
+              hoverAnimation: false
+            },
+            // 如果启止年确定，在结束处画一个小竖线
+            ...(owner.periodEnd ? [{
+              type: "line",
+              shape: {
+                x1: x + width,
+                y1: y + 2,
+                x2: x + width,
+                y2: y + barWidth - 2
+              },
+              style: { stroke: color, lineWidth: 1.5, lineDash: [3, 3] }
+            }] : []),
+            // 开始年份标记
+            {
+              type: "text",
+              shape: {
+                x: x,
+                y: y + barWidth + 12
+              },
+              style: {
+                text: String(start),
+                textAlign: "left",
+                fontSize: 10,
+                fill: "#aaa"
+              }
+            },
+            // 结束年份标记（如果有）
+            ...(owner.periodEnd ? [{
+              type: "text",
+              shape: {
+                x: x + width,
+                y: y + barWidth + 12
+              },
+              style: {
+                text: String(end),
+                textAlign: "right",
+                fontSize: 10,
+                fill: "#aaa"
+              }
+            }] : [])
+          ]
+        };
+      },
+      encode: { x: [1, 2], y: 0 },
+      data: seriesData.map((d, i) => ({
+        ...d,
+        ownerId: OWNERS.find(o => o.name === d.value[3])?.id
+      })),
+    }
+  ]
+};
+
+chart.setOption(option);
+
+// ── 详情面板 ─────────────────────────────────────────────
+function showOwnerDetail(id) {
+  const owner = OWNERS.find(o => o.id === id);
+  if (!owner) return;
+
+  const panel = document.getElementById("infoPanel");
+  panel.classList.add("active");
+
+  document.getElementById("ownerName").textContent = `${owner.name} — ${owner.role}`;
+  
+  const roleTag = document.getElementById("ownerRoleTag");
+  roleTag.textContent = owner.role;
+  roleTag.className = `role-tag ${owner.roleType}`;
+
+  document.getElementById("ownerNote").textContent = owner.note;
+
+  const periodStr = owner.periodEnd
+    ? `${owner.periodStart} 年 — ${owner.periodEnd} 年`
+    : `${owner.periodStart} 年 — 离园年份待考`;
+  document.getElementById("ownerPeriod").textContent = periodStr;
+
+  const cbdbStr = owner.cbdbId
+    ? `${owner.cbdbId} (${owner.cbdbMatchName})`
+    : "CBDB 未收录";
+  document.getElementById("ownerCbdbId").textContent = cbdbStr;
+
+  document.getElementById("ownerConfidence").textContent = owner.confidence;
+
+  const aliasStr = owner.aliases.length > 0 ? owner.aliases.join("、") : "无";
+  document.getElementById("ownerAliases").textContent = aliasStr;
+}
+
+// 默认选中第一个
+showOwnerDetail("wangxianchen");
+
+// ── 点击图表事件 ─────────────────────────────────────────
+chart.on("click", function(params) {
+  if (params.data?.ownerId) {
+    showOwnerDetail(params.data.ownerId);
+  }
+});
+
+// ── 窗口自适应 ─────────────────────────────────────────
+window.addEventListener("resize", function() {
+  chart.resize();
+});
+</script>
+</body>
+</html>

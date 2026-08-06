@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1.0">
+<title>拙政园 · 园林人物可视化 | 姑苏九园数字档案</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="leaflet.css">
+<script src="echarts.min.js"></script>
+<style>
+/* ════════════════════════════════════════════
+   Design Tokens (S3 色系)
+   ════════════════════════════════════════════ */
+:root {
+  --paper: #F5EFE3;
+  --paperDeep: #ECE3D2;
+  --cream: #F2EBDC;
+  --ink: #1A1A1A;
+  --inkSoft: #3A3A3A;
+  --cinnabar: #C8102E;
+  --gold: #B08D57;
+  --hairline: #DCD2BE;
+  --warmGray: #8A7F6E;
+  --pine: #1C2A23;
+  --pineDeep: #1C1F0E;
+  --pineLine: #3D5A4C;
+  --pineSoft: #9DB5A6;
+  --white: #FFFFFF;
+  --width: 1440px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.serif { font-family: 'Noto Serif SC', 'Songti SC', serif; }
+
+.page {
+  width: var(--width);
+  margin: 0 auto;
+  background: var(--paper);
+}
+@media (max-width: 1440px) { .page { width: 100%; min-width: 1440px; } }
+
+/* Masthead */
+.masthead {
+  width: var(--width); height: 84px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 64px; background: var(--paper); position: relative; z-index: 100;
+}
+.masthead-divider { width: var(--width); height: 1px; background: var(--hairline); }
+.brand { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+.brand-mark { width: 34px; height: 34px; }
+.brand-text { display: flex; flex-direction: column; gap: 3px; }
+.brand-name { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1; }
+.brand-sub { font-size: 8px; color: var(--warmGray); letter-spacing: 0.08em; line-height: 1; }
+.nav { display: flex; align-items: center; gap: 30px; }
+.nav a { font-size: 14px; color: var(--inkSoft); text-decoration: none; transition: color 0.2s; cursor: pointer; }
+.nav a:hover { color: var(--cinnabar); }
+
+/* Garden Hero */
+.garden-hero {
+  height: 340px;
+  background: linear-gradient(135deg, var(--pineDeep) 0%, var(--pine) 100%);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 64px; position: relative; overflow: hidden;
+}
+.garden-hero::after {
+  content: "拙政园"; position: absolute; right: 60px; top: -20px;
+  font-family: 'Noto Serif SC', serif; font-size: 180px; font-weight: 900;
+  color: rgba(255,255,255,0.04); line-height: 1; pointer-events: none;
+}
+.garden-hero .breadcrumb { font-size: 12px; color: var(--pineSoft); margin-bottom: 16px; }
+.garden-hero .breadcrumb a { color: var(--gold); text-decoration: none; }
+.garden-hero h1 {
+  font-family: 'Noto Serif SC', serif; font-size: 52px; font-weight: 700;
+  color: var(--cream); margin-bottom: 8px;
+}
+.garden-hero .subtitle { font-size: 14px; color: var(--pineSoft); margin-bottom: 16px; }
+.garden-hero .meta-row { display: flex; gap: 32px; font-size: 12px; color: var(--pineSoft); }
+.garden-hero .meta-row span { display: flex; align-items: center; gap: 6px; }
+
+/* Layout */
+.container { padding: 32px 64px; display: flex; gap: 24px; }
+.main-col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.side-col { width: 380px; flex-shrink: 0; }
+
+.card {
+  background: var(--white); border: 1px solid var(--hairline);
+  border-radius: 2px; padding: 20px;
+}
+.card h2 {
+  font-family: 'Noto Serif SC', serif; font-size: 16px; font-weight: 700;
+  color: var(--ink); margin-bottom: 4px;
+  display: flex; align-items: center; gap: 8px;
+}
+.card h2 .badge {
+  font-size: 10px; background: var(--paper); color: var(--warmGray);
+  padding: 2px 10px; border-radius: 8px; font-weight: 400;
+}
+.card .desc { font-size: 12px; color: var(--warmGray); margin-bottom: 12px; }
+
+#timelineChart { width: 100%; height: 200px; }
+#graphChart { width: 100%; height: 560px; }
+
+/* Legend rows */
+.legend-row {
+  display: flex; flex-wrap: wrap; gap: 14px; margin: 6px 0 10px;
+  font-size: 11px; color: var(--warmGray);
+}
+.legend-row .item { display: flex; align-items: center; gap: 5px; }
+.legend-row .dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+/* Detail panel */
+.detail-panel .portrait {
+  width: 100%; height: 160px; border-radius: 2px; background: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px; color: var(--warmGray); margin-bottom: 16px;
+  overflow: hidden;
+}
+.detail-panel .portrait img { width: 100%; height: 100%; object-fit: cover; }
+.detail-panel h3 { font-family: 'Noto Serif SC', serif; font-size: 22px; color: var(--ink); }
+.detail-panel .role-badge {
+  display: inline-block; font-size: 11px; padding: 2px 10px;
+  border-radius: 10px; margin: 4px 0 10px;
+}
+.detail-panel .role-badge.founder { background: #e8eaf6; color: #283593; }
+.detail-panel .role-badge.successor { background: #fff3e0; color: #e65100; }
+.detail-panel .role-badge.military { background: #fce4ec; color: #c62828; }
+.detail-panel .role-badge.friend { background: #e8f5e9; color: #2e7d32; }
+
+.detail-panel .bio { font-size: 13px; color: var(--inkSoft); line-height: 1.7; margin: 8px 0 12px; }
+.detail-panel .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.detail-panel .info-grid .lbl { font-size: 11px; color: var(--warmGray); }
+.detail-panel .info-grid .val { font-size: 13px; font-weight: 500; color: var(--ink); }
+.detail-panel .info-grid .full { grid-column: 1 / -1; }
+
+.detail-panel .offices { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px; }
+.detail-panel .offices .tag {
+  display: inline-block; font-size: 11px; background: var(--paper);
+  color: var(--inkSoft); padding: 2px 8px; border-radius: 4px;
+}
+
+.section-divider { border: none; border-top: 1px solid var(--hairline); margin: 12px 0; }
+
+/* Associates */
+.assoc-section { margin-top: 4px; }
+.assoc-section .assoc-header { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+.assoc-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.assoc-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; border-radius: 14px;
+  font-size: 12px; cursor: pointer; transition: 0.15s;
+  border: 1px solid transparent;
+}
+
+/* Poetry */
+.poetry-section { margin-top: 14px; }
+.poem-toggle {
+  font-size: 13px; font-weight: 600; color: var(--gold); cursor: pointer;
+  display: flex; align-items: center; gap: 6px; user-select: none;
+}
+.poem-toggle:hover { opacity: 0.8; }
+.poem-list { display: none; margin-top: 8px; }
+.poem-list.open { display: block; }
+.poem-item {
+  background: var(--paper); border-left: 3px solid var(--gold);
+  padding: 10px 12px; margin-bottom: 8px; border-radius: 0 4px 4px 0;
+}
+.poem-item .p-title { font-size: 13px; font-weight: 600; color: var(--ink); }
+.poem-item .p-note { font-size: 11px; color: var(--warmGray); margin-bottom: 4px; }
+.poem-item .p-text { font-size: 13px; line-height: 1.8; color: var(--inkSoft); font-family: 'Noto Serif SC', serif; }
+
+/* Map */
+#map { width: 100%; height: 260px; border-radius: 2px; overflow: hidden; }
+
+/* Empty state */
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 200px; color: var(--warmGray); font-size: 14px;
+}
+
+/* Footer */
+.footer-bar {
+  width: var(--width); display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 64px; font-size: 11px; color: var(--warmGray);
+  border-top: 1px solid var(--hairline); background: var(--white);
+}
+
+@media (max-width: 960px) {
+  .container { flex-direction: column; padding: 16px; }
+  .side-col { width: 100%; }
+  #graphChart { height: 400px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Masthead -->
+  <header class="masthead">
+    <div class="brand" onclick="location.href='../index.html'">
+      <svg class="brand-mark" viewBox="0 0 34 34" fill="none">
+        <rect x="1" y="1" width="32" height="32" rx="6" stroke="var(--ink)" stroke-width="1.5"/>
+        <text x="17" y="23" text-anchor="middle" font-family="'Noto Serif SC',serif" font-size="18" font-weight="700" fill="var(--ink)">园</text>
+      </svg>
+      <div class="brand-text">
+        <span class="brand-name">姑苏九园</span>
+        <span class="brand-sub">CLASSICAL GARDENS OF SUZHOU · UNESCO WORLD HERITAGE</span>
+      </div>
+    </div>
+    <nav class="nav">
+      <a onclick="document.getElementById('timelineWrap').scrollIntoView({behavior:'smooth'})">园主传承</a>
+      <a onclick="document.getElementById('graphWrap').scrollIntoView({behavior:'smooth'})">人物关系</a>
+      <a onclick="document.getElementById('mapWrap').scrollIntoView({behavior:'smooth'})">地理分布</a>
+    </nav>
+  </header>
+  <div class="masthead-divider"></div>
+
+  <!-- Garden Hero -->
+  <section class="garden-hero">
+    <div class="breadcrumb"><a href="../index.html">姑苏九园</a> / 拙政园</div>
+    <h1>拙政园</h1>
+    <div class="subtitle">Humble Administrator's Garden · 明正德四年（1509）王献臣始建 · 1997 年列入世界文化遗产</div>
+    <div class="meta-row">
+      <span>📍 苏州市姑苏区东北街178号</span>
+      <span>🏛 面积 5.2 公顷</span>
+      <span>👥 7 位园主 / 关联人</span>
+      <span>📊 CBDB 子集 308 人 · 310 条关系</span>
+    </div>
+  </section>
+
+  <div class="container">
+    <!-- Main Column -->
+    <div class="main-col">
+      <!-- Timeline -->
+      <div class="card" id="timelineWrap">
+        <h2>📅 园主更替时间轴 <span class="badge">点击园主 → 关系图高亮</span></h2>
+        <div class="legend-row">
+          <div class="item"><span class="dot" style="background:#c62828"></span>明</div>
+          <div class="item"><span class="dot" style="background:#f9a825"></span>清初</div>
+          <div class="item"><span class="dot" style="background:#283593"></span>清中晚</div>
+          <div class="item"><span class="dot" style="background:#424242"></span>太平天国</div>
+          <div class="item"><span class="dot" style="background:#2e7d32"></span>友人/设计</div>
+          <div class="item"><span class="dot" style="background:#bdbdbd;border:1px dashed #999"></span>CBDB未匹配</div>
+        </div>
+        <div id="timelineChart"></div>
+      </div>
+
+      <!-- Network -->
+      <div class="card" id="graphWrap">
+        <h2>🔗 CBDB 人物关系网络 <span class="badge">力导向布局 · 308 人</span></h2>
+        <div class="legend-row">
+          <div class="item"><span class="dot" style="background:#e53935;border-radius:50%"></span>园主/关联人</div>
+          <div class="item"><span class="dot" style="background:#1e88e5;border-radius:50%"></span>亲属关系</div>
+          <div class="item"><span class="dot" style="background:#ff8f00;border-radius:50%"></span>社会关系</div>
+        </div>
+        <div id="graphChart"></div>
+      </div>
+
+      <!-- Map -->
+      <div class="card" id="mapWrap">
+        <h2>🗺 苏州九园地理位置 <span class="badge">Leaflet + OSM</span></h2>
+        <div id="map"></div>
+      </div>
+    </div>
+
+    <!-- Side Column -->
+    <div class="side-col">
+      <div class="card detail-panel" style="position:sticky;top:16px">
+        <h2>👤 人物详情 <span id="backToGarden" style="display:none;font-size:12px;font-weight:400;color:var(--gold);cursor:pointer" onclick="showGardenOverview()">← 园林概览</span></h2>
+        <div id="detailContent">
+          <div class="empty-state">
+            <div style="font-size:48px">👆</div>
+            <div style="margin-top:8px">点击时间轴或关系图中的节点<br>查看人物详情</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <span>数据源: CBDB v20260718 · gardens.json · chinese-poetry</span>
+    <span>⚡ 姑苏九园数字档案 · v1.0</span>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// 1. 数据
+// ══════════════════════════════════════════════════════════════
+const TIMELINE_OWNERS = [
+  { id:"wangxianchen",  name:"王献臣",   start:1509, end:null,   role:"始建者",     roleType:"founder",
+    era:"明", eraColor:"#c62828", cbdbId:67807,  cbdbName:"王獻臣",  confidence:"high",
+    offices:["監察御史","通判","縣丞"], aliases:["敬止"], note:"明弘治进士，官至御史，因官场失意归乡建园。取潘岳《闲居赋》「拙者之为政」意命名。" },
+  { id:"wenzhengming",  name:"文徵明",   start:1513, end:1559,   role:"设计参与/友人",  roleType:"friend",
+    era:"明", eraColor:"#c62828", cbdbId:34673,  cbdbName:"文徵明",  confidence:"high",
+    offices:["翰林院待诏"], aliases:["徵仲","文璧","文衡山"],
+    note:"江南四大才子之一，参与拙政园规划设计，绘《拙政园三十一景图》并作《王氏拙政园记》。" },
+  { id:"chenzhilin",    name:"陈之遴",   start:1631, end:null,   role:"继任园主",   roleType:"successor",
+    era:"明末清初", eraColor:"#f9a825", cbdbId:54854,  cbdbName:"陳之遴",  confidence:"high",
+    offices:["編修","中允","宏文院大學士"], aliases:["彥升"], note:"明崇祯进士，入清后官至大学士。" },
+  { id:"wangyongning",  name:"王永宁",   start:1662, end:null,   role:"继任园主",   roleType:"successor",
+    era:"清初", eraColor:"#f9a825", cbdbId:206689, cbdbName:"王永寧", confidence:"medium",
+    offices:[], aliases:["世卿"], note:"清初，吴三桂之婿。在拙政园大兴土木，后吴三桂兵败而没落。" },
+  { id:"lixiucheng",    name:"李秀成",   start:1860, end:1863,   role:"太平天国忠王府", roleType:"military",
+    era:"太平天国", eraColor:"#424242", cbdbId:65633,  cbdbName:"李秀成",  confidence:"high",
+    offices:["忠王"], aliases:["李以文"], note:"太平天国忠王，攻占苏州后将拙政园及周边合建为忠王府。" },
+  { id:"zhangzhiwan",   name:"张之万",   start:1871, end:null,   role:"继任园主",   roleType:"successor",
+    era:"清中晚", eraColor:"#283593", cbdbId:54432,  cbdbName:"張之萬",  confidence:"high",
+    offices:["會試考官","侍讀學士","同考官"], aliases:[], note:"清同治年间官至大学士，后将忠王府并入拙政园改为巡抚行馆。" },
+  { id:"zhanglvqian",   name:"张履谦",   start:1877, end:null,   role:"继任园主",   roleType:"successor",
+    era:"清中晚", eraColor:"#283593", cbdbId:81057,  cbdbName:"張履謙", confidence:"medium",
+    offices:[], aliases:[], note:"苏州富商，购拙政园西部建补园，建三十六鸳鸯馆、留听阁等。" },
+];
+
+const PERSON_DETAILS = {};
+TIMELINE_OWNERS.forEach(o => { PERSON_DETAILS[o.id] = o; });
+
+// ══════════════════════════════════════════════════════════════
+// 2. 时间轴
+// ══════════════════════════════════════════════════════════════
+const GARDEN_DATA = {
+  name: "拙政园",
+  nameEn: "Humble Administrator's Garden",
+  built: "明正德四年 (1509)",
+  unesco: 1997,
+  area: 52000,
+  address: "苏州市姑苏区东北街178号",
+  style: "水园，以水面为中心，建筑临水而建",
+  halls: ["远香堂", "待霜亭", "三十六鸳鸯馆", "雪香云蔚亭", "荷风四面亭", "见山楼", "香洲", "小飞虹"],
+  designers: [{ name: "文徵明", role: "参与设计/作《拙政园三十一景图》" }],
+  history: "明正德四年(1509)，御史王献臣因官场失意归乡，在唐代陆龟蒙宅地和元代大弘寺旧址上建园。取晋代潘岳《闲居赋》「灌园鬻蔬……此亦拙者之为政也」之意，命名拙政园。此后四百余年间屡换园主，曾一分为三（东/中/西三部），至清末始复归一体。1997年列入世界文化遗产。"
+};
+
+function getWikiFor(id) {
+  return wikiData[id] || null;
+}
+
+const OWNER_TO_WIKI = {
+  wangxianchen:"wzx", wenzhengming:"wzm", chenzhilin:"czl",
+  wangyongning:"wyn", lixiucheng:"lxc", zhangzhiwan:"zzw", zhanglvqian:null
+};
+
+function showGardenOverview() {
+  document.getElementById("backToGarden").style.display = "none";
+  const wiki = getWikiFor("zhuozheng_garden");
+  const wikiImg = wiki && wiki.image_file
+    ? `<img src="../${wiki.image_file}" style="width:100%;height:100%;object-fit:cover">`
+    : "🌳";
+  const wikiSummary = wiki && wiki.summary
+    ? `<div style="font-size:12px;color:var(--inkSoft);line-height:1.6;margin:8px 0">${wiki.summary}</div>
+       <div style="font-size:11px;color:var(--warmGray);text-align:right">来源: Wikipedia</div>`
+    : "";
+  const poems = getPoemsForName("文徵明");
+  const hallPoems = {};
+  poems.forEach(p => {
+    const title = p.title.replace("拙政园三十一景·", "");
+    hallPoems[title] = p;
+  });
+
+  const hallsHtml = GARDEN_DATA.halls.map(h => {
+    const poem = hallPoems[h];
+    return `
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--hairline)">
+        <span style="font-size:16px">🏛</span>
+        <div>
+          <div style="font-weight:500;font-size:13px">${h}</div>
+          ${poem ? `<div style="font-size:11px;color:var(--gold);cursor:pointer" onclick="selectPerson('wenzhengming');setTimeout(()=>{document.querySelector('.poem-toggle')?.click()},200)">📜 文徵明有诗</div>` : ""}
+        </div>
+      </div>`;
+  }).join("");
+
+  document.getElementById("detailContent").innerHTML = `
+    <div class="portrait" style="font-size:32px;background:var(--paper);overflow:hidden">${wikiImg}</div>
+    <h3>${GARDEN_DATA.name}</h3>
+    <div style="font-size:12px;color:var(--warmGray);margin-bottom:8px">${GARDEN_DATA.nameEn}</div>
+    ${wikiSummary}
+    <div class="bio">${GARDEN_DATA.history}</div>
+    <div class="info-grid">
+      <div><div class="lbl">始建</div><div class="val">${GARDEN_DATA.built}</div></div>
+      <div><div class="lbl">世遗</div><div class="val">${GARDEN_DATA.unesco} 年</div></div>
+      <div><div class="lbl">面积</div><div class="val">${(GARDEN_DATA.area/1000).toFixed(1)} 公顷</div></div>
+      <div><div class="lbl">风格</div><div class="val" style="font-size:12px">${GARDEN_DATA.style}</div></div>
+    </div>
+    <div class="section-divider"></div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:8px">🏛 厅堂楼阁 (${GARDEN_DATA.halls.length}座)</div>
+    ${hallsHtml}
+    <div class="section-divider"></div>
+    <div style="font-size:12px;color:var(--warmGray);padding-top:4px">
+      设计参与: ${GARDEN_DATA.designers.map(d => `${d.name}（${d.role}）`).join("、")}
+    </div>
+    <div style="font-size:12px;color:var(--warmGray);margin-top:4px">
+      数据源: gardens.json · CBDB v20260718 · 文徵明《拙政园三十一景》
+    </div>`;
+}
+
+const ASSOCIATES = {
+  "wangxianchen": { kin: [{n:"王文榮"},{n:"王成"},{n:"王琇"},{n:"宋氏(王獻臣母)"},{n:"王獻民"}], assoc: [{n:"文徵明"}] },
+  "wenzhengming": { kin: [{n:"文林"},{n:"文奎"},{n:"文氏(王子美妻)"},{n:"文伯仁"},{n:"文彭"},{n:"文嘉"},{n:"文臺"}], assoc: [{n:"王獻臣"},{n:"沈周"},{n:"吳寬"},{n:"陸師道"},{n:"陳淳"},{n:"蔡羽"}] },
+  "chenzhilin": { kin: [{n:"徐粲"},{n:"徐烶"},{n:"陳潔"},{n:"陳堪永"},{n:"陳堅永"}], assoc: [] },
+  "wangyongning": { kin: [{n:"王銓"},{n:"王演"},{n:"王國柱"},{n:"李氏(王永寧母)"},{n:"王永偉"}], assoc: [] },
+  "lixiucheng": { kin: [], assoc: [] },
+  "zhangzhiwan": { kin: [{n:"張燕方"},{n:"張仲璵"},{n:"張玉冊"},{n:"張瑞蔭"},{n:"張嘉蔭"}], assoc: [{n:"梁士詒"},{n:"嚴永華"}] },
+  "zhanglvqian": { kin: [], assoc: [] },
+};
+
+function renderAssociates(ownerId) {
+  const a = ASSOCIATES[ownerId];
+  if (!a || (!a.kin.length && !a.assoc.length)) {
+    return '<div style="font-size:12px;color:var(--warmGray);padding:8px 0">CBDB 未记录此人的关联关系</div>';
+  }
+  const all = [
+    ...a.kin.map(p => ({...p, type:"亲属", color:"#1e88e5"})),
+    ...a.assoc.map(p => ({...p, type:"社交", color:"#ff8f00"})),
+  ];
+  return `<div class="assoc-chips">
+    ${all.map(p => `
+      <div onclick="focusAssociate('${p.n}')" class="assoc-chip"
+        style="background:${p.color}12;border-color:${p.color}40"
+        title="点击在关系图中定位">
+        <span style="width:6px;height:6px;border-radius:50%;background:${p.color};flex-shrink:0"></span>
+        ${p.n}
+        <span style="font-size:9px;opacity:0.5">↗</span>
+      </div>`).join("")}
+  </div>
+  <div style="display:flex;gap:16px;margin-top:6px;font-size:10px;color:var(--warmGray)">
+    <span>● 亲属</span><span>● 社交</span>
+  </div>`;
+}
+
+function focusAssociate(name) {
+  if (!graphChart) return;
+  try {
+    for (let i = 0; i < graphNodesData.length; i++) {
+      const n = graphNodesData[i];
+      if (n.name === name) {
+        graphChart.dispatchAction({ type: "highlight", seriesIndex: 0, dataIndex: i });
+        showNodeDetail({ name: n.name, id: n.id, year: n.year, offices: n.offices || [] });
+        return;
+      }
+    }
+    for (let i = 0; i < graphNodesData.length; i++) {
+      const n = graphNodesData[i];
+      if (n.name.includes(name) || name.includes(n.name)) {
+        graphChart.dispatchAction({ type: "highlight", seriesIndex: 0, dataIndex: i });
+        showNodeDetail({ name: n.name, id: n.id, year: n.year, offices: n.offices || [] });
+        return;
+      }
+    }
+  } catch(e) { /* ignore */ }
+}
+
+const YEAR_MIN = 1490, YEAR_MAX = 1930;
+
+(function() {
+  const chart = echarts.init(document.getElementById("timelineChart"));
+  const data = TIMELINE_OWNERS.map(o => ({
+    start: Math.max(o.start || YEAR_MIN, YEAR_MIN),
+    end: o.end || YEAR_MAX,
+    ownerIdx: TIMELINE_OWNERS.indexOf(o),
+    id: o.id, name: o.name, role: o.role, eraColor: o.eraColor,
+    cbdbId: o.cbdbId,
+  })).reverse();
+
+  const yNames = TIMELINE_OWNERS.map(o => o.name).reverse();
+
+  chart.setOption({
+    tooltip: {
+      formatter: p => {
+        const d = data[p.dataIndex];
+        if (!d) return '';
+        const o = TIMELINE_OWNERS.find(x => x.id === d.id);
+        if (!o) return '';
+        return `<b>${o.name}</b><br>${o.role}<br>${o.start}${o.end ? ' — ' + o.end + ' 年' : ' — ?'}`;
+      }
+    },
+    grid: { left: 80, right: 20, top: 6, bottom: 20 },
+    xAxis: {
+      type: "value", min: YEAR_MIN, max: YEAR_MAX,
+      axisLabel: {fontSize:10,color:"var(--warmGray)"},
+      splitLine: {lineStyle:{color:"var(--hairline)",type:"dashed"}},
+      axisLine: {show:false}, axisTick: {show:false}
+    },
+    yAxis: {
+      type: "category", data: yNames, axisLine: {show:false},
+      axisTick: {show:false}, axisLabel: {fontSize:12,fontWeight:500,padding:[0,6,0,0],fontFamily:"'Noto Serif SC',serif"}
+    },
+    series: [{
+      type: "custom",
+      renderItem: function(params, api) {
+        const d = data[params.dataIndex];
+        const y0 = api.coord([d.start, params.dataIndex]);
+        const y1 = api.coord([d.end, params.dataIndex]);
+        const x = y0[0], w = Math.max(y1[0] - y0[0], 3), bw = 22;
+        const y = y0[1] - bw/2;
+        const color = d.eraColor;
+        const bg = color + "30";
+        return {
+          type: "group", children: [
+            { type:"rect", shape:{x,y,width:w,height:bw},
+              style:{fill:bg,stroke:color,lineWidth:1.5,borderRadius:3},
+              onclick: () => selectPerson(d.id),
+              hoverAnimation: false },
+            ...(d.end < YEAR_MAX ? [{ type:"line",
+              shape:{x1:x+w, y1:y+2, x2:x+w, y2:y+bw-2},
+              style:{stroke:color,lineWidth:1,lineDash:[3,3]} }] : []),
+          ]
+        };
+      },
+      data: data,
+    }]
+  });
+
+  chart.on("click", p => { if(p.data?.id) selectPerson(p.data.id); });
+  window.timelineChart = chart;
+})();
+
+// ══════════════════════════════════════════════════════════════
+// 3. 力导向关系图
+// ══════════════════════════════════════════════════════════════
+let graphChart;
+let graphNodesData = [];
+let wikiData = {};
+
+fetch("../data/wikipedia_data.json")
+  .then(r => r.json())
+  .then(d => {
+    wikiData = d.entries || {};
+    const backBtn = document.getElementById("backToGarden");
+    if (backBtn && backBtn.style.display === "none") {
+      showGardenOverview();
+    }
+  })
+  .catch(() => {});
+
+fetch("../data/zhuozheng_subgraph.json")
+  .then(r => r.json())
+  .then(data => {
+    const nodes = data.nodes.map(n => ({
+      id: n.id, name: n.name, value: n.offices?.join(", ") || "",
+      category: n.is_owner ? 0 : 1,
+      symbolSize: n.is_owner ? 22 : (n.offices?.length ? 14 : 10),
+      itemStyle: {
+        color: n.is_owner ? "#e53935" : (n.offices?.length ? "#1e88e5" : "#90a4ae"),
+        opacity: 0.85,
+      },
+      label: { show: n.is_owner, fontSize: 10, fontWeight: "bold" },
+      isOwner: n.is_owner, aliases: n.aliases, offices: n.offices, year: n.year,
+    }));
+
+    const edges = data.edges.map(e => ({
+      source: e.source, target: e.target,
+      lineStyle: { color: e.type === "kin" ? "#1e88e5" : "#ff8f00", width: 0.8, opacity: 0.4 },
+    }));
+
+    graphNodesData = nodes;
+    graphChart = echarts.init(document.getElementById("graphChart"));
+
+    graphChart.setOption({
+      tooltip: {
+        formatter: function(p) {
+          if (p.dataType === "edge") {
+            const s = nodes.find(n => n.id === p.data.source);
+            const t = nodes.find(n => n.id === p.data.target);
+            return `${s?.name || "?"} ↔ ${t?.name || "?"}`;
+          }
+          const n = p.data;
+          if (!n) return "";
+          const offices = n.offices?.length ? n.offices.join("、") : "无官职记录";
+          return `<b>${n.name}</b><br><small>${n.isOwner ? "🔴 园主/关联人" : "🔵 关系人"}</small><br><small>官职: ${offices}</small>`;
+        }
+      },
+      series: [{
+        type: "graph", layout: "force",
+        force: { repulsion: 120, edgeLength: [60, 160], gravity: 0.08, friction: 0.1 },
+        roam: true, draggable: true,
+        data: nodes, edges: edges,
+        categories: [
+          { name: "园主/关联人", itemStyle: { color: "#e53935" } },
+          { name: "关系人", itemStyle: { color: "#1e88e5" } },
+        ],
+        edgeSymbol: ["none", "none"],
+        label: { show: true, position: "right", fontSize: 9, color: "#444",
+          formatter: p => p.data.isOwner ? p.data.name : "" },
+        lineStyle: { curveness: 0.2, opacity: 0.3 },
+        emphasis: { focus: "adjacency", lineStyle: { width: 2, opacity: 0.8 } },
+        zoom: 0.7,
+      }]
+    });
+
+    graphChart.on("click", function(p) {
+      if (p.dataType === "node" && p.data) {
+        const tl = TIMELINE_OWNERS.find(o => o.cbdbId === p.data.id);
+        if (tl) selectPerson(tl.id);
+        else showNodeDetail(p.data);
+      }
+    });
+
+    window.addEventListener("resize", () => graphChart.resize());
+  });
+
+// ══════════════════════════════════════════════════════════════
+// 4. 详情面板
+// ══════════════════════════════════════════════════════════════
+function selectPerson(id) {
+  const o = PERSON_DETAILS[id];
+  if (!o) return;
+  document.getElementById("backToGarden").style.display = "inline";
+  document.getElementById("detailContent").innerHTML = buildDetailHTML(o);
+  if (o.cbdbId && graphNodesData.length > 0 && graphChart) {
+    try {
+      const idx = graphNodesData.findIndex(n => n.id === o.cbdbId);
+      if (idx >= 0) {
+        graphChart.dispatchAction({ type: "highlight", seriesIndex: 0, dataIndex: idx });
+      }
+    } catch(e) { /* ignore */ }
+  }
+}
+
+const POEMS_FOR_OWNER = {
+  "文徵明": [
+    {"title":"若墅堂","text":"会心何必在郊坰，近圃分明见远情。流水断桥春草色，槿篱茅屋午鸡声。绝怜人境无车马，信有山林在市城。不负昔贤高隐地，手携书卷课童耕。","note":"《拙政园三十一景》其一"},
+    {"title":"梦隐楼","text":"林泉入梦意茫茫，旋起高楼拟退藏。鲁望五湖原有宅，渊明三径未全荒。碧山雨过朝看爽，白鸟风来昼卧床。最是登临有佳趣，浮云一点东南望。","note":"《拙政园三十一景》其二"},
+    {"title":"繁香坞","text":"杂植名花傍草堂，紫蕤丹艳漫成行。春光烂熳千机锦，淑气熏蒸百和香。自爱芳菲满怀袖，不教风露湿衣裳。高情已在繁华外，静看游蜂上下狂。","note":"《拙政园三十一景》其三"},
+    {"title":"倚玉轩","text":"倚槛轩楹瞰碧流，坐来景物自相酬。风生翠簟敲秋韵，香散琼花落晚洲。山色入帘青欲滴，水光摇座冷如秋。多情惟有西窗竹，日暮琅玕送玉钩。","note":"《拙政园三十一景》其四"},
+    {"title":"小飞虹","text":"龙影横拖碧玉流，飞虹千尺跨沧洲。分明记得河阳县，一曲栏杆枕水楼。","note":"《拙政园三十一景》其五"},
+    {"title":"小沧浪","text":"偶傍沧浪构小亭，依然绿水绕虚楹。岂无风月供垂钓，亦有儿童唱濯缨。一幅秋光鸥鹭占，半湖春雨蓼花汀。凭阑不尽临渊意，独倚南薰看月生。","note":"《拙政园三十一景》其六"},
+    {"title":"远香堂","text":"爱此荷花冒绿波，南薰庭院夕阳多。风前未许尘飞到，月下时闻棹唱过。翠幄凌波擎碧盖，红衣坠露卷秋罗。扁舟一棹归何处，十里湖山入棹歌。","note":"《拙政园三十一景》其七"},
+    {"title":"待霜亭","text":"九月江南霜气严，江天漠漠雨纤纤。丹枫乌桕浑闲事，最爱墙东一树柑。","note":"《拙政园三十一景》其八"},
+    {"title":"听雨轩","text":"竹斋听雨夜潇潇，独对寒灯酒未消。今日又随春去住，几回花下坐吹箫。","note":"《拙政园三十一景》其九"},
+    {"title":"嘉实亭","text":"种得东陵五色瓜，绿阴深处是仙家。静中消息无人会，独倚阑干看落花。","note":"《拙政园三十一景》其十"},
+  ]
+};
+
+function getPoemsForName(name) {
+  const match = POEMS_FOR_OWNER[name];
+  if (match) return match;
+  for (const key in POEMS_FOR_OWNER) {
+    if (key.includes(name) || name.includes(key)) return POEMS_FOR_OWNER[key];
+  }
+  return [];
+}
+
+function showNodeDetail(node) {
+  document.getElementById("detailContent").innerHTML = `
+    <div style="margin-top:8px">
+      <h3>${node.name}</h3>
+      <div class="bio">CBDB 人物（关联网络中）</div>
+      <div class="info-grid">
+        <div><div class="lbl">CBDB ID</div><div class="val">${node.id}</div></div>
+        <div><div class="lbl">指数年</div><div class="val">${node.year || "未知"}</div></div>
+        ${node.offices?.length ? `<div class="full">
+          <div class="lbl">官职</div>
+          <div class="val">${node.offices.join("、")}</div>
+        </div>` : ""}
+      </div>
+    </div>`;
+}
+
+function buildDetailHTML(o) {
+  const period = o.end ? `${o.start} — ${o.end} 年` : `${o.start} 年 — 离园年份待考`;
+  const roleClass = o.roleType === "assoc" ? "successor" : o.roleType;
+  const cbdbStr = o.cbdbId ? `${o.cbdbId} (${o.cbdbName})` : "CBDB 未收录";
+  const aliasStr = o.aliases?.length ? o.aliases.join("、") : "无";
+  const officesHtml = o.offices?.length
+    ? `<div class="offices">${o.offices.map(o => `<span class="tag">${o}</span>`).join("")}</div>`
+    : '<div style="font-size:12px;color:var(--warmGray);margin-top:6px">无官职记录</div>';
+
+  const poems = getPoemsForName(o.name);
+  const wikiId = OWNER_TO_WIKI[o.id];
+  const wiki = wikiId ? getWikiFor(wikiId) : null;
+  const wikiImg = wiki && wiki.image_file
+    ? `<img src="../${wiki.image_file}" style="width:100%;height:100%;object-fit:cover">`
+    : o.name[0];
+  const wikiSummary = wiki && wiki.summary && wiki.summary !== o.note
+    ? `<div style="font-size:12px;color:var(--inkSoft);line-height:1.6;margin:8px 0">${wiki.summary}</div>`
+    : "";
+  const poemsHtml = poems.length > 0 ? `
+    <div class="poetry-section">
+      <div class="poem-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
+        📜 相关诗作 (${poems.length}首) <span style="font-size:10px;color:var(--warmGray)">点击展开</span>
+      </div>
+      <div class="poem-list open">
+        ${poems.map(p => `
+          <div class="poem-item">
+            <div class="p-title">${p.title}</div>
+            ${p.note ? `<div class="p-note">${p.note}</div>` : ""}
+            <div class="p-text">${p.text.replace(/。/g, "。<br>")}</div>
+          </div>
+        `).join("")}
+      </div>
+    </div>` : "";
+
+  return `
+    <div class="portrait" style="overflow:hidden">${wikiImg}</div>
+    <h3>${o.name}</h3>
+    <span class="role-badge ${roleClass}">${o.role}</span>
+    ${wikiSummary}
+    <div class="bio">${o.note}</div>
+    <div class="info-grid">
+      <div><div class="lbl">执园期间</div><div class="val">${period}</div></div>
+      <div><div class="lbl">朝代</div><div class="val">${o.era}</div></div>
+      <div><div class="lbl">CBDB ID</div><div class="val">${cbdbStr}</div></div>
+      <div><div class="lbl">消歧置信度</div><div class="val">${o.confidence}</div></div>
+      <div class="full"><div class="lbl">别名/字号</div><div class="val">${aliasStr}</div></div>
+      <div class="full">${officesHtml}</div>
+    </div>
+    ${poemsHtml}
+    <div class="section-divider"></div>
+    <div class="assoc-section">
+      <div class="assoc-header">
+        🔗 关联人物 <span style="font-size:11px;color:var(--warmGray)">(CBDB 一阶亲属 + 社交关系)</span>
+      </div>
+      ${renderAssociates(o.id)}
+    </div>`;
+}
+
+setTimeout(() => {
+  try { showGardenOverview(); } catch(e) { console.warn("init", e); }
+}, 800);
+
+window.addEventListener("resize", () => {
+  if (window.timelineChart) window.timelineChart.resize();
+  if (graphChart) graphChart.resize();
+});
+</script>
+<script src="leaflet.js"></script>
+<script>
+// Leaflet 地图
+const GARDEN_LOCATIONS = [
+  {name:"拙政园", lat:31.3260, lng:120.6246},
+  {name:"留园",   lat:31.3176, lng:120.5882},
+  {name:"网师园", lat:31.3001, lng:120.6298},
+  {name:"环秀山庄",lat:31.3135,lng:120.6180},
+  {name:"沧浪亭", lat:31.2975, lng:120.6225},
+  {name:"狮子林", lat:31.3235, lng:120.6250},
+  {name:"艺圃",   lat:31.3120, lng:120.6150},
+  {name:"耦园",   lat:31.3180, lng:120.6320},
+  {name:"退思园", lat:31.1580, lng:120.7150},
+];
+
+try {
+  const mapEl = document.getElementById("map");
+  if (mapEl && window.L) {
+    delete L.Icon.Default.prototype._getIconUrl;
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: 'marker-icon-2x.png',
+      iconUrl: 'marker-icon.png',
+      shadowUrl: 'marker-shadow.png',
+    });
+    const map = L.map("map", { zoomControl: true, scrollWheelZoom: false })
+      .setView([31.30, 120.62], 12);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 18, attribution: "© OpenStreetMap",
+    }).addTo(map);
+
+    GARDEN_LOCATIONS.forEach(g => {
+      const marker = L.marker([g.lat, g.lng]).addTo(map);
+      marker.bindTooltip(g.name, { direction: "top", offset: [0, -10] });
+      if (g.name === "拙政园") {
+        marker.bindPopup(`<b>${g.name}</b><br><span style="color:var(--gold);font-size:12px">✦ 当前展示园林</span><br><span style="font-size:11px;color:#888">点击时间轴查看园主传承</span>`);
+        marker.openPopup();
+      } else {
+        marker.bindPopup(`<b>${g.name}</b><br><span style="font-size:11px;color:#888">苏州古典园林 · UNESCO 1997/2000</span>`);
+      }
+    });
+    setTimeout(() => { if (map) map.scrollWheelZoom.enable(); }, 2000);
+  }
+} catch(e) { console.warn("map error", e); }
+</script>
+</body>
+</html>

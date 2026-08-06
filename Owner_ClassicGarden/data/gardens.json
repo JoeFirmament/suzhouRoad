@@ -1,0 +1,865 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "created": "2025-07-20",
+    "description": "苏州九座世界遗产古典园林档案 — CBDB 锚点数据",
+    "total_gardens": 9,
+    "unesco_inscriptions": [1997, 2000],
+    "cbdb_version_target": "20250520",
+    "data_sources": [
+      "summary.md 第二章原始档案表",
+      "UNESCO World Heritage List",
+      "苏州市园林和绿化管理局"
+    ]
+  },
+  "gardens": [
+    {
+      "id": "zhuozheng",
+      "name_cn": "拙政园",
+      "name_en": "Humble Administrator's Garden",
+      "built": {
+        "dynasty": "明",
+        "year": 1509,
+        "era": "正德四年",
+        "display": "明正德四年(1509)"
+      },
+      "unesco_year": 1997,
+      "unesco_id": "813-001",
+      "location": {
+        "lat": 31.3260,
+        "lng": 120.6246,
+        "address": "苏州市姑苏区东北街178号",
+        "district": "姑苏区"
+      },
+      "area_sqm": 52000,
+      "owners": [
+        {
+          "name": "王献臣",
+          "period_start": 1509,
+          "period_end": null,
+          "role": "始建者",
+          "note": "明弘治进士，官至御史，因官场失意归乡建园",
+          "cbdb_query": {
+            "name_chn": "王献臣",
+            "disambiguation": {
+              "era": "明弘治/正德",
+              "era_range": [1488, 1521],
+              "office_hint": "御史",
+              "location_hint": "苏州/吴县",
+              "confidence": "high"
+            }
+          }
+        },
+        {
+          "name": "文徵明",
+          "period_start": 1513,
+          "period_end": 1559,
+          "role": "园主友人/设计参与",
+          "note": "参与设计，绘《拙政园三十一景图》，作《王氏拙政园记》",
+          "cbdb_query": {
+            "name_chn": "文徵明",
+            "alias": ["文征明", "文衡山"],
+            "disambiguation": {
+              "era": "明成化/嘉靖",
+              "era_range": [1470, 1559],
+              "office_hint": "翰林院待诏",
+              "location_hint": "苏州/长洲",
+              "confidence": "high"
+            }
+          }
+        },
+        {
+          "name": "陈之遴",
+          "period_start": 1631,
+          "period_end": null,
+          "role": "继任园主",
+          "note": "明崇祯进士，入清后官至大学士",
+          "cbdb_query": {
+            "name_chn": "陈之遴",
+            "disambiguation": {
+              "era": "明末清初",
+              "era_range": [1600, 1660],
+              "office_hint": "大学士/尚书",
+              "location_hint": "海宁/苏州",
+              "confidence": "high"
+            }
+          }
+        },
+        {
+          "name": "王永宁",
+          "period_start": 1662,
+          "period_end": null,
+          "role": "继任园主",
+          "note": "清初，吴三桂婿",
+          "cbdb_query": {
+            "name_chn": "王永宁",
+            "disambiguation": {
+              "era": "清康熙",
+              "era_range": [1644, 1680],
+              "office_hint": null,
+              "location_hint": "苏州",
+              "confidence": "medium",
+              "warning": "CBDB中可能有多个王永宁，需用吴三桂关联+苏州籍贯消歧"
+            }
+          }
+        },
+        {
+          "name": "李秀成",
+          "period_start": 1860,
+          "period_end": 1863,
+          "role": "太平天国忠王府",
+          "note": "太平天国时期据为忠王府",
+          "cbdb_query": {
+            "name_chn": "李秀成",
+            "disambiguation": {
+              "era": "清咸丰/同治",
+              "era_range": [1823, 1864],
+              "office_hint": "忠王",
+              "location_hint": "广西/苏州",
+              "confidence": "high"
+            }
+          }
+        },
+        {
+          "name": "张之万",
+          "period_start": 1871,
+          "period_end": null,
+          "role": "继任园主",
+          "note": "同治年间，官至大学士",
+          "cbdb_query": {
+            "name_chn": "张之万",
+            "disambiguation": {
+              "era": "清同治/光绪",
+              "era_range": [1811, 1897],
+              "office_hint": "大学士/尚书",
+              "location_hint": "直隶南皮",
+              "confidence": "high"
+            }
+          }
+        },
+        {
+          "name": "张履谦",
+          "period_start": 1877,
+          "period_end": null,
+          "role": "继任园主",
+          "note": "同治年间富商",
+          "cbdb_query": {
+            "name_chn": "张履谦",
+            "disambiguation": {
+              "era": "清同治/光绪",
+              "era_range": [1850, 1920],
+              "office_hint": null,
+              "location_hint": "苏州",
+              "confidence": "medium",
+              "warning": "与清代学者张履谦（另有其人）区分，目标为苏州富商"
+            }
+          }
+        }
+      ],
+      "halls": [
+        {"name": "远香堂", "note": "园中主厅，四面厅形式", "built_year": null},
+        {"name": "待霜亭", "note": "取自'洞庭须待满林霜'诗意", "built_year": null},
+        {"name": "三十六鸳鸯馆", "note": "西部主体建筑，临水而建", "built_year": null},
+        {"name": "雪香云蔚亭", "note": "园中高点", "built_year": null},
+        {"name": "荷风四面亭", "note": "池中亭", "built_year": null},
+        {"name": "见山楼", "note": "园西北角两层楼阁", "built_year": null},
+        {"name": "香洲", "note": "石舫建筑", "built_year": null},
+        {"name": "小飞虹", "note": "廊桥", "built_year": null}
+      ],
+      "designers": [
+        {"name": "文徵明", "role": "参与设计/作记", "cbdb_query": "文徵明"}
+      ],
+      "style": "水园，以水面为中心，建筑临水而建",
+      "unesco_criteria": "世界文化遗产，中国古典园林代表作"
+    },
+    {
+      "id": "liuyuan",
+      "name_cn": "留园",
+      "name_en": "Lingering Garden",
+      "built": {
+        "dynasty": "明",
+        "year": 1593,
+        "era": "万历年间",
+        "display": "明万历年间"
+      },
+      "unesco_year": 1997,
+      "unesco_id": "813-002",
+      "location": {
+        "lat": 31.3176,
+        "lng": 120.5882,
+        "address": "苏州市姑苏区留园路338号",
+        "district": "姑苏区"
+      },
+      "area_sqm": 23300,
+      "owners": [
+        {
+          "name": "徐泰时",
+          "period_start": 1593,
+          "period_end": null,
+          "role": "始建者",
+          "note": "明万历年间太仆寺少卿",
+          "cbdb_query": {
+            "name_chn": "徐泰时",
+            "disambiguation": {
+              "era": "明万历",
+              "era_range": [1573, 1620],
+              "office_hint": "太仆寺少卿",
+              "location_hint": "苏州",
+              "confidence": "high"
+            }
+          }
+        },
+        {
+          "name": "刘恕",
+          "period_start": 1794,
+          "period_end": null,
+          "role": "继任园主/改建",
+          "note": "号寒碧主人，扩建寒碧山庄，藏十二峰",
+          "cbdb_query": {
+            "name_chn": "刘恕",
+            "alias": ["寒碧主人"],
+            "disambiguation": {
+              "era": "清乾隆/嘉庆",
+              "era_range": [1750, 1820],
+              "office_hint": null,
+              "location_hint": "苏州",
+              "confidence": "medium",
+              "warning": "与宋代史学家刘恕区分，目标为清乾隆年间苏州藏石家"
+            }
+          }
+        },
+        {
+          "name": "盛康",
+          "period_start": 1873,
+          "period_end": null,
+          "role": "继任园主",
+          "note": "盛宣怀之父，同治年间购得",
+          "cbdb_query": {
+            "name_chn": "盛康",
+            "disambiguation": {
+              "era": "清同治/光绪",
+              "era_range": [1814, 1902],
+              "office_hint": null,
+              "location_hint": "苏州/常州",
+              "confidence": "high",
+              "note": "盛宣怀之父"
+            }
+          }
+        }
+      ],
+      "halls": [
+        {"name": "涵碧山房", "note": "中部主厅", "built_year": null},
+        {"name": "冠云峰", "note": "太湖石名峰，高6.5米", "built_year": null},
+        {"name": "林泉耆硕之馆", "note": "鸳鸯厅形式", "built_year": null},
+        {"name": "五峰仙馆", "note": "园中最大厅堂", "built_year": null},
+        {"name": "明瑟楼", "note": "临水二层小楼", "built_year": null},
+        {"name": "曲溪楼", "note": "", "built_year": null}
+      ],
+      "designers": [
+        {"name": "刘恕", "role": "藏石/扩建", "cbdb_query": "刘恕"}
+      ],
+      "style": "建筑空间处理精妙，以冠云峰等太湖石著称",
+      "unesco_criteria": "世界文化遗产，中国古典园林代表作"
+    },
+    {
+      "id": "wangshi",
+      "name_cn": "网师园",
+      "name_en": "Master of Nets Garden",
+      "built": {
+        "dynasty": "南宋",
+        "year": 1140,
+        "era": "绍兴年间",
+        "display": "南宋绍兴"
+      },
+      "unesco_year": 1997,
+      "unesco_id": "813-003",
+      "location": {
+        "lat": 31.3001,
+        "lng": 120.6298,
+        "address": "苏州市姑苏区阔家头巷11号",
+        "district": "姑苏区"
+      },
+      "area_sqm": 5400,
+      "owners": [
+        {
+          "name": "史正志",
+          "period_start": 1140,
+          "period_end": null,
+          "role": "始建者",
+          "note": "南宋侍郎，建'万卷堂'",
+          "cbdb_query": {
+            "name_chn": "史正志",
+            "disambiguation": {
+              "era": "南宋绍兴/淳熙",
+              "era_range": [1131, 1189],
+              "office_hint": "侍郎",
+              "location_hint": "苏州",
+              "confidence": "high"
+            }
+          }
+        },
+        {
+          "name": "宋宗元",
+          "period_start": 1770,
+          "period_end": null,
+          "role": "继任园主/命名",
+          "note": "清乾隆年间，命名'网师园'",
+          "cbdb_query": {
+            "name_chn": "宋宗元",
+            "disambiguation": {
+              "era": "清乾隆",
+              "era_range": [1735, 1796],
+              "office_hint": null,
+              "location_hint": "苏州",
+              "confidence": "medium"
+            }
+          }
+        },
+        {
+          "name": "瞿兆骙",
+          "period_start": 1795,
+          "period_end": null,
+          "role": "继任园主",
+          "note": "清乾隆年间",
+          "cbdb_query": {
+            "name_chn": "瞿兆骙",
+            "disambiguation": {
+              "era": "清乾隆",
+              "era_range": [1770, 1820],
+              "office_hint": null,
+              "location_hint": "苏州",
+              "confidence": "low",
+              "warning": "CBDB中可能无收录，需验证"
+            }
+          }
+        },
+        {
+          "name": "李鸿裔",
+          "period_start": 1868,
+          "period_end": null,
+          "role": "继任园主",
+          "note": "清同治年间，四川籍",
+          "cbdb_query": {
+            "name_chn": "李鸿裔",
+            "disambiguation": {
+              "era": "清同治",
+              "era_range": [1830, 1885],
+              "office_hint": null,
+              "location_hint": "四川",
+              "confidence": "medium"
+            }
+          }
+        },
+        {
+          "name": "何澄",
+          "period_start": 1940,
+          "period_end": 1946,
+          "role": "近代园主",
+          "note": "近代，购得并修缮",
+          "cbdb_query": {
+            "name_chn": "何澄",
+            "disambiguation": {
+              "era": "近代",
+              "era_range": [1880, 1950],
+              "office_hint": null,
+              "location_hint": "苏州/上海",
+              "confidence": "medium",
+              "warning": "近代人物，CBDB可能无收录"
+            }
+          }
+        }
+      ],
+      "halls": [
+        {"name": "万卷堂", "note": "史正志始建时命名", "built_year": 1140},
+        {"name": "殿春簃", "note": "园西独立小院，张大千兄弟曾借寓", "built_year": null},
+        {"name": "月到风来亭", "note": "园中临水亭", "built_year": null},
+        {"name": "小山丛桂轩", "note": "入园首座厅堂", "built_year": null},
+        {"name": "濯缨水阁", "note": "池南水阁", "built_year": null}
+      ],
+      "designers": [
+        {"name": "张大千", "role": "曾借寓殿春簃", "cbdb_query": null, "note": "近代画家，CBDB可能无收录"}
+      ],
+      "style": "以小见大，亭台楼阁临水而建，尺度精巧",
+      "unesco_criteria": "世界文化遗产，中国古典园林代表作"
+    },
+    {
+      "id": "huanxiu",
+      "name_cn": "环秀山庄",
+      "name_en": "Mountain Villa with Embracing Beauty",
+      "built": {
+        "dynasty": "清",
+        "year": 1736,
+        "era": "乾隆年间",
+        "display": "清乾隆"
+      },
+      "unesco_year": 1997,
+      "unesco_id": "813-004",
+      "location": {
+        "lat": 31.3135,
+        "lng": 120.6180,
+        "address": "苏州市姑苏区景德路272号",
+        "district": "姑苏区"
+      },
+      "area_sqm": 2180,
+      "owners": [
+        {
+          "name": "蒋楫",
+          "period_start": 1736,
+          "period_end": null,
+          "role": "早期园主",
+          "note": "清乾隆年间",
+          "cbdb_query": {
+            "name_chn": "蒋楫",
+            "disambiguation": {
+              "era": "清乾隆",
+              "era_range": [1735, 1796],
+              "office_hint": null,
+              "location_hint": "苏州",
+              "confidence": "medium"
+            }
+          }
+        },
+        {
+          "name": "毕沅",
+          "period_start": 1776,
+          "period_end": null,
+          "role": "继任园主",
+          "note": "清乾隆状元，官至湖广总督，学者",
+          "cbdb_query": {
+            "name_chn": "毕沅",
+            "disambiguation": {
+              "era": "清乾隆/嘉庆",
+              "era_range": [1730, 1797],
+              "office_hint": "湖广总督/状元",
+              "location_hint": "镇洋/苏州",
+              "confidence": "high"
+            }
+          }
+        },
+        {
+          "name": "孙士毅",
+          "period_start": 1807,
+          "period_end": null,
+          "role": "继任园主",
+          "note": "清乾隆进士，官至大学士",
+          "cbdb_query": {
+            "name_chn": "孙士毅",
+            "disambiguation": {
+              "era": "清乾隆/嘉庆",
+              "era_range": [1720, 1796],
+              "office_hint": "大学士",
+              "location_hint": "仁和/苏州",
+              "confidence": "high"
+            }
+          }
+        }
+      ],
+      "halls": [
+        {"name": "补秋舫", "note": "园中主体建筑", "built_year": null},
+        {"name": "有谷堂", "note": "入园首座厅堂", "built_year": null}
+      ],
+      "designers": [
+        {"name": "戈裕良", "role": "叠山大师，湖石假山", "cbdb_query": "戈裕良", "note": "清代叠山名家，环秀山庄假山为其代表作"}
+      ],
+      "style": "以假山为核心，戈裕良湖石假山为中国园林叠山巅峰之作",
+      "unesco_criteria": "世界文化遗产，中国古典园林代表作"
+    },
+    {
+      "id": "canglang",
+      "name_cn": "沧浪亭",
+      "name_en": "Surging Wave Pavilion",
+      "built": {
+        "dynasty": "北宋",
+        "year": 1045,
+        "era": "庆历年间",
+        "display": "北宋庆历"
+      },
+      "unesco_year": 2000,
+      "unesco_id": "813-005",
+      "location": {
+        "lat": 31.2975,
+        "lng": 120.6225,
+        "address": "苏州市姑苏区人民路沧浪亭街3号",
+        "district": "姑苏区"
+      },
+      "area_sqm": 10800,
+      "owners": [
+        {
+          "name": "苏舜钦",
+          "period_start": 1045,
+          "period_end": 1048,
+          "role": "始建者/命名",
+          "note": "北宋诗人，因事罢官居苏州，建亭命名'沧浪'",
+          "cbdb_query": {
+            "name_chn": "苏舜钦",
+            "alias": ["苏子美"],
+            "disambiguation": {
+              "era": "北宋庆历",
+              "era_range": [1008, 1048],
+              "office_hint": "集贤校理",
+              "location_hint": "开封/苏州",
+              "confidence": "high"
+            }
+          }
+        },
+        {
+          "name": "韩世忠",
+          "period_start": 1131,
+          "period_end": 1151,
+          "role": "继任园主",
+          "note": "南宋名将，抗金后退居苏州，购得此园",
+          "cbdb_query": {
+            "name_chn": "韩世忠",
+            "disambiguation": {
+              "era": "南宋绍兴",
+              "era_range": [1089, 1151],
+              "office_hint": "枢密使/蕲王",
+              "location_hint": "延安/苏州",
+              "confidence": "high"
+            }
+          }
+        },
+        {
+          "name": "宋荦",
+          "period_start": 1695,
+          "period_end": null,
+          "role": "重修者",
+          "note": "清康熙年间江苏巡抚，重修沧浪亭",
+          "cbdb_query": {
+            "name_chn": "宋荦",
+            "disambiguation": {
+              "era": "清康熙",
+              "era_range": [1634, 1713],
+              "office_hint": "江苏巡抚",
+              "location_hint": "商丘/苏州",
+              "confidence": "high",
+              "note": "以江苏巡抚身份重修沧浪亭"
+            }
+          }
+        }
+      ],
+      "halls": [
+        {"name": "沧浪亭", "note": "园名来源，石亭，'沧浪之水清兮可以濯吾缨'", "built_year": 1045},
+        {"name": "复廊", "note": "沿水复廊，内外借景", "built_year": null},
+        {"name": "看山楼", "note": "园南二层建筑", "built_year": null},
+        {"name": "明道堂", "note": "园中主体厅堂", "built_year": null},
+        {"name": "五百名贤祠", "note": "刻有历代苏州名贤画像", "built_year": null}
+      ],
+      "designers": [
+        {"name": "苏舜钦", "role": "始创/命名", "cbdb_query": "苏舜钦"}
+      ],
+      "style": "苏州最古园林，以水为外墙，复廊借景为特色",
+      "unesco_criteria": "世界文化遗产，中国古典园林代表作"
+    },
+    {
+      "id": "shizilin",
+      "name_cn": "狮子林",
+      "name_en": "Lion Grove Garden",
+      "built": {
+        "dynasty": "元",
+        "year": 1342,
+        "era": "至正二年",
+        "display": "元至正二年(1342)"
+      },
+      "unesco_year": 2000,
+      "unesco_id": "813-006",
+      "location": {
+        "lat": 31.3235,
+        "lng": 120.6250,
+        "address": "苏州市姑苏区园林路23号",
+        "district": "姑苏区"
+      },
+      "area_sqm": 11000,
+      "owners": [
+        {
+          "name": "维则",
+          "period_start": 1342,
+          "period_end": null,
+          "role": "始建者",
+          "note": "元代高僧，为纪念其师而建",
+          "cbdb_query": {
+            "name_chn": "维则",
+            "alias": ["天如禅师"],
+            "disambiguation": {
+              "era": "元至正",
+              "era_range": [1280, 1360],
+              "office_hint": "禅师",
+              "location_hint": "苏州",
+              "confidence": "medium",
+              "note": "佛教人物，CBDB可能收录有限"
+            }
+          }
+        },
+        {
+          "name": "倪瓒",
+          "period_start": 1373,
+          "period_end": null,
+          "role": "参与造园/绘图",
+          "note": "元末画家，参与狮子林设计，绘《狮子林图》",
+          "cbdb_query": {
+            "name_chn": "倪瓒",
+            "alias": ["倪云林", "倪迂"],
+            "disambiguation": {
+              "era": "元/明初",
+              "era_range": [1301, 1374],
+              "office_hint": null,
+              "location_hint": "无锡/苏州",
+              "confidence": "high"
+            }
+          }
+        },
+        {
+          "name": "贝润生",
+          "period_start": 1917,
+          "period_end": null,
+          "role": "近代园主/修缮",
+          "note": "近代颜料商人，贝聿铭叔父",
+          "cbdb_query": {
+            "name_chn": "贝润生",
+            "disambiguation": {
+              "era": "近代",
+              "era_range": [1870, 1950],
+              "office_hint": null,
+              "location_hint": "苏州/上海",
+              "confidence": "low",
+              "warning": "近代人物，CBDB可能无收录"
+            }
+          }
+        }
+      ],
+      "halls": [
+        {"name": "燕誉堂", "note": "入园首座厅堂", "built_year": null},
+        {"name": "假山群", "note": "太湖石假山迷宫，狮子林最大特色", "built_year": null},
+        {"name": "立雪堂", "note": "取程门立雪典故", "built_year": null},
+        {"name": "问梅阁", "note": "园西阁楼", "built_year": null}
+      ],
+      "designers": [
+        {"name": "倪瓒", "role": "参与造园/绘《狮子林图》", "cbdb_query": "倪瓒"}
+      ],
+      "style": "以假山迷宫闻名，太湖石拟态狮子，禅宗园林遗韵",
+      "unesco_criteria": "世界文化遗产，中国古典园林代表作"
+    },
+    {
+      "id": "yipu",
+      "name_cn": "艺圃",
+      "name_en": "Garden of Cultivation",
+      "built": {
+        "dynasty": "明",
+        "year": 1541,
+        "era": "嘉靖年间",
+        "display": "明嘉靖"
+      },
+      "unesco_year": 2000,
+      "unesco_id": "813-007",
+      "location": {
+        "lat": 31.3120,
+        "lng": 120.6150,
+        "address": "苏州市姑苏区文衙弄5号",
+        "district": "姑苏区"
+      },
+      "area_sqm": 3967,
+      "owners": [
+        {
+          "name": "袁祖庚",
+          "period_start": 1541,
+          "period_end": null,
+          "role": "早期园主",
+          "note": "明嘉靖年间",
+          "cbdb_query": {
+            "name_chn": "袁祖庚",
+            "disambiguation": {
+              "era": "明嘉靖",
+              "era_range": [1500, 1570],
+              "office_hint": null,
+              "location_hint": "苏州",
+              "confidence": "medium"
+            }
+          }
+        },
+        {
+          "name": "文震孟",
+          "period_start": 1620,
+          "period_end": null,
+          "role": "园主/改建",
+          "note": "文徵明曾孙，天启二年状元，官至礼部左侍郎",
+          "cbdb_query": {
+            "name_chn": "文震孟",
+            "disambiguation": {
+              "era": "明万历/天启/崇祯",
+              "era_range": [1574, 1636],
+              "office_hint": "礼部左侍郎/状元",
+              "location_hint": "苏州/长洲",
+              "confidence": "high"
+            }
+          }
+        },
+        {
+          "name": "姜埰",
+          "period_start": 1659,
+          "period_end": null,
+          "role": "继任园主",
+          "note": "明天启进士，因言获罪，明亡后隐居苏州",
+          "cbdb_query": {
+            "name_chn": "姜埰",
+            "disambiguation": {
+              "era": "明/清初",
+              "era_range": [1607, 1673],
+              "office_hint": "礼科给事中",
+              "location_hint": "莱阳/苏州",
+              "confidence": "high"
+            }
+          }
+        }
+      ],
+      "halls": [
+        {"name": "延光阁", "note": "园中主体建筑，水榭形式", "built_year": null},
+        {"name": "博雅堂", "note": "入园主厅", "built_year": null},
+        {"name": "乳鱼亭", "note": "池畔小亭", "built_year": null},
+        {"name": "响月廊", "note": "园西长廊", "built_year": null}
+      ],
+      "designers": [
+        {"name": "文震孟", "role": "旧居/改建", "cbdb_query": "文震孟"}
+      ],
+      "style": "苏州最小的世界遗产园林，简练质朴，水榭延光阁为全国孤例",
+      "unesco_criteria": "世界文化遗产，中国古典园林代表作"
+    },
+    {
+      "id": "ouyuan",
+      "name_cn": "耦园",
+      "name_en": "Couple's Retreat Garden",
+      "built": {
+        "dynasty": "清",
+        "year": 1725,
+        "era": "雍正年间",
+        "display": "清雍正"
+      },
+      "unesco_year": 2000,
+      "unesco_id": "813-008",
+      "location": {
+        "lat": 31.3180,
+        "lng": 120.6320,
+        "address": "苏州市姑苏区小新桥巷5-9号",
+        "district": "姑苏区"
+      },
+      "area_sqm": 7800,
+      "owners": [
+        {
+          "name": "陆锦",
+          "period_start": 1725,
+          "period_end": null,
+          "role": "早期园主",
+          "note": "清雍正年间",
+          "cbdb_query": {
+            "name_chn": "陆锦",
+            "disambiguation": {
+              "era": "清雍正",
+              "era_range": [1700, 1760],
+              "office_hint": null,
+              "location_hint": "苏州",
+              "confidence": "medium"
+            }
+          }
+        },
+        {
+          "name": "沈秉成",
+          "period_start": 1874,
+          "period_end": null,
+          "role": "继任园主/改建",
+          "note": "清同治光绪年间，与夫人严永华偕隐，故名'耦园'",
+          "cbdb_query": {
+            "name_chn": "沈秉成",
+            "disambiguation": {
+              "era": "清同治/光绪",
+              "era_range": [1823, 1895],
+              "office_hint": null,
+              "location_hint": "归安/苏州",
+              "confidence": "high",
+              "note": "耦园'耦'取夫妇偕隐之意"
+            }
+          }
+        },
+        {
+          "name": "严永华",
+          "period_start": 1874,
+          "period_end": null,
+          "role": "园主之妻",
+          "note": "沈秉成之妻，善书画，耦园命名与夫妇偕隐有关",
+          "cbdb_query": {
+            "name_chn": "严永华",
+            "disambiguation": {
+              "era": "清同治/光绪",
+              "era_range": [1840, 1890],
+              "office_hint": null,
+              "location_hint": "归安/苏州",
+              "confidence": "medium",
+              "note": "女性，CBDB可能收录有限；沈秉成之妻"
+            }
+          }
+        }
+      ],
+      "halls": [
+        {"name": "载酒堂", "note": "园西主体厅堂", "built_year": null},
+        {"name": "黄石假山", "note": "园中黄石假山，与环秀山庄湖石假山齐名", "built_year": null},
+        {"name": "织帘老屋", "note": "东花园主体建筑", "built_year": null},
+        {"name": "山水间", "note": "水榭", "built_year": null}
+      ],
+      "designers": [
+        {"name": "顾沄", "role": "规划设计", "cbdb_query": "顾沄"}
+      ],
+      "style": "一宅两园布局，黄石假山与湖石假山并重，寓夫妇偕隐之意",
+      "unesco_criteria": "世界文化遗产，中国古典园林代表作"
+    },
+    {
+      "id": "tuisi",
+      "name_cn": "退思园",
+      "name_en": "Retreat & Reflection Garden",
+      "built": {
+        "dynasty": "清",
+        "year": 1885,
+        "era": "光绪年间",
+        "display": "清光绪"
+      },
+      "unesco_year": 2000,
+      "unesco_id": "813-009",
+      "location": {
+        "lat": 31.1580,
+        "lng": 120.7150,
+        "address": "苏州市吴江区同里镇新填街234号",
+        "district": "吴江区同里镇"
+      },
+      "area_sqm": 5670,
+      "owners": [
+        {
+          "name": "任兰生",
+          "period_start": 1885,
+          "period_end": null,
+          "role": "始建者",
+          "note": "清光绪年间官员，遭弹劾罢官后回乡建园，取'退思补过'之意",
+          "cbdb_query": {
+            "name_chn": "任兰生",
+            "disambiguation": {
+              "era": "清光绪",
+              "era_range": [1838, 1888],
+              "office_hint": null,
+              "location_hint": "吴江/同里",
+              "confidence": "high",
+              "note": "退思园'退思'取《左传》'进思尽忠，退思补过'"
+            }
+          }
+        }
+      ],
+      "halls": [
+        {"name": "退思草堂", "note": "园中主体建筑", "built_year": 1885},
+        {"name": "菰雨生凉", "note": "临水建筑", "built_year": null},
+        {"name": "闹红一舸", "note": "石舫", "built_year": null},
+        {"name": "坐春望月楼", "note": "园南楼阁", "built_year": null},
+        {"name": "岁寒居", "note": "", "built_year": null}
+      ],
+      "designers": [
+        {"name": "袁龙", "role": "设计者", "cbdb_query": "袁龙", "note": "同里画家，任兰生之友"}
+      ],
+      "style": "贴水园，建筑紧贴水面，以退思补过为主题",
+      "unesco_criteria": "世界文化遗产，中国古典园林代表作，唯一不在苏州市区的世遗园林（同里镇）"
+    }
+  ]
+}

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>九园集 · 苏州古典园林世界文化遗产</title>
+  <meta name="description" content="九座入选世界文化遗产的苏州古典园林：沧浪亭、拙政园、留园、网师园、环秀山庄、狮子林、艺圃、耦园、退思园。地理信息、历代主人、园林历史、CBDB人物关系、维基百科与RAG知识问答。">
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Leaflet 地图 -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+  <!-- 样式 -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='15' fill='%239e3b3b'/><text x='50' y='68' font-size='52' font-family='serif' fill='white' text-anchor='middle' font-weight='bold'>园</text></svg>">
+</head>
+<body>
+
+<!-- ========== 导航 ========== -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="seal">园</span>
+      <span>九园集</span>
+    </div>
+    <div class="nav-links">
+      <a href="#map-section">地理分布</a>
+      <a href="#gardens-section">园林概览</a>
+      <a href="#timeline-section">历史脉络</a>
+      <a href="#network-section">人物关系</a>
+      <a href="#wiki-section">维基百科</a>
+      <a href="#rag-section">知识问答</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== Hero ========== -->
+<header class="hero" id="hero">
+  <!-- 装饰园窗 -->
+  <svg class="hero-window top-right" width="220" height="220" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="45" fill="none" stroke="#2b2620" stroke-width="2"/>
+    <path d="M50 5 A45 45 0 0 1 95 50 L50 50 Z" fill="none" stroke="#4a7c59" stroke-width="1"/>
+    <path d="M50 50 L95 50 A45 45 0 0 1 50 95 Z" fill="none" stroke="#9e3b3b" stroke-width="1"/>
+    <circle cx="50" cy="50" r="20" fill="none" stroke="#2b2620" stroke-width="1.5"/>
+  </svg>
+  <svg class="hero-window bot-left" width="180" height="180" viewBox="0 0 100 100">
+    <polygon points="50,5 95,30 95,70 50,95 5,70 5,30" fill="none" stroke="#2b2620" stroke-width="2"/>
+    <polygon points="50,20 80,35 80,65 50,80 20,65 20,35" fill="none" stroke="#4a7c59" stroke-width="1.5"/>
+    <polygon points="50,35 65,42 65,58 50,65 35,58 35,42" fill="none" stroke="#9e3b3b" stroke-width="1"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="label-top">UNESCO World Heritage · 苏州古典园林</div>
+    <h1>九园集</h1>
+    <div class="h1-en">Nine Classical Gardens of Suzhou</div>
+    <p class="tagline">虽由人作，宛自天开</p>
+    <p class="desc">
+      沧浪亭、拙政园、留园、网师园、环秀山庄、狮子林、艺圃、耦园、退思园——
+      九座园林，跨越宋元明清，凝聚千年造园智慧，于1997年与2000年先后列入世界文化遗产名录。
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">9</div><div class="lbl">座世遗园林</div></div>
+      <div class="hero-stat"><div class="num">4</div><div class="lbl">朝代跨度</div></div>
+      <div class="hero-stat"><div class="num">982</div><div class="lbl">年最古园龄</div></div>
+      <div class="hero-stat"><div class="num">2</div><div class="lbl">批申遗入选</div></div>
+    </div>
+    <div class="hero-cta">
+      <a href="#map-section" class="btn btn-primary">探索园林地图</a>
+      <a href="#rag-section" class="btn btn-ghost">知识问答</a>
+    </div>
+  </div>
+</header>
+
+<!-- ========== 地理分布 ========== -->
+<section id="map-section">
+  <div class="section-header">
+    <div class="label">Geographic Distribution</div>
+    <h2>地理分布</h2>
+    <p class="subtitle">九座园林中八座集中于苏州古城，唯退思园位于吴江同里古镇。点击地图标记或右侧列表查看详情。</p>
+  </div>
+  <div class="map-wrap">
+    <div id="map"></div>
+    <div class="map-legend">
+      <h3>园林名录</h3>
+      <div id="legend-list"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 园林概览 ========== -->
+<section id="gardens-section">
+  <div class="section-header">
+    <div class="label">Garden Overview</div>
+    <h2>园林概览</h2>
+    <p class="subtitle">九座园林各具特色，代表了中国古典园林不同时期的艺术成就。点击卡片查看历史与主人详情。</p>
+  </div>
+  <div class="garden-grid" id="garden-grid"></div>
+</section>
+
+<!-- ========== 历史脉络 ========== -->
+<section id="timeline-section">
+  <div class="section-header">
+    <div class="label">Historical Timeline</div>
+    <h2>历史脉络</h2>
+    <p class="subtitle">每座园林都承载着数百年的兴衰更迭。选择一座园林，沿时间轴追溯其营造、易主与修缮的历程。</p>
+  </div>
+  <div class="timeline-controls" id="tl-controls"></div>
+  <div class="timeline-wrap">
+    <div class="timeline-track" id="timeline-track"></div>
+  </div>
+  <div class="tl-legend">
+    <span><span class="d" style="border-color: var(--jade);"></span> 历史事件</span>
+    <span><span class="d" style="border-color: var(--vermillion); background: var(--vermillion);"></span> 园主更迭</span>
+    <span>悬停查看详情</span>
+  </div>
+</section>
+
+<!-- ========== 人物关系 ========== -->
+<section id="network-section">
+  <div class="section-header">
+    <div class="label">Owner Network · CBDB</div>
+    <h2>历代主人关系图</h2>
+    <p class="subtitle">基于中国历代人物传记资料库（CBDB），绘制九园历代主人的亲缘、交游与园址传承关系。</p>
+  </div>
+  <div class="network-wrap">
+    <div id="network"></div>
+    <div class="network-side">
+      <h3>朝代筛选</h3>
+      <div class="network-filters" id="network-filters"></div>
+      <h3>人物详情</h3>
+      <div id="person-detail">
+        <p class="pd-empty">点击网络中的节点，查看人物传记信息。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 维基百科 ========== -->
+<section id="wiki-section">
+  <div class="section-header">
+    <div class="label">Wikipedia</div>
+    <h2>维基百科</h2>
+    <p class="subtitle">实时获取维基百科中九座园林的英文条目内容。选择左侧园林查看完整条目。</p>
+  </div>
+  <div class="wiki-wrap">
+    <div class="wiki-list" id="wiki-list"></div>
+    <div class="wiki-content" id="wiki-content">
+      <div class="wiki-loading">
+        <div class="spinner"></div>
+        <p>选择一座园林以加载维基百科内容</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== RAG 知识问答 ========== -->
+<section id="rag-section">
+  <div class="section-header">
+    <div class="label">RAG Knowledge Base</div>
+    <h2>园林知识问答</h2>
+    <p class="subtitle">基于蒸馏自园林专业书籍的 RAG 检索系统，输入关键词或问题，获取园林营造、历史与文化知识。</p>
+  </div>
+  <div class="rag-container">
+    <div class="rag-box">
+      <div class="rag-header">
+        <h3>
+          园林知识检索
+          <span class="rag-badge">RAG · 蒸馏自专业文献</span>
+        </h3>
+        <p>涵盖叠山理水、造景手法、花木配植、建筑形制、园林历史等专题</p>
+      </div>
+      <div class="rag-input-wrap">
+        <div class="rag-input-row">
+          <textarea class="rag-input" id="rag-input" rows="1" placeholder="输入关键词或问题，如：借景手法、戈裕良假山、拙政园历史……"></textarea>
+          <button class="rag-send" id="rag-send">检索</button>
+        </div>
+        <div class="rag-suggestions">
+          <div class="sg-label">试试这些问题：</div>
+          <div class="chips" id="rag-chips"></div>
+        </div>
+      </div>
+      <div class="rag-results" id="rag-results">
+        <div class="rag-empty">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/>
+          </svg>
+          <p>输入问题开始检索园林知识</p>
+        </div>
+      </div>
+      <div class="rag-foot">
+        本系统使用 RAG（检索增强生成）技术，知识来源于《园冶》《苏州古典园林》等专业文献的蒸馏摘要。
+        接入自有 RAG API 请见 <code>app.js</code> 中 <code>RAG_API</code> 配置。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Footer ========== -->
+<footer class="footer">
+  <div class="ft-brand">九园集</div>
+  <p class="ft-desc">九座苏州古典园林 · 世界文化遗产的数字展示。地理、历史、人物、知识与问答，于一页之间。</p>
+  <div class="ft-links">
+    <a href="https://whc.unesco.org/en/list/813" target="_blank" rel="noopener">UNESCO 世遗页</a>
+    <a href="https://cbdb.fas.harvard.edu/" target="_blank" rel="noopener">CBDB</a>
+    <a href="https://zh.wikipedia.org/wiki/苏州古典园林" target="_blank" rel="noopener">维基百科</a>
+  </div>
+  <div class="ft-copy">设计展示 · 数据来源于公开史料与文献 · 仅供学习交流</div>
+</footer>
+
+<!-- ========== 脚本 ========== -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

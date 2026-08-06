@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1440, initial-scale=1.0">
+  <title>姑苏九园 · 世界文化遗产数字档案</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/echarts@5.5.0/dist/echarts.min.js"></script>
+  <style>
+    /* ══════════════════════════════════════════════════
+       0. Design Tokens (S3 色系)
+       ══════════════════════════════════════════════════ */
+    :root {
+      --paper: #F5EFE3;
+      --paperDeep: #ECE3D2;
+      --cream: #F2EBDC;
+      --ink: #1A1A1A;
+      --inkSoft: #3A3A3A;
+      --cinnabar: #C8102E;
+      --gold: #B08D57;
+      --hairline: #DCD2BE;
+      --warmGray: #8A7F6E;
+      --pine: #1C2A23;
+      --pineDeep: #1C1F0E;
+      --pineLine: #3D5A4C;
+      --pineSoft: #9DB5A6;
+      --white: #FFFFFF;
+      --width: 1440px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .serif { font-family: 'Noto Serif SC', 'Songti SC', serif; }
+
+    .page {
+      width: var(--width);
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      background: var(--paper);
+    }
+    @media (max-width: 1440px) { .page { width: 100%; min-width: 1440px; } }
+
+    /* ══════════════════════════════════════════════════
+       1. Masthead
+       ══════════════════════════════════════════════════ */
+    .masthead {
+      width: var(--width); height: 84px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 64px; background: var(--paper); position: relative; z-index: 100;
+    }
+    .masthead-divider { width: var(--width); height: 1px; background: var(--hairline); }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark { width: 34px; height: 34px; }
+    .brand-text { display: flex; flex-direction: column; gap: 3px; }
+    .brand-name { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1; }
+    .brand-sub { font-size: 8px; color: var(--warmGray); letter-spacing: 0.08em; line-height: 1; }
+    .nav { display: flex; align-items: center; gap: 30px; }
+    .nav a { font-size: 14px; color: var(--inkSoft); text-decoration: none; transition: color 0.2s; cursor: pointer; }
+    .nav a:hover { color: var(--cinnabar); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 4px; cursor: pointer; transition: opacity 0.2s, transform 0.2s;
+      text-decoration: none; border: none; font-family: 'Noto Sans SC', sans-serif;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-primary { background: var(--ink); color: var(--cream); padding: 10px 18px; font-size: 13px; font-weight: 500; }
+    .btn-lg { height: 50px; padding: 0 28px; font-size: 15px; font-weight: 500; }
+    .btn-outline {
+      background: transparent; color: var(--ink); border: 1px solid var(--ink);
+      height: 50px; padding: 0 28px; font-size: 15px; font-weight: 500;
+    }
+
+    /* ══════════════════════════════════════════════════
+       2. Section Common
+       ══════════════════════════════════════════════════ */
+    .section { width: var(--width); position: relative; }
+    .section-header { padding-left: 64px; }
+    .kicker {
+      font-size: 12px; font-weight: 500; color: var(--gold);
+      letter-spacing: 0.04em; margin-bottom: 36px;
+    }
+    .section-title {
+      font-family: 'Noto Serif SC', serif; font-size: 40px; font-weight: 700;
+      color: var(--ink); line-height: 1.2; margin: 0 0 18px;
+    }
+    .section-sub {
+      font-family: 'Noto Serif SC', serif; font-size: 15px;
+      color: var(--warmGray); line-height: 1.6; margin: 0;
+    }
+    .dark { background: var(--pineDeep); }
+    .dark .section-title, .dark .kicker { color: var(--cream); }
+    .dark .section-sub { color: var(--pineSoft); }
+
+    /* ══════════════════════════════════════════════════
+       3. Hero
+       ══════════════════════════════════════════════════ */
+    .hero {
+      height: 1107px; display: flex; flex-direction: column;
+      align-items: center; padding-top: 72px; position: relative; overflow: hidden;
+    }
+    .hero-bg-char {
+      position: absolute; right: 100px; top: 30px;
+      font-family: 'Noto Serif SC', serif; font-size: 300px; font-weight: 900;
+      color: var(--paperDeep); line-height: 1; pointer-events: none; z-index: 0;
+    }
+    .hero-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .hero-kicker {
+      font-size: 12px; font-weight: 500; color: var(--cinnabar);
+      letter-spacing: 0.04em; margin-bottom: 32px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hero-kicker::before { content: ''; width: 10px; height: 10px; background: var(--cinnabar); display: inline-block; }
+    .hero-title {
+      font-family: 'Noto Serif SC', serif; font-size: 96px; font-weight: 700;
+      color: var(--ink); line-height: 1.1; margin: 0 0 36px;
+    }
+    .hero-dek {
+      font-family: 'Noto Serif SC', serif; font-size: 18px;
+      color: var(--inkSoft); line-height: 34px; max-width: 760px; margin: 0 0 36px;
+    }
+    .hero-meta { font-size: 12px; color: var(--warmGray); margin-bottom: 36px; }
+    .hero-cta-row { display: flex; gap: 16px; margin-bottom: 36px; }
+    .hero-stats-row { display: flex; gap: 48px; margin-bottom: 48px; }
+    .hero-stat { text-align: center; }
+    .hero-stat .num { font-family: 'Noto Serif SC', serif; font-size: 42px; font-weight: 700; color: var(--ink); line-height: 1; }
+    .hero-stat .lbl { font-size: 12px; color: var(--warmGray); margin-top: 6px; }
+    .hero-visual {
+      width: 1312px; height: 440px; border-radius: 2px;
+      overflow: hidden; position: relative;
+    }
+    .hero-visual img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ══════════════════════════════════════════════════
+       4. Geography (Dark)
+       ══════════════════════════════════════════════════ */
+    .geography { min-height: 1148px; padding: 80px 64px 60px; }
+    .map-wrap {
+      width: 100%; height: 560px; margin: 40px 0 0;
+      border-radius: 2px; overflow: hidden; border: 1px solid var(--pineLine);
+    }
+    .map-wrap #leafletMap { width: 100%; height: 100%; }
+    .map-notes { width: 100%; margin: 40px 0 0; display: flex; gap: 24px; }
+    .map-note {
+      flex: 1; min-height: 116px; background: rgba(36,56,46,0.7);
+      border: 1px solid var(--pineLine); border-radius: 2px; padding: 20px;
+    }
+    .map-note-tag { font-family: 'Noto Serif SC', serif; font-size: 18px; font-weight: 700; color: var(--gold); margin-bottom: 10px; }
+    .map-note-body { font-size: 12px; color: var(--pineSoft); line-height: 20px; }
+
+    /* ══════════════════════════════════════════════════
+       5. Gardens
+       ══════════════════════════════════════════════════ */
+    .gardens { padding: 96px 64px 60px; }
+    .gardens-grid { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 24px; }
+    .garden-card {
+      width: 421px; background: var(--white); border: 1px solid var(--hairline);
+      border-radius: 2px; overflow: hidden; cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .garden-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .garden-card-img { width: 421px; height: 230px; overflow: hidden; background: var(--paperDeep); }
+    .garden-card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .garden-card-body { padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+    .garden-card-name { font-family: 'Noto Serif SC', serif; font-size: 22px; font-weight: 700; color: var(--ink); margin: 0; }
+    .garden-card-meta { font-size: 12px; color: var(--inkSoft); margin: 0; }
+    .garden-card-addr { font-size: 11px; color: var(--warmGray); margin: 0; }
+
+    /* ══════════════════════════════════════════════════
+       6. Timeline
+       ══════════════════════════════════════════════════ */
+    .timeline { padding: 96px 64px 60px; }
+    .timeline-canvas { width: 100%; height: 520px; margin-top: 36px; border-radius: 2px; overflow: hidden; background: var(--white); border: 1px solid var(--hairline); }
+    .timeline-legend { width: 100%; margin-top: 24px; font-size: 11px; color: var(--warmGray); display: flex; gap: 20px; flex-wrap: wrap; }
+    .tl-legend-item { display: flex; align-items: center; gap: 6px; }
+    .tl-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    /* ══════════════════════════════════════════════════
+       7. Quote
+       ══════════════════════════════════════════════════ */
+    .quote {
+      height: 276px; background: var(--paperDeep);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px;
+    }
+    .quote-row { display: flex; align-items: center; gap: 24px; }
+    .quote-rule { width: 3px; height: 72px; background: var(--cinnabar); }
+    .quote-text { font-family: 'Noto Serif SC', serif; font-size: 38px; font-weight: 700; color: var(--ink); margin: 0; }
+    .quote-attribution { font-family: 'Noto Serif SC', serif; font-size: 14px; color: var(--warmGray); margin: 0; }
+
+    /* ══════════════════════════════════════════════════
+       8. Network (Dark)
+       ══════════════════════════════════════════════════ */
+    .network { min-height: 1068px; padding: 96px 64px 60px; }
+    .network-layout { display: flex; gap: 24px; margin-top: 36px; }
+    .graph-wrap { flex: 1; height: 700px; border-radius: 2px; overflow: hidden; border: 1px solid var(--pineLine); background: rgba(28,31,14,0.6); }
+    .graph-sidebar { width: 360px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
+    .detail-card {
+      background: rgba(36,56,46,0.7); border: 1px solid var(--pineLine);
+      border-radius: 2px; padding: 24px; min-height: 300px; overflow-y: auto;
+    }
+    .detail-card h3 { font-family: 'Noto Serif SC', serif; font-size: 22px; color: var(--cream); margin-bottom: 8px; }
+    .detail-card .role-tag { display: inline-block; font-size: 11px; padding: 2px 10px; border-radius: 10px; margin-bottom: 8px; }
+    .detail-card .bio { font-size: 13px; color: var(--pineSoft); line-height: 1.7; margin-bottom: 12px; }
+    .detail-card .info-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(157,181,166,0.15); font-size: 12px; }
+    .detail-card .info-row .lbl { color: var(--pineSoft); }
+    .detail-card .info-row .val { color: var(--cream); text-align: right; }
+    .detail-card .section-divider { border: none; border-top: 1px solid rgba(157,181,166,0.2); margin: 12px 0; }
+    .detail-card .assoc-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .detail-assoc-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: 14px; font-size: 12px; cursor: pointer;
+      transition: 0.15s;
+    }
+    .detail-assoc-chip:hover { filter: brightness(1.3); }
+    .detail-empty {
+      display: flex; align-items: center; justify-content: center;
+      height: 200px; color: var(--pineSoft); font-size: 14px; text-align: center;
+    }
+    .graph-legend { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+    .graph-legend .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--pineSoft); }
+    .legend-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    /* Poem toggles */
+    .poem-toggle {
+      font-size: 13px; font-weight: 600; color: var(--gold); cursor: pointer;
+      display: flex; align-items: center; gap: 6px; user-select: none; margin-top: 8px;
+    }
+    .poem-toggle:hover { opacity: 0.8; }
+    .poem-list { display: none; margin-top: 8px; }
+    .poem-list.open { display: block; }
+    .poem-item {
+      background: rgba(28,31,14,0.4); border-left: 3px solid var(--gold);
+      padding: 10px 12px; margin-bottom: 8px; border-radius: 0 4px 4px 0;
+    }
+    .poem-item .p-title { font-size: 12px; font-weight: 600; color: var(--cream); }
+    .poem-item .p-note { font-size: 10px; color: var(--pineSoft); margin-bottom: 4px; }
+    .poem-item .p-text { font-size: 12px; line-height: 1.8; color: var(--pineSoft); font-family: 'Noto Serif SC', serif; }
+
+    /* ══════════════════════════════════════════════════
+       9. Wiki
+       ══════════════════════════════════════════════════ */
+    .wiki { padding: 96px 64px 60px; }
+    .wiki-grid { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 24px; }
+    .wiki-card {
+      width: 644px; background: var(--white); border: 1px solid var(--hairline);
+      border-radius: 2px; padding: 28px; display: flex; flex-direction: column; gap: 14px;
+    }
+    .wiki-card-head { display: flex; align-items: center; justify-content: space-between; }
+    .wiki-card-title { display: flex; align-items: center; gap: 10px; }
+    .wiki-icon { width: 24px; height: 24px; }
+    .wiki-card-title span { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 700; color: var(--ink); }
+    .source-chip { font-size: 10px; padding: 3px 10px; border-radius: 10px; background: #F0EDE6; color: var(--warmGray); }
+    .wiki-excerpt { font-size: 14px; color: var(--inkSoft); line-height: 1.8; }
+    .wiki-link { font-size: 12px; color: var(--gold); text-decoration: none; }
+    .wiki-link:hover { text-decoration: underline; }
+    .wiki-note { margin-top: 24px; font-size: 12px; color: var(--warmGray); text-align: center; }
+
+    /* ══════════════════════════════════════════════════
+       10. RAG
+       ══════════════════════════════════════════════════ */
+    .rag { padding: 96px 64px 60px; background: var(--paper); }
+    .rag-console {
+      width: 100%; margin-top: 36px; border: 1px solid var(--hairline);
+      border-radius: 2px; background: var(--white); padding: 20px 32px;
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .corpus-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .corpus-label { font-size: 11px; color: var(--warmGray); flex-shrink: 0; }
+    .chip { font-size: 11px; padding: 4px 12px; border-radius: 12px; background: #F0EDE6; color: var(--inkSoft); }
+
+    /* 聊天消息列表 */
+    .rag-messages {
+      max-height: 420px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px;
+      padding: 4px 0; margin-bottom: 12px; scroll-behavior: smooth;
+    }
+    .rag-messages::-webkit-scrollbar { width: 4px; }
+    .rag-messages::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: 2px; }
+    .msg-row { display: flex; flex-direction: column; }
+    .msg-row.user { align-items: flex-end; }
+    .msg-row.bot { align-items: flex-start; }
+    .msg-bubble {
+      max-width: 680px; padding: 12px 18px; border-radius: 4px;
+      font-size: 14px; line-height: 1.8; position: relative;
+    }
+    .msg-row.user .msg-bubble {
+      background: #F0EDE6; color: var(--ink);
+      border-radius: 4px 4px 0 4px;
+    }
+    .msg-row.bot .msg-bubble {
+      background: #FAF8F3; color: var(--inkSoft);
+      border-radius: 4px 4px 4px 0;
+    }
+    .msg-row.bot .bot-label {
+      font-size: 10px; color: var(--gold); font-weight: 500;
+      margin-bottom: 4px; letter-spacing: 0.3px;
+    }
+    .msg-row.bot .bot-label .status-dot {
+      display: inline-block; width: 6px; height: 6px;
+      border-radius: 50%; margin-right: 6px;
+      background: var(--gold); vertical-align: middle;
+    }
+    .msg-row.bot .bot-label .status-dot.searching { background: var(--warmGray); animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    /* 来源标签 */
+    .source-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .source-tag {
+      font-size: 10px; padding: 2px 10px; border-radius: 10px;
+      background: rgba(176,141,87,0.12); color: var(--gold);
+    }
+    .source-tag .score { color: var(--warmGray); margin-left: 2px; }
+
+    /* 打字指示器 */
+    .typing-indicator {
+      display: flex; align-items: center; gap: 4px; padding: 4px 0;
+    }
+    .typing-indicator span {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--warmGray); animation: typingDot 1.4s infinite both;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.16s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.32s; }
+    @keyframes typingDot {
+      0%,80%,100% { transform: scale(0.6); opacity: 0.4; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    .rag-status-bar {
+      font-size: 11px; color: var(--warmGray); padding: 8px 0 4px;
+      border-top: 1px solid var(--hairline); margin-bottom: 12px;
+    }
+    .rag-status-bar code { font-size: 10px; background: #F0EDE6; padding: 1px 6px; border-radius: 3px; }
+
+    .input-row { display: flex; gap: 12px; }
+    .input-box {
+      flex: 1; height: 48px; border: 1px solid var(--hairline); border-radius: 2px;
+      padding: 0 16px; font-size: 14px; font-family: 'Noto Sans SC', sans-serif;
+      color: var(--ink); background: var(--paper);
+    }
+    .input-box:focus { outline: none; border-color: var(--gold); }
+    .input-box:disabled { opacity: 0.5; cursor: not-allowed; }
+    .suggestion-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .suggest-label { font-size: 11px; color: var(--warmGray); }
+    .suggest-chip {
+      font-size: 11px; padding: 4px 12px; border-radius: 12px;
+      background: #F0EDE6; color: var(--inkSoft); cursor: pointer; transition: 0.15s;
+    }
+    .suggest-chip:hover { background: var(--gold); color: var(--white); }
+
+    .rag-empty {
+      text-align: center; padding: 40px 20px; color: var(--warmGray); font-size: 13px;
+    }
+    .rag-error {
+      background: #FFF5F5; border: 1px solid #FFD7D7; border-radius: 4px;
+      padding: 12px 16px; font-size: 13px; color: #C8102E; line-height: 1.6;
+    }
+
+    /* ══════════════════════════════════════════════════
+       11. Footer
+       ══════════════════════════════════════════════════ */
+    .footer {
+      width: var(--width); background: var(--white); border-top: 1px solid var(--hairline);
+      padding: 56px 64px 24px;
+    }
+    .footer-top { display: flex; gap: 60px; margin-bottom: 40px; }
+    .footer-brand { flex: 2; }
+    .footer-logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .footer-logo-row span { font-family: 'Noto Serif SC', serif; font-size: 18px; font-weight: 700; }
+    .footer-tagline { font-size: 13px; color: var(--warmGray); line-height: 1.6; max-width: 360px; }
+    .footer-col { flex: 1; }
+    .footer-col-title { font-size: 12px; font-weight: 500; color: var(--ink); margin-bottom: 14px; }
+    .footer-col a { display: block; font-size: 12px; color: var(--warmGray); text-decoration: none; margin-bottom: 8px; }
+    .footer-col a:hover { color: var(--cinnabar); }
+    .footer-divider { height: 1px; background: var(--hairline); margin-bottom: 20px; }
+    .footer-methodology { font-size: 11px; color: var(--warmGray); line-height: 1.6; margin-bottom: 16px; }
+    .footer-bottom { display: flex; justify-content: space-between; font-size: 11px; color: var(--warmGray); }
+
+    /* ══════════════════════════════════════════════════
+       12. Garden Detail Modal
+       ══════════════════════════════════════════════════ */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      z-index: 999; justify-content: center; align-items: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--white); width: 720px; max-height: 85vh; overflow-y: auto;
+      border-radius: 2px; padding: 36px; position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 16px; right: 20px; font-size: 24px;
+      color: var(--warmGray); cursor: pointer; background: none; border: none;
+    }
+    .modal-close:hover { color: var(--ink); }
+    .modal h2 { font-family: 'Noto Serif SC', serif; font-size: 28px; color: var(--ink); margin-bottom: 4px; }
+    .modal .sub { font-size: 13px; color: var(--warmGray); margin-bottom: 16px; }
+    .modal .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+    .modal .info-grid .full { grid-column: 1 / -1; }
+    .modal .info-grid .lbl { font-size: 11px; color: var(--warmGray); }
+    .modal .info-grid .val { font-size: 14px; font-weight: 500; color: var(--ink); }
+    .modal .history-text { font-size: 14px; color: var(--inkSoft); line-height: 1.8; margin-bottom: 16px; }
+    .modal .owner-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+    .modal .owner-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px; background: var(--paper); border-radius: 2px;
+    }
+    .modal .owner-item .o-name { font-weight: 500; font-size: 14px; min-width: 80px; }
+    .modal .owner-item .o-role { font-size: 11px; color: var(--gold); }
+    .modal .owner-item .o-note { font-size: 11px; color: var(--warmGray); }
+    .modal .hall-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .modal .hall-tag { font-size: 11px; padding: 4px 10px; background: var(--paper); border-radius: 2px; color: var(--inkSoft); }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ═══════════ Masthead ═══════════ -->
+  <header class="masthead">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 34 34" fill="none">
+        <rect x="1" y="1" width="32" height="32" rx="6" stroke="var(--ink)" stroke-width="1.5"/>
+        <text x="17" y="23" text-anchor="middle" font-family="'Noto Serif SC',serif" font-size="18" font-weight="700" fill="var(--ink)">园</text>
+      </svg>
+      <div class="brand-text">
+        <span class="brand-name">姑苏九园</span>
+        <span class="brand-sub">CLASSICAL GARDENS OF SUZHOU · UNESCO WORLD HERITAGE</span>
+      </div>
+    </div>
+    <nav class="nav">
+      <a onclick="document.getElementById('geography').scrollIntoView({behavior:'smooth'})">地理分布</a>
+      <a onclick="document.getElementById('gardens').scrollIntoView({behavior:'smooth'})">九园名录</a>
+      <a onclick="document.getElementById('timeline').scrollIntoView({behavior:'smooth'})">沿革长河</a>
+      <a onclick="document.getElementById('network').scrollIntoView({behavior:'smooth'})">人物谱系</a>
+      <a onclick="document.getElementById('wiki').scrollIntoView({behavior:'smooth'})">百科辑录</a>
+      <a onclick="document.getElementById('rag').scrollIntoView({behavior:'smooth'})">园林智库</a>
+    </nav>
+  </header>
+  <div class="masthead-divider"></div>
+
+  <!-- ═══════════ Hero ═══════════ -->
+  <section class="hero">
+    <div class="hero-bg-char">园</div>
+    <div class="hero-content">
+      <div class="hero-kicker">UNESCO WORLD HERITAGE · 1997 / 2000</div>
+      <h1 class="hero-title">咫尺之内 · 再造乾坤</h1>
+      <p class="hero-dek">九座入选世界文化遗产的苏州古典园林——沧浪亭、拙政园、留园、网师园、环秀山庄、狮子林、艺圃、耦园、退思园。跨越宋元明清，凝聚千年造园智慧。</p>
+      <div class="hero-stats-row" id="heroStats">
+        <div class="hero-stat"><div class="num">9</div><div class="lbl">座世遗园林</div></div>
+        <div class="hero-stat"><div class="num">4</div><div class="lbl">朝代跨度</div></div>
+        <div class="hero-stat"><div class="num">—</div><div class="lbl">位历代园主</div></div>
+        <div class="hero-stat"><div class="num">2</div><div class="lbl">批申遗入选</div></div>
+      </div>
+      <div class="hero-cta-row">
+        <button class="btn btn-primary btn-lg" onclick="document.getElementById('geography').scrollIntoView({behavior:'smooth'})">探索园林地图</button>
+        <button class="btn btn-outline btn-lg" onclick="document.getElementById('rag').scrollIntoView({behavior:'smooth'})">知识问答</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Geography (Dark) ═══════════ -->
+  <section class="section dark geography" id="geography">
+    <div class="section-header">
+      <div class="kicker">壹 · GEOGRAPHIC DISTRIBUTION</div>
+      <h2 class="section-title serif">地理分布</h2>
+      <p class="section-sub">九座园林中八座集中于苏州古城，唯退思园位于吴江同里古镇。点击地图标记查看园林详情。</p>
+    </div>
+    <div class="map-wrap"><div id="leafletMap"></div></div>
+    <div class="map-notes" id="mapNotes">
+      <div class="map-note"><div class="map-note-tag" id="statGardens">9 座</div><div class="map-note-body">列入世界文化遗产的苏州古典园林，其中 1997 年首批 4 座，2000 年扩展 5 座。</div></div>
+      <div class="map-note"><div class="map-note-tag" id="statArea">— 公顷</div><div class="map-note-body">九园总占地面积，最大为拙政园（5.2 公顷），最小为网师园（0.5 公顷）。</div></div>
+      <div class="map-note"><div class="map-note-tag" id="statRange">— 年</div><div class="map-note-body">跨越时代从北宋庆历四年（1044）至清光绪十一年（1885），横跨近千年。</div></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Gardens ═══════════ -->
+  <section class="section gardens" id="gardens">
+    <div class="section-header" style="padding-left:0;">
+      <div class="kicker">贰 · GARDEN REGISTER</div>
+      <h2 class="section-title serif">九园名录</h2>
+      <p class="section-sub">按世界遗产登录编号为序，点击任一园林可查看其园主传承、厅堂布局与历史沿革。</p>
+    </div>
+    <div class="gardens-grid" id="gardenGrid"><!-- JS 渲染 --></div>
+  </section>
+
+  <!-- ═══════════ Timeline ═══════════ -->
+  <section class="section timeline" id="timeline">
+    <div class="section-header" style="padding-left:0;">
+      <div class="kicker">叁 · CHRONOLOGY</div>
+      <h2 class="section-title serif">沿革长河</h2>
+      <p class="section-sub">自北宋庆历四年（1044）至清光绪十一年（1885），九园相继落成。条带自始建年起，红点为列入世界遗产之年。</p>
+    </div>
+    <div class="timeline-canvas" id="timelineChart"></div>
+    <div class="timeline-legend" id="timelineLegend">
+      <div class="tl-legend-item"><span class="tl-legend-dot" style="background:#4A7C59"></span>宋</div>
+      <div class="tl-legend-item"><span class="tl-legend-dot" style="background:#8B6914"></span>南宋</div>
+      <div class="tl-legend-item"><span class="tl-legend-dot" style="background:#6A1B9A"></span>元</div>
+      <div class="tl-legend-item"><span class="tl-legend-dot" style="background:#C62828"></span>明</div>
+      <div class="tl-legend-item"><span class="tl-legend-dot" style="background:#283593"></span>清</div>
+      <div class="tl-legend-item"><span class="tl-legend-dot" style="background:#424242"></span>晚清</div>
+      <div class="tl-legend-item"><span class="tl-legend-dot" style="background:#C8102E;border-radius:50%"></span>列入世界遗产</div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Quote ═══════════ -->
+  <section class="section quote">
+    <div class="quote-row">
+      <div class="quote-rule"></div>
+      <p class="quote-text serif">虽由人作，宛自天开</p>
+    </div>
+    <p class="quote-attribution serif">—— 明 · 计成《园冶》</p>
+  </section>
+
+  <!-- ═══════════ Network (Dark) ═══════════ -->
+  <section class="section dark network" id="network">
+    <div class="section-header">
+      <div class="kicker">肆 · RELATIONSHIP NETWORK · CBDB</div>
+      <h2 class="section-title serif">人物谱系</h2>
+      <p class="section-sub">以文徵明为枢纽的吴门文脉，与门生故吏、宦绅网络——园主之间的师承、家族与交游，取自 CBDB 中国历代人物传记资料库。</p>
+    </div>
+    <div class="network-layout">
+      <div class="graph-wrap" id="graphChart"></div>
+      <div class="graph-sidebar">
+        <div class="detail-card" id="detailPanel">
+          <div class="detail-empty" id="detailEmpty">
+            <div>👆 点击关系图中的节点<br>查看人物详情</div>
+          </div>
+          <div id="detailContent" style="display:none"></div>
+        </div>
+        <div class="graph-legend" id="graphLegend">
+          <div class="legend-item"><span class="legend-swatch" style="background:var(--gold)"></span>师承</div>
+          <div class="legend-item"><span class="legend-swatch" style="background:#D8485B"></span>家族 · 伉俪</div>
+          <div class="legend-item"><span class="legend-swatch" style="background:#E8DFC9"></span>文友唱和</div>
+          <div class="legend-item"><span class="legend-swatch" style="background:#7A9083"></span>同朝 · 营建</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Wiki ═══════════ -->
+  <section class="section wiki" id="wiki">
+    <div class="section-header" style="padding-left:0;">
+      <div class="kicker">伍 · ENCYCLOPEDIA DIGEST</div>
+      <h2 class="section-title serif">百科辑录</h2>
+      <p class="section-sub">摘录自维基百科「苏州古典园林」及各园词条，与地方志互校。</p>
+    </div>
+    <div class="wiki-grid" id="wikiGrid"><!-- JS 渲染 --></div>
+    <div class="wiki-note">数据源：Wikipedia · 苏州市地方志 · 园林管理局公开档案</div>
+  </section>
+
+  <!-- ═══════════ RAG ═══════════ -->
+  <section class="section rag" id="rag">
+    <div class="section-header" style="padding-left:0;">
+      <div class="kicker">陆 · GARDEN INTELLIGENCE · RAG</div>
+      <h2 class="section-title serif">园林智库</h2>
+      <p class="section-sub">检索增强生成（RAG）引擎，已蒸馏《园冶》《长物志》《闲情偶寄》《江南园林志》等 63 种园林典籍。输入关键词或自然语言提示词，返回带典籍出处的专业回答。</p>
+    </div>
+    <div class="rag-console">
+      <div class="corpus-row">
+        <span class="corpus-label">语料库</span>
+        <span class="chip">《园冶》</span>
+        <span class="chip">《长物志》</span>
+        <span class="chip">《闲情偶寄》</span>
+        <span class="chip">《江南园林志》等 63 种</span>
+      </div>
+
+      <div class="rag-messages" id="ragMessages">
+        <div class="msg-row bot">
+          <div class="msg-bubble" id="ragWelcome">
+            您好！我是园林智库助手。您可以问我任何关于苏州古典园林的问题，例如造园手法、历史沿革、园主故事等。我会从已收录的典籍中检索相关内容为您解答。
+          </div>
+        </div>
+      </div>
+
+      <div class="rag-status-bar" id="ragStatus">
+        <span class="status-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--warmGray);margin-right:6px;vertical-align:middle;"></span>
+        离线演示模式 · 配置 <code>RAG_API_ENDPOINT</code> 可接入完整知识库
+      </div>
+
+      <div class="input-row">
+        <input type="text" class="input-box" id="ragInput" placeholder="输入关键词或提示词，例如：借景 拙政园 ／ 比较留园与网师园的空间序列……" autocomplete="off">
+        <button class="btn btn-primary" style="height:48px;padding:0 24px;" id="ragSendBtn" onclick="handleRag()">检索</button>
+      </div>
+      <div class="suggestion-row">
+        <span class="suggest-label">试试</span>
+        <span class="suggest-chip" onclick="setRag('借景')">借景</span>
+        <span class="suggest-chip" onclick="setRag('叠山理水')">叠山理水</span>
+        <span class="suggest-chip" onclick="setRag('文徵明与拙政园')">文徵明与拙政园</span>
+        <span class="suggest-chip" onclick="setRag('廊的形制')">廊的形制</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Footer ═══════════ -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo-row">
+          <svg width="28" height="28" viewBox="0 0 34 34" fill="none">
+            <rect x="1" y="1" width="32" height="32" rx="6" stroke="var(--ink)" stroke-width="1.5"/>
+            <text x="17" y="23" text-anchor="middle" font-family="'Noto Serif SC',serif" font-size="18" font-weight="700" fill="var(--ink)">园</text>
+          </svg>
+          <span class="serif">姑苏九园</span>
+        </div>
+        <p class="footer-tagline">一座可以检索的江南——苏州古典园林数字档案。以地理、沿革、人物、典籍四个维度，重新打开九座世界遗产园林。</p>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-col-title">档案</h4>
+        <a onclick="document.getElementById('geography').scrollIntoView({behavior:'smooth'})">壹 · 地理分布</a>
+        <a onclick="document.getElementById('gardens').scrollIntoView({behavior:'smooth'})">贰 · 九园名录</a>
+        <a onclick="document.getElementById('timeline').scrollIntoView({behavior:'smooth'})">叁 · 沿革长河</a>
+        <a onclick="document.getElementById('network').scrollIntoView({behavior:'smooth'})">肆 · 人物谱系</a>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-col-title">数据源</h4>
+        <a href="https://whc.unesco.org" target="_blank" rel="noopener">UNESCO 世界遗产名录（813）</a>
+        <a href="https://projects.iq.harvard.edu/cbdb" target="_blank" rel="noopener">CBDB 中国历代人物传记资料库</a>
+        <a href="https://zh.wikipedia.org" target="_blank" rel="noopener">Wikipedia 维基百科</a>
+        <a href="#">苏州市园林和绿化管理局</a>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-col-title">智库</h4>
+        <a href="#">典籍语料清单</a>
+        <a href="#">检索 API</a>
+        <a href="#">引用格式</a>
+        <a href="#">关于本项目</a>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <p class="footer-methodology">方法论 · 本页沿革与人物关系，以 UNESCO 世界遗产名录（编号 813）、CBDB 中国历代人物传记资料库、维基百科词条及公开出版物互校而成；地图为示意，非精确测绘。</p>
+    <div class="footer-bottom">
+      <span>2026 姑苏九园数字档案 · 苏园研社 版权所有</span>
+      <span>典籍语料仅限学术研究使用</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════ MODAL ═══════════ -->
+<div class="modal-overlay" id="gardenModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════
+   DATA LOADING & GLOBAL STATE
+   ══════════════════════════════════════════════════════════════ */
+let GARDENS = [];
+let GRAPH_DATA = null;
+let WIKI_DATA = {};
+let POEMS_DATA = [];
+let graphChart = null;
+let graphNodesData = [];
+const TIMELINE_OWNERS = []; // will be populated from gardens.json
+
+/* ── Load all JSON data ── */
+async function loadAllData() {
+  try {
+    const [gardensRes, graphRes, wikiRes, poemsRes] = await Promise.all([
+      fetch('data/gardens.json'),
+      fetch('data/zhuozheng_subgraph.json').catch(() => null),
+      fetch('data/wikipedia_data.json').catch(() => null),
+      fetch('data/garden_poetry.json').catch(() => null),
+    ]);
+    GARDENS = (await gardensRes.json()).gardens || [];
+    if (graphRes) GRAPH_DATA = await graphRes.json();
+    if (wikiRes) WIKI_DATA = (await wikiRes.json()).entries || {};
+    if (poemsRes) POEMS_DATA = (await poemsRes.json()).poems || [];
+
+    // Build timeline owners from all gardens
+    GARDENS.forEach(g => {
+      (g.owners || []).forEach(o => {
+        TIMELINE_OWNERS.push({
+          gardenId: g.id,
+          gardenName: g.name_cn,
+          name: o.name,
+          start: o.period_start || g.built.year,
+          end: o.period_end || null,
+          role: o.role,
+          note: o.note,
+        });
+      });
+    });
+
+    // Update hero stats
+    const totalOwners = new Set(GARDENS.flatMap(g => (g.owners || []).map(o => o.name))).size;
+    document.querySelector('.hero-stat:nth-child(3) .num').textContent = totalOwners;
+
+    // Render sections
+    renderGardens();
+    renderTimeline();
+    renderWiki();
+    initMap();
+    initGraph();
+
+    // Update map stats
+    const totalArea = GARDENS.reduce((s, g) => s + (g.area_sqm || 0), 0);
+    const years = GARDENS.map(g => g.built.year).filter(Boolean);
+    const yearRange = Math.max(...years) - Math.min(...years);
+    document.getElementById('statArea').textContent = (totalArea / 10000).toFixed(1) + ' 公顷';
+    document.getElementById('statRange').textContent = yearRange + ' 年';
+
+  } catch(e) { console.error('Data load error:', e); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RENDER: Gardens Grid
+   ══════════════════════════════════════════════════════════════ */
+function renderGardens() {
+  const grid = document.getElementById('gardenGrid');
+  grid.innerHTML = GARDENS.map(g => {
+    const imgDir = 'data/wikimedia/';
+    // try to find image
+    const imgMap = {
+      'zhuozheng':'zhuozheng_garden.jpg', 'liuyuan':'liuyuan_garden.jpg', 'wangshi':'wangshi_garden.jpg',
+      'huanxiu':'huanxiu_garden.jpg', 'canglang':'canglang_garden.jpg', 'shizilin':'shizilin_garden.jpg',
+      'yipu':'yipu_garden.jpg', 'ouyuan':'ouyuan_garden.jpg', 'tuisi':'tuisi_garden.JPG',
+    };
+    const imgSrc = imgMap[g.id] ? imgDir + imgMap[g.id] : '';
+    const seq = ['zhuozheng','liuyuan','wangshi','huanxiu','canglang','shizilin','yipu','ouyuan','tuisi'];
+    const idx = seq.indexOf(g.id) + 1;
+    return `
+      <article class="garden-card" onclick="showGardenDetail('${g.id}')">
+        <div class="garden-card-img">
+          ${imgSrc ? `<img src="${imgSrc}" alt="${g.name_cn}" loading="lazy">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;color:var(--warmGray)">🏛</div>`}
+        </div>
+        <div class="garden-card-body">
+          <h3 class="garden-card-name serif">${String(idx).padStart(2,'0')} · ${g.name_cn}</h3>
+          <p class="garden-card-meta">${g.built.dynasty}（${g.built.display}）· ${(g.owners||[]).filter(o=>o.role==='始建者').map(o=>o.name).join('、') || '—'}</p>
+          <p class="garden-card-addr">${g.location.address} ｜ ${g.unesco_year} 年${g.unesco_year === 1997 ? '首批' : '扩展'}</p>
+        </div>
+      </article>`;
+  }).join('');
+}
+
+/* ── Garden Detail Modal ── */
+function showGardenDetail(id) {
+  const g = GARDENS.find(x => x.id === id);
+  if (!g) return;
+  const ownersHtml = (g.owners || []).map(o => `
+    <div class="owner-item">
+      <span class="o-name">${o.name}</span>
+      <span class="o-role">${o.role}</span>
+      <span class="o-note">${o.note || ''}</span>
+    </div>`).join('');
+  const hallsHtml = (g.halls || []).map(h => `<span class="hall-tag">${h.name}${h.note ? ' · ' + h.note : ''}</span>`).join('');
+
+  document.getElementById('modalContent').innerHTML = `
+    <h2>${g.name_cn}</h2>
+    <div class="sub">${g.name_en} · UNESCO ${g.unesco_year}</div>
+    <div class="info-grid">
+      <div><div class="lbl">始建</div><div class="val">${g.built.display}</div></div>
+      <div><div class="lbl">面积</div><div class="val">${(g.area_sqm / 1000).toFixed(1)} 公顷</div></div>
+      <div><div class="lbl">地址</div><div class="val" style="font-size:12px">${g.location.address}</div></div>
+      <div><div class="lbl">风格</div><div class="val" style="font-size:12px">${g.style || '—'}</div></div>
+    </div>
+    <div style="font-weight:600;font-size:15px;margin:16px 0 8px">历代园主</div>
+    <div class="owner-list">${ownersHtml}</div>
+    <div style="font-weight:600;font-size:15px;margin:16px 0 8px">厅堂楼阁 (${(g.halls||[]).length} 座)</div>
+    <div class="hall-list">${hallsHtml}</div>
+    ${(g.designers||[]).length ? `<div style="font-size:12px;color:var(--warmGray);margin-top:12px">设计参与：${g.designers.map(d=>`${d.name}（${d.role}）`).join('、')}</div>` : ''}
+    <div style="font-size:12px;color:var(--warmGray);margin-top:8px">数据源：gardens.json · CBDB v20260718</div>`;
+  document.getElementById('gardenModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('gardenModal').classList.remove('active');
+}
+document.getElementById('gardenModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ══════════════════════════════════════════════════════════════
+   RENDER: Timeline (ECharts)
+   ══════════════════════════════════════════════════════════════ */
+function renderTimeline() {
+  const chart = echarts.init(document.getElementById('timelineChart'));
+  const gardens = GARDENS;
+  const minYear = Math.min(...gardens.map(g => g.built.year));
+  const maxYear = 2025;
+
+  // 按始建年排序（最早在上）
+  const sorted = gardens.map(g => ({ ...g }))
+    .sort((a, b) => a.built.year - b.built.year);
+
+  // 根据年份返回朝代色
+  function eraColor(year) {
+    if (!year) return '#BDBDBD';
+    if (year < 1127) return '#4A7C59';  // 北宋及以前
+    if (year < 1279) return '#8B6914';  // 南宋
+    if (year < 1368) return '#6A1B9A';  // 元
+    if (year < 1644) return '#C62828';  // 明
+    if (year < 1860) return '#283593';  // 清
+    return '#424242';                    // 晚清
+  }
+  function eraBg(year) { return eraColor(year) + '30'; }
+
+  // 处理园主数据：补全 null 的 end 年份
+  function getOwnerPeriods(garden) {
+    const owners = garden.owners || [];
+    const periods = [];
+    owners.forEach((o, i) => {
+      const start = o.period_start || garden.built.year;
+      const next = owners[i + 1];
+      const end = o.period_end || (next ? next.period_start : maxYear);
+      periods.push({ name: o.name, role: o.role, start, end, note: o.note });
+    });
+    return periods;
+  }
+
+  chart.setOption({
+    tooltip: {
+      formatter: function(p) {
+        const g = sorted[p.dataIndex];
+        if (!g) return '';
+        const periods = getOwnerPeriods(g);
+        let html = `<b style="font-size:15px">${g.name_cn}</b><br>`;
+        html += `<span style="font-size:12px;color:#888">始建 ${g.built.display} · UNESCO ${g.unesco_year}</span><br>`;
+        html += `<div style="margin-top:6px;font-size:12px">`;
+        periods.forEach(o => {
+          const endStr = o.end >= maxYear ? '至今' : o.end + ' 年';
+          html += `<div style="display:flex;gap:8px;padding:2px 0"><span style="color:${eraColor(o.start)};font-weight:600">${o.name}</span><span style="color:#999">${o.start} — ${endStr}</span><span style="color:#aaa;font-size:11px">${o.role}</span></div>`;
+        });
+        html += `</div>`;
+        return html;
+      }
+    },
+    grid: { left: 90, right: 60, top: 16, bottom: 36 },
+    xAxis: {
+      type: 'value', min: minYear - 30, max: maxYear,
+      axisLabel: { fontSize: 11, color: '#8A7F6E' },
+      splitLine: { lineStyle: { color: '#DCD2BE', type: 'dashed' } },
+      axisLine: { show: false },
+    },
+    yAxis: {
+      type: 'category', data: sorted.map(g => g.name_cn),
+      axisLine: { show: false }, axisTick: { show: false },
+      axisLabel: {
+        fontSize: 13, fontWeight: 500, fontFamily: "'Noto Serif SC',serif",
+        padding: [0, 8, 0, 0], color: '#1A1A1A',
+      },
+    },
+    series: [{
+      type: 'custom',
+      renderItem: function(params, api) {
+        const garden = sorted[params.dataIndex];
+        if (!garden) return { type: 'group', children: [] };
+        const periods = getOwnerPeriods(garden);
+        const y0 = api.coord([0, params.dataIndex]);
+        const yPos = y0[1];
+        const barHeight = 28;
+        const children = [];
+        const gardenBaseColor = eraColor(garden.built.year);
+
+        // 背景条：从始建到 2025
+        const bgP1 = api.coord([garden.built.year, params.dataIndex]);
+        const bgP2 = api.coord([maxYear, params.dataIndex]);
+        const bgW = Math.max(bgP2[0] - bgP1[0], 10);
+        children.push({
+          type: 'rect',
+          shape: { x: bgP1[0], y: yPos - barHeight / 2, width: bgW, height: barHeight },
+          style: { fill: gardenBaseColor + '0A' },
+          transition: 'none',
+        });
+
+        // 分段：每位园主一段（无边框，纯色块区分）
+        periods.forEach((o, idx) => {
+          const p1 = api.coord([Math.max(o.start, garden.built.year), params.dataIndex]);
+          const p2 = api.coord([o.end, params.dataIndex]);
+          const w = Math.max(p2[0] - p1[0], 2);
+          const color = eraColor(o.start);
+          const x = p1[0];
+          const alpha = idx % 2 === 0 ? '55' : '70'; // 交替透明度增加层次感
+
+          children.push({
+            type: 'rect',
+            shape: { x, y: yPos - barHeight / 2 + 2, width: w, height: barHeight - 4 },
+            style: { fill: color + alpha, borderRadius: 1 },
+            onclick: () => showGardenDetail(garden.id),
+            transition: 'none',
+          });
+
+          // 园主名称（条带宽 > 50px 才显示）
+          if (w > 50 && o.name) {
+            children.push({
+              type: 'text',
+              shape: { x: x + 6, y: yPos + 1 },
+              style: {
+                text: o.name,
+                textAlign: 'left', textVerticalAlign: 'middle',
+                fontSize: 10, fontWeight: 500,
+                fill: '#1A1A1A',
+                fontFamily: "'Noto Serif SC',serif",
+              },
+              transition: 'none',
+            });
+          }
+        });
+
+        // UNESCO 红点
+        const up = api.coord([garden.unesco_year, params.dataIndex]);
+        children.push({
+          type: 'circle',
+          shape: { cx: up[0], cy: yPos, r: 7 },
+          style: { fill: '#C8102E', stroke: '#FFFFFF', lineWidth: 2 },
+          onclick: () => showGardenDetail(garden.id),
+          transition: 'none',
+        });
+        // UNESCO 年份标签
+        children.push({
+          type: 'text',
+          shape: { x: up[0], y: yPos - 16 },
+          style: {
+            text: String(garden.unesco_year),
+            textAlign: 'center', textVerticalAlign: 'bottom',
+            fontSize: 9, fill: '#C8102E', fontWeight: 500,
+          },
+          transition: 'none',
+        });
+
+        return { type: 'group', children };
+      },
+      data: sorted,
+    }],
+  });
+
+  chart.on('click', function(p) {
+    if (p.componentType === 'series' && p.dataIndex !== undefined) {
+      const idx = p.dataIndex;
+      if (sorted[idx]) showGardenDetail(sorted[idx].id);
+    }
+  });
+  window.addEventListener('resize', () => chart.resize());
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RENDER: Wiki Cards
+   ══════════════════════════════════════════════════════════════ */
+function renderWiki() {
+  const grid = document.getElementById('wikiGrid');
+  const wikiNames = {
+    'zhuozheng': '拙政园', 'liuyuan': '留园', 'wangshi': '网师园',
+    'huanxiu': '环秀山庄', 'canglang': '沧浪亭', 'shizilin': '狮子林',
+    'yipu': '艺圃', 'ouyuan': '耦园', 'tuisi': '退思园',
+  };
+  const wikiUrls = {
+    'zhuozheng': '拙政园', 'liuyuan': '留园', 'wangshi': '网师园',
+    'huanxiu': '环秀山庄', 'canglang': '沧浪亭', 'shizilin': '狮子林',
+    'yipu': '艺圃_(苏州)', 'ouyuan': '耦园', 'tuisi': '退思园',
+  };
+
+  const entries = Object.entries(wikiNames);
+  const firstHalf = entries.slice(0, 4);
+  const secondHalf = entries.slice(4);
+
+  const makeCard = ([id, name]) => {
+    const wikiKey = id + '_garden';
+    const wikiEntry = WIKI_DATA && WIKI_DATA[wikiKey];
+    const excerpt = wikiEntry && wikiEntry.summary ? wikiEntry.summary.slice(0, 180) + '……' : '';
+    const url = 'https://zh.wikipedia.org/wiki/' + encodeURIComponent(wikiUrls[id] || name);
+    return `
+      <article class="wiki-card">
+        <div class="wiki-card-head">
+          <div class="wiki-card-title">
+            <svg class="wiki-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="var(--gold)" stroke-width="1.5"/><text x="12" y="16" text-anchor="middle" font-size="12" font-family="serif" fill="var(--gold)">W</text></svg>
+            <span class="serif">${name}</span>
+          </div>
+          <span class="source-chip">Wikipedia</span>
+        </div>
+        <p class="wiki-excerpt">${excerpt || name + '，苏州古典园林之一，' + (GARDENS.find(g=>g.id===id)?.built.display || '') + '始建，' + (GARDENS.find(g=>g.id===id)?.unesco_year || '') + '年列入世界文化遗产。'}</p>
+        <a class="wiki-link" href="${url}" target="_blank" rel="noopener">查看词条 · ${url}</a>
+      </article>`;
+  };
+
+  grid.innerHTML = firstHalf.map(makeCard).join('') + secondHalf.map(makeCard).join('');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MAP: Leaflet
+   ══════════════════════════════════════════════════════════════ */
+function initMap() {
+  const mapEl = document.getElementById('leafletMap');
+  if (!mapEl || !window.L) return;
+
+  const map = L.map('leafletMap', { zoomControl: true, scrollWheelZoom: false })
+    .setView([31.30, 120.62], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18, attribution: '© OpenStreetMap contributors',
+  }).addTo(map);
+
+  const colors = ['#C8102E','#B08D57','#1A1A1A','#3D5A4C','#8A7F6E','#D8485B','#E8DFC9','#7A9083','#C8102E'];
+  GARDENS.forEach((g, i) => {
+    const color = colors[i % colors.length];
+    const marker = L.circleMarker([g.location.lat, g.location.lng], {
+      radius: 10, fillColor: color, color: '#fff', weight: 2, fillOpacity: 0.85,
+    }).addTo(map);
+    marker.bindTooltip(g.name_cn, { direction: 'top', offset: [0, -8] });
+    marker.bindPopup(`
+      <b style="font-size:15px;font-family:'Noto Serif SC',serif">${g.name_cn}</b><br>
+      <span style="font-size:12px;color:#666">${g.name_en}</span><br>
+      <span style="font-size:11px;color:#888">${g.location.address}</span><br>
+      <span style="font-size:11px;color:#999">始建 ${g.built.display} · UNESCO ${g.unesco_year}</span><br>
+      <a onclick="showGardenDetail('${g.id}')" style="font-size:12px;color:#B08D57;cursor:pointer;text-decoration:underline">查看详情 →</a>`);
+    marker.on('click', () => showGardenDetail(g.id));
+  });
+
+  // Small delay then enable scroll
+  setTimeout(() => { if (map) map.scrollWheelZoom.enable(); }, 2000);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   NETWORK GRAPH: ECharts Force-Directed
+   ══════════════════════════════════════════════════════════════ */
+function initGraph() {
+  if (!GRAPH_DATA) return;
+  const chartDom = document.getElementById('graphChart');
+  if (!chartDom) return;
+
+  const ownerIds = new Set(GRAPH_DATA.seed_owners || []);
+  const nodes = GRAPH_DATA.nodes.map(n => ({
+    id: n.id,
+    name: n.name,
+    value: (n.offices || []).join(', '),
+    category: n.is_owner ? 0 : 1,
+    symbolSize: n.is_owner ? 22 : ((n.offices || []).length ? 14 : 9),
+    itemStyle: {
+      color: n.is_owner ? '#E8DFC9' : ((n.offices || []).length ? '#7A9083' : '#3D5A4C'),
+      opacity: 0.85,
+    },
+    label: { show: n.is_owner, fontSize: 10, fontWeight: 'bold', color: '#E8DFC9' },
+    isOwner: n.is_owner,
+    aliases: n.aliases || [],
+    offices: n.offices || [],
+    year: n.year || null,
+  }));
+  graphNodesData = nodes;
+
+  const edges = (GRAPH_DATA.edges || []).map(e => ({
+    source: e.source,
+    target: e.target,
+    lineStyle: {
+      color: e.type === 'kin' ? '#D8485B' : (e.type === 'friend' ? '#E8DFC9' : '#7A9083'),
+      width: 0.8, opacity: 0.35,
+    },
+  }));
+
+  graphChart = echarts.init(chartDom);
+  graphChart.setOption({
+    tooltip: {
+      formatter: function(p) {
+        if (p.dataType === 'edge') {
+          const s = nodes.find(n => n.id === p.data.source);
+          const t = nodes.find(n => n.id === p.data.target);
+          return `${s?.name || '?'} ↔ ${t?.name || '?'}`;
+        }
+        const n = p.data;
+        if (!n) return '';
+        const offices = n.offices?.length ? n.offices.join('、') : '无官职记录';
+        return `<b>${n.name}</b><br><small>${n.isOwner ? '🔴 园主/关联人' : '🔵 关系人'}</small><br><small>官职: ${offices}</small>`;
+      }
+    },
+    series: [{
+      type: 'graph', layout: 'force',
+      force: { repulsion: 150, edgeLength: [40, 150], gravity: 0.06, friction: 0.1, layoutAnimation: false },
+      roam: true, draggable: true,
+      data: nodes, edges: edges,
+      categories: [
+        { name: '园主/关联人', itemStyle: { color: '#E8DFC9' } },
+        { name: '关系人', itemStyle: { color: '#7A9083' } },
+      ],
+      edgeSymbol: ['none', 'none'],
+      label: {
+        show: true, position: 'right', fontSize: 9, color: '#9DB5A6',
+        formatter: p => p.data.isOwner ? p.data.name : '',
+      },
+      lineStyle: { curveness: 0.2, opacity: 0.3 },
+      emphasis: { focus: 'adjacency', lineStyle: { width: 2, opacity: 0.9 } },
+      zoom: 0.6,
+    }],
+  });
+
+  graphChart.on('click', function(p) {
+    if (p.dataType === 'node' && p.data) showNodeDetail(p.data);
+  });
+  window.addEventListener('resize', () => graphChart && graphChart.resize());
+}
+
+/* ── Node Detail Panel ── */
+function showNodeDetail(node) {
+  const panel = document.getElementById('detailContent');
+  const empty = document.getElementById('detailEmpty');
+  empty.style.display = 'none';
+  panel.style.display = 'block';
+
+  const isOwner = node.isOwner;
+  const offices = node.offices || [];
+  const aliases = node.aliases || [];
+
+  // Find associated timeline info
+  const tlMatch = TIMELINE_OWNERS.find(t => t.name === node.name);
+
+  // Find poems for this person
+  const poems = getPoemsForName(node.name);
+  const poemsHtml = poems.length > 0 ? `
+    <div class="section-divider"></div>
+    <div class="poem-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
+      📜 相关诗作 (${poems.length}首) <span style="font-size:10px;opacity:0.6">点击展开</span>
+    </div>
+    <div class="poem-list open">
+      ${poems.map(p => `
+        <div class="poem-item">
+          <div class="p-title">${p.title}</div>
+          ${p.note ? `<div class="p-note">${p.note}</div>` : ''}
+          <div class="p-text">${(p.text||'').replace(/。/g, '。<br>')}</div>
+        </div>`).join('')}
+    </div>` : '';
+
+  panel.innerHTML = `
+    <h3>${node.name}</h3>
+    ${isOwner ? `<span class="role-tag" style="background:rgba(232,223,201,0.2);color:#E8DFC9">园主 / 关联人</span>` : ''}
+    ${tlMatch ? `<div class="bio">${tlMatch.note || ''}</div>` : ''}
+    <div class="info-row"><span class="lbl">CBDB ID</span><span class="val">${node.id}</span></div>
+    ${node.year ? `<div class="info-row"><span class="lbl">指数年</span><span class="val">${node.year}</span></div>` : ''}
+    ${aliases.length ? `<div class="info-row"><span class="lbl">别名/字号</span><span class="val">${aliases.join('、')}</span></div>` : ''}
+    ${offices.length ? `
+      <div class="section-divider"></div>
+      <div style="font-size:12px;color:var(--pineSoft);margin-bottom:6px">官职</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">
+        ${offices.map(o => `<span style="font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(157,181,166,0.15);color:var(--pineSoft)">${o}</span>`).join('')}
+      </div>` : ''}
+    ${poemsHtml}
+    <div class="section-divider"></div>
+    <div style="font-size:11px;color:var(--pineSoft);opacity:0.6">数据源：CBDB v20260718 · gardens.json</div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   POETRY LOOKUP
+   ══════════════════════════════════════════════════════════════ */
+function getPoemsForName(name) {
+  if (!POEMS_DATA || !POEMS_DATA.length) return [];
+  // Poems are stored by author name; find matches
+  const matches = POEMS_DATA.filter(p => {
+    const author = p.author || '';
+    return author.includes(name) || name.includes(author);
+  });
+  return matches;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RAG: 知识问答（对接 FastAPI RAG 后端）
+   ══════════════════════════════════════════════════════════════ */
+
+// ── 配置 ──────────────────────────────────────────
+const RAG_CONFIG = {
+  // 将此 URL 替换为您的 RAG API 服务地址
+  // 开发时: http://127.0.0.1:8000/api/chat
+  endpoint: "http://127.0.0.1:8000/api/chat",
+  mode: "auto",         // "auto" | "remote" | "local"
+  // 内置离线知识库（API 不可用时的降级数据）
+  localKnowledge: [
+    {
+      keywords: ["借景", "对景", "框景", "障景", "漏景", "远借", "邻借"],
+      answer: "「借景」为首见于计成《园冶·借景》篇：「构园无格，借景有因……因借无由，触情俱是。」拙政园中部远借北寺塔影，为「远借」之经典；西部波形水廊借墙外市井声色，属「邻借」。沧浪亭复廊漏窗借园外葑溪之景，为「邻借」另一典范。《园冶》总结「园林巧于因借，精在体宜」，借景为中国古典园林最重要的造园手法之一。",
+      sources: ["《园冶 · 借景》", "《江南园林志》"]
+    },
+    {
+      keywords: ["叠山", "叠石", "假山", "戈裕良", "湖石"],
+      answer: "苏州园林叠山以「虽由人作，宛自天开」为最高准则。环秀山庄湖石假山为叠山大师戈裕良代表作，占地半亩却具千岩万壑之势。他首创「钩带法」，以石拱受力原理叠筑洞壑，不用梁柱。耦园黄石假山用「大斧劈法」，雄浑苍古。狮子林以太湖石「奇、透、瘦、漏」著称。陈从周评：「无园不石，无园不山，片山有致，寸石生情。」",
+      sources: ["《园冶 · 掇山》", "《江南园林志》", "陈从周《说园》"]
+    },
+    {
+      keywords: ["理水", "水", "池", "水面"],
+      answer: "苏州园林理水以「小中见大」著称。网师园水面集中，以「彩霞池」为中心，建筑皆面水而建，池岸曲折，水口藏源。拙政园中部水面开阔，分聚结合，远香堂北临荷花池。留园水面以「曲」取胜，涵碧山房前池水弯曲有致。退思园因水面贴水而建，所有建筑临水或跨水，池中设旱船「闹红一舸」。陈从周云：「水曲因岸，水隔因堤。」",
+      sources: ["《园冶 · 相地》", "《江南园林志》"]
+    },
+    {
+      keywords: ["花木", "植物", "海棠", "荷花", "松", "竹", "梅"],
+      answer: "苏州园林花木配置讲究「意韵」而非数量。拙政园远香堂前植荷，取周敦颐「香远益清」之意；枇杷园植枇杷喻「黄金满园」。留园「闻木樨香轩」四周遍植桂花，秋日香气袭人。沧浪亭以竹取胜，园内各处翠竹成林。网师园「殿春簃」植芍药。园林花木四季景异：春海棠、夏荷花、秋桂、冬梅，配合建筑匾额形成完整意境。",
+      sources: ["《长物志 · 花木》", "《园冶 · 借景》"]
+    },
+    {
+      keywords: ["拙政园", "拙政"],
+      answer: "拙政园始建于明正德四年（1509年），御史王献臣因官场失意归隐苏州，以大宏寺旧址建园，取潘岳《闲居赋》「灌园鬻蔬，以供朝夕之膳……此亦拙者之为政也」之意命名。文徵明参与设计并绘《拙政园三十一景图》并题咏。拙政园中部远借北寺塔影，为借景典范。西部补园为张履谦扩建，精美华丽。拙政园1997年列入世界遗产。",
+      sources: ["文徵明《王氏拙政园记》", "《苏州园林名胜志》"]
+    }
+  ],
+  // 请求构造
+  buildBody: (q) => ({ query: q }),
+  // 响应解析
+  parseResponse: (data) => {
+    if (data?.answer) return { answer: data.answer, sources: data.sources || [] };
+    if (data?.choices?.[0]?.message?.content) return { answer: data.choices[0].message.content, sources: [] };
+    if (typeof data === "string") return { answer: data, sources: [] };
+    return null;
+  }
+};
+
+let isSearching = false;
+
+function setRag(text) {
+  document.getElementById('ragInput').value = text;
+  document.getElementById('ragInput').focus();
+}
+
+async function handleRag() {
+  const input = document.getElementById('ragInput');
+  const value = input.value.trim();
+  if (!value || isSearching) { input.focus(); return; }
+
+  const messages = document.getElementById('ragMessages');
+  const sendBtn = document.getElementById('ragSendBtn');
+
+  // 添加用户消息
+  addMessage(value, 'user');
+  input.value = '';
+  isSearching = true;
+  sendBtn.disabled = true;
+  input.disabled = true;
+
+  // 添加占位机器人消息
+  const botMsg = addMessage('', 'bot', true);
+
+  try {
+    let answer, sources;
+
+    if (RAG_CONFIG.mode === 'local') {
+      // 强制本地模式
+      await new Promise(r => setTimeout(r, 500));
+      const result = localSearch(value);
+      answer = result.answer;
+      sources = result.sources;
+    } else {
+      // 尝试远程 API
+      try {
+        const resp = await fetch(RAG_CONFIG.endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(RAG_CONFIG.buildBody(value)),
+          signal: AbortSignal.timeout(30000),
+        });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const data = await resp.json();
+        const parsed = RAG_CONFIG.parseResponse(data);
+        if (!parsed) throw new Error('无法解析响应');
+        answer = parsed.answer;
+        sources = parsed.sources;
+      } catch (e) {
+        if (RAG_CONFIG.mode === 'remote') throw e; // 远程模式不降级
+        // 降级到本地
+        const result = localSearch(value);
+        answer = result.answer + '\n\n（注：远程 RAG 服务不可用，已回退至离线知识库）';
+        sources = result.sources;
+      }
+    }
+
+    // 更新机器人消息
+    updateBotMessage(botMsg, answer, sources);
+  } catch (err) {
+    updateBotMessage(botMsg, '抱歉，检索失败：' + err.message + '。请确认 RAG 服务已启动，或稍后重试。', []);
+  } finally {
+    isSearching = false;
+    sendBtn.disabled = false;
+    input.disabled = false;
+    input.focus();
+    updateStatus();
+  }
+}
+
+function addMessage(text, who, pending) {
+  const messages = document.getElementById('ragMessages');
+  const row = document.createElement('div');
+  row.className = 'msg-row ' + who;
+
+  if (who === 'bot') {
+    const label = document.createElement('div');
+    label.className = 'bot-label';
+    label.innerHTML = '<span class="status-dot searching"></span>智库回答';
+    row.appendChild(label);
+  }
+
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+
+  if (pending) {
+    bubble.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+  } else {
+    bubble.textContent = text;
+  }
+
+  row.appendChild(bubble);
+  messages.appendChild(row);
+  messages.scrollTop = messages.scrollHeight;
+  return row;
+}
+
+function updateBotMessage(row, answer, sources) {
+  const bubble = row.querySelector('.msg-bubble');
+  const label = row.querySelector('.bot-label');
+
+  // 更新状态
+  if (label) {
+    const dot = label.querySelector('.status-dot');
+    if (dot) {
+      dot.className = 'status-dot';
+      dot.style.background = 'var(--gold)';
+    }
+    label.innerHTML = '<span class="status-dot"></span>智库回答 · 已检索 ' + sources.length + ' 条典籍片段';
+  }
+
+  // 更新内容
+  let html = escapeHtml(answer).replace(/\n/g, '<br>');
+  bubble.innerHTML = html;
+
+  // 添加来源标签
+  if (sources && sources.length > 0) {
+    const srcRow = document.createElement('div');
+    srcRow.className = 'source-row';
+    sources.forEach(s => {
+      const tag = document.createElement('span');
+      tag.className = 'source-tag';
+      tag.textContent = s.title + (s.score ? ' · ' + s.score : '');
+      srcRow.appendChild(tag);
+    });
+    bubble.appendChild(srcRow);
+  }
+
+  // 滚动到底部
+  const messages = document.getElementById('ragMessages');
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function localSearch(query) {
+  const q = query.toLowerCase();
+  let best = null, bestScore = 0;
+
+  for (const item of RAG_CONFIG.localKnowledge) {
+    let score = 0;
+    for (const kw of item.keywords) {
+      if (q.includes(kw.toLowerCase()) || kw.toLowerCase().includes(q)) {
+        score += kw.length * 2;
+      }
+    }
+    if (score > bestScore) { bestScore = score; best = item; }
+  }
+
+  if (best) {
+    return { answer: best.answer, sources: best.sources.map(s => ({ title: s, score: 0.8 })) };
+  }
+  return {
+    answer: '抱歉，离线知识库中暂无与「' + query + '」直接匹配的内容。\n\n可尝试关键词：借景 / 叠山 / 理水 / 拙政园 / 花木 等；或启动完整 RAG 服务以获得全部典籍检索能力。',
+    sources: []
+  };
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function updateStatus() {
+  const bar = document.getElementById('ragStatus');
+  if (!bar) return;
+  const mode = RAG_CONFIG.mode;
+  if (mode === 'remote' || (mode === 'auto' && RAG_CONFIG.endpoint)) {
+    bar.innerHTML = '<span class="status-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#4CAF50;margin-right:6px;vertical-align:middle;"></span>已连接 RAG 服务：<code>' + RAG_CONFIG.endpoint + '</code>';
+  } else if (mode === 'local') {
+    bar.innerHTML = '<span class="status-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--warmGray);margin-right:6px;vertical-align:middle;"></span>离线演示模式 · 内置基础知识库 · 配置 <code>RAG_CONFIG.endpoint</code> 可接入完整知识库';
+  } else {
+    bar.innerHTML = '<span class="status-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#FF9800;margin-right:6px;vertical-align:middle;"></span>自动模式 · 优先使用远程 RAG 服务，不可用时降级到本地知识库';
+  }
+}
+
+// 键盘事件
+document.getElementById('ragInput')?.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') handleRag();
+});
+
+// 初始化状态
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(updateStatus, 100);
+});
+
+/* ══════════════════════════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', loadAllData);
+</script>
+</body>
+</html>

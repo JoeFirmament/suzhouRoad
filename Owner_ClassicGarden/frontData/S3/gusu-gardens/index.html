@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1440, initial-scale=1.0">
+  <title>姑苏九园 · 世界文化遗产数字档案</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F5EFE3;
+      --paperDeep: #ECE3D2;
+      --cream: #F2EBDC;
+      --ink: #1A1A1A;
+      --inkSoft: #3A3A3A;
+      --cinnabar: #C8102E;
+      --gold: #B08D57;
+      --hairline: #DCD2BE;
+      --warmGray: #8A7F6E;
+      --pine: #1C2A23;
+      --pineDeep: #1C1F0E;
+      --pineLine: #3D5A4C;
+      --pineSoft: #9DB5A6;
+      --white: #FFFFFF;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .serif { font-family: 'Noto Serif SC', 'Songti SC', serif; }
+
+    .page {
+      width: 1440px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      background: var(--paper);
+    }
+
+    @media (max-width: 1440px) {
+      .page { width: 100%; min-width: 1440px; }
+    }
+
+    /* Masthead */
+    .masthead {
+      width: 1440px;
+      height: 84px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 64px;
+      background: var(--paper);
+      position: relative;
+      z-index: 100;
+    }
+
+    .masthead-divider {
+      width: 1440px;
+      height: 1px;
+      background: var(--hairline);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .brand-name {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .brand-sub {
+      font-size: 8px;
+      color: var(--warmGray);
+      letter-spacing: 0.08em;
+      line-height: 1;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .nav a {
+      font-size: 14px;
+      color: var(--inkSoft);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav a:hover { color: var(--cinnabar); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+      text-decoration: none;
+      border: none;
+      font-family: 'Noto Sans SC', sans-serif;
+    }
+
+    .btn:hover { opacity: 0.9; }
+
+    .btn-primary {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .btn-lg {
+      height: 50px;
+      padding: 0 28px;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--ink);
+      height: 50px;
+      padding: 0 28px;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    /* Section common */
+    .section {
+      width: 1440px;
+      position: relative;
+    }
+
+    .section-header {
+      padding-left: 64px;
+    }
+
+    .kicker {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+      margin-bottom: 36px;
+    }
+
+    .section-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.2;
+      margin: 0 0 18px;
+    }
+
+    .section-sub {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 15px;
+      color: var(--warmGray);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .dark .section-title,
+    .dark .kicker { color: var(--cream); }
+
+    .dark .kicker::before { background: var(--gold); }
+
+    .dark .section-sub { color: var(--pineSoft); }
+
+    /* Hero */
+    .hero {
+      height: 1107px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 72px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-char {
+      position: absolute;
+      right: 100px;
+      top: 30px;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 300px;
+      font-weight: 900;
+      color: var(--paperDeep);
+      line-height: 1;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero-kicker {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--cinnabar);
+      letter-spacing: 0.04em;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-kicker::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: var(--cinnabar);
+      display: inline-block;
+    }
+
+    .hero-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 96px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.1;
+      margin: 0 0 36px;
+    }
+
+    .hero-dek {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 18px;
+      color: var(--inkSoft);
+      line-height: 34px;
+      max-width: 760px;
+      margin: 0 0 36px;
+    }
+
+    .hero-meta {
+      font-size: 12px;
+      color: var(--warmGray);
+      margin-bottom: 36px;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .hero-visual {
+      width: 1312px;
+      height: 440px;
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-caption {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 12px;
+      color: var(--warmGray);
+      margin-top: 36px;
+    }
+
+    /* Geography */
+    .geography {
+      height: 1148px;
+      background: var(--pineDeep);
+      padding-top: 80px;
+    }
+
+    .map-wrap {
+      width: 1312px;
+      height: 560px;
+      margin: 40px auto 0;
+      border-radius: 2px;
+      overflow: hidden;
+      border: 1px solid var(--pineLine);
+    }
+
+    .map-wrap img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .map-notes {
+      width: 1312px;
+      margin: 40px auto 0;
+      display: flex;
+      gap: 24px;
+    }
+
+    .map-note {
+      flex: 1;
+      height: 116px;
+      background: rgba(36, 56, 46, 0.7);
+      border: 1px solid var(--pineLine);
+      border-radius: 2px;
+      padding: 20px;
+    }
+
+    .map-note-tag {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .map-note-body {
+      font-size: 12px;
+      color: var(--pineSoft);
+      line-height: 20px;
+    }
+
+    .map-legend {
+      width: 1312px;
+      margin: 36px auto 0;
+      font-size: 11px;
+      color: #7A9083;
+    }
+
+    /* Stats */
+    .stats {
+      height: 122px;
+      display: flex;
+      background: var(--paper);
+    }
+
+    .stat-card {
+      flex: 1;
+      height: 122px;
+      background: var(--white);
+      border-right: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stat-card:last-child { border-right: none; }
+
+    .stat-value {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .stat-value.accent { color: var(--cinnabar); }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--warmGray);
+    }
+
+    .stats-note {
+      height: 36px;
+      display: flex;
+      align-items: center;
+      padding-left: 64px;
+      font-size: 11px;
+      color: var(--warmGray);
+      background: var(--paper);
+    }
+
+    /* Gardens */
+    .gardens {
+      padding: 96px 64px 60px;
+    }
+
+    .gardens-grid {
+      margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .garden-card {
+      width: 421px;
+      background: var(--white);
+      border: 1px solid var(--hairline);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .garden-card-img {
+      width: 421px;
+      height: 230px;
+      overflow: hidden;
+    }
+
+    .garden-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .garden-card-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .garden-card-name {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .garden-card-meta {
+      font-size: 12px;
+      color: var(--inkSoft);
+      margin: 0;
+    }
+
+    .garden-card-addr {
+      font-size: 11px;
+      color: var(--warmGray);
+      margin: 0;
+    }
+
+    /* Timeline */
+    .timeline {
+      padding: 96px 64px 60px;
+      background: var(--paper);
+    }
+
+    .timeline-canvas {
+      width: 1312px;
+      height: 640px;
+      margin-top: 36px;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .timeline-canvas img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .timeline-legend {
+      width: 1312px;
+      margin-top: 36px;
+      font-size: 11px;
+      color: var(--warmGray);
+    }
+
+    /* Quote */
+    .quote {
+      height: 276px;
+      background: var(--paperDeep);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .quote-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .quote-rule {
+      width: 3px;
+      height: 72px;
+      background: var(--cinnabar);
+    }
+
+    .quote-text {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .quote-attribution {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 14px;
+      color: var(--warmGray);
+      margin: 0;
+    }
+
+    /* Network */
+    .network {
+      height: 1068px;
+      background: var(--pineDeep);
+      padding-top: 96px;
+    }
+
+    .graph-wrap {
+      width: 1312px;
+      height: 620px;
+      margin: 36px auto 0;
+      border-radius: 2px;
+      overflow: hidden;
+      border: 1px solid var(--pineLine);
+    }
+
+    .graph-wrap img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .graph-legend {
+      width: 1312px;
+      margin: 36px auto 0;
+      display: flex;
+      gap: 28px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--pineSoft);
+    }
+
+    .legend-swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+
+    /* Wiki */
+    .wiki {
+      padding: 96px 64px 60px;
+      background: var(--paper);
+    }
+
+    .wiki-grid {
+      margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .wiki-card {
+      width: 644px;
+      background: var(--white);
+      border: 1px solid var(--hairline);
+      border-radius: 2px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .wiki-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .wiki-card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .wiki-icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .wiki-card-title span {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .source-chip {
+      height: 22px;
+      padding: 0 12px;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      font-size: 10px;
+      color: var(--warmGray);
+      display: flex;
+      align-items: center;
+    }
+
+    .wiki-excerpt {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 14px;
+      color: var(--inkSoft);
+      line-height: 26px;
+      margin: 0;
+    }
+
+    .wiki-link {
+      font-size: 11px;
+      color: var(--warmGray);
+      text-decoration: none;
+    }
+
+    .wiki-link:hover { color: var(--cinnabar); }
+
+    .wiki-note {
+      width: 1312px;
+      margin-top: 36px;
+      font-size: 11px;
+      color: var(--warmGray);
+    }
+
+    /* RAG */
+    .rag {
+      padding: 96px 64px 60px;
+      background: var(--paperDeep);
+    }
+
+    .rag-console {
+      width: 1312px;
+      margin-top: 40px;
+      background: var(--white);
+      border: 1px solid var(--hairline);
+      border-radius: 2px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .corpus-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .corpus-label {
+      font-size: 11px;
+      color: var(--warmGray);
+      font-weight: 500;
+    }
+
+    .chip {
+      height: 26px;
+      padding: 0 12px;
+      background: var(--paper);
+      border-radius: 999px;
+      font-size: 11px;
+      color: var(--inkSoft);
+      display: flex;
+      align-items: center;
+    }
+
+    .user-bubble-row {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .user-bubble {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 12px 18px;
+      border-radius: 4px;
+      font-size: 14px;
+      max-width: 640px;
+    }
+
+    .ai-answer {
+      background: #F8F4EA;
+      border: 1px solid #E5DCC2;
+      border-radius: 4px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ai-label {
+      font-size: 11px;
+      color: var(--cinnabar);
+      font-weight: 500;
+    }
+
+    .ai-text {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 14px;
+      color: var(--inkSoft);
+      line-height: 26px;
+      margin: 0;
+    }
+
+    .citation-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .citation-chip {
+      height: 22px;
+      padding: 0 10px;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      font-size: 10px;
+      color: var(--warmGray);
+      display: flex;
+      align-items: center;
+    }
+
+    .citation-chip.accent {
+      border-color: var(--cinnabar);
+      color: var(--cinnabar);
+      font-weight: 500;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .input-box {
+      flex: 1;
+      height: 48px;
+      border: 1px solid #BBAF94;
+      border-radius: 4px;
+      padding: 0 18px;
+      font-size: 14px;
+      color: var(--ink);
+      background: var(--white);
+      outline: none;
+    }
+
+    .input-box::placeholder { color: #A89A7E; }
+
+    .suggestion-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .suggest-label {
+      font-size: 11px;
+      color: var(--warmGray);
+      font-weight: 500;
+    }
+
+    .suggest-chip {
+      height: 28px;
+      padding: 0 14px;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      font-size: 11px;
+      color: var(--inkSoft);
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .suggest-chip:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* Footer */
+    .footer {
+      height: 316px;
+      background: var(--ink);
+      padding-top: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer-top {
+      height: 133px;
+      display: flex;
+      justify-content: space-between;
+      padding-top: 48px;
+    }
+
+    .footer-brand {
+      width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .footer-logo-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-logo-row img {
+      width: 28px;
+      height: 28px;
+    }
+
+    .footer-logo-row span {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--cream);
+    }
+
+    .footer-tagline {
+      font-size: 12px;
+      color: #7A9083;
+      line-height: 20px;
+      margin: 0;
+    }
+
+    .footer-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-col-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gold);
+      margin: 0;
+    }
+
+    .footer-col a {
+      font-size: 12px;
+      color: var(--pineSoft);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover { color: var(--cream); }
+
+    .footer-divider {
+      width: 1440px;
+      height: 1px;
+      background: var(--pineLine);
+      margin-top: 48px;
+    }
+
+    .footer-methodology {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 12px;
+      color: #7A9083;
+      line-height: 22px;
+      margin: 28px 0 0;
+      width: 1440px;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      margin-top: auto;
+      margin-bottom: 16px;
+      font-size: 11px;
+      color: #7A9083;
+      width: 1440px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Masthead -->
+    <header class="masthead" id="masthead">
+      <div class="brand">
+        <img src="assets/svg/14_42.svg" alt="" class="brand-mark">
+        <div class="brand-text">
+          <span class="brand-name">姑苏九园</span>
+          <span class="brand-sub">GUSU NINE GARDENS ARCHIVE</span>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#geography">地理</a>
+        <a href="#gardens">名录</a>
+        <a href="#timeline">沿革</a>
+        <a href="#network">人物</a>
+        <a href="#wiki">辑录</a>
+        <a href="#rag">智库</a>
+      </nav>
+      <a href="#rag" class="btn btn-primary">进入智库</a>
+    </header>
+    <div class="masthead-divider"></div>
+
+    <!-- Hero -->
+    <section class="section hero" id="hero">
+      <div class="hero-bg-char serif">園</div>
+      <div class="hero-content">
+        <div class="hero-kicker">世界文化遗产 · UNESCO WORLD HERITAGE · 编号 813</div>
+        <h1 class="hero-title serif">姑苏九园</h1>
+        <p class="hero-dek">拙政园、留园、网师园、环秀山庄、沧浪亭、狮子林、耦园、艺圃、退思园——九座园林，八百四十余年营造史。地理、沿革、人物、典籍，一座可以检索的江南。</p>
+        <p class="hero-meta">数据来源：UNESCO 世界遗产名录 · CBDB 中国历代人物传记资料库 · Wikipedia ｜ 典籍语料：《园冶》《长物志》《闲情偶寄》等 63 种</p>
+        <div class="hero-cta-row">
+          <a href="#gardens" class="btn btn-primary btn-lg">开始探索</a>
+          <a href="#rag" class="btn btn-outline btn-lg">向智库提问</a>
+        </div>
+        <div class="hero-visual">
+          <img src="assets/images/17_14.png" alt="园林意象：白墙黛瓦，叠石理水">
+        </div>
+        <p class="hero-caption">图 · 园林意象（AI 绘制）——白墙黛瓦，叠石理水</p>
+      </div>
+    </section>
+
+    <!-- Geography -->
+    <section class="section geography dark" id="geography">
+      <div class="section-header">
+        <div class="kicker">壹 · GEOGRAPHY</div>
+        <h2 class="section-title serif">地理分布</h2>
+        <p class="section-sub">八座园林散布姑苏古城内外，退思园独踞南郊同里镇——水是它们共同的路。</p>
+      </div>
+      <div class="map-wrap">
+        <img src="assets/svg/18_5.svg" alt="苏州古城园林分布示意图">
+      </div>
+      <div class="map-notes">
+        <div class="map-note">
+          <div class="map-note-tag serif">城</div>
+          <div class="map-note-body">姑苏古城约 14.2 平方公里，河街相邻、水陆并行。八座园林皆在城墙内外三里之内，步行与舟楫皆可串联。</div>
+        </div>
+        <div class="map-note">
+          <div class="map-note-tag serif">水</div>
+          <div class="map-note-body">退思园所在的同里镇被五湖环抱，距古城约 18 公里。水乡市镇园林，是苏州古典园林向市镇的延伸。</div>
+        </div>
+        <div class="map-note">
+          <div class="map-note-tag serif">图</div>
+          <div class="map-note-body">本地图为示意绘制。点位依据公开地址的相对方位标注，水系与城廓取自历史地图意象，非精确测绘。</div>
+        </div>
+      </div>
+      <div class="map-legend">图例 · 红点为世界遗产园林点位 ｜ 虚线为古城外示意连线 ｜ 编号对应「贰 · 九园名录」</div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats" id="stats">
+      <div class="stat-card">
+        <div class="stat-value serif">9 座</div>
+        <div class="stat-label">列入世界遗产的园林</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value serif">841 年</div>
+        <div class="stat-label">最早与最晚始建的时间跨度</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value serif">63 种</div>
+        <div class="stat-label">智库蒸馏的典籍语料</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value serif accent">2 批</div>
+        <div class="stat-label">1997 年列入 · 2000 年扩展</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value serif">30+ 位</div>
+        <div class="stat-label">有文献可考的历代主人</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value serif">5 项</div>
+        <div class="stat-label">2000 年扩展列入的园林</div>
+      </div>
+    </section>
+    <div class="stats-note">注 · 1997 年首批：拙政园、留园、网师园、环秀山庄 ｜ 2000 年扩展：沧浪亭、狮子林、艺圃、耦园、退思园</div>
+
+    <!-- Gardens -->
+    <section class="section gardens" id="gardens">
+      <div class="section-header" style="padding-left: 0;">
+        <div class="kicker">贰 · THE NINE GARDENS</div>
+        <h2 class="section-title serif">九园名录</h2>
+        <p class="section-sub">以始建年代为序。每一座园林，都是一部家族与时代的合传。</p>
+      </div>
+      <div class="gardens-grid">
+        <article class="garden-card">
+          <div class="garden-card-img"><img src="assets/images/18_74.png" alt="沧浪亭"></div>
+          <div class="garden-card-body">
+            <h3 class="garden-card-name serif">06 · 沧浪亭</h3>
+            <p class="garden-card-meta">北宋庆历四年（1044）· 苏舜钦始建</p>
+            <p class="garden-card-addr">姑苏区沧浪亭街 3 号 ｜ 2000 年扩展</p>
+          </div>
+        </article>
+        <article class="garden-card">
+          <div class="garden-card-img"><img src="assets/images/18_80.png" alt="网师园"></div>
+          <div class="garden-card-body">
+            <h3 class="garden-card-name serif">04 · 网师园</h3>
+            <p class="garden-card-meta">南宋淳熙年间（约 1174）· 史正志始建万卷堂</p>
+            <p class="garden-card-addr">姑苏区阔家头巷 11 号 ｜ 1997 年首批</p>
+          </div>
+        </article>
+        <article class="garden-card">
+          <div class="garden-card-img"><img src="assets/images/18_86.png" alt="狮子林"></div>
+          <div class="garden-card-body">
+            <h3 class="garden-card-name serif">02 · 狮子林</h3>
+            <p class="garden-card-meta">元至正二年（1342）· 天如禅师弟子始建</p>
+            <p class="garden-card-addr">姑苏区园林路 23 号 ｜ 2000 年扩展</p>
+          </div>
+        </article>
+        <article class="garden-card">
+          <div class="garden-card-img"><img src="assets/images/19_2.png" alt="拙政园"></div>
+          <div class="garden-card-body">
+            <h3 class="garden-card-name serif">01 · 拙政园</h3>
+            <p class="garden-card-meta">明正德四年（1509）· 王献臣始建</p>
+            <p class="garden-card-addr">姑苏区东北街 178 号 ｜ 1997 年首批</p>
+          </div>
+        </article>
+        <article class="garden-card">
+          <div class="garden-card-img"><img src="assets/images/19_8.png" alt="艺圃"></div>
+          <div class="garden-card-body">
+            <h3 class="garden-card-name serif">07 · 艺圃</h3>
+            <p class="garden-card-meta">明嘉靖年间（约 1541）· 袁祖庚始建</p>
+            <p class="garden-card-addr">姑苏区文衙弄 5 号 ｜ 2000 年扩展</p>
+          </div>
+        </article>
+        <article class="garden-card">
+          <div class="garden-card-img"><img src="assets/images/19_14.png" alt="留园"></div>
+          <div class="garden-card-body">
+            <h3 class="garden-card-name serif">08 · 留园</h3>
+            <p class="garden-card-meta">明万历二十一年（1593）· 徐泰时始建</p>
+            <p class="garden-card-addr">姑苏区留园路 338 号 ｜ 1997 年首批</p>
+          </div>
+        </article>
+        <article class="garden-card">
+          <div class="garden-card-img"><img src="assets/images/20_2.png" alt="环秀山庄"></div>
+          <div class="garden-card-body">
+            <h3 class="garden-card-name serif">05 · 环秀山庄</h3>
+            <p class="garden-card-meta">五代金谷园故址 · 明申时行筑 · 清戈裕良叠山</p>
+            <p class="garden-card-addr">姑苏区景德路 272 号 ｜ 1997 年首批</p>
+          </div>
+        </article>
+        <article class="garden-card">
+          <div class="garden-card-img"><img src="assets/images/20_8.png" alt="耦园"></div>
+          <div class="garden-card-body">
+            <h3 class="garden-card-name serif">03 · 耦园</h3>
+            <p class="garden-card-meta">清雍正年间（约 1730）· 陆锦始建涉园</p>
+            <p class="garden-card-addr">姑苏区小新桥巷 6 号 ｜ 2000 年扩展</p>
+          </div>
+        </article>
+        <article class="garden-card">
+          <div class="garden-card-img"><img src="assets/images/20_14.png" alt="退思园"></div>
+          <div class="garden-card-body">
+            <h3 class="garden-card-name serif">09 · 退思园</h3>
+            <p class="garden-card-meta">清光绪十一年（1885）· 任兰生始建</p>
+            <p class="garden-card-addr">吴江区同里镇新填街 234 号 ｜ 2000 年扩展</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="section timeline" id="timeline">
+      <div class="section-header" style="padding-left: 0;">
+        <div class="kicker">叁 · CHRONOLOGY</div>
+        <h2 class="section-title serif">沿革长河</h2>
+        <p class="section-sub">自北宋庆历四年（1044）至清光绪十一年（1885），九园相继落成；人名标注其在位年代，红点为列入世界遗产之年。</p>
+      </div>
+      <div class="timeline-canvas">
+        <img src="assets/svg/20_23.svg" alt="九座园林始建年代与列入世界遗产时间轴">
+      </div>
+      <div class="timeline-legend">图例 · 条带自始建年起，人名标注于其在位年代 ｜ 红点为列入世界遗产年份（1997 首批 / 2000 扩展）</div>
+    </section>
+
+    <!-- Quote -->
+    <section class="section quote" id="quote">
+      <div class="quote-row">
+        <div class="quote-rule"></div>
+        <p class="quote-text serif">虽由人作，宛自天开</p>
+      </div>
+      <p class="quote-attribution serif">—— 明 · 计成《园冶》</p>
+    </section>
+
+    <!-- Network -->
+    <section class="section network dark" id="network">
+      <div class="section-header">
+        <div class="kicker">肆 · RELATIONSHIP NETWORK · CBDB</div>
+        <h2 class="section-title serif">人物谱系</h2>
+        <p class="section-sub">以文徵明为枢纽的吴门文脉，与门生故吏、盛氏父子的宦绅网络——园主之间的师承、家族与交游，取自 CBDB 中国历代人物传记资料库及公开史料互校。</p>
+      </div>
+      <div class="graph-wrap">
+        <img src="assets/svg/20_99.svg" alt="园主人际关系网络图">
+      </div>
+      <div class="graph-legend">
+        <div class="legend-item"><span class="legend-swatch" style="background: var(--gold);"></span>师承</div>
+        <div class="legend-item"><span class="legend-swatch" style="background: #D8485B;"></span>家族 · 伉俪</div>
+        <div class="legend-item"><span class="legend-swatch" style="background: #E8DFC9;"></span>文友唱和</div>
+        <div class="legend-item"><span class="legend-swatch" style="background: #7A9083;"></span>同朝 · 营建（虚线为同园先后主）</div>
+      </div>
+    </section>
+
+    <!-- Wiki -->
+    <section class="section wiki" id="wiki">
+      <div class="section-header" style="padding-left: 0;">
+        <div class="kicker">伍 · ENCYCLOPEDIA DIGEST</div>
+        <h2 class="section-title serif">百科辑录</h2>
+        <p class="section-sub">摘录自维基百科「苏州古典园林」及各园词条，与地方志互校。完整词条经站内镜像每日同步。</p>
+      </div>
+      <div class="wiki-grid">
+        <article class="wiki-card">
+          <div class="wiki-card-head">
+            <div class="wiki-card-title">
+              <img src="assets/svg/21_42.svg" alt="" class="wiki-icon">
+              <span class="serif">拙政园</span>
+            </div>
+            <span class="source-chip">Wikipedia</span>
+          </div>
+          <p class="wiki-excerpt">拙政园始建于明正德初年，御史王献臣仕途失意归隐苏州后筑园，取西晋潘岳《闲居赋》「拙者之为政」意命名。全园以水为中心，分东、中、西三部分，中部为全园精华，是苏州现存最大的古典园林，亦被列入中国四大名园。</p>
+          <a class="wiki-link" href="https://zh.wikipedia.org/wiki/拙政园" target="_blank" rel="noopener">查看词条 · zh.wikipedia.org/wiki/拙政园</a>
+        </article>
+        <article class="wiki-card">
+          <div class="wiki-card-head">
+            <div class="wiki-card-title">
+              <img src="assets/svg/21_53.svg" alt="" class="wiki-icon">
+              <span class="serif">沧浪亭</span>
+            </div>
+            <span class="source-chip">Wikipedia</span>
+          </div>
+          <p class="wiki-excerpt">沧浪亭是苏州现存诸园中历史最悠久的园林。北宋庆历四年，苏舜钦贬居苏州，以四万钱购得五代孙承祐池馆旧址，傍水筑亭，取《孟子》「沧浪之水清兮，可以濯吾缨」命名。园以崇阜广水见长，未入园门先见水，复廊将园内外山水连为一体。</p>
+          <a class="wiki-link" href="https://zh.wikipedia.org/wiki/沧浪亭" target="_blank" rel="noopener">查看词条 · zh.wikipedia.org/wiki/沧浪亭</a>
+        </article>
+        <article class="wiki-card">
+          <div class="wiki-card-head">
+            <div class="wiki-card-title">
+              <img src="assets/svg/21_64.svg" alt="" class="wiki-icon">
+              <span class="serif">网师园</span>
+            </div>
+            <span class="source-chip">Wikipedia</span>
+          </div>
+          <p class="wiki-excerpt">网师园地处苏州旧城东南隅，始为南宋史正志「万卷堂」故址，清乾隆年间宋宗元购得重建，借「渔隐」之义名网师。全园占地仅约半公顷，布局紧凑，以精巧见长，被誉为苏州园林之「小园极则」。一九八〇年，以其殿春簃为蓝本的「明轩」落户纽约大都会艺术博物馆。</p>
+          <a class="wiki-link" href="https://zh.wikipedia.org/wiki/网师园" target="_blank" rel="noopener">查看词条 · zh.wikipedia.org/wiki/网师园</a>
+        </article>
+        <article class="wiki-card">
+          <div class="wiki-card-head">
+            <div class="wiki-card-title">
+              <img src="assets/svg/21_75.svg" alt="" class="wiki-icon">
+              <span class="serif">留园</span>
+            </div>
+            <span class="source-chip">Wikipedia</span>
+          </div>
+          <p class="wiki-excerpt">留园始建于明万历二十一年，为太仆寺少卿徐泰时之东园，清嘉庆年间刘恕改建，俗称「刘园」，同治十二年盛康购得，取「刘」之谐音而易名「留园」。全园分中、东、西、北四个景区，以七百余米长廊串联，东区冠云峰为江南园林中最高大的湖石名峰。</p>
+          <a class="wiki-link" href="https://zh.wikipedia.org/wiki/留园" target="_blank" rel="noopener">查看词条 · zh.wikipedia.org/wiki/留园</a>
+        </article>
+      </div>
+      <div class="wiki-note">另收录：环秀山庄、狮子林、耦园、艺圃、退思园及「苏州古典园林」总条目，共 9 个词条，均可在智库中直接检索。</div>
+    </section>
+
+    <!-- RAG -->
+    <section class="section rag" id="rag">
+      <div class="section-header" style="padding-left: 0;">
+        <div class="kicker">陆 · GARDEN INTELLIGENCE · RAG</div>
+        <h2 class="section-title serif">园林智库</h2>
+        <p class="section-sub">检索增强生成（RAG）引擎，已蒸馏《园冶》《长物志》《闲情偶寄》《江南园林志》等 63 种园林典籍。输入关键词或自然语言提示词，返回带典籍出处的专业回答。</p>
+      </div>
+      <div class="rag-console">
+        <div class="corpus-row">
+          <span class="corpus-label">语料库</span>
+          <span class="chip">《园冶》</span>
+          <span class="chip">《长物志》</span>
+          <span class="chip">《闲情偶寄》</span>
+          <span class="chip">《江南园林志》等 63 种</span>
+        </div>
+        <div class="user-bubble-row">
+          <div class="user-bubble">拙政园的「借景」手法，在典籍中如何记述？</div>
+        </div>
+        <div class="ai-answer">
+          <div class="ai-label">智库回答 · 已检索 4 条典籍片段</div>
+          <p class="ai-text">「借景」一说，首见于计成《园冶·借景》篇：「构园无格，借景有因……因借无由，触情俱是。」拙政园中部远借北寺塔影，为「远借」之经典；西部波形水廊临墙而建，时借墙外市井声色，属「邻借」。《江南园林志》评其「扩先日之规模，极登临之胜概」。</p>
+          <div class="citation-row">
+            <span class="citation-chip">《园冶 · 卷一 · 借景》</span>
+            <span class="citation-chip">《江南园林志 · 造园》</span>
+            <span class="citation-chip accent">相关度 0.92</span>
+          </div>
+        </div>
+        <div class="input-row">
+          <input type="text" class="input-box" id="ragInput" placeholder="输入关键词或提示词，例如：借景 拙政园 ／ 比较留园与网师园的空间序列……">
+          <button class="btn btn-primary" style="height: 48px; padding: 0 24px;" onclick="handleRag()">检索</button>
+        </div>
+        <div class="suggestion-row">
+          <span class="suggest-label">试试</span>
+          <span class="suggest-chip" onclick="setRag('借景')">借景</span>
+          <span class="suggest-chip" onclick="setRag('叠山理水')">叠山理水</span>
+          <span class="suggest-chip" onclick="setRag('文徵明与拙政园')">文徵明与拙政园</span>
+          <span class="suggest-chip" onclick="setRag('廊的形制')">廊的形制</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="footer">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo-row">
+            <img src="assets/svg/22_48.svg" alt="">
+            <span class="serif">姑苏九园</span>
+          </div>
+          <p class="footer-tagline">一座可以检索的江南——苏州古典园林数字档案。以地理、沿革、人物、典籍四个维度，重新打开九座世界遗产园林。</p>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">档案</h4>
+          <a href="#geography">壹 · 地理分布</a>
+          <a href="#gardens">贰 · 九园名录</a>
+          <a href="#timeline">叁 · 沿革长河</a>
+          <a href="#network">肆 · 人物谱系</a>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">数据源</h4>
+          <a href="https://whc.unesco.org" target="_blank" rel="noopener">UNESCO 世界遗产名录（813）</a>
+          <a href="https://projects.iq.harvard.edu/cbdb" target="_blank" rel="noopener">CBDB 中国历代人物传记资料库</a>
+          <a href="https://zh.wikipedia.org" target="_blank" rel="noopener">Wikipedia 维基百科</a>
+          <a href="#">苏州市园林和绿化管理局</a>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">智库</h4>
+          <a href="#">典籍语料清单</a>
+          <a href="#">检索 API</a>
+          <a href="#">引用格式</a>
+          <a href="#">关于本项目</a>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <p class="footer-methodology">方法论 · 本页沿革与人物关系，以 UNESCO 世界遗产名录（编号 813）、CBDB 中国历代人物传记资料库、维基百科词条及公开出版物互校而成；地图为示意，非精确测绘；园林影像由 AI 绘制，仅作意境参考。</p>
+      <div class="footer-bottom">
+        <span>2026 姑苏九园数字档案 · 苏园研社 版权所有</span>
+        <span>典籍语料仅限学术研究使用</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    function setRag(text) {
+      document.getElementById('ragInput').value = text;
+      document.getElementById('ragInput').focus();
+    }
+
+    function handleRag() {
+      const input = document.getElementById('ragInput');
+      const value = input.value.trim();
+      if (!value) {
+        input.focus();
+        return;
+      }
+      const aiText = document.querySelector('.ai-text');
+      const aiLabel = document.querySelector('.ai-label');
+      const userBubble = document.querySelector('.user-bubble');
+      const citationRow = document.querySelector('.citation-row');
+
+      userBubble.textContent = value;
+      aiLabel.textContent = '智库回答 · 正在检索典籍片段…';
+      aiText.textContent = '正在从《园冶》《长物志》《闲情偶寄》《江南园林志》等 63 种典籍中检索相关内容，并生成带出处的回答。';
+      citationRow.innerHTML = '<span class="citation-chip">检索中…</span>';
+
+      setTimeout(() => {
+        aiLabel.textContent = '智库回答 · 已检索 3 条典籍片段';
+        aiText.textContent = '「园林之胜，惟山与水二物。虽由人作，宛自天开。」关于「' + value + '」的记述，散见于明清造园典籍。计成《园冶》谓「构园无格，借景有因」；李渔《闲情偶寄》论「取景在借」；文震亨《长物志》则于花木、水石之间寓雅赏之意。具体园例可进一步指定园林名称以精确定位。';
+        citationRow.innerHTML = '<span class="citation-chip">《园冶 · 兴造论》</span><span class="citation-chip">《闲情偶寄 · 居室部》</span><span class="citation-chip accent">相关度 0.87</span>';
+      }, 900);
+    }
+
+    document.getElementById('ragInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleRag();
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        const target = document.querySelector(targetId);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

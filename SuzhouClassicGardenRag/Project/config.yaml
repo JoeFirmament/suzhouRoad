@@ -1,0 +1,65 @@
+# ============================================================
+# 园林知识库 RAG 系统 — 配置文件
+# ============================================================
+
+# --- 路径 ---
+paths:
+  resource_dir: "../Resource"         # 原始文档目录
+  converted_dir: "./converted"        # MinerU 转换输出目录
+  data_dir: "./data"                  # Qdrant 持久化 + 文件哈希记录
+  hash_db: "./data/file_hashes.json"  # 文件哈希追踪文件（已废弃，拆分如下）
+  converted_hash_db: "./data/converted_hashes.json"  # MinerU 转换追踪
+  indexed_hash_db: "./data/indexed_hashes.json"      # 向量索引追踪
+  image_hash_db: "./data/image_hashes.json"          # 图片索引追踪
+
+# --- DeepSeek LLM ---
+llm:
+  api_key: "${DEEPSEEK_API_KEY}"      # 从环境变量读取
+  api_base: "https://api.deepseek.com/v1"
+  model: "deepseek-chat"
+  temperature: 0.3
+  max_tokens: 2048
+
+# --- Embedding 模型 (BGE) ---
+embedding:
+  model_name: "BAAI/bge-large-zh-v1.5"
+  device: "cpu"                       # cpu 或 cuda
+  batch_size: 8
+
+# --- 文档分块 ---
+chunking:
+  chunk_size: 512
+  chunk_overlap: 64
+
+# --- Qdrant ---
+qdrant:
+  path: "./data/qdrant"               # 本地持久化路径
+  collection_name: "garden_knowledge"
+
+# --- 向量空间 ---
+vector_spaces:
+  text_dense:
+    size: 1024
+    distance: "COSINE"
+  image_dense:
+    size: 512
+    distance: "COSINE"
+
+# --- MinerU ---
+mineru:
+  backend: "hybrid-engine"            # pipeline | vlm-engine | hybrid-engine
+  lang: "ch"
+  effort: "medium"                    # medium | high
+
+# --- 图片检索 ---
+image:
+  enabled: false                      # 设为 true 后索引和查询时启用图片搜索
+  clip_model: "OFA-Sys/chinese-clip-vit-base-patch16"
+  device: "mps"                       # mps(M芯片) | cpu | cuda
+  match_threshold: 0.70               # 图片匹配最低置信度
+  batch_size: 4
+
+# --- 检索 ---
+retrieval:
+  top_k: 5                            # 检索返回的文档片段数
+  similarity_threshold: 0.3           # 最低相似度阈值

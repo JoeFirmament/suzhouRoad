@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "created": "2025-07-20",
+    "description": "CBDB 人名查询清单 — 9园园主/设计名家/关联人物，用于批量回查 CBDB 构建子集",
+    "total_persons": 48,
+    "cbdb_source": "SQLite 单机版 20250520",
+    "extraction_strategy": "先用此清单批量查询获取 c_personid，再展开一阶邻居（KIN_DATA + ASSOC_DATA），预计最终子集 300-500 人"
+  },
+  "query_list": [
+    {"id": "q001", "name_chn": "王献臣", "garden": "拙政园", "role": "始建者", "priority": 1, "confidence": "high", "era": "明弘治/正德", "era_range": [1488, 1521], "office_hint": "御史", "location_hint": "苏州/吴县", "alias": []},
+    {"id": "q002", "name_chn": "文徵明", "garden": "拙政园/艺圃", "role": "设计参与/文氏家族", "priority": 1, "confidence": "high", "era": "明成化/嘉靖", "era_range": [1470, 1559], "office_hint": "翰林院待诏", "location_hint": "苏州/长洲", "alias": ["文征明", "文衡山"]},
+    {"id": "q003", "name_chn": "陈之遴", "garden": "拙政园", "role": "继任园主", "priority": 1, "confidence": "high", "era": "明末清初", "era_range": [1600, 1660], "office_hint": "大学士/尚书", "location_hint": "海宁/苏州", "alias": []},
+    {"id": "q004", "name_chn": "王永宁", "garden": "拙政园", "role": "继任园主", "priority": 2, "confidence": "medium", "era": "清康熙", "era_range": [1644, 1680], "office_hint": null, "location_hint": "苏州", "alias": [], "warning": "CBDB中可能有多个王永宁，需用吴三桂关联+苏州籍贯消歧"},
+    {"id": "q005", "name_chn": "李秀成", "garden": "拙政园", "role": "太平天国忠王府", "priority": 2, "confidence": "high", "era": "清咸丰/同治", "era_range": [1823, 1864], "office_hint": "忠王", "location_hint": "广西/苏州", "alias": []},
+    {"id": "q006", "name_chn": "张之万", "garden": "拙政园", "role": "继任园主", "priority": 1, "confidence": "high", "era": "清同治/光绪", "era_range": [1811, 1897], "office_hint": "大学士/尚书", "location_hint": "直隶南皮", "alias": []},
+    {"id": "q007", "name_chn": "张履谦", "garden": "拙政园", "role": "继任园主", "priority": 2, "confidence": "medium", "era": "清同治/光绪", "era_range": [1850, 1920], "office_hint": null, "location_hint": "苏州", "alias": [], "warning": "与清代学者张履谦区分，目标为苏州富商"},
+    {"id": "q008", "name_chn": "徐泰时", "garden": "留园", "role": "始建者", "priority": 1, "confidence": "high", "era": "明万历", "era_range": [1573, 1620], "office_hint": "太仆寺少卿", "location_hint": "苏州", "alias": []},
+    {"id": "q009", "name_chn": "刘恕", "garden": "留园", "role": "继任园主/改建", "priority": 1, "confidence": "medium", "era": "清乾隆/嘉庆", "era_range": [1750, 1820], "office_hint": null, "location_hint": "苏州", "alias": ["寒碧主人"], "warning": "与宋代史学家刘恕区分"},
+    {"id": "q010", "name_chn": "盛康", "garden": "留园", "role": "继任园主", "priority": 1, "confidence": "high", "era": "清同治/光绪", "era_range": [1814, 1902], "office_hint": null, "location_hint": "苏州/常州", "alias": [], "note": "盛宣怀之父"},
+    {"id": "q011", "name_chn": "史正志", "garden": "网师园", "role": "始建者", "priority": 1, "confidence": "high", "era": "南宋绍兴/淳熙", "era_range": [1131, 1189], "office_hint": "侍郎", "location_hint": "苏州", "alias": []},
+    {"id": "q012", "name_chn": "宋宗元", "garden": "网师园", "role": "继任园主/命名", "priority": 1, "confidence": "medium", "era": "清乾隆", "era_range": [1735, 1796], "office_hint": null, "location_hint": "苏州", "alias": []},
+    {"id": "q013", "name_chn": "瞿兆骙", "garden": "网师园", "role": "继任园主", "priority": 2, "confidence": "low", "era": "清乾隆", "era_range": [1770, 1820], "office_hint": null, "location_hint": "苏州", "alias": [], "warning": "CBDB中可能无收录"},
+    {"id": "q014", "name_chn": "李鸿裔", "garden": "网师园", "role": "继任园主", "priority": 1, "confidence": "medium", "era": "清同治", "era_range": [1830, 1885], "office_hint": null, "location_hint": "四川", "alias": []},
+    {"id": "q015", "name_chn": "何澄", "garden": "网师园", "role": "近代园主", "priority": 2, "confidence": "medium", "era": "近代", "era_range": [1880, 1950], "office_hint": null, "location_hint": "苏州/上海", "alias": [], "warning": "近代人物，CBDB可能无收录"},
+    {"id": "q016", "name_chn": "蒋楫", "garden": "环秀山庄", "role": "早期园主", "priority": 2, "confidence": "medium", "era": "清乾隆", "era_range": [1735, 1796], "office_hint": null, "location_hint": "苏州", "alias": []},
+    {"id": "q017", "name_chn": "毕沅", "garden": "环秀山庄", "role": "继任园主", "priority": 1, "confidence": "high", "era": "清乾隆/嘉庆", "era_range": [1730, 1797], "office_hint": "湖广总督/状元", "location_hint": "镇洋/苏州", "alias": []},
+    {"id": "q018", "name_chn": "孙士毅", "garden": "环秀山庄", "role": "继任园主", "priority": 1, "confidence": "high", "era": "清乾隆/嘉庆", "era_range": [1720, 1796], "office_hint": "大学士", "location_hint": "仁和/苏州", "alias": []},
+    {"id": "q019", "name_chn": "苏舜钦", "garden": "沧浪亭", "role": "始建者/命名", "priority": 1, "confidence": "high", "era": "北宋庆历", "era_range": [1008, 1048], "office_hint": "集贤校理", "location_hint": "开封/苏州", "alias": ["苏子美"]},
+    {"id": "q020", "name_chn": "韩世忠", "garden": "沧浪亭", "role": "继任园主", "priority": 1, "confidence": "high", "era": "南宋绍兴", "era_range": [1089, 1151], "office_hint": "枢密使/蕲王", "location_hint": "延安/苏州", "alias": []},
+    {"id": "q021", "name_chn": "宋荦", "garden": "沧浪亭", "role": "重修者", "priority": 1, "confidence": "high", "era": "清康熙", "era_range": [1634, 1713], "office_hint": "江苏巡抚", "location_hint": "商丘/苏州", "alias": []},
+    {"id": "q022", "name_chn": "维则", "garden": "狮子林", "role": "始建者", "priority": 1, "confidence": "medium", "era": "元至正", "era_range": [1280, 1360], "office_hint": "禅师", "location_hint": "苏州", "alias": ["天如禅师"], "warning": "佛教人物，CBDB可能收录有限"},
+    {"id": "q023", "name_chn": "倪瓒", "garden": "狮子林", "role": "参与造园/绘图", "priority": 1, "confidence": "high", "era": "元/明初", "era_range": [1301, 1374], "office_hint": null, "location_hint": "无锡/苏州", "alias": ["倪云林", "倪迂"]},
+    {"id": "q024", "name_chn": "贝润生", "garden": "狮子林", "role": "近代园主", "priority": 2, "confidence": "low", "era": "近代", "era_range": [1870, 1950], "office_hint": null, "location_hint": "苏州/上海", "alias": [], "warning": "近代人物，CBDB可能无收录"},
+    {"id": "q025", "name_chn": "袁祖庚", "garden": "艺圃", "role": "早期园主", "priority": 2, "confidence": "medium", "era": "明嘉靖", "era_range": [1500, 1570], "office_hint": null, "location_hint": "苏州", "alias": []},
+    {"id": "q026", "name_chn": "文震孟", "garden": "艺圃", "role": "园主/改建", "priority": 1, "confidence": "high", "era": "明万历/天启/崇祯", "era_range": [1574, 1636], "office_hint": "礼部左侍郎/状元", "location_hint": "苏州/长洲", "alias": []},
+    {"id": "q027", "name_chn": "姜埰", "garden": "艺圃", "role": "继任园主", "priority": 1, "confidence": "high", "era": "明/清初", "era_range": [1607, 1673], "office_hint": "礼科给事中", "location_hint": "莱阳/苏州", "alias": []},
+    {"id": "q028", "name_chn": "陆锦", "garden": "耦园", "role": "早期园主", "priority": 2, "confidence": "medium", "era": "清雍正", "era_range": [1700, 1760], "office_hint": null, "location_hint": "苏州", "alias": []},
+    {"id": "q029", "name_chn": "沈秉成", "garden": "耦园", "role": "继任园主/改建", "priority": 1, "confidence": "high", "era": "清同治/光绪", "era_range": [1823, 1895], "office_hint": null, "location_hint": "归安/苏州", "alias": []},
+    {"id": "q030", "name_chn": "严永华", "garden": "耦园", "role": "园主之妻", "priority": 1, "confidence": "medium", "era": "清同治/光绪", "era_range": [1840, 1890], "office_hint": null, "location_hint": "归安/苏州", "alias": [], "warning": "女性，CBDB可能收录有限"},
+    {"id": "q031", "name_chn": "任兰生", "garden": "退思园", "role": "始建者", "priority": 1, "confidence": "high", "era": "清光绪", "era_range": [1838, 1888], "office_hint": null, "location_hint": "吴江/同里", "alias": []},
+    {"id": "q032", "name_chn": "戈裕良", "garden": "环秀山庄", "role": "叠山大师", "priority": 1, "confidence": "medium", "era": "清乾隆/嘉庆", "era_range": [1764, 1830], "office_hint": null, "location_hint": "常州/苏州", "alias": [], "warning": "工匠身份，CBDB可能无收录"},
+    {"id": "q033", "name_chn": "顾沄", "garden": "耦园", "role": "规划设计", "priority": 2, "confidence": "medium", "era": "清同治/光绪", "era_range": [1835, 1896], "office_hint": null, "location_hint": "苏州", "alias": []},
+    {"id": "q034", "name_chn": "袁龙", "garden": "退思园", "role": "设计者", "priority": 2, "confidence": "low", "era": "清光绪", "era_range": [1850, 1900], "office_hint": null, "location_hint": "吴江/同里", "alias": [], "warning": "同里画家，CBDB可能无收录"},
+
+    {"id": "q035", "name_chn": "盛宣怀", "garden": "留园", "role": "关联人物（盛康之子）", "priority": 1, "confidence": "high", "era": "清光绪/宣统", "era_range": [1844, 1916], "office_hint": "邮传部大臣", "location_hint": "常州/上海", "alias": []},
+    {"id": "q036", "name_chn": "吴三桂", "garden": "拙政园", "role": "关联人物（王永宁岳父）", "priority": 2, "confidence": "high", "era": "明末清初", "era_range": [1612, 1678], "office_hint": "平西王", "location_hint": "辽东/云南", "alias": []},
+    {"id": "q037", "name_chn": "徐溶", "garden": "留园", "role": "关联人物（徐泰时之子）", "priority": 2, "confidence": "medium", "era": "明万历/天启", "era_range": [1590, 1640], "office_hint": null, "location_hint": "苏州", "alias": []},
+    {"id": "q038", "name_chn": "柳如是", "garden": "拙政园", "role": "关联人物（钱谦益之妻，拙政园交游）", "priority": 2, "confidence": "medium", "era": "明末清初", "era_range": [1618, 1664], "office_hint": null, "location_hint": "嘉兴/苏州", "alias": ["柳隐", "河东君"], "warning": "女性，CBDB可能收录有限"},
+    {"id": "q039", "name_chn": "钱谦益", "garden": "拙政园", "role": "关联人物（拙政园交游）", "priority": 2, "confidence": "high", "era": "明末清初", "era_range": [1582, 1664], "office_hint": "礼部尚书", "location_hint": "常熟/苏州", "alias": ["钱牧斋"]},
+    {"id": "q040", "name_chn": "张大千", "garden": "网师园", "role": "关联人物（借寓殿春簃）", "priority": 2, "confidence": "low", "era": "近代", "era_range": [1899, 1983], "office_hint": null, "location_hint": "四川/苏州", "alias": [], "warning": "近代人物，CBDB无收录"},
+    {"id": "q041", "name_chn": "张履谦", "garden": "拙政园", "role": "关联人物（清代学者，同名区分）", "priority": 3, "confidence": "high", "era": "清嘉庆/道光", "era_range": [1790, 1860], "office_hint": "学者", "location_hint": "江苏", "alias": [], "warning": "此为排除对象——清代学者张履谦，非苏州富商。查询到此人时应排除"},
+    {"id": "q042", "name_chn": "刘恕", "garden": "留园", "role": "关联人物（宋代史学家，同名区分）", "priority": 3, "confidence": "high", "era": "北宋", "era_range": [1032, 1078], "office_hint": "史学家", "location_hint": "筠州", "alias": ["刘道原"], "warning": "此为排除对象——宋代史学家刘恕，《资治通鉴》编者之一，非留园主人。查询到此人时应排除"},
+
+    {"id": "q043", "name_chn": "文徵明", "garden": "拙政园", "role": "查重标记：同q002", "priority": 3, "confidence": "high", "era": "明成化/嘉靖", "era_range": [1470, 1559], "office_hint": "翰林院待诏", "location_hint": "苏州/长洲", "alias": ["文征明", "文衡山"], "note": "重复条目，仅用于关联查询"},
+    {"id": "q044", "name_chn": "钱谦益", "garden": "拙政园", "role": "查重标记：同q039", "priority": 3, "confidence": "high", "era": "明末清初", "era_range": [1582, 1664], "office_hint": "礼部尚书", "location_hint": "常熟/苏州", "alias": ["钱牧斋"], "note": "重复条目，仅用于关联查询"},
+    {"id": "q045", "name_chn": "沈秉成", "garden": "耦园", "role": "查重标记：同q029", "priority": 3, "confidence": "high", "era": "清同治/光绪", "era_range": [1823, 1895], "office_hint": null, "location_hint": "归安/苏州", "alias": [], "note": "重复条目，用于严永华→沈秉成的夫妇关系边"}
+  ],
+  "unique_persons": 40,
+  "exclusion_list": [
+    {"name_chn": "张履谦", "cbdb_hint": "清代嘉庆/道光学者（非苏州富商），c_index_year 约 1820", "note": "与 q007 同名但不同人，消歧时用 era_range [1850,1920] 排除"},
+    {"name_chn": "刘恕", "cbdb_hint": "北宋史学家刘道原（《资治通鉴》编者之一，非留园主人），c_index_year 约 1050", "note": "与 q009 同名但不同人，消歧时用 era_range [1750,1820] 排除"}
+  ],
+  "extraction_summary": {
+    "priority_1_owners": 21,
+    "priority_2_designers_associates": 16,
+    "priority_3_exclusion_markers": 5,
+    "estimated_cbdb_match_rate": "70-85% (宋/元/明/清初人物高，近代/工匠/女性低)",
+    "estimated_final_subset": "匹配到 ~30人 → 展开一阶邻居 → 300-500 人"
+  }
+}

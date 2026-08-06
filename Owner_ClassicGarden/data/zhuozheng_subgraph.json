@@ -1,0 +1,5483 @@
+{
+  "meta": {
+    "garden_id": "zhuozheng",
+    "garden_name": "拙政园",
+    "total_nodes": 308,
+    "total_edges": 310,
+    "seed_owners": [
+      54432,
+      206689,
+      65633,
+      81057,
+      511456,
+      54854,
+      30239,
+      34673,
+      58844,
+      67807
+    ]
+  },
+  "nodes": [
+    {
+      "id": 133124,
+      "name": "錢貴",
+      "year": 1472,
+      "aliases": [
+        "元抑"
+      ],
+      "offices": [
+        "鴻臚寺寺丞",
+        "太常寺典簿"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 684036,
+      "name": "佘書升",
+      "year": null,
+      "aliases": [
+        "榆仲"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 684045,
+      "name": "胡潛",
+      "year": null,
+      "aliases": [
+        "仲修"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 133136,
+      "name": "錢穀",
+      "year": null,
+      "aliases": [
+        "叔寶",
+        "磬室",
+        "罄室"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 34832,
+      "name": "戴冠",
+      "year": 1442,
+      "aliases": [
+        "章甫"
+      ],
+      "offices": [
+        "兵備副使",
+        "兵備副使",
+        "府學訓導"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 550929,
+      "name": "釋道忞",
+      "year": null,
+      "aliases": [
+        "宏覺國師",
+        "弘覺國師",
+        "木陳"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 696353,
+      "name": "釋戒襄",
+      "year": null,
+      "aliases": [
+        "李"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 129059,
+      "name": "胡琮",
+      "year": 1436,
+      "aliases": [
+        "二",
+        "文德"
+      ],
+      "offices": [
+        "布政使司參議",
+        "府同知",
+        "府同知"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 100390,
+      "name": "元順帝",
+      "year": 1320,
+      "aliases": [
+        "昭聖衍孝皇帝",
+        "順宗"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 133160,
+      "name": "謝兆申",
+      "year": null,
+      "aliases": [
+        "保元",
+        "太弋山樵",
+        "耳伯"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 698416,
+      "name": "郭如儀",
+      "year": 1599,
+      "aliases": [
+        "明心",
+        "松巖"
+      ],
+      "offices": [
+        "參將",
+        "訓導"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 323636,
+      "name": "應存徵",
+      "year": 1517,
+      "aliases": [
+        "久斎"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 84039,
+      "name": "項聖謨",
+      "year": 1597,
+      "aliases": [
+        "子毗",
+        "孔彰",
+        "孔彰"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 34903,
+      "name": "丁鶴年",
+      "year": 1335,
+      "aliases": [
+        "永庚"
+      ],
+      "offices": [
+        "縣達魯花赤",
+        "縣達魯花赤"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 65633,
+      "name": "李秀成",
+      "year": 1825,
+      "aliases": [
+        "李以文"
+      ],
+      "offices": [],
+      "is_owner": true
+    },
+    {
+      "id": 30849,
+      "name": "高攀龍",
+      "year": 1562,
+      "aliases": [
+        "存之",
+        "存文",
+        "忠憲"
+      ],
+      "offices": [
+        "兵部尚書",
+        "光祿寺丞",
+        "縣典史"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 55432,
+      "name": "王時敏",
+      "year": 1592,
+      "aliases": [
+        "偶諧道人",
+        "四王",
+        "恭孝先生"
+      ],
+      "offices": [
+        "尚寶司丞",
+        "尚寶司丞",
+        "尚寶司卿"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 123021,
+      "name": "陳潔",
+      "year": 1607,
+      "aliases": [
+        "澣心"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 84137,
+      "name": "趙士春",
+      "year": 1599,
+      "aliases": [
+        "景之",
+        "景之",
+        "蒼林"
+      ],
+      "offices": [
+        "編修",
+        "司照磨",
+        "左春坊左中允"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 129208,
+      "name": "俞允文",
+      "year": 1513,
+      "aliases": [
+        "仲蔚",
+        "允執",
+        "質甫"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 35003,
+      "name": "董其昌",
+      "year": 1555,
+      "aliases": [
+        "思白",
+        "思白",
+        "文敏"
+      ],
+      "offices": [
+        "兵備道",
+        "副使",
+        "翰林院編修"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 65737,
+      "name": "李漁",
+      "year": 1611,
+      "aliases": [
+        "伊山別業",
+        "半畝園",
+        "天徒"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 129239,
+      "name": "俞諫",
+      "year": 1453,
+      "aliases": [
+        "二十五",
+        "良佐",
+        "莊襄"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 67807,
+      "name": "王獻臣",
+      "year": 1463,
+      "aliases": [
+        "一",
+        "敬止"
+      ],
+      "offices": [
+        "監察御史",
+        "通判",
+        "縣丞"
+      ],
+      "is_owner": true
+    },
+    {
+      "id": 133345,
+      "name": "蕭雲擧",
+      "year": 1556,
+      "aliases": [
+        "一",
+        "允升",
+        "文端"
+      ],
+      "offices": [
+        "翰林庶吉士",
+        "禮部觀政"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 133365,
+      "name": "繆希雍",
+      "year": 1546,
+      "aliases": [
+        "仲淳",
+        "仲醇"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 129271,
+      "name": "侯震暘",
+      "year": 1569,
+      "aliases": [
+        "二",
+        "啟東",
+        "在觀"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 133367,
+      "name": "繆昌期",
+      "year": 1562,
+      "aliases": [
+        "又元",
+        "文貞",
+        "當時"
+      ],
+      "offices": [
+        "檢討",
+        "侍讀學士",
+        "庶吉士"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 35063,
+      "name": "王士禎",
+      "year": 1634,
+      "aliases": [
+        "信古堂",
+        "半偈閣",
+        "古夫子亭"
+      ],
+      "offices": [
+        "兵部督捕侍郎",
+        "戶部郎中",
+        "會試考官"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 71931,
+      "name": "王泰際",
+      "year": 1599,
+      "aliases": [
+        "內三",
+        "研存"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 565503,
+      "name": "陳公綸",
+      "year": null,
+      "aliases": [
+        "古臺",
+        "天台玉室道人",
+        "渙中"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 123147,
+      "name": "文氏(王子美妻)",
+      "year": 1500,
+      "aliases": [
+        "博洽"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 129298,
+      "name": "姬文胤",
+      "year": 1582,
+      "aliases": [
+        "上昌",
+        "姬文允",
+        "忠烈"
+      ],
+      "offices": [
+        "縣令"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 35118,
+      "name": "吳偉業",
+      "year": 1609,
+      "aliases": [
+        "大雲居士",
+        "梅村",
+        "梅村道人"
+      ],
+      "offices": [
+        "編修",
+        "東宮講讀官",
+        "東宮講讀官"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 131375,
+      "name": "黃汝良",
+      "year": 1556,
+      "aliases": [
+        "二",
+        "寓庸",
+        "明起"
+      ],
+      "offices": [
+        "國子司業",
+        "翰林庶吉士",
+        "大理寺觀政"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 35127,
+      "name": "楊漣",
+      "year": 1571,
+      "aliases": [
+        "大洪",
+        "天孺",
+        "忠烈"
+      ],
+      "offices": [
+        "兵部尚書",
+        "兵科都給事中",
+        "兵科右給事中"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 67913,
+      "name": "錢泮",
+      "year": 1494,
+      "aliases": [
+        "一",
+        "錢冸",
+        "雲江"
+      ],
+      "offices": [
+        "光祿寺卿",
+        "刑部員外郎",
+        "刑部主事"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 88393,
+      "name": "黃翼聖",
+      "year": 1596,
+      "aliases": [
+        "子羽",
+        "子羽",
+        "蓮蕊居士"
+      ],
+      "offices": [
+        "知州"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 133452,
+      "name": "歸昌世",
+      "year": 1574,
+      "aliases": [
+        "假菴",
+        "文休"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 88407,
+      "name": "蕭士瑋",
+      "year": 1585,
+      "aliases": [
+        "伯玉",
+        "伯玉"
+      ],
+      "offices": [
+        "考功司郎中",
+        "行人司行人",
+        "知事"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 129368,
+      "name": "高出",
+      "year": 1568,
+      "aliases": [
+        "孩之"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 65892,
+      "name": "張漣",
+      "year": null,
+      "aliases": [
+        "南垣"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 59750,
+      "name": "程嘉燧",
+      "year": 1565,
+      "aliases": [
+        "偈庵",
+        "孟陽",
+        "松圓"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 35183,
+      "name": "譚昌言",
+      "year": 1571,
+      "aliases": [
+        "聖俞",
+        "聖俞"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 125311,
+      "name": "梁夢龍",
+      "year": 1527,
+      "aliases": [
+        "一",
+        "乹吉",
+        "乾吉"
+      ],
+      "offices": [
+        "右布政使",
+        "總督薊遼保定軍務"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 63878,
+      "name": "孫延齡",
+      "year": 1614,
+      "aliases": [],
+      "offices": [
+        "大將軍",
+        "撫蠻將軍"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 63882,
+      "name": "孫承宗",
+      "year": 1563,
+      "aliases": [
+        "忠定",
+        "愷陽",
+        "文忠"
+      ],
+      "offices": [
+        "兵部尚書",
+        "兵部尚書",
+        "兵部添設侍郎"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 522636,
+      "name": "何君實",
+      "year": null,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 119182,
+      "name": "李日華",
+      "year": 1562,
+      "aliases": [
+        "九□",
+        "九疑",
+        "博物君子"
+      ],
+      "offices": [
+        "府推官",
+        "禮部主事",
+        "尚寶司丞"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 133519,
+      "name": "羅汝芳",
+      "year": 1515,
+      "aliases": [
+        "六",
+        "惟德",
+        "明德"
+      ],
+      "offices": [
+        "副使",
+        "刑部主事",
+        "知府"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 135569,
+      "name": "方應祥",
+      "year": 1560,
+      "aliases": [
+        "孟旋",
+        "青峒"
+      ],
+      "offices": [
+        "兵部職方司主事",
+        "禮部祠祭司郎中",
+        "禮部祠祭司員外郎"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 65939,
+      "name": "歸莊",
+      "year": 1613,
+      "aliases": [
+        "元功",
+        "元恭",
+        "園公"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 35223,
+      "name": "袁中道",
+      "year": 1570,
+      "aliases": [
+        "上生居士",
+        "小修",
+        "小修"
+      ],
+      "offices": [
+        "郎中",
+        "禮部儀制司郎中",
+        "禮部主事"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 33188,
+      "name": "錢曾",
+      "year": 1629,
+      "aliases": [
+        "也是園",
+        "也是翁",
+        "小人齋"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 68008,
+      "name": "陳琳",
+      "year": 1462,
+      "aliases": [
+        "四",
+        "玉柔",
+        "玉疇"
+      ],
+      "offices": [
+        "兵部右侍郎",
+        "布政使司右參政",
+        "大理寺卿"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 221610,
+      "name": "王銘",
+      "year": null,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 221611,
+      "name": "王演",
+      "year": null,
+      "aliases": [],
+      "offices": [
+        "府推官"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 221612,
+      "name": "王國柱",
+      "year": 1525,
+      "aliases": [],
+      "offices": [
+        "參將",
+        "僉事",
+        "訓導"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 221613,
+      "name": "李氏(王永寧母)",
+      "year": 1528,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 221614,
+      "name": "李氏(王永寧繼母)",
+      "year": null,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 221615,
+      "name": "韋氏(王永寧妻)",
+      "year": 1558,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 221617,
+      "name": "王永偉",
+      "year": 1553,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 221618,
+      "name": "王永昌",
+      "year": 1553,
+      "aliases": [],
+      "offices": [
+        "縣丞"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 221619,
+      "name": "王永貞",
+      "year": 1557,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 221620,
+      "name": "王永明",
+      "year": 1557,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 221621,
+      "name": "王永靖",
+      "year": 1557,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 221622,
+      "name": "王永慶",
+      "year": 1557,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 221623,
+      "name": "王永忠",
+      "year": 1557,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 221624,
+      "name": "王永嘉",
+      "year": 1557,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 35261,
+      "name": "袁袠",
+      "year": 1502,
+      "aliases": [
+        "永之",
+        "永之",
+        "胥臺"
+      ],
+      "offices": [
+        "兵部主事"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 35262,
+      "name": "袁尊尼",
+      "year": 1535,
+      "aliases": [
+        "一",
+        "魯望",
+        "魯望"
+      ],
+      "offices": [
+        "吏部考功司郎中",
+        "吏部考功司主事",
+        "提學副使"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 127432,
+      "name": "朱鷺",
+      "year": 1553,
+      "aliases": [
+        "家棟",
+        "白民",
+        "西空老人"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 131540,
+      "name": "華珵",
+      "year": 1438,
+      "aliases": [
+        "尚古生",
+        "汝德"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 66020,
+      "name": "艾南英",
+      "year": 1583,
+      "aliases": [
+        "千子",
+        "天慵子",
+        "章羅陳艾"
+      ],
+      "offices": [
+        "檢討"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 133611,
+      "name": "顧大章",
+      "year": 1576,
+      "aliases": [
+        "伯欽",
+        "裕愍"
+      ],
+      "offices": [
+        "兵部武庫司員外郎",
+        "教授",
+        "州推官"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 133613,
+      "name": "顧大韶",
+      "year": null,
+      "aliases": [
+        "仲恭"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 127472,
+      "name": "伊乘",
+      "year": 1448,
+      "aliases": [
+        "□戴",
+        "一",
+        "德載"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 123385,
+      "name": "王世仁",
+      "year": 1556,
+      "aliases": [
+        "二溟",
+        "元夫"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 133641,
+      "name": "顧承學",
+      "year": 1530,
+      "aliases": [
+        "思敏"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 68108,
+      "name": "吳一鵬",
+      "year": 1461,
+      "aliases": [
+        "一",
+        "南大",
+        "南夫"
+      ],
+      "offices": [
+        "副總裁",
+        "國子祭酒",
+        "翰林院編修"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 131606,
+      "name": "傅新德",
+      "year": 1569,
+      "aliases": [
+        "元明",
+        "商盤",
+        "文恪"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 684577,
+      "name": "王琪",
+      "year": null,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 127530,
+      "name": "汪道昆",
+      "year": 1525,
+      "aliases": [
+        "一",
+        "伯玉",
+        "南明"
+      ],
+      "offices": [
+        "兵備道",
+        "兵部侍郎",
+        "兵部右侍郎"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 113205,
+      "name": "釋來復",
+      "year": 1319,
+      "aliases": [
+        "蒲菴",
+        "見心",
+        "黃"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 62015,
+      "name": "王輔臣",
+      "year": 1618,
+      "aliases": [
+        "李輔臣",
+        "馬鴿子",
+        "馬鷂子"
+      ],
+      "offices": [
+        "將軍",
+        "提督",
+        "御前侍衛"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 127554,
+      "name": "沈守正",
+      "year": 1572,
+      "aliases": [
+        "允中",
+        "無囘",
+        "無囬"
+      ],
+      "offices": [
+        "教諭",
+        "司務",
+        "博士"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 131653,
+      "name": "程紹",
+      "year": null,
+      "aliases": [
+        "公業"
+      ],
+      "offices": [
+        "推官",
+        "太僕寺卿"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 127568,
+      "name": "沈林",
+      "year": 1453,
+      "aliases": [
+        "一",
+        "材美"
+      ],
+      "offices": [
+        "布政使司參政",
+        "副都御史",
+        "刑部郎中"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 125520,
+      "name": "郭正域",
+      "year": 1554,
+      "aliases": [
+        "二",
+        "文毅",
+        "明龍"
+      ],
+      "offices": [
+        "祭酒",
+        "禮部侍郎",
+        "尚書"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 74329,
+      "name": "朱鶴齡",
+      "year": 1606,
+      "aliases": [
+        "愚庵",
+        "愚庵",
+        "愚菴"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 125534,
+      "name": "徐波",
+      "year": null,
+      "aliases": [
+        "元歎",
+        "頑庵"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 694898,
+      "name": "文奎",
+      "year": 1468,
+      "aliases": [
+        "徵靜",
+        "雙湖居士",
+        "靜伯"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 60047,
+      "name": "孫光祀",
+      "year": 1624,
+      "aliases": [
+        "作庭",
+        "怍庭",
+        "怍庭"
+      ],
+      "offices": [
+        "兵部右侍郎",
+        "戶科都給事中",
+        "禮科給事中"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 76432,
+      "name": "杜岕",
+      "year": 1617,
+      "aliases": [
+        "些山",
+        "蒼略"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 68258,
+      "name": "黃綰",
+      "year": 1480,
+      "aliases": [
+        "久庵",
+        "久庵居士",
+        "叔賢"
+      ],
+      "offices": [
+        "安南正使",
+        "大理寺左少卿",
+        "都察院經歷"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 129709,
+      "name": "孫必顯",
+      "year": 1591,
+      "aliases": [
+        "克孝",
+        "意白"
+      ],
+      "offices": [
+        "禮部主事",
+        "吏部考功司郎中",
+        "尚寶司丞"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 33465,
+      "name": "吳寬",
+      "year": 1435,
+      "aliases": [
+        "二",
+        "匏庵",
+        "匏翁"
+      ],
+      "offices": [
+        "殿試讀卷官",
+        "東宮講讀官",
+        "副總裁"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 68288,
+      "name": "胡松",
+      "year": 1503,
+      "aliases": [
+        "一",
+        "尚友堂",
+        "柏泉"
+      ],
+      "offices": [
+        "按察使",
+        "兵部尚書",
+        "兵部尚書"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 86721,
+      "name": "徐晟",
+      "year": 1615,
+      "aliases": [
+        "損之",
+        "禎起",
+        "陶園"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 86750,
+      "name": "徐緘",
+      "year": 1607,
+      "aliases": [
+        "伯調"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 439029,
+      "name": "文肇祉",
+      "year": 1519,
+      "aliases": [
+        "基聖",
+        "塔影園",
+        "雁峰"
+      ],
+      "offices": [
+        "上林苑監錄事"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 690936,
+      "name": "楊鼎成",
+      "year": null,
+      "aliases": [
+        "新叔"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 72441,
+      "name": "方文",
+      "year": 1612,
+      "aliases": [
+        "嵞山",
+        "忍冬",
+        "爾止"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 518936,
+      "name": "張元驥",
+      "year": 1871,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 518937,
+      "name": "張玉冊",
+      "year": 1781,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 518938,
+      "name": "張仲瑚",
+      "year": null,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 518939,
+      "name": "張奎正",
+      "year": 1871,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 518940,
+      "name": "張瑞蔭",
+      "year": 1841,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 518941,
+      "name": "張嘉蔭",
+      "year": 1841,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 518942,
+      "name": "張燕方",
+      "year": null,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 123710,
+      "name": "王圖",
+      "year": 1557,
+      "aliases": [
+        "三",
+        "則之",
+        "文肅"
+      ],
+      "offices": [
+        "翰林庶吉士",
+        "吏部觀政",
+        "詹事府少詹事"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 68422,
+      "name": "湯沐",
+      "year": 1460,
+      "aliases": [
+        "四",
+        "新之",
+        "沂樂"
+      ],
+      "offices": [
+        "按察使",
+        "大理寺卿",
+        "道監察御史"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 131933,
+      "name": "萬國樞",
+      "year": null,
+      "aliases": [
+        "環中"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 109411,
+      "name": "楊椿",
+      "year": null,
+      "aliases": [
+        "子壽"
+      ],
+      "offices": [
+        "里中"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 129892,
+      "name": "徐弘祖",
+      "year": 1586,
+      "aliases": [
+        "宏祖",
+        "振之",
+        "霞客"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 439144,
+      "name": "張燮",
+      "year": 1574,
+      "aliases": [
+        "海濱逸史",
+        "紹和",
+        "羣玉樓"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 129902,
+      "name": "徐如珂",
+      "year": 1562,
+      "aliases": [
+        "季鳴"
+      ],
+      "offices": [
+        "府推官",
+        "府推官",
+        "工部右侍郎"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 131951,
+      "name": "葉向高",
+      "year": 1559,
+      "aliases": [
+        "六",
+        "文忠",
+        "臺山"
+      ],
+      "offices": [
+        "禮部右侍郎",
+        "吏部右侍郎",
+        "國子監司業"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 131961,
+      "name": "葉茂才",
+      "year": 1558,
+      "aliases": [
+        "參之",
+        "東林八君子",
+        "玄堂"
+      ],
+      "offices": [
+        "工部右侍郎",
+        "工部主事",
+        "吏部郎中"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 129934,
+      "name": "徐待任",
+      "year": 1566,
+      "aliases": [
+        "廷葵",
+        "廷蔡"
+      ],
+      "offices": [
+        "知州"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 129935,
+      "name": "徐待聘",
+      "year": 1555,
+      "aliases": [
+        "廷珍"
+      ],
+      "offices": [
+        "工部郎中",
+        "提刑按察使司按察使",
+        "提刑按察使司僉事"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 29584,
+      "name": "陳子龍",
+      "year": 1608,
+      "aliases": [
+        "人中",
+        "信衷",
+        "大樽"
+      ],
+      "offices": [
+        "兵科給事中",
+        "監軍",
+        "推官"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 29587,
+      "name": "鄭成功",
+      "year": 1624,
+      "aliases": [
+        "國姓爺",
+        "大木",
+        "延平郡王"
+      ],
+      "offices": [
+        "遊擊將軍",
+        "宗人府宗正",
+        "總兵官"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 68502,
+      "name": "趙錦",
+      "year": 1516,
+      "aliases": [
+        "五十一",
+        "元樸",
+        "端肅"
+      ],
+      "offices": [
+        "兵部尚書",
+        "兵部尚書",
+        "參議"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 129953,
+      "name": "徐從治",
+      "year": 1574,
+      "aliases": [
+        "仲華",
+        "忠烈",
+        "烈愍"
+      ],
+      "offices": [
+        "兵備道",
+        "兵部尚書",
+        "都察院右副都御史"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 129985,
+      "name": "徐霖",
+      "year": 1462,
+      "aliases": [
+        "九峰",
+        "九峰道人",
+        "子仁"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 129993,
+      "name": "徐縉",
+      "year": 1475,
+      "aliases": [
+        "一",
+        "子容",
+        "崦西"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 132041,
+      "name": "鄒之嶧",
+      "year": 1574,
+      "aliases": [
+        "孟陽"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 123852,
+      "name": "徐世淳",
+      "year": 1578,
+      "aliases": [
+        "中明",
+        "弟之",
+        "徐世湻"
+      ],
+      "offices": [
+        "府推官",
+        "縣教諭",
+        "知州"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 132051,
+      "name": "鄒廸光",
+      "year": 1544,
+      "aliases": [
+        "二",
+        "彥吉",
+        "愚谷"
+      ],
+      "offices": [
+        "工部郎中"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 127987,
+      "name": "李維楨",
+      "year": 1547,
+      "aliases": [
+        "一",
+        "士安",
+        "本寍"
+      ],
+      "offices": [
+        "編修",
+        "兵備道",
+        "兵備道"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 89100,
+      "name": "梁士詒",
+      "year": 1869,
+      "aliases": [
+        "燕孫",
+        "翼夫"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 123920,
+      "name": "許士柔",
+      "year": 1587,
+      "aliases": [
+        "仲嘉",
+        "石門",
+        "石門先生"
+      ],
+      "offices": [
+        "國子祭酒",
+        "尚寶司丞",
+        "尚寶司少卿"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 375834,
+      "name": "管紹寧",
+      "year": 1598,
+      "aliases": [
+        "謐如"
+      ],
+      "offices": [
+        "禮部侍郎",
+        "少詹事",
+        "掌翰林院事"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 132130,
+      "name": "聞啟祥",
+      "year": 1585,
+      "aliases": [
+        "子將"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 91176,
+      "name": "譚貞良",
+      "year": 1599,
+      "aliases": [
+        "元孩",
+        "元孩",
+        "築岩"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 80943,
+      "name": "張遂辰",
+      "year": 1585,
+      "aliases": [
+        "卿子",
+        "相期",
+        "西農"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 128050,
+      "name": "李應昇",
+      "year": 1593,
+      "aliases": [
+        "仲達",
+        "仲達",
+        "忠毅"
+      ],
+      "offices": [
+        "道御史",
+        "太僕寺卿",
+        "推官"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 132148,
+      "name": "趙用賢",
+      "year": 1535,
+      "aliases": [
+        "一",
+        "定宇",
+        "文毅"
+      ],
+      "offices": [
+        "管國子監司業事",
+        "祭酒",
+        "檢討"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 29751,
+      "name": "錢薇",
+      "year": 1502,
+      "aliases": [
+        "十四",
+        "懋垣",
+        "海石"
+      ],
+      "offices": [
+        "禮科給事中",
+        "禮科給事中",
+        "禮科給事中"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 132154,
+      "name": "趙均",
+      "year": 1591,
+      "aliases": [
+        "靈均"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 66625,
+      "name": "高遜志",
+      "year": 1339,
+      "aliases": [
+        "北郭十友",
+        "十才子",
+        "嗇菴"
+      ],
+      "offices": [
+        "秦府紀善",
+        "編修",
+        "副總裁官"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 130116,
+      "name": "許成器",
+      "year": 1546,
+      "aliases": [
+        "道甫"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 123974,
+      "name": "申用懋",
+      "year": 1560,
+      "aliases": [
+        "一",
+        "元渚",
+        "敬中"
+      ],
+      "offices": [
+        "兵部尚書",
+        "兵部右侍郎",
+        "兵部職方司郎中"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 132172,
+      "name": "趙南星",
+      "year": 1550,
+      "aliases": [
+        "一",
+        "儕鶴",
+        "夢白"
+      ],
+      "offices": [
+        "府推官",
+        "吏部尚書",
+        "主事"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 33877,
+      "name": "毛鳳苞",
+      "year": 1599,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 128097,
+      "name": "成基命",
+      "year": 1559,
+      "aliases": [
+        "文穆",
+        "毖予",
+        "靖之"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 132199,
+      "name": "趙琦美",
+      "year": 1563,
+      "aliases": [
+        "仲朗",
+        "如白",
+        "常道人"
+      ],
+      "offices": [
+        "都察院照磨"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 130153,
+      "name": "郭天中",
+      "year": null,
+      "aliases": [
+        "聖僕"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 33904,
+      "name": "潘檉章",
+      "year": 1626,
+      "aliases": [
+        "力田",
+        "聖木"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 439431,
+      "name": "李芳",
+      "year": null,
+      "aliases": [
+        "湘洲"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 54414,
+      "name": "嚴永華",
+      "year": 1836,
+      "aliases": [
+        "少藍"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 54432,
+      "name": "張之萬",
+      "year": 1811,
+      "aliases": [
+        "二品教官",
+        "子淸",
+        "子青"
+      ],
+      "offices": [
+        "會試考官",
+        "侍讀學士",
+        "同考官"
+      ],
+      "is_owner": true
+    },
+    {
+      "id": 81057,
+      "name": "張履謙",
+      "year": 1872,
+      "aliases": [
+        "益吾",
+        "陸吉"
+      ],
+      "offices": [],
+      "is_owner": true
+    },
+    {
+      "id": 124068,
+      "name": "沈演",
+      "year": 1566,
+      "aliases": [
+        "何山",
+        "叔敷"
+      ],
+      "offices": [
+        "工部主事",
+        "禮部尚書",
+        "刑部尚書"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 130219,
+      "name": "鹿善繼",
+      "year": 1575,
+      "aliases": [
+        "乾獄",
+        "伯順",
+        "忠節"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 27825,
+      "name": "汪元量",
+      "year": 1238,
+      "aliases": [
+        "大有",
+        "水雲",
+        "水雲子"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 132289,
+      "name": "管志道",
+      "year": 1536,
+      "aliases": [
+        "一",
+        "東凕",
+        "登之"
+      ],
+      "offices": [
+        "兵部主事",
+        "提刑按察使司僉事",
+        "刑部主事"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 130245,
+      "name": "梅之煥",
+      "year": 1575,
+      "aliases": [
+        "信天居士",
+        "彬父",
+        "長公"
+      ],
+      "offices": [
+        "提督學政",
+        "巡撫",
+        "參議"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 130249,
+      "name": "梅國禎",
+      "year": 1542,
+      "aliases": [
+        "一",
+        "克生",
+        "公生"
+      ],
+      "offices": [
+        "巡撫"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 56535,
+      "name": "姚希孟",
+      "year": 1579,
+      "aliases": [
+        "吳中三孟",
+        "孟長",
+        "文毅"
+      ],
+      "offices": [
+        "日講官",
+        "少詹事",
+        "庶吉士"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 132317,
+      "name": "潘宗顏",
+      "year": null,
+      "aliases": [
+        "士瓚",
+        "節愍"
+      ],
+      "offices": [
+        "兵備僉事"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 118004,
+      "name": "趙宦光",
+      "year": 1568,
+      "aliases": [
+        "凡夫",
+        "頤光"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 118005,
+      "name": "文淑",
+      "year": 1604,
+      "aliases": [
+        "端容"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 128250,
+      "name": "吳愈",
+      "year": 1443,
+      "aliases": [
+        "三",
+        "惟謙",
+        "遯菴"
+      ],
+      "offices": [
+        "參知政事",
+        "刑部主事",
+        "知府"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 56573,
+      "name": "柳是",
+      "year": 1618,
+      "aliases": [
+        "半野草堂",
+        "如是",
+        "影憐"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 56580,
+      "name": "茅元儀",
+      "year": 1594,
+      "aliases": [
+        "半石址山公",
+        "壽堂",
+        "夢閣主人"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 85253,
+      "name": "姜垓",
+      "year": 1614,
+      "aliases": [
+        "如須",
+        "貞文先生"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 132361,
+      "name": "鄭仰田",
+      "year": null,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 56589,
+      "name": "侯方域",
+      "year": 1618,
+      "aliases": [
+        "四憶堂",
+        "壯悔堂",
+        "朝宗"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 130318,
+      "name": "張大復",
+      "year": 1554,
+      "aliases": [
+        "元長"
+      ],
+      "offices": [
+        "經歷"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 130325,
+      "name": "張文奇",
+      "year": 1547,
+      "aliases": [
+        "三",
+        "元正",
+        "原正"
+      ],
+      "offices": [
+        "知府"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 17692,
+      "name": "趙奕",
+      "year": 1284,
+      "aliases": [
+        "仲光",
+        "西齋"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 54562,
+      "name": "毛晉",
+      "year": 1599,
+      "aliases": [
+        "修綆",
+        "子九",
+        "子晉"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 128330,
+      "name": "呂㦂",
+      "year": 1449,
+      "aliases": [
+        "秉子"
+      ],
+      "offices": [
+        "太常寺卿"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 77132,
+      "name": "李雯",
+      "year": 1607,
+      "aliases": [
+        "舒章",
+        "舒章",
+        "蓼齋"
+      ],
+      "offices": [
+        "中書舍人"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 77155,
+      "name": "李楷",
+      "year": 1607,
+      "aliases": [
+        "叔則",
+        "岸翁"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 128402,
+      "name": "何良俊",
+      "year": 1506,
+      "aliases": [
+        "元朗",
+        "柘湖居士",
+        "符朗"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 83346,
+      "name": "周永年",
+      "year": 1582,
+      "aliases": [
+        "安期",
+        "安期",
+        "安期"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 34215,
+      "name": "孫慎行",
+      "year": 1565,
+      "aliases": [
+        "文介",
+        "淇澳",
+        "淇澳"
+      ],
+      "offices": [
+        "編修",
+        "編修",
+        "冊封魯王等正使"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 124331,
+      "name": "卓爾康",
+      "year": 1570,
+      "aliases": [
+        "修餘堂",
+        "去病",
+        "農山"
+      ],
+      "offices": [
+        "教諭",
+        "刑部主事",
+        "兵部司務"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34220,
+      "name": "唐鶴徵",
+      "year": 1538,
+      "aliases": [
+        "一",
+        "元卿",
+        "凝菴"
+      ],
+      "offices": [
+        "工部營繕司郎中",
+        "光祿寺少卿",
+        "禮部主客司郎中"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 128432,
+      "name": "何詔",
+      "year": 1460,
+      "aliases": [
+        "十六",
+        "廷綸",
+        "石湖"
+      ],
+      "offices": [
+        "工部尚書",
+        "知府",
+        "工部"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 576949,
+      "name": "王野",
+      "year": null,
+      "aliases": [
+        "太古"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 128441,
+      "name": "何喬遠",
+      "year": 1558,
+      "aliases": [
+        "六",
+        "匪莪",
+        "稚孝"
+      ],
+      "offices": [
+        "工部右侍郎",
+        "禮部精膳司郎中",
+        "禮部儀制司郎中"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 511429,
+      "name": "李鶚翀",
+      "year": null,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 579023,
+      "name": "許良玉",
+      "year": null,
+      "aliases": [
+        "以韞"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 523731,
+      "name": "鄭崐",
+      "year": null,
+      "aliases": [
+        "古岑",
+        "子西"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 120282,
+      "name": "陳沅",
+      "year": 1615,
+      "aliases": [
+        "圓圓",
+        "畹芬",
+        "陳元"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 699867,
+      "name": "裴衮錫",
+      "year": null,
+      "aliases": [],
+      "offices": [
+        "參將"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 58844,
+      "name": "吳三桂",
+      "year": 1612,
+      "aliases": [
+        "安阜園",
+        "長伯",
+        "長白"
+      ],
+      "offices": [
+        "總兵官",
+        "總兵官",
+        "總兵官"
+      ],
+      "is_owner": true
+    },
+    {
+      "id": 695773,
+      "name": "陳蒼永",
+      "year": 1635,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 511456,
+      "name": "柳如是",
+      "year": null,
+      "aliases": [],
+      "offices": [],
+      "is_owner": true
+    },
+    {
+      "id": 699879,
+      "name": "張光祚",
+      "year": null,
+      "aliases": [
+        "華先"
+      ],
+      "offices": [
+        "知州"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 132585,
+      "name": "蔡羽",
+      "year": 1477,
+      "aliases": [
+        "九逵",
+        "左虛子",
+        "林屋山人"
+      ],
+      "offices": [
+        "翰林院孔目"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 30185,
+      "name": "瞿汝稷",
+      "year": 1537,
+      "aliases": [
+        "元立",
+        "冏卿",
+        "太虛"
+      ],
+      "offices": [
+        "太僕寺少卿",
+        "鹽運使",
+        "運使"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 30187,
+      "name": "瞿式耜",
+      "year": 1590,
+      "aliases": [
+        "在田",
+        "多默",
+        "媿林"
+      ],
+      "offices": [
+        "府丞",
+        "戶科給事中",
+        "巡撫"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 130550,
+      "name": "張愷",
+      "year": 1453,
+      "aliases": [
+        "企齋",
+        "元之",
+        "東洛"
+      ],
+      "offices": [
+        "鹽運使",
+        "知州",
+        "知府"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 130557,
+      "name": "張瑋",
+      "year": 1453,
+      "aliases": [
+        "一",
+        "嘉玉",
+        "歷齋"
+      ],
+      "offices": [
+        "工部郎中",
+        "工部主事"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 265728,
+      "name": "王文榮",
+      "year": null,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 265729,
+      "name": "王成",
+      "year": null,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 265730,
+      "name": "王瑾",
+      "year": 1433,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 265731,
+      "name": "宋氏(王獻臣母)",
+      "year": 1436,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 265732,
+      "name": "陳氏(王獻臣妻)",
+      "year": 1466,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 265733,
+      "name": "王獻民",
+      "year": 1465,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 265734,
+      "name": "王獻夫",
+      "year": 1465,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 126473,
+      "name": "王元翰",
+      "year": 1565,
+      "aliases": [
+        "伯擧",
+        "聚洲"
+      ],
+      "offices": [
+        "縣學教諭"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 30239,
+      "name": "錢謙益",
+      "year": 1582,
+      "aliases": [
+        "優曇室",
+        "半野堂",
+        "受之"
+      ],
+      "offices": [
+        "翰林院編修",
+        "翰林院編修",
+        "經筵日講官"
+      ],
+      "is_owner": true
+    },
+    {
+      "id": 30240,
+      "name": "馮夢禎",
+      "year": 1548,
+      "aliases": [
+        "一",
+        "快雪",
+        "開之"
+      ],
+      "offices": [
+        "祭酒"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 132643,
+      "name": "劉一燝",
+      "year": 1567,
+      "aliases": [
+        "季晦",
+        "文端"
+      ],
+      "offices": [
+        "東閣大學士",
+        "翰林院庶吉士",
+        "祭酒"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 30244,
+      "name": "馮復京",
+      "year": 1573,
+      "aliases": [
+        "嗣宗"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 130605,
+      "name": "張鳳翼",
+      "year": 1537,
+      "aliases": [
+        "伯起",
+        "泠然居士",
+        "靈虛"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 81457,
+      "name": "陳瑚",
+      "year": 1613,
+      "aliases": [
+        "七十二潭漁父",
+        "安道",
+        "安道先生"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 126516,
+      "name": "王同祖",
+      "year": 1497,
+      "aliases": [
+        "一",
+        "繩武"
+      ],
+      "offices": [
+        "編修",
+        "庶吉士",
+        "司經局校書"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 54845,
+      "name": "徐燦",
+      "year": 1610,
+      "aliases": [
+        "明深",
+        "湘蘋",
+        "紫䇾"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 54854,
+      "name": "陳之遴",
+      "year": 1605,
+      "aliases": [
+        "彥升",
+        "旋吉堂",
+        "浮雲"
+      ],
+      "offices": [
+        "編修",
+        "中允",
+        "宏文院大學士"
+      ],
+      "is_owner": true
+    },
+    {
+      "id": 126537,
+      "name": "王志堅",
+      "year": 1576,
+      "aliases": [
+        "二",
+        "弱生",
+        "淑士"
+      ],
+      "offices": [
+        "兵備道",
+        "兵部車駕司主事",
+        "郎中"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 54861,
+      "name": "陳堪永",
+      "year": 1604,
+      "aliases": [
+        "子長"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 54863,
+      "name": "陳堅永",
+      "year": 1635,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 26192,
+      "name": "陳汝言",
+      "year": 1308,
+      "aliases": [
+        "小髯",
+        "惟允",
+        "秋水"
+      ],
+      "offices": [
+        "經歷",
+        "參謀"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 54865,
+      "name": "陳容永",
+      "year": 1635,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 54867,
+      "name": "陳奮永",
+      "year": 1635,
+      "aliases": [
+        "寄齋",
+        "撝謙"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 56927,
+      "name": "馮如京",
+      "year": 1602,
+      "aliases": [
+        "二知園",
+        "修武",
+        "修隱"
+      ],
+      "offices": [
+        "按察副使",
+        "布政使司參政",
+        "道參政"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 26218,
+      "name": "盛應期",
+      "year": 1474,
+      "aliases": [
+        "一",
+        "值菴",
+        "思徵"
+      ],
+      "offices": [
+        "府通判",
+        "府同知",
+        "僉事"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 71283,
+      "name": "王澧",
+      "year": 1616,
+      "aliases": [
+        "楚先",
+        "王灃",
+        "蘭陔"
+      ],
+      "offices": [
+        "刑部郎中"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 132732,
+      "name": "劉廷訓",
+      "year": 1574,
+      "aliases": [
+        "式柏"
+      ],
+      "offices": [
+        "訓導"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34443,
+      "name": "張宇初",
+      "year": 1347,
+      "aliases": [
+        "信甫",
+        "子璿",
+        "正一"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 130746,
+      "name": "陸師道",
+      "year": 1511,
+      "aliases": [
+        "一",
+        "五湖",
+        "五湖道人"
+      ],
+      "offices": [
+        "工部主事",
+        "禮部儀制司主事",
+        "尚寶司少卿"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34504,
+      "name": "于謙",
+      "year": 1398,
+      "aliases": [
+        "廷益",
+        "忠愍",
+        "忠肅"
+      ],
+      "offices": [
+        "兵部尚書",
+        "兵部右侍郎",
+        "兵部右侍郎"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 54996,
+      "name": "方以智",
+      "year": 1611,
+      "aliases": [
+        "五老",
+        "墨歷",
+        "大可"
+      ],
+      "offices": [
+        "編修",
+        "東閣大學士",
+        "東宮講官"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 517854,
+      "name": "王輔國",
+      "year": null,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 517855,
+      "name": "吳三輔",
+      "year": 1614,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 517856,
+      "name": "吳世琮",
+      "year": null,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 517857,
+      "name": "吳世霖",
+      "year": 1672,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 517858,
+      "name": "吳世璠",
+      "year": 1672,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 517859,
+      "name": "吳應熊",
+      "year": 1642,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 517860,
+      "name": "愛新覺羅氏(建寧長公主)",
+      "year": null,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 517861,
+      "name": "陳圓圓",
+      "year": 1615,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 34530,
+      "name": "朱存理",
+      "year": 1444,
+      "aliases": [
+        "性之",
+        "性父",
+        "性甫"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 71397,
+      "name": "王曰俞",
+      "year": 1610,
+      "aliases": [
+        "中恬"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 128752,
+      "name": "金聲",
+      "year": 1598,
+      "aliases": [
+        "子駿",
+        "子駿",
+        "成光"
+      ],
+      "offices": [
+        "僉都御史"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 28410,
+      "name": "王逢",
+      "year": 1319,
+      "aliases": [
+        "原吉",
+        "席帽山人",
+        "最閒園丁"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 126731,
+      "name": "王象春",
+      "year": 1578,
+      "aliases": [
+        "十七",
+        "季木",
+        "文水"
+      ],
+      "offices": [
+        "大理寺評事",
+        "上林苑監典簿",
+        "吏部"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34579,
+      "name": "王鏊",
+      "year": 1450,
+      "aliases": [
+        "九峰主人",
+        "二",
+        "守溪"
+      ],
+      "offices": [
+        "殿試讀卷官",
+        "副總裁",
+        "副總裁官"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 69402,
+      "name": "王猷定",
+      "year": 1598,
+      "aliases": [
+        "于一",
+        "於一",
+        "軫石"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 132895,
+      "name": "劉榮嗣",
+      "year": null,
+      "aliases": [
+        "敬仲"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 128820,
+      "name": "周宗建",
+      "year": 1582,
+      "aliases": [
+        "來玉",
+        "季侯",
+        "忠毅"
+      ],
+      "offices": [
+        "道御史",
+        "知縣",
+        "知縣"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 77628,
+      "name": "李昌祚",
+      "year": 1616,
+      "aliases": [
+        "來園",
+        "劍浦",
+        "文孫"
+      ],
+      "offices": [
+        "大理寺卿"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 130879,
+      "name": "陳禹謨",
+      "year": 1548,
+      "aliases": [
+        "錫玄",
+        "長子"
+      ],
+      "offices": [
+        "參議",
+        "縣學教諭",
+        "刑部郎中"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34631,
+      "name": "顧璘",
+      "year": 1476,
+      "aliases": [
+        "二",
+        "東橋",
+        "東橋居士"
+      ],
+      "offices": [
+        "刑部尚書",
+        "知府",
+        "知縣"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34637,
+      "name": "劉麟",
+      "year": 1475,
+      "aliases": [
+        "一",
+        "元瑞",
+        "元端"
+      ],
+      "offices": [
+        "按察使",
+        "按察使",
+        "布政使司右參政"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 700243,
+      "name": "梁鼐",
+      "year": 1652,
+      "aliases": [
+        "公调"
+      ],
+      "offices": [
+        "標左營遊擊",
+        "城守營副將",
+        "都督僉事"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 128853,
+      "name": "周祚",
+      "year": 1480,
+      "aliases": [
+        "十六",
+        "天保",
+        "定齋"
+      ],
+      "offices": [
+        "兵科給事中",
+        "知縣",
+        "知縣"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 59224,
+      "name": "龔鼎孳",
+      "year": 1615,
+      "aliases": [
+        "三十二芙蓉齋",
+        "孝升",
+        "定山堂"
+      ],
+      "offices": [
+        "兵科給事中",
+        "會試考官",
+        "會試考官"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 700252,
+      "name": "趙宏印",
+      "year": 1646,
+      "aliases": [],
+      "offices": [
+        "副將",
+        "守備",
+        "左都督"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 128864,
+      "name": "周倫",
+      "year": 1463,
+      "aliases": [
+        "伯明",
+        "康僖",
+        "貞菴"
+      ],
+      "offices": [
+        "刑部尚書",
+        "巡按御史",
+        "御史"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 206689,
+      "name": "王永寧",
+      "year": 1555,
+      "aliases": [
+        "一",
+        "世卿"
+      ],
+      "offices": [],
+      "is_owner": true
+    },
+    {
+      "id": 110437,
+      "name": "趙",
+      "year": 1271,
+      "aliases": [],
+      "offices": [
+        "國公"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 132974,
+      "name": "劉纓",
+      "year": 1442,
+      "aliases": [
+        "三",
+        "劉纓",
+        "與淸"
+      ],
+      "offices": [
+        "道御史",
+        "兼巡撫",
+        "刑部尚書"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34671,
+      "name": "文林",
+      "year": 1445,
+      "aliases": [
+        "一",
+        "宗儒",
+        "宗儒"
+      ],
+      "offices": [
+        "太僕寺丞",
+        "知縣",
+        "知縣"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34672,
+      "name": "文森",
+      "year": 1457,
+      "aliases": [
+        "三",
+        "宗嚴",
+        "次子"
+      ],
+      "offices": [
+        "道監察御史",
+        "道監察御史",
+        "都察院右僉都御史"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34673,
+      "name": "文徵明",
+      "year": 1470,
+      "aliases": [
+        "徵仲",
+        "文璧",
+        "璧"
+      ],
+      "offices": [],
+      "is_owner": true
+    },
+    {
+      "id": 63342,
+      "name": "謝三賓",
+      "year": 1593,
+      "aliases": [
+        "塞翁",
+        "塞翁",
+        "象三"
+      ],
+      "offices": [
+        "軍前監紀",
+        "巡按御史",
+        "御史"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34677,
+      "name": "文彭",
+      "year": 1498,
+      "aliases": [
+        "三橋",
+        "壽承",
+        "壽承"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 34678,
+      "name": "文嘉",
+      "year": 1501,
+      "aliases": [
+        "休承",
+        "修承",
+        "文水"
+      ],
+      "offices": [
+        "教諭",
+        "州學正"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 565111,
+      "name": "徐粲",
+      "year": 1608,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 34679,
+      "name": "文臺",
+      "year": 1500,
+      "aliases": [
+        "允承",
+        "祝峰"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 34682,
+      "name": "文震孟",
+      "year": 1574,
+      "aliases": [
+        "吳中三孟",
+        "從鼎",
+        "文肅"
+      ],
+      "offices": [
+        "東閣大學士",
+        "翰林院修撰",
+        "禮部左侍郎"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 130941,
+      "name": "陳淳",
+      "year": 1483,
+      "aliases": [
+        "復甫",
+        "白陽山人",
+        "道復"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 34687,
+      "name": "文伯仁",
+      "year": 1502,
+      "aliases": [
+        "五峰",
+        "五峰",
+        "德承"
+      ],
+      "offices": [
+        "縣學教諭"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 126852,
+      "name": "王臨亨",
+      "year": 1556,
+      "aliases": [
+        "一鳳三雛",
+        "延庵",
+        "止之"
+      ],
+      "offices": [
+        "縣令",
+        "刑部郎中",
+        "刑部主事"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 30602,
+      "name": "徐世溥",
+      "year": 1608,
+      "aliases": [
+        "巨源",
+        "臣源"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 34701,
+      "name": "陸粲",
+      "year": 1494,
+      "aliases": [
+        "俊明",
+        "子餘",
+        "浚明"
+      ],
+      "offices": [
+        "工科給事中",
+        "翰林庶吉士",
+        "太常寺卿"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 133009,
+      "name": "釋憨山",
+      "year": 1546,
+      "aliases": [
+        "蔡",
+        "蔡德淸"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 126867,
+      "name": "王寵",
+      "year": 1494,
+      "aliases": [
+        "履仁",
+        "履吉",
+        "雅宜山人"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 561049,
+      "name": "孫枝",
+      "year": null,
+      "aliases": [],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 34717,
+      "name": "王世貞",
+      "year": 1526,
+      "aliases": [
+        "元美",
+        "十九",
+        "原美"
+      ],
+      "offices": [
+        "府尹",
+        "京大理寺卿",
+        "提刑按察使司副使"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 30626,
+      "name": "薛蕙",
+      "year": 1489,
+      "aliases": [
+        "君采",
+        "大寧居士",
+        "大寧齋"
+      ],
+      "offices": [
+        "吏部考功司郎中",
+        "吏部考功司主事",
+        "吏部驗封清吏司員外郎"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 135085,
+      "name": "蔡宗堯",
+      "year": 1510,
+      "aliases": [
+        "中父",
+        "東郭子"
+      ],
+      "offices": [
+        "教諭",
+        "知縣"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34738,
+      "name": "胡應麟",
+      "year": 1551,
+      "aliases": [
+        "元瑞",
+        "少室山人",
+        "少寶"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 34742,
+      "name": "顧憲成",
+      "year": 1550,
+      "aliases": [
+        "三",
+        "三君",
+        "叔子"
+      ],
+      "offices": [
+        "府推官",
+        "光祿寺少卿",
+        "吏部侍郎"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34743,
+      "name": "顧允成",
+      "year": 1554,
+      "aliases": [
+        "五",
+        "季時",
+        "季時"
+      ],
+      "offices": [
+        "光祿寺少卿",
+        "國子博士",
+        "州判官"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34746,
+      "name": "曹于汴",
+      "year": 1558,
+      "aliases": [
+        "真予",
+        "真予先生",
+        "自梁"
+      ],
+      "offices": [
+        "都察院左都御史",
+        "府推官"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34747,
+      "name": "鄒元標",
+      "year": 1551,
+      "aliases": [
+        "九",
+        "南皐",
+        "南皐先生"
+      ],
+      "offices": [
+        "兵部主事",
+        "兵部主事",
+        "大理寺卿"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34750,
+      "name": "婁堅",
+      "year": 1567,
+      "aliases": [
+        "子柔",
+        "子柔"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 34751,
+      "name": "李流芳",
+      "year": 1575,
+      "aliases": [
+        "愼娛居士",
+        "檀園老人",
+        "泡菴"
+      ],
+      "offices": [
+        "推官",
+        "纂修"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 133056,
+      "name": "盧煦",
+      "year": 1462,
+      "aliases": [
+        "子春",
+        "明審"
+      ],
+      "offices": [
+        "知縣"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34752,
+      "name": "范景文",
+      "year": 1587,
+      "aliases": [
+        "夢章",
+        "思仁",
+        "思質"
+      ],
+      "offices": [
+        "兵部尚書",
+        "兵部尚書",
+        "兵部左侍郎"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 65475,
+      "name": "吳歷",
+      "year": 1632,
+      "aliases": [
+        "三巴",
+        "吳啟歷",
+        "吳子歷"
+      ],
+      "offices": [
+        "天主教司鐸"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34758,
+      "name": "魏大中",
+      "year": 1575,
+      "aliases": [
+        "孔時",
+        "孔時",
+        "廓園"
+      ],
+      "offices": [
+        "行人司行人"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 133065,
+      "name": "盧襄",
+      "year": 1481,
+      "aliases": [
+        "五塢山人",
+        "師陳"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 126928,
+      "name": "尹嘉賓",
+      "year": 1572,
+      "aliases": [
+        "二",
+        "孔昭",
+        "澹如"
+      ],
+      "offices": [
+        "兵部職方司員外郎"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 30680,
+      "name": "皇甫涍",
+      "year": 1497,
+      "aliases": [
+        "二",
+        "子安",
+        "子安"
+      ],
+      "offices": [
+        "郎中",
+        "禮部精膳司主事",
+        "禮部員外郎"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 30681,
+      "name": "皇甫汸",
+      "year": 1503,
+      "aliases": [
+        "三",
+        "子循",
+        "百泉"
+      ],
+      "offices": [
+        "府同知",
+        "府推官",
+        "工部虞衡司員外郎"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34777,
+      "name": "周鼎",
+      "year": 1401,
+      "aliases": [
+        "九鼎",
+        "伯器",
+        "伯器"
+      ],
+      "offices": [
+        "典史"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34784,
+      "name": "沈周",
+      "year": 1427,
+      "aliases": [
+        "啟南",
+        "白石翁",
+        "石田"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 30689,
+      "name": "馮元颺",
+      "year": 1586,
+      "aliases": [
+        "爾賡",
+        "留仙",
+        "留仙"
+      ],
+      "offices": [
+        "兵備副使",
+        "布政使司參議",
+        "都察院右僉都御史"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 133088,
+      "name": "錢士晉",
+      "year": 1577,
+      "aliases": [
+        "康侯",
+        "昭自"
+      ],
+      "offices": [
+        "巡撫"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 34787,
+      "name": "沈德符",
+      "year": 1578,
+      "aliases": [
+        "景倩",
+        "虎臣"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 561127,
+      "name": "朱朗",
+      "year": null,
+      "aliases": [
+        "子朗"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 133098,
+      "name": "錢同愛",
+      "year": 1475,
+      "aliases": [
+        "孔周",
+        "野亭"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 24554,
+      "name": "林俊",
+      "year": 1452,
+      "aliases": [
+        "一",
+        "大用",
+        "待用"
+      ],
+      "offices": [
+        "按察使",
+        "都察院右都御史",
+        "都察院右副都御史"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 77803,
+      "name": "李繼白",
+      "year": 1618,
+      "aliases": [
+        "夢沙",
+        "夢河"
+      ],
+      "offices": [],
+      "is_owner": false
+    },
+    {
+      "id": 133106,
+      "name": "錢岱",
+      "year": 1541,
+      "aliases": [
+        "一",
+        "汝瞻"
+      ],
+      "offices": [
+        "道監察御史",
+        "府推官"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 30708,
+      "name": "黃尊素",
+      "year": 1584,
+      "aliases": [
+        "忠端",
+        "白安",
+        "眞長"
+      ],
+      "offices": [
+        "府推官",
+        "監察御史",
+        "太僕寺卿"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 30713,
+      "name": "黃宗羲",
+      "year": 1610,
+      "aliases": [
+        "南雷",
+        "南雷先生",
+        "古藏室史臣"
+      ],
+      "offices": [
+        "兵部職方司主事",
+        "副都御史",
+        "御史"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 126970,
+      "name": "毛珵",
+      "year": 1452,
+      "aliases": [
+        "三",
+        "礪菴",
+        "貞甫"
+      ],
+      "offices": [
+        "工科給事中"
+      ],
+      "is_owner": false
+    },
+    {
+      "id": 133116,
+      "name": "錢翊之",
+      "year": 1546,
+      "aliases": [],
+      "offices": [
+        "府通判",
+        "州同知"
+      ],
+      "is_owner": false
+    }
+  ],
+  "edges": [
+    {
+      "source": 67807,
+      "target": 265728,
+      "type": "kin"
+    },
+    {
+      "source": 67807,
+      "target": 265729,
+      "type": "kin"
+    },
+    {
+      "source": 67807,
+      "target": 265730,
+      "type": "kin"
+    },
+    {
+      "source": 67807,
+      "target": 265731,
+      "type": "kin"
+    },
+    {
+      "source": 67807,
+      "target": 265733,
+      "type": "kin"
+    },
+    {
+      "source": 67807,
+      "target": 265734,
+      "type": "kin"
+    },
+    {
+      "source": 67807,
+      "target": 265732,
+      "type": "kin"
+    },
+    {
+      "source": 34673,
+      "target": 34671,
+      "type": "kin"
+    },
+    {
+      "source": 34673,
+      "target": 694898,
+      "type": "kin"
+    },
+    {
+      "source": 34673,
+      "target": 123147,
+      "type": "kin"
+    },
+    {
+      "source": 34673,
+      "target": 34687,
+      "type": "kin"
+    },
+    {
+      "source": 34673,
+      "target": 34677,
+      "type": "kin"
+    },
+    {
+      "source": 34673,
+      "target": 34678,
+      "type": "kin"
+    },
+    {
+      "source": 34673,
+      "target": 34679,
+      "type": "kin"
+    },
+    {
+      "source": 34673,
+      "target": 439029,
+      "type": "kin"
+    },
+    {
+      "source": 34673,
+      "target": 34682,
+      "type": "kin"
+    },
+    {
+      "source": 34673,
+      "target": 118005,
+      "type": "kin"
+    },
+    {
+      "source": 54854,
+      "target": 565111,
+      "type": "kin"
+    },
+    {
+      "source": 54854,
+      "target": 54845,
+      "type": "kin"
+    },
+    {
+      "source": 54854,
+      "target": 123021,
+      "type": "kin"
+    },
+    {
+      "source": 54854,
+      "target": 54861,
+      "type": "kin"
+    },
+    {
+      "source": 54854,
+      "target": 54863,
+      "type": "kin"
+    },
+    {
+      "source": 54854,
+      "target": 54865,
+      "type": "kin"
+    },
+    {
+      "source": 54854,
+      "target": 54867,
+      "type": "kin"
+    },
+    {
+      "source": 54854,
+      "target": 695773,
+      "type": "kin"
+    },
+    {
+      "source": 206689,
+      "target": 221610,
+      "type": "kin"
+    },
+    {
+      "source": 206689,
+      "target": 221611,
+      "type": "kin"
+    },
+    {
+      "source": 206689,
+      "target": 221612,
+      "type": "kin"
+    },
+    {
+      "source": 206689,
+      "target": 221613,
+      "type": "kin"
+    },
+    {
+      "source": 206689,
+      "target": 221617,
+      "type": "kin"
+    },
+    {
+      "source": 206689,
+      "target": 221618,
+      "type": "kin"
+    },
+    {
+      "source": 206689,
+      "target": 221619,
+      "type": "kin"
+    },
+    {
+      "source": 206689,
+      "target": 221620,
+      "type": "kin"
+    },
+    {
+      "source": 206689,
+      "target": 221621,
+      "type": "kin"
+    },
+    {
+      "source": 206689,
+      "target": 221622,
+      "type": "kin"
+    },
+    {
+      "source": 206689,
+      "target": 221623,
+      "type": "kin"
+    },
+    {
+      "source": 206689,
+      "target": 221624,
+      "type": "kin"
+    },
+    {
+      "source": 206689,
+      "target": 221615,
+      "type": "kin"
+    },
+    {
+      "source": 206689,
+      "target": 221614,
+      "type": "kin"
+    },
+    {
+      "source": 54432,
+      "target": 518942,
+      "type": "kin"
+    },
+    {
+      "source": 54432,
+      "target": 518938,
+      "type": "kin"
+    },
+    {
+      "source": 54432,
+      "target": 518937,
+      "type": "kin"
+    },
+    {
+      "source": 54432,
+      "target": 518940,
+      "type": "kin"
+    },
+    {
+      "source": 54432,
+      "target": 518941,
+      "type": "kin"
+    },
+    {
+      "source": 54432,
+      "target": 518936,
+      "type": "kin"
+    },
+    {
+      "source": 54432,
+      "target": 518939,
+      "type": "kin"
+    },
+    {
+      "source": 34682,
+      "target": 34673,
+      "type": "kin"
+    },
+    {
+      "source": 58844,
+      "target": 517855,
+      "type": "kin"
+    },
+    {
+      "source": 58844,
+      "target": 120282,
+      "type": "kin"
+    },
+    {
+      "source": 58844,
+      "target": 517861,
+      "type": "kin"
+    },
+    {
+      "source": 58844,
+      "target": 517859,
+      "type": "kin"
+    },
+    {
+      "source": 58844,
+      "target": 517857,
+      "type": "kin"
+    },
+    {
+      "source": 58844,
+      "target": 517858,
+      "type": "kin"
+    },
+    {
+      "source": 58844,
+      "target": 517860,
+      "type": "kin"
+    },
+    {
+      "source": 58844,
+      "target": 517854,
+      "type": "kin"
+    },
+    {
+      "source": 58844,
+      "target": 517856,
+      "type": "kin"
+    },
+    {
+      "source": 30239,
+      "target": 56573,
+      "type": "kin"
+    },
+    {
+      "source": 30239,
+      "target": 33188,
+      "type": "kin"
+    },
+    {
+      "source": 30239,
+      "target": 522636,
+      "type": "kin"
+    },
+    {
+      "source": 67807,
+      "target": 34673,
+      "type": "assoc"
+    },
+    {
+      "source": 67807,
+      "target": 34673,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 696353,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 323636,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 33465,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 34672,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 34784,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 130746,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 130941,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 133136,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 34631,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 34637,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 67807,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 67807,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 26218,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 30680,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 34530,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 35261,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 67913,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 68108,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 126516,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 126867,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 128250,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 130557,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 132585,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 133098,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 133124,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 579023,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 129239,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 34717,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 34579,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 34832,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 128864,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 129059,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 130550,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 131540,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 132974,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 129208,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 130605,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 26192,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 29751,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 34738,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 127530,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 128402,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 128853,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 129993,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 35262,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 56535,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 68422,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 128432,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 30626,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 133056,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 133065,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 34678,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 126970,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 127568,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 128330,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 24554,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 129985,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 30681,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 34701,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 68288,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 68008,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 17692,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 68258,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 84039,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 439431,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 561049,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 561127,
+      "type": "assoc"
+    },
+    {
+      "source": 34673,
+      "target": 127472,
+      "type": "assoc"
+    },
+    {
+      "source": 54854,
+      "target": 54845,
+      "type": "assoc"
+    },
+    {
+      "source": 54432,
+      "target": 89100,
+      "type": "assoc"
+    },
+    {
+      "source": 54432,
+      "target": 54414,
+      "type": "assoc"
+    },
+    {
+      "source": 34682,
+      "target": 30239,
+      "type": "assoc"
+    },
+    {
+      "source": 54414,
+      "target": 54432,
+      "type": "assoc"
+    },
+    {
+      "source": 58844,
+      "target": 699879,
+      "type": "assoc"
+    },
+    {
+      "source": 58844,
+      "target": 35003,
+      "type": "assoc"
+    },
+    {
+      "source": 58844,
+      "target": 684577,
+      "type": "assoc"
+    },
+    {
+      "source": 58844,
+      "target": 699867,
+      "type": "assoc"
+    },
+    {
+      "source": 58844,
+      "target": 690936,
+      "type": "assoc"
+    },
+    {
+      "source": 58844,
+      "target": 60047,
+      "type": "assoc"
+    },
+    {
+      "source": 58844,
+      "target": 698416,
+      "type": "assoc"
+    },
+    {
+      "source": 58844,
+      "target": 63878,
+      "type": "assoc"
+    },
+    {
+      "source": 58844,
+      "target": 120282,
+      "type": "assoc"
+    },
+    {
+      "source": 58844,
+      "target": 62015,
+      "type": "assoc"
+    },
+    {
+      "source": 58844,
+      "target": 700243,
+      "type": "assoc"
+    },
+    {
+      "source": 58844,
+      "target": 700252,
+      "type": "assoc"
+    },
+    {
+      "source": 511456,
+      "target": 77132,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 56580,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 59750,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 65737,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 65892,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 66020,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 74329,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 80943,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 119182,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 125534,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 511429,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 684045,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 523731,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 30187,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 123710,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34743,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 29587,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 30713,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 33188,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 54562,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 65475,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 65939,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 69402,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34752,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 88407,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 118004,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 125311,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 128097,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 132148,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 133365,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 133519,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 30240,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 30244,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 30689,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 30708,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 30849,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 33877,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34746,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34751,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 35127,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 35183,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 83346,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 88393,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 91176,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 123852,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 123920,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 124331,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 125520,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 126537,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 126928,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 127554,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 127987,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 128050,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 129271,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 129298,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 129709,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 129902,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 129934,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 129935,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 129953,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 130116,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 130219,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 130318,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 130879,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 131961,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 132041,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 132130,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 132154,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 132643,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 132732,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 133116,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 133452,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 133611,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 27825,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 131606,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 132172,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 63882,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 85253,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 375834,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 684036,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 576949,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 30185,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34443,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34777,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34787,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34903,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 100390,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 110437,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 127432,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 129892,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 130245,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 131653,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 131933,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 132361,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 133009,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 133613,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34215,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34220,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34504,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 68502,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 133160,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 30602,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 135085,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 565503,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 131375,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 66625,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 123385,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 123974,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 124068,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 128820,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 130249,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 133088,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 133345,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 126473,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 126731,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 126852,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 130325,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 132199,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 133106,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 133641,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 132289,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 133367,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 35118,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 55432,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 56927,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 59224,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 71283,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 71397,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 71931,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 72441,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 76432,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 77628,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 77803,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 128752,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 29584,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34742,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 35223,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 128441,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 135569,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 439144,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 550929,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 33904,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 35063,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 54996,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 77155,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 81457,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 86721,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 86750,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34750,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34758,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34682,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 56589,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 63342,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 84137,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 129368,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 131951,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 132051,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 130153,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 34747,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 28410,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 109411,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 113205,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 132317,
+      "type": "assoc"
+    },
+    {
+      "source": 30239,
+      "target": 132895,
+      "type": "assoc"
+    }
+  ]
+}
