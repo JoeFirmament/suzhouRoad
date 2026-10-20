@@ -2433,7 +2433,8 @@
   var plateDebug = params.get("debug") === "plate";
   var atmosphereStudyRequested = params.get("art") === "atmosphere-v1";
   var atmosphereStudyEnabled = atmosphereStudyRequested && params.get("draft") !== "1";
-  var plateBlockout = params.get("art") === "plate-v3" && params.get("draft") !== "1";
+  var plateArt = params.get("art");
+  var plateBlockout = (plateArt === "plate-v3" || plateArt === "plate-v4") && params.get("draft") !== "1";
   document.getElementById("returnVariantHome").href = chapterSceneHref("home.html");
   document.getElementById("returnCityMap").href = chapterSceneHref("sucheng.html");
   document.getElementById("returnChapterJournal").href = chapterSceneHref("journal.html");
@@ -2464,7 +2465,7 @@
   var returnStudy = params.get("returnStudy") === "1";
   var artStudyBadge = document.getElementById("artStudyBadge");
   artStudyBadge.hidden = !(atmosphereStudyRequested || plateBlockout);
-  artStudyBadge.textContent = plateBlockout ? "\u5E95\u56FE\u7070\u6A21\u9884\u89C8\uFF08v3\uFF09\xB7 \u53EA\u56DE\u7B54\u201C\u753B\u5728\u54EA\u201D\uFF0C\u5C4B\u9876\u4E0E\u5899\u5C1A\u672A\u4F5C\u7F8E\u672F\uFF1B\u9ED8\u8BA4\u4ECD\u662F v2\u3002" : atmosphereStudyEnabled ? "\u7F8E\u672F\u5019\u9009\u9884\u89C8 \xB7 \u4EC5\u89C6\u89C9\u53E0\u5C42\uFF0C\u539F\u8DEF\u7EBF\u3001\u78B0\u649E\u4E0E\u8349\u7A3F\u4E0D\u53D8\uFF1B\u975E\u5B9E\u666F\u590D\u539F\u3002" : "\u7F8E\u672F\u5019\u9009\u53E0\u5C42\u4E0D\u7528\u4E8E\u7F16\u8F91\u5668\u8349\u7A3F\uFF0C\u5DF2\u4FDD\u6301\u539F\u6837\u3002";
+  artStudyBadge.textContent = plateArt === "plate-v4" ? "\u5E95\u56FE\u7F8E\u672F\u7814\u7A76\u7A3F\uFF08v4\uFF09\xB7 A \u6BB5\uFF08\u8857\u9762\u2014\u95E8\u5C4B\u2014\u524D\u5385\u2014\u5929\u4E95\uFF09\u9996\u8F6E\u7ED8\u5236\uFF1B\u975E\u6700\u7EC8\u7F8E\u672F\uFF0C\u9ED8\u8BA4\u4ECD\u662F v2\u3002" : plateBlockout ? "\u5E95\u56FE\u7070\u6A21\u9884\u89C8\uFF08v3\uFF09\xB7 \u53EA\u56DE\u7B54\u201C\u753B\u5728\u54EA\u201D\uFF0C\u5C4B\u9876\u4E0E\u5899\u5C1A\u672A\u4F5C\u7F8E\u672F\uFF1B\u9ED8\u8BA4\u4ECD\u662F v2\u3002" : atmosphereStudyEnabled ? "\u7F8E\u672F\u5019\u9009\u9884\u89C8 \xB7 \u4EC5\u89C6\u89C9\u53E0\u5C42\uFF0C\u539F\u8DEF\u7EBF\u3001\u78B0\u649E\u4E0E\u8349\u7A3F\u4E0D\u53D8\uFF1B\u975E\u5B9E\u666F\u590D\u539F\u3002" : "\u7F8E\u672F\u5019\u9009\u53E0\u5C42\u4E0D\u7528\u4E8E\u7F16\u8F91\u5668\u8349\u7A3F\uFF0C\u5DF2\u4FDD\u6301\u539F\u6837\u3002";
   var completedRevisit = !returnStudy && hasStoryFlag(loadProgress(), "ly-unlocked") && hasStoryFlag(loadProgress(), "ly-leaf-carried");
   var modernReturn = completedRevisit || canEnterModernReturn(location.search, loadProgress(), "court", "ly-leaf-carried") || canEnterModernReturn(location.search, loadProgress(), "flower", "ly-leaf-carried");
   var returnAlreadyComplete = modernReturn && hasStoryFlag(loadProgress(), "ly-unlocked");
@@ -2521,7 +2522,7 @@
   }
   var graph = SCENE_PLATES.find((plate) => plate.id === "liuyuan-entrance-topology-study").routeGraph;
   var background = new Image();
-  background.src = plateBlockout ? "../assets/scene25d/liuyuan-entrance-walkable-study-v3.svg?v=1" : "../assets/scene25d/liuyuan-entrance-walkable-study-v2.svg?v=6";
+  background.src = !plateBlockout ? "../assets/scene25d/liuyuan-entrance-walkable-study-v2.svg?v=6" : plateArt === "plate-v4" ? "../assets/scene25d/liuyuan-entrance-walkable-study-v4.svg?v=1" : "../assets/scene25d/liuyuan-entrance-walkable-study-v3.svg?v=1";
   var atmosphereLayer = new Image();
   if (atmosphereStudyEnabled) atmosphereLayer.src = "../research-art/liuyuan-entry-atmosphere-layer-v1.svg?v=2";
   var sprite = new Image();

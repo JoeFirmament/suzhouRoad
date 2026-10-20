@@ -45,8 +45,9 @@ const params = new URLSearchParams(location.search);
 const plateDebug = params.get('debug') === 'plate';
 const atmosphereStudyRequested = params.get('art') === 'atmosphere-v1';
 const atmosphereStudyEnabled = atmosphereStudyRequested && params.get('draft') !== '1';
-/** ?art=plate-v3：只把灰模换进画面做对位试走，不写任何进度；默认仍是 v2。 */
-const plateBlockout = params.get('art') === 'plate-v3' && params.get('draft') !== '1';
+/** ?art=plate-v3|plate-v4：只把灰模/美术研究稿换进画面做对位试走，不写任何进度；默认仍是 v2。 */
+const plateArt = params.get('art');
+const plateBlockout = (plateArt === 'plate-v3' || plateArt === 'plate-v4') && params.get('draft') !== '1';
 (document.getElementById('returnVariantHome') as HTMLAnchorElement).href=chapterSceneHref('home.html');
 (document.getElementById('returnCityMap') as HTMLAnchorElement).href=chapterSceneHref('sucheng.html');
 (document.getElementById('returnChapterJournal') as HTMLAnchorElement).href=chapterSceneHref('journal.html');
@@ -74,7 +75,9 @@ if (savedStory) { continueStory.href=savedStory.href; continueStory.textContent=
 const returnStudy = params.get('returnStudy') === '1';
 const artStudyBadge = document.getElementById('artStudyBadge')!;
 artStudyBadge.hidden = !(atmosphereStudyRequested || plateBlockout);
-artStudyBadge.textContent = plateBlockout
+artStudyBadge.textContent = plateArt === 'plate-v4'
+  ? '底图美术研究稿（v4）· A 段（街面—门屋—前厅—天井）首轮绘制；非最终美术，默认仍是 v2。'
+  : plateBlockout
   ? '底图灰模预览（v3）· 只回答“画在哪”，屋顶与墙尚未作美术；默认仍是 v2。'
   : atmosphereStudyEnabled
   ? '美术候选预览 · 仅视觉叠层，原路线、碰撞与草稿不变；非实景复原。'
@@ -135,9 +138,11 @@ else if (draft.assetPath && draft.assetPath !== '../assets/scene25d/liuyuan-entr
 }
 const graph = SCENE_PLATES.find((plate) => plate.id === 'liuyuan-entrance-topology-study')!.routeGraph!;
 const background = new Image();
-background.src = plateBlockout
-  ? '../assets/scene25d/liuyuan-entrance-walkable-study-v3.svg?v=1'
-  : '../assets/scene25d/liuyuan-entrance-walkable-study-v2.svg?v=6';
+background.src = !plateBlockout
+  ? '../assets/scene25d/liuyuan-entrance-walkable-study-v2.svg?v=6'
+  : plateArt === 'plate-v4'
+  ? '../assets/scene25d/liuyuan-entrance-walkable-study-v4.svg?v=1'
+  : '../assets/scene25d/liuyuan-entrance-walkable-study-v3.svg?v=1';
 const atmosphereLayer = new Image();
 if (atmosphereStudyEnabled) atmosphereLayer.src = '../research-art/liuyuan-entry-atmosphere-layer-v1.svg?v=2';
 const sprite = new Image();
