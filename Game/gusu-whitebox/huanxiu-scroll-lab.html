@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>环秀山庄 · 三段长卷 · 固定 zoom 取景</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #141613; color: #e6e2d6; font: 15px/1.6 "PingFang SC","Microsoft YaHei",sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 16px 16px 40px; }
+  h1 { font-size: 1.2rem; margin: 4px 0 2px; }
+  .sub { color: #9aa094; font-size: .84rem; margin-bottom: 12px; }
+  .stage { position: relative; border: 1px solid #4b5249; background: #0e100d; }
+  #view { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+  .hud { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0; }
+  button { min-height: 34px; padding: 0 12px; border: 1px solid #5b655b; background: #20251f; color: #e6e2d6; border-radius: 3px; font: inherit; cursor: pointer; }
+  button:hover { background: #2b332a; }
+  button[aria-pressed="true"] { background: #3c4a3c; border-color: #93a58c; }
+  .legend { color: #9aa094; font-size: .8rem; }
+  .strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+  .strip figure { margin: 0; border: 1px solid #4b5249; background: #0e100d; }
+  .strip canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+  .strip figcaption { padding: 4px 8px; font-size: .78rem; color: #b9c0b3; display: flex; justify-content: space-between; }
+  .note { margin-top: 14px; color: #8f968a; font-size: .8rem; }
+  .note b { color: #c9d1c1; }
+</style>
+</head>
+<body>
+<main>
+  <h1>环秀山庄 · 三段长卷 · 固定 zoom</h1>
+  <p class="sub">3024×688 一张长卷，相机固定 1×，只平移。A/B/C 各 1008。只回答：不改变焦，三框能不能分开。</p>
+
+  <div class="stage"><canvas id="view" width="1008" height="688"></canvas></div>
+
+  <div class="hud">
+    <button data-cam="A" aria-pressed="true">A 东</button>
+    <button data-cam="B">B 中</button>
+    <button data-cam="C">C 西</button>
+    <button id="free">自由平移</button>
+    <button id="guides" aria-pressed="true">辅助线 G</button>
+    <span class="legend">← → 平移 · 1/2/3 切段 · G 辅助线</span>
+  </div>
+
+  <div class="strip">
+    <figure><canvas id="thumbA" width="336" height="229"></canvas><figcaption><span>A 东</span><span>主峰 + 裂</span></figcaption></figure>
+    <figure><canvas id="thumbB" width="336" height="229"></canvas><figcaption><span>B 中</span><span>次峰 + 洞</span></figcaption></figure>
+    <figure><canvas id="thumbC" width="336" height="229"></canvas><figcaption><span>C 西</span><span>西脸 + 钩带 + 树</span></figcaption></figure>
+  </div>
+
+  <p class="note">
+    <b>怎么判：</b>三张缩略图如果一眼能分出“峰 / 洞 / 西脸”，固定 zoom 就成立；如果像同一张，就得改长卷或重排山体。
+    <br><b>注意：</b>红竖线是段缝（1008 / 2016）；真实长卷里段缝要藏进树、墙或山坳。
+  </p>
+</main>
+<script>
+(() => {
+  const W = 1008, H = 688, SCROLL = 3024;
+  const PRESETS = { A: { x: 0, foot: 500 }, B: { x: 1008, foot: 1500 }, C: { x: 2016, foot: 2500 } };
+  const canvas = document.getElementById('view');
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  const img = new Image(); img.src = 'control/huanxiu/scroll.svg';
+  let camX = 0, targetX = 0, free = false, showGuides = true, active = 'A';
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+  function drawScene(c, x, foot) {
+    const w = c.canvas.width, k = w / W;
+    c.clearRect(0, 0, w, c.canvas.height);
+    c.save(); c.scale(k, k); c.translate(-x, 0);
+    if (img.complete && img.naturalWidth) c.drawImage(img, 0, 0, SCROLL, H);
+    c.fillStyle = '#7fd6ff';
+    c.beginPath(); c.moveTo(foot - 7, H); c.lineTo(foot + 7, H); c.lineTo(foot, H - 14); c.closePath(); c.fill();
+    c.restore();
+  }
+
+  function drawGuides(c, x, foot) {
+    const w = c.canvas.width, h = c.canvas.height;
+    c.save();
+    c.strokeStyle = 'rgba(240,210,100,.5)'; c.lineWidth = 1; c.setLineDash([5, 7]);
+    for (let i = 1; i < 3; i++) {
+      c.beginPath(); c.moveTo(w * i / 3, 0); c.lineTo(w * i / 3, h); c.stroke();
+      c.beginPath(); c.moveTo(0, h * i / 3); c.lineTo(w, h * i / 3); c.stroke();
+    }
+    c.setLineDash([]);
+    c.strokeStyle = 'rgba(217,75,63,.8)'; c.lineWidth = 2; c.strokeRect(1, 1, w - 2, h - 2);
+    // 段缝
+    c.strokeStyle = 'rgba(217,75,63,.35)'; c.setLineDash([2, 6]);
+    for (const seam of [1008, 2016]) {
+      const sx = (seam - x) / W * w;
+      if (sx > 0 && sx < w) { c.beginPath(); c.moveTo(sx, 0); c.lineTo(sx, h); c.stroke(); }
+    }
+    c.setLineDash([]);
+    // 126px
+    const bar = 126 / W * w;
+    c.strokeStyle = '#ff6b5e'; c.lineWidth = 2;
+    c.beginPath(); c.moveTo(16, h - 18); c.lineTo(16, h - 18 - bar); c.stroke();
+    c.fillStyle = '#ff6b5e'; c.font = '11px monospace'; c.fillText('126px 人', 22, h - 18 - bar / 2);
+    const label = (free ? '自由' : active) + ' · 段 x ' + Math.round(x) + ' · 固定 1.0×';
+    c.fillStyle = 'rgba(14,16,13,.72)'; c.fillRect(6, 6, c.measureText(label).width + 14, 18);
+    c.fillStyle = 'rgba(127,214,255,.95)'; c.fillText(label, 12, 20);
+    c.restore();
+  }
+
+  const draw = () => { drawScene(ctx, camX, footAt(camX)); if (showGuides) drawGuides(ctx, camX, footAt(camX)); };
+  const footAt = (x) => (active === 'A' ? 500 : active === 'B' ? 1500 : active === 'C' ? 2500 : x + 500);
+
+  function thumb(id, p) { const c = document.getElementById(id).getContext('2d'); c.imageSmoothingEnabled = false; drawScene(c, p.x, p.foot); }
+
+  function setCam(k) {
+    free = false; active = k; targetX = PRESETS[k].x;
+    document.querySelectorAll('[data-cam]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.cam === k)));
+  }
+
+  document.querySelectorAll('[data-cam]').forEach(b => b.addEventListener('click', () => setCam(b.dataset.cam)));
+  document.getElementById('free').addEventListener('click', () => { free = true; document.querySelectorAll('[data-cam]').forEach(b => b.setAttribute('aria-pressed', 'false')); });
+  document.getElementById('guides').addEventListener('click', e => { showGuides = !showGuides; e.currentTarget.setAttribute('aria-pressed', String(showGuides)); });
+  addEventListener('keydown', e => {
+    if (e.key === '1') setCam('A'); else if (e.key === '2') setCam('B'); else if (e.key === '3') setCam('C');
+    else if (e.key.toLowerCase() === 'g') { showGuides = !showGuides; document.getElementById('guides').setAttribute('aria-pressed', String(showGuides)); }
+    else if (e.key === 'ArrowLeft') { free = true; targetX = clamp(targetX - 40, 0, SCROLL - W); }
+    else if (e.key === 'ArrowRight') { free = true; targetX = clamp(targetX + 40, 0, SCROLL - W); }
+    else return;
+    e.preventDefault();
+  });
+
+  img.addEventListener('load', () => { setCam('A'); camX = targetX; thumb('thumbA', PRESETS.A); thumb('thumbB', PRESETS.B); thumb('thumbC', PRESETS.C); });
+  function tick() { camX += (targetX - camX) * 0.15; if (Math.abs(targetX - camX) < 0.2) camX = targetX; draw(); requestAnimationFrame(tick); }
+  tick();
+})();
+</script>
+</body>
+</html>
