@@ -1,7 +1,17 @@
 "use strict";
 (() => {
+  // src/core/liuyuan-playtest.ts
+  function isLiuyuanPlaytest(search) {
+    const current = search ?? (typeof location === "undefined" ? "" : location.search);
+    return new URLSearchParams(current).get("playtest") === "1";
+  }
+
   // src/core/progression.ts
   var SAVE_KEY = "gusu-nine-gardens-rpg-v1";
+  var LIUYUAN_PLAYTEST_KEY = "gusu-nine-gardens-liuyuan-playtest-v1";
+  var activeSaveKey = () => isLiuyuanPlaytest() ? LIUYUAN_PLAYTEST_KEY : SAVE_KEY;
+  var volatileProgress = /* @__PURE__ */ new Map();
+  var storageWriteFailed = /* @__PURE__ */ new Set();
   var DEFAULT_PROGRESS = {
     version: 1,
     arts: { li: 0, yue: 0, she: 0, yu: 0, shu: 0, shuMath: 0 },
@@ -25,12 +35,15 @@
     return JSON.parse(JSON.stringify(DEFAULT_PROGRESS));
   }
   function loadProgress() {
+    const key = activeSaveKey();
+    const fallback = volatileProgress.get(key);
+    if (storageWriteFailed.has(key) && fallback) return structuredClone(fallback);
     try {
-      const raw = localStorage.getItem(SAVE_KEY);
-      if (!raw) return cloneDefault();
+      const raw = localStorage.getItem(key);
+      if (!raw) return fallback ? structuredClone(fallback) : cloneDefault();
       const saved = JSON.parse(raw);
       const base = cloneDefault();
-      return {
+      const progress = {
         ...base,
         ...saved,
         arts: { ...base.arts, ...saved.arts ?? {} },
@@ -40,15 +53,21 @@
         storyFlags: Array.isArray(saved.storyFlags) ? saved.storyFlags : [],
         updatedAt: typeof saved.updatedAt === "number" ? saved.updatedAt : 0
       };
+      volatileProgress.set(key, structuredClone(progress));
+      return progress;
     } catch {
-      return cloneDefault();
+      return fallback ? structuredClone(fallback) : cloneDefault();
     }
   }
   function saveProgress(progress) {
+    progress.updatedAt = Date.now();
+    const key = activeSaveKey();
+    volatileProgress.set(key, structuredClone(progress));
     try {
-      progress.updatedAt = Date.now();
-      localStorage.setItem(SAVE_KEY, JSON.stringify(progress));
+      localStorage.setItem(key, JSON.stringify(progress));
+      storageWriteFailed.delete(key);
     } catch {
+      storageWriteFailed.add(key);
     }
   }
   function completeCanglangThreeWindows() {

@@ -217,31 +217,31 @@
   }
 
   // src/core/scene-validation.ts
-  function unreachableSceneFeet(scene3, targets, profile, step2 = 4) {
+  function unreachableSceneFeet(scene2, targets, profile, step2 = 4) {
     if (!targets.length) return [];
     if (collides(
-      scene3.map,
-      scene3.spawn.x,
-      scene3.spawn.y,
-      scene3.w,
-      scene3.h,
-      scene3.obstacles ?? [],
+      scene2.map,
+      scene2.spawn.x,
+      scene2.spawn.y,
+      scene2.w,
+      scene2.h,
+      scene2.obstacles ?? [],
       profile
     )) return targets.map((target) => target.id);
     const remaining = new Map(targets.map((target) => [target.id, target]));
     const blockedFeet = targets.filter((target) => target.mustStand && collides(
-      scene3.map,
+      scene2.map,
       target.x,
       target.y,
-      scene3.w,
-      scene3.h,
-      scene3.obstacles ?? [],
+      scene2.w,
+      scene2.h,
+      scene2.obstacles ?? [],
       profile
     )).map((target) => target.id);
     if (blockedFeet.length) return blockedFeet;
-    const queue = [[scene3.spawn.x, scene3.spawn.y]];
-    const visited = /* @__PURE__ */ new Set([`${scene3.spawn.x},${scene3.spawn.y}`]);
-    const worldW = scene3.w * 16, worldH = scene3.h * 16;
+    const queue = [[scene2.spawn.x, scene2.spawn.y]];
+    const visited = /* @__PURE__ */ new Set([`${scene2.spawn.x},${scene2.spawn.y}`]);
+    const worldW = scene2.w * 16, worldH = scene2.h * 16;
     for (let cursor = 0; cursor < queue.length && remaining.size; cursor++) {
       const [x, y] = queue[cursor];
       for (const target of remaining.values()) {
@@ -252,12 +252,12 @@
         if (nextX < 0 || nextY < 0 || nextX >= worldW || nextY >= worldH) continue;
         const key = `${nextX},${nextY}`;
         if (visited.has(key) || collides(
-          scene3.map,
+          scene2.map,
           nextX,
           nextY,
-          scene3.w,
-          scene3.h,
-          scene3.obstacles ?? [],
+          scene2.w,
+          scene2.h,
+          scene2.obstacles ?? [],
           profile
         )) continue;
         visited.add(key);
@@ -266,24 +266,24 @@
     }
     return [...remaining.keys()];
   }
-  function validateTileScene(id, scene3, profile) {
+  function validateTileScene(id, scene2, profile) {
     const errors = [];
-    if (!Number.isInteger(scene3.w) || !Number.isInteger(scene3.h) || scene3.w <= 0 || scene3.h <= 0) {
+    if (!Number.isInteger(scene2.w) || !Number.isInteger(scene2.h) || scene2.w <= 0 || scene2.h <= 0) {
       errors.push(`${id}: \u5730\u56FE\u5BBD\u9AD8\u5FC5\u987B\u4E3A\u6B63\u6574\u6570`);
     }
-    if (scene3.map.length !== scene3.w * scene3.h) {
+    if (scene2.map.length !== scene2.w * scene2.h) {
       errors.push(`${id}: map.length \u4E0E w \xD7 h \u4E0D\u4E00\u81F4`);
     }
     if (profile.halfW <= 0 || profile.bottomInset < 0 || profile.topInset <= profile.bottomInset) {
       errors.push(`${id}: \u4EBA\u7269\u811A\u5E95\u76D2\u65E0\u6548`);
     }
     if (collides(
-      scene3.map,
-      scene3.spawn.x,
-      scene3.spawn.y,
-      scene3.w,
-      scene3.h,
-      scene3.obstacles ?? [],
+      scene2.map,
+      scene2.spawn.x,
+      scene2.spawn.y,
+      scene2.w,
+      scene2.h,
+      scene2.obstacles ?? [],
       profile
     )) errors.push(`${id}: \u51FA\u751F\u811A\u70B9\u843D\u5728\u78B0\u649E\u4F53\u5185`);
     return errors;
@@ -345,10 +345,10 @@
             ripple: { ...effect.ripple }
           }))
         }));
-        const scene3 = buildMap(data.tileRegions);
+        const scene2 = buildMap(data.tileRegions);
         const obstacles2 = geometry2.flatMap((object) => object.colliders ?? []);
-        if (validateTileScene(sceneId, { ...scene3, obstacles: obstacles2 }, STANDARD_PLAYER_PROFILE).length) continue;
-        if (unreachableSceneFeet({ ...scene3, obstacles: obstacles2 }, requiredFeet, STANDARD_PLAYER_PROFILE).length) continue;
+        if (validateTileScene(sceneId, { ...scene2, obstacles: obstacles2 }, STANDARD_PLAYER_PROFILE).length) continue;
+        if (unreachableSceneFeet({ ...scene2, obstacles: obstacles2 }, requiredFeet, STANDARD_PLAYER_PROFILE).length) continue;
         return {
           regions: data.tileRegions,
           geometry: geometry2,
@@ -362,209 +362,146 @@
   }
 
   // src/core/liuyuan-composition-study.ts
-  var INITIAL_COMPOSITION_STUDY = {
-    view: 0,
-    distance: "near",
-    seen: 1 << 3
-  };
-  var LEFT = [0, 110, 250];
-  var CROP = {
-    far: { y: 80, width: 1420, height: 799 },
-    near: { y: 80, width: 1120, height: 630 }
-  };
-  var ORCHID = { leftLeaf: 208, rightLeaf: 870, topLeaf: 235, potBottom: 695, standBottom: 860 };
-  var WOOD_EDGE = 180;
-  function compositionCrop(state) {
-    return { x: LEFT[state.view], ...CROP[state.distance] };
+  var STONE_RADII = [64, 52, 40];
+  function pairGap(state, first, second) {
+    const a = state.stones[first];
+    const b = state.stones[second];
+    return Math.hypot(a.x - b.x, a.y - b.y) - STONE_RADII[first] - STONE_RADII[second];
   }
-  function compositionCues(state) {
-    const crop = compositionCrop(state);
+  function readStoneSpacing(state) {
+    const pairs = [
+      { first: 0, second: 1, gap: pairGap(state, 0, 1) },
+      { first: 0, second: 2, gap: pairGap(state, 0, 2) },
+      { first: 1, second: 2, gap: pairGap(state, 1, 2) }
+    ];
+    const eachStoneNearest = [0, 1, 2].map((stone) => {
+      const connected = pairs.filter((pair) => pair.first === stone || pair.second === stone);
+      return connected.sort((a, b) => a.gap - b.gap)[0];
+    });
+    const compacted = eachStoneNearest.map((pair) => pair.gap).sort((a, b) => a - b);
+    const closestPair = eachStoneNearest.reduce((best, pair) => pair.gap < best.gap ? pair : best, eachStoneNearest[0]);
+    const mostOpenPair = eachStoneNearest.reduce((best, pair) => pair.gap > best.gap ? pair : best, eachStoneNearest[0]);
+    const low = compacted[0];
+    const high = compacted[2];
+    const text = low < -18 ? "\u6709\u4E24\u5757\u77F3\u5F62\u538B\u5F97\u592A\u6DF1\uFF0C\u5148\u8BA9\u8F6E\u5ED3\u91CD\u65B0\u5206\u5F00\u3002" : high - low < 38 ? "\u4E09\u77F3\u90FD\u770B\u5F97\u89C1\uFF0C\u4E0D\u8FC7\u90BB\u8FD1\u7684\u7A7A\u9699\u8FD8\u592A\u9F50\uFF1B\u8BD5\u7740\u8BA9\u4E00\u5BF9\u76F8\u4F9D\u4E9B\uFF0C\u53E6\u4E00\u5904\u8212\u5C55\u5F00\u3002" : low > 108 ? "\u4E09\u77F3\u5404\u81EA\u7AD9\u5F97\u592A\u8FDC\uFF0C\u5F7C\u6B64\u5C1A\u672A\u5F62\u6210\u4E00\u7EC4\uFF1B\u8BA9\u5176\u4E2D\u4E24\u5757\u9760\u8FD1\u4E9B\u3002" : "\u5DF2\u6709\u8FD1\u5904\u76F8\u5E94\u3001\u8FDC\u5904\u7A0D\u5F00\u7684\u53D8\u5316\u3002";
     return {
-      subjectIntact: ORCHID.leftLeaf >= crop.x + 80 && ORCHID.rightLeaf <= crop.x + crop.width - 120 && ORCHID.topLeaf >= crop.y + 40 && ORCHID.potBottom <= crop.y + crop.height - 10,
-      baseGrounded: ORCHID.standBottom <= crop.y + crop.height - 10,
-      guestSubordinate: Math.max(0, WOOD_EDGE - crop.x) / crop.width < 0.08,
-      inscriptionRoom: (crop.x + crop.width - ORCHID.rightLeaf) / crop.width >= 0.3
+      nearestGaps: compacted,
+      closestPair: [closestPair.first, closestPair.second],
+      mostOpenPair: [mostOpenPair.first, mostOpenPair.second],
+      text
     };
   }
-  function assessComposition(state) {
-    if ((state.seen & state.seen - 1) === 0) return {
+  function assessStoneComposition(state) {
+    const { nearestGaps } = readStoneSpacing(state);
+    const [tightest, , widest] = nearestGaps;
+    if (tightest < -18) return {
       passed: false,
-      code: "one-frame",
-      line: "\u82B1\u5320\u8BF4\uFF1A\u201C\u5148\u6362\u4E2A\u53D6\u6CD5\uFF0C\u518D\u9009\u4F60\u613F\u610F\u7559\u4E0B\u7684\u8FD9\u4E00\u773C\u3002\u201D"
+      code: "merged",
+      line: "\u77F3\u5320\u8F7B\u8F7B\u628A\u7EB8\u8F6C\u4E86\u534A\u5708\uFF1A\u201C\u8FD9\u4E24\u5757\u6328\u5F97\u592A\u6DF1\uFF0C\u8F6E\u5ED3\u5FEB\u5E76\u6210\u4E00\u56E2\u3002\u7559\u4E00\u9053\u80FD\u8FA8\u77F3\u5F62\u7684\u6C14\u53E3\uFF0C\u518D\u770B\u4E00\u773C\u3002\u201D"
     };
-    const cues = compositionCues(state);
-    if (!cues.subjectIntact) return {
+    if (widest - tightest < 38) return {
       passed: false,
-      code: "cut-orchid",
-      line: "\u82B1\u5320\u8F7B\u8F7B\u6307\u5411\u753B\u8FB9\uFF1A\u201C\u53F6\u5C16\u6216\u76C6\u6CBF\u592A\u8D34\u8FB9\u4E86\u3002\u9000\u4E00\u5206\uFF0C\u624D\u770B\u5F97\u89C1\u5B83\u7684\u957F\u52BF\u3002\u201D"
+      code: "same-spacing",
+      line: "\u77F3\u5320\u7528\u6307\u8282\u6CBF\u4E09\u5904\u7A7A\u9699\u70B9\u8FC7\uFF1A\u201C\u77F3\u5F62\u5404\u6709\u4E0D\u540C\uFF0C\u95F4\u8DDD\u5374\u50CF\u5C3A\u91CF\u3002\u8BA9\u4E00\u5BF9\u76F8\u4F9D\uFF0C\u518D\u628A\u53E6\u4E00\u5904\u653E\u5F00\u4E9B\u3002\u201D"
     };
-    if (!cues.baseGrounded) return {
+    if (tightest > 108) return {
       passed: false,
-      code: "base-cut",
-      line: "\u82B1\u5320\u6307\u7740\u753B\u5E45\u4E0B\u6CBF\uFF1A\u201C\u76C6\u770B\u89C1\u4E86\uFF0C\u67B6\u5B50\u7684\u811A\u5374\u65AD\u5728\u753B\u5916\uFF0C\u5170\u50CF\u60AC\u7740\u3002\u9000\u534A\u6B65\u3002\u201D"
-    };
-    if (!cues.guestSubordinate) return {
-      passed: false,
-      code: "guest-heavy",
-      line: "\u82B1\u5320\u906E\u4F4F\u5DE6\u89D2\uFF1A\u201C\u95E8\u6728\u592A\u91CD\uFF0C\u5148\u770B\u89C1\u7684\u662F\u95E8\uFF0C\u4E0D\u662F\u5170\u3002\u8BA9\u5B83\u53EA\u7559\u4E00\u7B14\u4F5C\u966A\u3002\u201D"
-    };
-    if (!cues.inscriptionRoom) return {
-      passed: false,
-      code: "no-blank",
-      line: "\u82B1\u5320\u6BD4\u4E86\u6BD4\u53F3\u5899\uFF1A\u201C\u9898\u5B57\u8FD8\u6CA1\u6709\u5730\u65B9\u843D\u3002\u7A7A\u5904\u4E0D\u80FD\u53EA\u662F\u5269\u4E0B\u7684\u5899\u3002\u201D"
+      code: "too-isolated",
+      line: "\u77F3\u5320\u8BF4\uFF1A\u201C\u4E09\u5757\u90FD\u597D\u770B\u6E05\uFF0C\u5374\u5404\u81EA\u6210\u5B64\u3002\u6536\u8FD1\u4E00\u5BF9\uFF0C\u8BA9\u5B83\u4EEC\u5148\u6709\u7167\u5E94\u3002\u201D"
     };
     return {
       passed: true,
-      code: "album-page",
-      line: "\u82B1\u5320\u5728\u53F3\u8FB9\u865A\u70B9\u4E00\u5217\u5B57\uFF1A\u201C\u5170\u4E3A\u4E3B\uFF0C\u95E8\u6728\u9000\u4F5C\u5BBE\uFF1B\u53F6\u5411\u7A7A\u5899\u4F38\uFF0C\u5B57\u518D\u628A\u753B\u610F\u6536\u4F4F\u3002\u8FD9\u5E45\u53EF\u5165\u5170\u8C31\u3002\u201D"
+      code: "varied",
+      line: "\u77F3\u5320\u770B\u4E86\u7247\u523B\uFF0C\u70B9\u5934\u9053\uFF1A\u201C\u4E09\u5757\u4ECD\u5404\u6709\u77F3\u5F62\uFF0C\u4E00\u5904\u76F8\u4EB2\uFF0C\u4E00\u5904\u8212\u5C55\u3002\u56FE\u516D\u4E00\u3001\u516D\u4E8C\u5404\u6709\u4E0D\u540C\u53D6\u6CD5\uFF1B\u8FD9\u5F20\u5C0F\u7A3F\u4E5F\u81EA\u6709\u5B83\u7684\u6C14\u53E3\u3002\u201D"
     };
   }
 
-  // src/core/liuyuan-composition-atlas.ts
-  var book = "../assets/composition-book/";
-  var scene = "../assets/scene25d/";
-  var COMPOSITION_ATLAS = [
-    {
-      id: "orchid",
-      title: "\u4E00 \xB7 \u5170\u53F6\u4EA4\u53C9",
-      scene: `${scene}liuyuan-orchid-vignette-first-person-study-v1.png`,
-      sceneAlt: "\u773C\u9AD8\u6240\u89C1\uFF1A\u767D\u5899\u524D\u6848\u4E0A\u7684\u4E00\u76C6\u5170",
-      characterLine: "\u82B1\u5320\u628A\u5170\u53F6\u62E8\u5F00\u4E00\u70B9\uFF1A\u201C\u522B\u53EA\u770B\u8FD9\u76C6\u6446\u5728\u54EA\u513F\u3002\u82E5\u8981\u8BB0\u5728\u8C31\u91CC\uFF0C\u4E09\u7B14\u53F6\u5B50\u600E\u4E48\u76F8\u9047\uFF1F\u201D",
-      question: "\u770B\u539F\u4E66\u56FE\u56DB\u4E03\u81F3\u56DB\u4E5D\uFF1A\u54EA\u4E00\u5E45\u7684\u53F6\u7EBF\u6709\u4EA4\u53C9\u548C\u53D8\u5316\uFF0C\u5374\u6CA1\u6709\u6324\u5728\u4E00\u4E2A\u70B9\uFF1F",
-      figures: [
-        { src: `${book}pan-fig47-orchid-crossing.jpg`, label: "\u56FE\u56DB\u4E03 \xB7 \u4E66\u9875 47", alt: "\u5170\u53F6\u51E0\u7B14\u4EA4\u9519\u800C\u4E0D\u5E76\u6210\u540C\u4E00\u70B9\u7684\u5B8C\u6574\u539F\u56FE" },
-        { src: `${book}pan-fig48-orchid-one-knot.jpg`, label: "\u56FE\u56DB\u516B \xB7 \u4E66\u9875 48", alt: "\u591A\u7B14\u5170\u53F6\u5728\u540C\u4E00\u5904\u4EA4\u6C47\u7684\u5B8C\u6574\u539F\u56FE" },
-        { src: `${book}pan-fig49-orchid-fence.jpg`, label: "\u56FE\u56DB\u4E5D \xB7 \u4E66\u9875 48", alt: "\u591A\u7EC4\u53F6\u7EBF\u4EA4\u9519\u793A\u610F\u7684\u5B8C\u6574\u539F\u56FE" }
-      ],
-      options: ["\u56FE\u56DB\u4E03", "\u56FE\u56DB\u516B", "\u56FE\u56DB\u4E5D"],
-      correctOption: 0,
-      success: "\u82B1\u5320\u8BF4\uFF1A\u201C\u56FE\u56DB\u4E03\u8BA9\u51E0\u7B14\u6709\u4EA4\u3001\u6709\u8BA9\u3002\u56FE\u56DB\u516B\u628A\u53F6\u5B50\u62E7\u5728\u4E00\u70B9\uFF1B\u56FE\u56DB\u4E5D\u63D0\u793A\u8FC7\u5BC6\u3001\u5E73\u884C\u4F1A\u5931\u53BB\u53D8\u5316\u3002\u5170\u53F6\u7684\u758F\u5BC6\u8BF4\u7684\u662F\u7EBF\uFF0C\u4E0D\u662F\u6574\u5E45\u767D\u5899\u6709\u591A\u7A7A\u3002\u201D",
-      retry: "\u518D\u770B\u53F6\u7EBF\u4EA4\u4F1A\u7684\u5730\u65B9\uFF1A\u662F\u6709\u51E0\u5904\u53D8\u5316\uFF0C\u8FD8\u662F\u5168\u6324\u5728\u4E00\u70B9\u3001\u6392\u5F97\u50CF\u7BF1\u7B06\uFF1F",
-      sourceNote: "\u6F58\u5929\u5BFF\u300A\u5173\u4E8E\u6784\u56FE\u95EE\u9898\u300B\u201C\u865A\u5B9E\u4E0E\u758F\u5BC6\u201D\uFF0C\u56FE\u56DB\u4E03\u81F3\u56DB\u4E5D\uFF0C\u4E66\u9875 47\u201349\u3002\u56FE\u50CF\u4E3A\u7528\u6237\u63D0\u4F9B PDF \u4E2D\u7684\u5B8C\u6574\u5D4C\u5165\u56FE\u3002"
-    },
-    {
-      id: "bamboo",
-      title: "\u4E8C \xB7 \u7AF9\u5170\u4E0E\u7A7A\u767D",
-      scene: `${scene}liuyuan-bamboo-stone-vignette-first-person-study-v1.png`,
-      sceneAlt: "\u773C\u9AD8\u6240\u89C1\uFF1A\u767D\u5899\u524D\u7684\u7AF9\u4E1B\u4E0E\u4E00\u5757\u5C0F\u592A\u6E56\u77F3\u7814\u7A76\u753B\u9762",
-      characterLine: "\u7FFB\u8FC7\u4E00\u9875\uFF0C\u7AF9\u53F6\u5728\u5899\u524D\u4E92\u76F8\u7A7F\u8FC7\u3002\u82B1\u5320\u95EE\uFF1A\u201C\u7A7A\u767D\u4E0E\u53F6\u7EBF\u7684\u758F\u5BC6\uFF0C\u662F\u540C\u4E00\u4EF6\u4E8B\u5417\uFF1F\u201D",
-      question: "\u770B\u539F\u4E66\u56FE\u56DB\u56DB\uFF1A\u54EA\u79CD\u8BF4\u6CD5\u628A\u201C\u865A\u5B9E\u201D\u4E0E\u201C\u758F\u5BC6\u201D\u5206\u6E05\u4E86\uFF1F",
-      figures: [
-        { src: `${book}pan-fig44-orchid-bamboo.jpg`, label: "\u56FE\u56DB\u56DB \xB7 \u4E66\u9875 44 \xB7 \u5170\u7AF9\u56FE", alt: "\u5170\u4E0E\u7AF9\u6784\u6210\u7684\u5B8C\u6574\u6C34\u58A8\u753B\uFF0C\u5305\u542B\u51E0\u5757\u5927\u7A7A\u767D\u548C\u4EA4\u9519\u7684\u679D\u53F6\u7EBF\u6761" }
-      ],
-      options: [
-        "\u5927\u5757\u672A\u753B\u5904\u662F\u865A\uFF1B\u7AF9\u5170\u7B14\u7EBF\u7684\u4EA4\u9519\u4E0E\u95F4\u8DDD\u662F\u758F\u5BC6",
-        "\u767D\u5904\u8D8A\u591A\u5C31\u662F\u8D8A\u758F\uFF1B\u4E24\u8BCD\u6CA1\u6709\u533A\u522B",
-        "\u7AF9\u5B50\u662F\u865A\uFF0C\u5899\u548C\u77F3\u5934\u624D\u662F\u5B9E"
-      ],
-      correctOption: 0,
-      success: "\u82B1\u5320\u628A\u624B\u6307\u4ECE\u5927\u7247\u767D\u5904\u79FB\u5230\u7AF9\u53F6\uFF1A\u201C\u8FD9\u91CC\u662F\u865A\u4E0E\u5B9E\uFF1B\u8FD9\u91CC\u624D\u662F\u7EBF\u7684\u758F\u4E0E\u5BC6\u3002\u753B\u91CC\u53EF\u4EE5\u540C\u65F6\u6709\u4E24\u79CD\u5173\u7CFB\u3002\u201D",
-      retry: "\u5148\u6307\u8BA4\u753B\u91CC\u6700\u5927\u7684\u672A\u753B\u5904\uFF0C\u518D\u770B\u7AF9\u53F6\u548C\u5170\u53F6\u7EBF\u6761\u5F7C\u6B64\u600E\u6837\u4EA4\u9519\u3002",
-      sourceNote: "\u6F58\u5929\u5BFF\u300A\u5173\u4E8E\u6784\u56FE\u95EE\u9898\u300B\u56FE\u56DB\u56DB\u53CA\u4E66\u9875 44 \u7684\u5206\u6790\uFF1B\u773C\u524D\u7AF9\u77F3\u5C0F\u666F\u662F\u539F\u521B\u6E38\u620F\u7814\u7A76\u753B\uFF0C\u4E0D\u662F\u8BE5\u753B\u6216\u7559\u56ED\u65E7\u8C8C\u3002"
-    },
-    {
-      id: "stone",
-      title: "\u4E09 \xB7 \u4E09\u77F3\u6210\u52BF",
-      scene: `${scene}liuyuan-rock-plum-vignette-first-person-study-v1.png`,
-      sceneAlt: "\u773C\u9AD8\u6240\u89C1\uFF1A\u767D\u5899\u524D\u7684\u592A\u6E56\u77F3\u4E0E\u659C\u5165\u753B\u9762\u7684\u6885\u679D\u7814\u7A76\u753B\u9762",
-      characterLine: "\u77F3\u5320\u6361\u8D77\u4E09\u5757\u788E\u77F3\uFF1A\u201C\u4E0D\u662F\u6392\u6210\u4E00\u5217\u5C31\u53EB\u758F\u5BC6\u3002\u770B\u5B83\u4EEC\u662F\u4E09\u5757\uFF0C\u8FD8\u662F\u6324\u6210\u4E24\u56E2\u3002\u201D",
-      question: "\u770B\u539F\u4E66\u56FE\u516D\u4E00\u81F3\u516D\u4E09\uFF1A\u54EA\u4E00\u7EC4\u4ECD\u80FD\u8BFB\u51FA\u4E09\u77F3\u7684\u8DDD\u79BB\u548C\u524D\u540E\uFF1F",
-      figures: [
-        { src: `${book}pan-fig61-three-stones.jpg`, label: "\u56FE\u516D\u4E00 \xB7 \u4E66\u9875 57", alt: "\u4E09\u5757\u77F3\u5934\u4E2D\u6709\u4E24\u5757\u76F8\u63A5\u800C\u4ECD\u4FDD\u7559\u524D\u540E\u611F\u7684\u5B8C\u6574\u793A\u610F\u56FE" },
-        { src: `${book}pan-fig62-three-stones.jpg`, label: "\u56FE\u516D\u4E8C \xB7 \u4E66\u9875 57", alt: "\u4E09\u5757\u77F3\u5934\u95F4\u9694\u6709\u53D8\u5316\u7684\u5B8C\u6574\u793A\u610F\u56FE" },
-        { src: `${book}pan-fig63-three-stones-merged.jpg`, label: "\u56FE\u516D\u4E09 \xB7 \u4E66\u9875 58", alt: "\u4E24\u5757\u77F3\u5934\u5E76\u5408\u5F97\u8FD1\u4F3C\u4E00\u56E2\u7684\u5B8C\u6574\u793A\u610F\u56FE" }
-      ],
-      options: ["\u56FE\u516D\u4E00\u4E0E\u56FE\u516D\u4E8C", "\u53EA\u6709\u56FE\u516D\u4E09", "\u4E09\u5E45\u90FD\u4E00\u6837"],
-      correctOption: 0,
-      success: "\u77F3\u5320\u7B11\u9053\uFF1A\u201C\u56FE\u516D\u4E00\u867D\u6709\u4E24\u77F3\u76F8\u53E0\uFF0C\u4ECD\u8BA4\u5F97\u51FA\u4E09\u5757\uFF1B\u56FE\u516D\u4E8C\u4E5F\u6709\u8FDC\u8FD1\u3002\u56FE\u516D\u4E09\u53F3\u8FB9\u5E76\u6210\u4E00\u56E2\uFF0C\u4E09\u77F3\u7684\u8DDD\u79BB\u611F\u5C31\u5F31\u4E86\u3002\u201D",
-      retry: "\u522B\u6570\u9ED1\u7EBF\uFF0C\u6570\u4F60\u773C\u4E2D\u8FD8\u80FD\u5206\u8FA8\u51FA\u7684\u77F3\u5757\uFF0C\u518D\u770B\u5B83\u4EEC\u4E4B\u95F4\u7684\u8FDC\u8FD1\u3002",
-      sourceNote: "\u6F58\u5929\u5BFF\u300A\u5173\u4E8E\u6784\u56FE\u95EE\u9898\u300B\u56FE\u516D\u4E00\u81F3\u516D\u4E09\uFF0C\u4E66\u9875 57\u201358\u3002\u56FE\u4E2D\u662F\u6784\u56FE\u793A\u610F\uFF0C\u4E0D\u80FD\u636E\u6B64\u6539\u52A8\u7559\u56ED\u540D\u77F3\u3002"
-    },
-    {
-      id: "branch",
-      title: "\u56DB \xB7 \u6298\u679D\u5165\u753B",
-      scene: `${scene}liuyuan-rock-plum-vignette-first-person-study-v1.png`,
-      sceneAlt: "\u540C\u4E00\u5C0F\u666F\u6539\u770B\u4E0A\u89D2\u4F38\u5165\u753B\u9762\u7684\u6885\u679D\u4E0E\u4E0B\u65B9\u592A\u6E56\u77F3",
-      characterLine: "\u5B66\u5B50\u53C8\u62AC\u5934\u770B\u90A3\u679D\u6885\uFF1A\u201C\u6811\u5728\u753B\u5916\uFF0C\u753B\u91CC\u53EA\u53D6\u4E00\u679D\u3002\u8FD9\u6837\u4E5F\u7B97\u4E00\u5E45\u4E48\uFF1F\u201D\u82B1\u5320\u8BF4\uFF1A\u201C\u5148\u770B\u753B\u8C31\uFF0C\u518D\u81EA\u5DF1\u8F6C\u4E00\u8F6C\u53D6\u666F\u6846\u3002\u201D",
-      question: "\u5148\u770B\u6F58\u4E66\u56FE\u4E8C\u4E94\u7684\u7D2B\u85E4\u4E0E\u71D5\u5B50\u5982\u4F55\u4ECE\u753B\u5916\u8D77\u3001\u5728\u753B\u5185\u6536\uFF1B\u518D\u4E3A\u82B1\u5320\u53D6\u4E00\u5E45\u6709\u679D\u5165\u89D2\u3001\u77F3\u6709\u843D\u811A\u3001\u53F3\u4FA7\u53EF\u843D\u5370\u7684\u5C0F\u666F\u3002",
-      figures: [
-        { src: `${book}pan-fig25-wisteria-swallows.jpg`, label: "\u56FE\u4E8C\u4E94 \xB7 \u4E66\u9875 30 \xB7 \u7D2B\u85E4\u4E0E\u71D5", alt: "\u7D2B\u85E4\u4ECE\u753B\u9762\u4E0A\u65B9\u8FDB\u5165\uFF0C\u71D5\u5B50\u5411\u524D\u98DE\u7684\u5B8C\u6574\u6784\u56FE\u793A\u610F" }
-      ],
-      sourceNote: "\u6F58\u5929\u5BFF\u300A\u5173\u4E8E\u6784\u56FE\u95EE\u9898\u300B\u56FE\u4E8C\u4E94\u53CA\u4E66\u9875 30 \u7684\u8D77\u7ED3\u5206\u6790\uFF1B\u8C22\u5B50\u9759\u300A\u5B8B\u4EE3\u6298\u679D\u82B1\u9E1F\u753B\u7684\u6784\u56FE\u7A0B\u5F0F\u300B\uFF0C\u300A\u65B0\u7F8E\u672F\u300B2007 \u5E74\u7B2C 5 \u671F\uFF0C\u9875 93\u201396\uFF0C\u4F9B\u201C\u622A\u53D6\u4E00\u679D\u3001\u8FB9\u89D2\u5165\u753B\u201D\u7684\u65B9\u6CD5\u53C2\u7167\u3002\u4E24\u8005\u6765\u6E90\u4E0D\u540C\uFF1B\u4E0B\u9762\u53D6\u666F\u4E0E\u843D\u5370\u662F\u539F\u521B\u6E38\u620F\u59D4\u6258\uFF0C\u4E0D\u662F\u539F\u4E66\u7684\u6807\u51C6\u7B54\u6848\u3002"
-    }
-  ];
-  var BRANCH_FORMATS = {
-    landscape: { label: "\u6A2A\u5E45 3:2", width: 0.6, height: 0.71, aspect: 3 / 2, maxPreviewWidth: 760, minX: 0.1, maxX: 0.42, minY: 0.31, maxY: 0.64 },
-    square: { label: "\u65B9\u5E45 1:1", width: 0.45, height: 0.8, aspect: 1, maxPreviewWidth: 550, minX: 0.23, maxX: 0.4, minY: 0.3, maxY: 0.75 },
-    portrait: { label: "\u7AD6\u5E45 4:5", width: 0.37, height: 0.82, aspect: 4 / 5, maxPreviewWidth: 440, minX: 0.28, maxX: 0.4, minY: 0.28, maxY: 0.72 }
-  };
-  function evaluateBranchFrame(formatId, x, y) {
-    const format = BRANCH_FORMATS[formatId];
-    if (!format) return { acceptable: false, line: "\u8FD8\u6CA1\u6709\u9009\u597D\u753B\u5E45\u3002" };
-    if (!Number.isFinite(x) || !Number.isFinite(y) || x < 0 || x > 1 || y < 0 || y > 1) {
-      return { acceptable: false, line: "\u53D6\u666F\u6846\u8FD8\u6CA1\u6709\u843D\u5728\u753B\u9762\u91CC\u3002" };
-    }
-    if (x > format.maxX) return { acceptable: false, line: "\u5411\u5DE6\u8F6C\u4E00\u4E9B\uFF1A\u77F3\u7684\u66F2\u6298\u5F62\u52BF\u88AB\u753B\u8FB9\u622A\u53BB\u592A\u591A\u3002" };
-    if (x < format.minX) return { acceptable: false, line: "\u5411\u53F3\u501F\u4E00\u70B9\u767D\u5899\uFF1A\u679D\u77F3\u6324\u6EE1\u753B\u5E45\uFF0C\u843D\u5370\u7684\u7A7A\u5904\u8FD8\u4E0D\u591F\u4ECE\u5BB9\u3002" };
-    if (y < format.minY) return { acceptable: false, line: "\u6846\u666F\u518D\u5F80\u4E0B\u4E9B\uFF1A\u77F3\u811A\u88AB\u753B\u8FB9\u622A\u65AD\uFF0C\u770B\u7740\u50CF\u60AC\u5728\u5899\u524D\u3002" };
-    if (y > format.maxY) return { acceptable: false, line: "\u6846\u666F\u518D\u5F80\u4E0A\u4E9B\uFF1A\u6885\u679D\u7684\u6765\u8DEF\u9000\u51FA\u4E0A\u89D2\uFF0C\u6298\u679D\u610F\u5473\u6DE1\u4E86\u3002" };
-    return { acceptable: true, line: `${format.label}\u8FD9\u4E00\u666F\u53EF\u7528\uFF1A\u679D\u4ECE\u4E0A\u89D2\u8FDB\u5165\uFF0C\u77F3\u6709\u843D\u811A\uFF0C\u53F3\u8FB9\u8FD8\u6709\u7A7A\u5899\u3002\u5B83\u7B26\u5408\u82B1\u5320\u8FD9\u6B21\u7684\u753B\u5E45\u59D4\u6258\uFF0C\u4E0D\u662F\u552F\u4E00\u7684\u4E2D\u56FD\u753B\u6784\u56FE\u3002` };
+  // src/core/liuyuan-zhezhi-study.ts
+  function distance(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y);
   }
-  function evaluateBranchSeal(formatId, x, y) {
-    const format = BRANCH_FORMATS[formatId];
-    if (!format) return { acceptable: false, line: "\u8FD8\u6CA1\u6709\u9009\u597D\u753B\u5E45\u3002" };
-    if (!Number.isFinite(x) || !Number.isFinite(y) || x < 0 || x > 1 || y < 0 || y > 1) {
-      return { acceptable: false, line: "\u5370\u7AE0\u8FD8\u6CA1\u6709\u843D\u5728\u753B\u5E45\u91CC\u3002" };
-    }
-    const minX = formatId === "portrait" ? 0.75 : formatId === "square" ? 0.71 : 0.68;
-    const maxX = formatId === "portrait" ? 0.89 : 0.88;
-    const minY = formatId === "portrait" ? 0.45 : 0.42;
-    const maxY = formatId === "portrait" ? 0.7 : 0.68;
-    if (x < minX) return { acceptable: false, line: "\u5370\u7AE0\u538B\u8FD1\u4E86\u679D\u77F3\u3002\u628A\u5B83\u79FB\u5230\u53F3\u4FA7\u7A7A\u5899\uFF0C\u8BA9\u4E3B\u4F53\u5148\u8BF4\u8BDD\u3002" };
-    if (x > maxX) return { acceptable: false, line: "\u5370\u7AE0\u6324\u5230\u753B\u8FB9\u4E86\uFF1B\u5F80\u91CC\u6536\u4E00\u70B9\uFF0C\u7559\u51FA\u547C\u5438\u3002" };
-    if (y < minY) return { acceptable: false, line: "\u5370\u7AE0\u592A\u9AD8\uFF0C\u548C\u5165\u753B\u7684\u6885\u679D\u4E89\u5148\uFF1B\u8BD5\u8BD5\u4E2D\u4E0B\u90E8\u7684\u7A7A\u767D\u3002" };
-    if (y > maxY) return { acceptable: false, line: "\u5370\u7AE0\u538B\u5411\u94FA\u5730\uFF0C\u79BB\u5F00\u4E86\u7A7A\u5899\uFF1B\u5F80\u4E0A\u63D0\u4E00\u70B9\u3002" };
-    return { acceptable: true, line: "\u5C0F\u5370\u843D\u5728\u53F3\u4FA7\u4E2D\u4E0B\u65B9\u7684\u7A7A\u767D\u91CC\uFF0C\u4E0E\u5DE6\u4E0A\u6885\u679D\u3001\u5DE6\u4E0B\u77F3\u5934\u76F8\u7167\u5E94\uFF0C\u4E5F\u6CA1\u6709\u5835\u4F4F\u753B\u8FB9\u3002" };
+  function pointToSegment(point, a, b) {
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const lengthSquared = dx * dx + dy * dy;
+    if (lengthSquared === 0) return distance(point, a);
+    const t = Math.max(0, Math.min(1, ((point.x - a.x) * dx + (point.y - a.y) * dy) / lengthSquared));
+    return distance(point, { x: a.x + t * dx, y: a.y + t * dy });
+  }
+  function branchTurnAngle(previous, pivot, next) {
+    const a = { x: previous.x - pivot.x, y: previous.y - pivot.y };
+    const b = { x: next.x - pivot.x, y: next.y - pivot.y };
+    const denominator = Math.hypot(a.x, a.y) * Math.hypot(b.x, b.y);
+    if (!denominator) return 0;
+    const insideAngle = Math.acos(Math.max(-1, Math.min(1, (a.x * b.x + a.y * b.y) / denominator))) * 180 / Math.PI;
+    return Math.abs(180 - insideAngle);
+  }
+  function readBranchStudy(state) {
+    const angles = [1, 2, 3].map((index) => branchTurnAngle(state.stem[index - 1], state.stem[index], state.stem[index + 1]));
+    const turnsAt = angles.map((angle) => angle >= 24);
+    const turns = turnsAt.filter(Boolean).length;
+    const bloomsNearStem = state.blooms.map(
+      (bloom) => Math.min(...state.stem.slice(0, -1).map((point, index) => pointToSegment(bloom, point, state.stem[index + 1]))) <= 105
+    );
+    return { turns, turnsAt, bloomGap: distance(state.blooms[0], state.blooms[1]), bloomsNearStem };
+  }
+  function assessBranchStudy(state) {
+    const reading = readBranchStudy(state);
+    const pathLength = state.stem.slice(0, -1).reduce((sum, point, index) => sum + distance(point, state.stem[index + 1]), 0);
+    const chord = Math.max(1, distance(state.stem[0], state.stem[state.stem.length - 1]));
+    const sinuosity = pathLength / chord;
+    const notes = [
+      reading.turns === 0 || sinuosity < 1.06 ? "\u679D\u52BF\uFF1A\u9996\u5C3E\u76F8\u671B\uFF0C\u6574\u4F53\u8F83\u76F4\uFF1B\u82E5\u60F3\u6709\u201C\u56DE\u8EAB\u201D\uFF0C\u53EF\u4EE5\u518D\u8BD5\u7740\u8F6C\u52A8\u4E00\u5904\u3002" : reading.turns === 3 && sinuosity > 1.55 ? "\u679D\u52BF\uFF1A\u8F6C\u8EAB\u5F88\u591A\uFF0C\u6C14\u606F\u7565\u6025\uFF1B\u6536\u7F13\u5176\u4E2D\u4E00\u6298\uFF0C\u4E5F\u8BB8\u66F4\u8FDE\u8D2F\u3002" : "\u679D\u52BF\uFF1A\u5DF2\u6709\u8D77\u4F0F\uFF0C\u9996\u5C3E\u4ECD\u76F8\u627F\uFF1B\u53EF\u4EE5\u6BD4\u8F83\u8F6C\u6298\u7684\u8F7B\u91CD\u3002",
+      reading.bloomGap < 54 ? "\u82B1\u610F\uFF1A\u4E24\u7C07\u76F8\u805A\uFF0C\u4E3B\u6B21\u6682\u4E0D\u5206\u660E\uFF1B\u53EF\u62C9\u5F00\u4E00\u70B9\uFF0C\u4E5F\u53EF\u4FDD\u7559\u4E3A\u6D53\u5904\u3002" : reading.bloomGap > 260 ? "\u82B1\u610F\uFF1A\u4E24\u7C07\u76F8\u671B\u8F83\u8FDC\uFF1B\u4E2D\u6BB5\u7684\u7A7A\u5904\u56E0\u6B64\u66F4\u5F00\u9614\u3002" : reading.bloomsNearStem.some((near2) => !near2) ? "\u82B1\u610F\uFF1A\u6709\u4E00\u7C07\u79BB\u679D\u7A0D\u8FDC\uFF0C\u50CF\u53E6\u8D77\u4E00\u666F\uFF1B\u4F60\u53EF\u4EE5\u8BA9\u5B83\u9760\u679D\uFF0C\u4E5F\u53EF\u4EE5\u6709\u610F\u7559\u5F00\u3002" : "\u82B1\u610F\uFF1A\u4E24\u7C07\u5F7C\u6B64\u6709\u522B\uFF0C\u4E5F\u90FD\u4E0E\u679D\u52BF\u76F8\u5E94\u3002",
+      Math.abs((state.blooms[0].x + state.blooms[1].x) / 2 - 480) < 85 ? "\u4F59\u767D\uFF1A\u82B1\u4E0E\u679D\u5927\u81F4\u843D\u5728\u753B\u5FC3\u9644\u8FD1\uFF0C\u4E24\u4FA7\u7A7A\u5904\u8F83\u4E3A\u76F8\u6301\u3002" : (state.blooms[0].x + state.blooms[1].x) / 2 < 395 ? "\u4F59\u767D\uFF1A\u753B\u6750\u504F\u5DE6\uFF0C\u53F3\u4FA7\u7559\u7A7A\u8F83\u9614\uFF1B\u53EF\u770B\u770B\u8FD9\u4EFD\u504F\u7F6E\u662F\u5426\u5408\u610F\u3002" : "\u4F59\u767D\uFF1A\u753B\u6750\u504F\u53F3\uFF0C\u5DE6\u4FA7\u7559\u7A7A\u8F83\u9614\uFF1B\u53EF\u770B\u770B\u8FD9\u4EFD\u504F\u7F6E\u662F\u5426\u5408\u610F\u3002"
+    ];
+    const code = reading.turns === 0 || sinuosity < 1.06 ? "straight" : reading.bloomGap < 54 ? "compressed" : reading.bloomGap > 260 ? "scattered" : "observed";
+    return {
+      passed: true,
+      code,
+      line: notes.join(" "),
+      notes
+    };
   }
 
   // src/core/liuyuan-composition-save.ts
-  var STORAGE_PREFIX = "gusu-liuyuan-composition-practice-v1-";
-  var emptyDraft = () => ({ version: 1 });
+  var STORAGE_PREFIX = "gusu-garden-composition-practice-v2-";
+  var emptyDraft = () => ({ version: 2 });
   var record = (value) => typeof value === "object" && value !== null && !Array.isArray(value);
-  var unit = (value) => typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 1;
+  var validPoint = (value) => record(value) && typeof value.x === "number" && Number.isFinite(value.x) && value.x >= 0 && value.x <= 960 && typeof value.y === "number" && Number.isFinite(value.y) && value.y >= 0 && value.y <= 480;
   function parseCompositionDraft(raw) {
     if (!raw) return emptyDraft();
     try {
       const parsed = JSON.parse(raw);
-      if (!record(parsed) || parsed.version !== 1) return emptyDraft();
+      if (!record(parsed) || parsed.version !== 2) return emptyDraft();
       const draft2 = emptyDraft();
-      if (record(parsed.orchid) && record(parsed.orchid.state)) {
-        const { view, distance, seen } = parsed.orchid.state;
-        if ((view === 0 || view === 1 || view === 2) && (distance === "near" || distance === "far") && Number.isInteger(seen) && seen >= 1 && seen <= 63) {
-          const state = { view, distance, seen };
-          draft2.orchid = { state, passed: parsed.orchid.passed === true && assessComposition(state).passed };
+      if (record(parsed.stone) && record(parsed.stone.state)) {
+        const positions = parsed.stone.state.stones;
+        const selected = parsed.stone.state.selected;
+        if (Array.isArray(positions) && positions.length === 3 && positions.every(validPoint) && (selected === 0 || selected === 1 || selected === 2)) {
+          const state = {
+            stones: positions.map((point) => ({ x: point.x, y: point.y })),
+            selected
+          };
+          const exampleViewed = parsed.stone.exampleViewed === true;
+          draft2.stone = {
+            state,
+            exampleViewed,
+            passed: exampleViewed && parsed.stone.passed === true && assessStoneComposition(state).passed
+          };
         }
       }
-      if (record(parsed.atlas)) {
-        const atlas = parsed.atlas;
-        const solved = atlas.solved;
-        const format = atlas.frameFormat;
-        if (Array.isArray(solved) && solved.length === 3 && solved.every((value) => typeof value === "boolean") && typeof format === "string" && format in BRANCH_FORMATS && Number.isInteger(atlas.stageIndex) && atlas.stageIndex >= 0 && atlas.stageIndex <= 3 && unit(atlas.frameX) && unit(atlas.frameY) && unit(atlas.sealX) && unit(atlas.sealY)) {
-          const frameFormat = format;
-          const frameLocked = atlas.frameLocked === true && evaluateBranchFrame(frameFormat, atlas.frameX, atlas.frameY).acceptable;
-          const compositionDone = atlas.compositionDone === true && frameLocked && solved.every(Boolean) && evaluateBranchSeal(frameFormat, atlas.sealX, atlas.sealY).acceptable;
-          const firstUnsolved = solved.findIndex((value) => !value);
-          draft2.atlas = {
-            stageIndex: firstUnsolved < 0 ? atlas.stageIndex : Math.min(atlas.stageIndex, firstUnsolved),
-            solved,
-            frameFormat,
-            frameX: atlas.frameX,
-            frameY: atlas.frameY,
-            frameLocked,
-            sealX: atlas.sealX,
-            sealY: atlas.sealY,
-            compositionDone
+      if (record(parsed.branch) && record(parsed.branch.state)) {
+        const stem = parsed.branch.state.stem;
+        const blooms = parsed.branch.state.blooms;
+        const selected = parsed.branch.state.selected;
+        if (Array.isArray(stem) && stem.length === 5 && stem.every(validPoint) && Array.isArray(blooms) && blooms.length === 2 && blooms.every(validPoint) && Number.isInteger(selected) && selected >= 0 && selected <= 6) {
+          const state = {
+            stem: stem.map((point) => ({ x: point.x, y: point.y })),
+            blooms: blooms.map((point) => ({ x: point.x, y: point.y })),
+            selected
           };
+          draft2.branch = { state, passed: parsed.branch.passed === true && assessBranchStudy(state).passed };
         }
       }
       return draft2;
@@ -580,9 +517,8 @@
     }
   }
   function canReturnFromCompletedAlbum(requested, chapter2, floristMet, draft2) {
-    const orchid = draft2.orchid;
-    const atlas = draft2.atlas;
-    return requested && (!chapter2 || floristMet) && orchid?.passed === true && assessComposition(orchid.state).passed && atlas?.compositionDone === true && atlas.solved.every(Boolean) && atlas.frameLocked && evaluateBranchFrame(atlas.frameFormat, atlas.frameX, atlas.frameY).acceptable && evaluateBranchSeal(atlas.frameFormat, atlas.sealX, atlas.sealY).acceptable;
+    const stone = draft2.stone;
+    return requested && (!chapter2 || floristMet) && stone?.exampleViewed === true && stone.passed === true && assessStoneComposition(stone.state).passed;
   }
 
   // src/core/liuyuan-florist-beat.ts
@@ -987,8 +923,8 @@
     state.moving = length > 0.1;
     if (length) {
       state.direction = dy > 0 ? 0 : dy < 0 ? 3 : dx > 0 ? 2 : 1;
-      const distance = (state.shield > 0 ? 62 : 108) * dt;
-      const amount = input.target ? Math.min(distance, length) : distance;
+      const distance2 = (state.shield > 0 ? 62 : 108) * dt;
+      const amount = input.target ? Math.min(distance2, length) : distance2;
       state.x += dx / length * amount;
       state.y += dy / length * amount;
     }
@@ -1134,8 +1070,8 @@
 
   // src/render/rain-shadow-vignettes.ts
   function rainCatShadowMarks(cat) {
-    const distance = Math.hypot(cat.toX - cat.fromX, cat.toY - cat.fromY);
-    const count = Math.max(1, Math.min(3, Math.ceil(distance / 28)));
+    const distance2 = Math.hypot(cat.toX - cat.fromX, cat.toY - cat.fromY);
+    const count = Math.max(1, Math.min(3, Math.ceil(distance2 / 28)));
     return Array.from({ length: count }, (_, i) => {
       const t = (i + 1) / count;
       return { x: cat.fromX + (cat.toX - cat.fromX) * t, y: cat.fromY + (cat.toY - cat.fromY) * t, t };
@@ -2348,8 +2284,8 @@
     return chapter && !modernReturn && hasStoryFlag(loadProgress(), "ly-porridge-delivered") && !loadProgress().knowledge.includes("liuyuan-album-orchid-leaf");
   }
   function drawingIsNearest() {
-    const distance = Math.hypot(actor.x - drawingFoot.x, actor.y - drawingFoot.y);
-    return drawingAvailable() && distance < 90 && distance <= Math.hypot(actor.x - LIUYUAN_FLOWER_WORKER.x, actor.y - LIUYUAN_FLOWER_WORKER.y) && distance <= Math.hypot(actor.x - LIUYUAN_FLOWER_BUCKET.x, actor.y - LIUYUAN_FLOWER_BUCKET.y);
+    const distance2 = Math.hypot(actor.x - drawingFoot.x, actor.y - drawingFoot.y);
+    return drawingAvailable() && distance2 < 90 && distance2 <= Math.hypot(actor.x - LIUYUAN_FLOWER_WORKER.x, actor.y - LIUYUAN_FLOWER_WORKER.y) && distance2 <= Math.hypot(actor.x - LIUYUAN_FLOWER_BUCKET.x, actor.y - LIUYUAN_FLOWER_BUCKET.y);
   }
   var drawingGame = createRainShadowUI(finishDrawing, leaveDrawing, true);
   function openDrawing(practice = false) {
@@ -2447,7 +2383,7 @@
     keys.clear();
     pressed.clear();
     document.getElementById("transitionTitle").textContent = hasStoryFlag(loadProgress(), "ly-florist-met") ? "\u5FAA\u7740\u201C\u7B14\u6811\u201D" : "\u9662\u5916\u7684\u7FFB\u7EB8\u58F0";
-    transitionWords.textContent = returnFromAlbum ? "\u753B\u8C31\u7559\u5728\u82B1\u5320\u6A90\u4E0B\uFF0C\u7EB8\u89D2\u4E0A\u7684\u201C\u7B14\u6811\u201D\u5374\u8FD8\u6CA1\u6709\u7740\u843D\u3002\u8D70\u51FA\u4F5C\u4E1A\u9662\uFF0C\u4F60\u60F3\u518D\u770B\u770B\u90A3\u4E9B\u6811\u3002" : "\u7CA5\u6876\u7559\u5728\u6A90\u4E0B\uFF0C\u82B1\u5320\u53C8\u4F4E\u5934\u5FD9\u4ED6\u7684\u5170\u3002\u4F60\u8BB0\u7740\u90A3\u53E5\u201C\u82DE\u5C16\u50CF\u7B14\u5934\u201D\uFF0C\u5F80\u9662\u5916\u5BFB\u53BB\u3002";
+    transitionWords.textContent = returnFromAlbum ? "\u90A3\u5F20\u4E09\u77F3\u5C0F\u7A3F\u7559\u5728\u82B1\u5320\u6848\u8FB9\u3002\u7EB8\u4E0A\u7684\u77F3\u6709\u805A\u6563\uFF0C\u56ED\u8DEF\u4E0A\u7684\u6811\u5374\u5404\u6709\u6765\u53BB\uFF1B\u4F60\u8BB0\u8D77\u4E66\u658B\u91CC\u90A3\u53E5\u201C\u82DE\u5C16\u50CF\u7B14\u5934\u201D\uFF0C\u4ECD\u60F3\u51FA\u9662\u518D\u770B\u4E00\u773C\u3002" : "\u7CA5\u6876\u7559\u5728\u6A90\u4E0B\uFF0C\u82B1\u5320\u53C8\u4F4E\u5934\u5FD9\u4ED6\u7684\u5170\u3002\u4F60\u8BB0\u7740\u90A3\u53E5\u201C\u82DE\u5C16\u50CF\u7B14\u5934\u201D\uFF0C\u5F80\u9662\u5916\u5BFB\u53BB\u3002";
     if (!hasStoryFlag(loadProgress(), "ly-florist-met"))
       transitionWords.textContent = "\u7CA5\u5DF2\u9001\u5230\uFF0C\u7A7A\u6876\u6682\u7559\u6A90\u4E0B\u3002\u82B1\u5320\u63D0\u8D77\u6709\u4EBA\u5728\u4E66\u658B\u91CC\u5FD9\u5F97\u5FD8\u4E86\u5403\u996D\uFF1B\u9662\u5916\u9690\u7EA6\u6709\u7FFB\u7EB8\u58F0\u3002\u4F60\u60F3\u8FC7\u53BB\u770B\u770B\uFF0C\u518D\u56DE\u6765\u53D6\u6876\u3002";
     if (loadProgress().knowledge.includes("liuyuan-album-orchid-leaf"))
@@ -2466,7 +2402,7 @@
     LIUYUAN_FLOWER_REQUIRED_FEET
   );
   var actorHeight = Math.round(LIUYUAN_CHARACTER_SCALE.flower.worldHeight * (draft?.actorScalePercent ?? 100) / 100);
-  var scene2 = buildLiuyuanFlowerStudyMap(draft?.regions ?? LIUYUAN_FLOWER_DRAFT_REGIONS);
+  var scene = buildLiuyuanFlowerStudyMap(draft?.regions ?? LIUYUAN_FLOWER_DRAFT_REGIONS);
   var geometry = draft?.geometry ?? LIUYUAN_FLOWER_GEOMETRY;
   var obstacles = geometry.flatMap((object) => object.colliders ?? []);
   var albumReturnRequested = pageQuery.get("album") === "done";
@@ -2477,11 +2413,11 @@
     loadCompositionDraft(chapter)
   );
   var returnFootOpen = !collides(
-    scene2.map,
+    scene.map,
     LIUYUAN_FLOWER_WORKER_STAND.x,
     LIUYUAN_FLOWER_WORKER_STAND.y,
-    scene2.w,
-    scene2.h,
+    scene.w,
+    scene.h,
     obstacles,
     STANDARD_PLAYER_PROFILE
   );
@@ -2754,8 +2690,8 @@
   function drawGeometry() {
     ctx.save();
     ctx.globalAlpha = 0.5;
-    for (let y = 0; y < scene2.h; y++) for (let x = 0; x < scene2.w; x++) {
-      const tile = scene2.map[y * scene2.w + x];
+    for (let y = 0; y < scene.h; y++) for (let x = 0; x < scene.w; x++) {
+      const tile = scene.map[y * scene.w + x];
       if ([T.PATH, T.CORR, T.PLAT, T.WATER].includes(tile)) {
         ctx.fillStyle = tile === T.WATER ? "#4c8dff" : tile === T.CORR ? "#27bfc2" : tile === T.PLAT ? "#f4d35e" : "#52d879";
         ctx.fillRect(x * 16, y * 16, 16, 16);
@@ -2878,7 +2814,7 @@
       actor.dir = dy > 0 ? 0 : dy < 0 ? 3 : dx > 0 ? 2 : 1;
       actor.walkTime += dt;
       const length = Math.hypot(dx, dy);
-      moveEntity(scene2.map, actor, dx / length * 95 * dt, dy / length * 95 * dt, scene2.w, scene2.h, obstacles, STANDARD_PLAYER_PROFILE);
+      moveEntity(scene.map, actor, dx / length * 95 * dt, dy / length * 95 * dt, scene.w, scene.h, obstacles, STANDARD_PLAYER_PROFILE);
     }
     if (!dialogueActions.hidden && !near(LIUYUAN_FLOWER_WORKER, 165)) {
       dialogueActions.hidden = true;
@@ -2912,7 +2848,7 @@
   }
   if (previewRequested && !draft) status.textContent = "\u6CA1\u6709\u627E\u5230\u53EF\u7528\u4E14\u5267\u60C5\u811A\u70B9\u8FDE\u901A\u7684\u8349\u7A3F\uFF0C\u6B63\u663E\u793A\u4EE3\u7801\u51E0\u4F55\uFF1B\u7F16\u8F91\u5668\u539F\u7A3F\u672A\u5220\u9664\u3002";
   if (draft) status.textContent = "\u6B63\u5728\u9884\u89C8\u7F16\u8F91\u5668\u8349\u7A3F\uFF1B\u53EF\u8D70\u9762\u4E0E\u82B1\u5320\u78B0\u649E\u5DF2\u540C\u6B65\u3002";
-  if (collides(scene2.map, actor.x, actor.y, scene2.w, scene2.h, obstacles, STANDARD_PLAYER_PROFILE)) status.textContent = "\u51FA\u751F\u70B9\u88AB\u5F53\u524D\u51E0\u4F55\u5C01\u4F4F\uFF0C\u8BF7\u56DE\u7F16\u8F91\u5668\u68C0\u67E5\u3002";
+  if (collides(scene.map, actor.x, actor.y, scene.w, scene.h, obstacles, STANDARD_PLAYER_PROFILE)) status.textContent = "\u51FA\u751F\u70B9\u88AB\u5F53\u524D\u51E0\u4F55\u5C01\u4F4F\uFF0C\u8BF7\u56DE\u7F16\u8F91\u5668\u68C0\u67E5\u3002";
   else if (returnFromAlbum) status.textContent = "\u4F60\u628A\u5170\u8C31\u4E0E\u753B\u8C31\u4EA4\u56DE\u9662\u4E2D\u3002\u82B1\u5320\u628A\u7EB8\u9875\u538B\u5728\u6A90\u4E0B\u667E\u7740\uFF0C\u53C8\u53BB\u7167\u770B\u90A3\u76C6\u5170\uFF1B\u9001\u7CA5\u4E0E\u5BFB\u4EBA\u7684\u6B63\u4E8B\u4ECD\u5F97\u5F80\u4E0B\u529E\u3002";
   else if (albumReturnRequested) status.textContent = "\u753B\u8C31\u8FD8\u6CA1\u6709\u5B8C\u6574\u4EA4\u6210\u3002\u5148\u4E0E\u82B1\u5320\u8BF4\u8BDD\uFF0C\u518D\u628A\u5170\u8C31\u548C\u753B\u8C31\u90FD\u505A\u5B8C\u3002";
   else if (modernReturn && carryingBucket) status.textContent = "\u7A7A\u6876\u5DF2\u63D0\u5728\u624B\u4E2D\uFF1B\u53F6\u7247\u4ECD\u5939\u5728\u6876\u91CC\u3002\u6CBF\u77F3\u8DEF\u56DE\u4E34\u6C60\u3002";

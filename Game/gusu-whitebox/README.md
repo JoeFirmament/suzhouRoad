@@ -93,26 +93,22 @@ src/
 
 ## 构建
 
-留园入口章流试演页为 [liuyuan-entry.html](liuyuan-entry.html)：从老叟接桶、向乔禾问路、应答门房、亲走夹弄，到小庭口歇脚后转入 [liuyuan-court.html](liuyuan-court.html)。夹弄只推进故事，不因普通走路结算御；御由可选护画挑战按实际走位/时机首次结算，题叶首次结算书，均有任务 ID 防重复。入口现用与统一编辑器同坐标的低饱和可走美术研究图；人物、Tile、草稿碰撞与草稿物件前景遮挡共用世界坐标，旧草稿不覆盖。它仍偏俯视和图解式，**不是最终 2.5D 像素场景**，更不是历史核准的旧门园路。完整跨页试玩建议用本地 HTTP 服务；`file://` 或隐私模式可能不允许浏览器持久保存进度。改动场景数据后须重新打包 `src/liuyuan-entry.ts`、`src/liuyuan-court.ts` 与 `src/geometry-editor.ts`。
+留园入口章流试演页为 [liuyuan-entry.html](liuyuan-entry.html)：从老叟接桶、向乔禾问路、应答门房、亲走夹弄，到小庭口歇脚后转入 [liuyuan-court.html](liuyuan-court.html)。夹弄只推进故事，不因普通走路结算御；御由可选护画挑战按实际走位/时机首次结算，题叶首次结算书，均有任务 ID 防重复。入口现用与统一编辑器同坐标的低饱和可走美术研究图；人物、Tile、草稿碰撞与草稿物件前景遮挡共用世界坐标，旧草稿不覆盖。它仍偏俯视和图解式，**不是最终 2.5D 像素场景**，更不是历史核准的旧门园路。完整跨页试玩建议用本地 HTTP 服务；`file://` 或隐私模式可能不允许浏览器持久保存进度。改动场景数据后运行 `npm run build` 全量重打包（见下）。
 
 ```bash
-# 打包为单文件（file:// 可直接打开 index.html）
-NODE=/Users/quill/.workbuddy/binaries/node/versions/22.22.2-3/bin/node
-ESB=/Users/quill/.workbuddy/binaries/node/workspace/node_modules/.bin/esbuild
-$ESB src/main.ts --bundle --outfile=dist/game.js
-$ESB src/intro.ts --bundle --outfile=dist/intro.js
-$ESB src/journal.ts --bundle --outfile=dist/journal.js
-$ESB src/corridor.ts --bundle --outfile=dist/corridor.js
-$ESB src/world.ts --bundle --outfile=dist/world.js
-$ESB src/home.ts --bundle --outfile=dist/home.js
-$ESB src/liuyuan-entry.ts --bundle --outfile=dist/liuyuan-entry.js
-$ESB src/liuyuan-court.ts --bundle --outfile=dist/liuyuan-court.js
-$ESB src/geometry-editor.ts --bundle --outfile=dist/geometry-editor.js
+# 首次（安装 typescript + esbuild）
+npm install
 
-# 类型检查
-TSC=/Users/quill/.workbuddy/binaries/node/workspace/node_modules/.bin/tsc
-$TSC -p tsconfig.json
+npm run typecheck        # tsc -p tsconfig.json
+npm run build            # 全量打包 27 个页面入口到 dist/
+npm run verify:scenes    # 场景几何 + 证据卡 + 留园 15 事件状态链
+npm run verify:chapter   # 留园章正返 + 府学核本（键盘/指针输入模拟）
+
+# 机器上已有 esbuild 时，可跳过 npm install：
+ESBUILD_BIN=$(command -v esbuild) npm run build
 ```
+
+**改了 `src/` 就重打包**。`dist/` 是页面真正加载的产物，且入口会共用一个 `core/` 依赖——只比对入口文件的修改时间会漏掉"依赖变了、产物没变"。`node scripts/build.mjs` 一次全量重建，比逐条手敲安全。
 
 留园章跨页回归另有 `scripts/verify-liuyuan-page-boot.ts`：模拟九幕独立、章节、返程与草稿缺失时的启动和首帧，不读写玩家浏览器草稿。可用 esbuild 打包成 Node 脚本后运行；此项不能替代真实浏览器键盘／触屏与图面遮挡验收。早期转场现会把 `draft=1` 从入口传至花木院，并贯穿之后的正向与返程研究页。
 

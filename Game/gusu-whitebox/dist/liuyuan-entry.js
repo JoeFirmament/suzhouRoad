@@ -2444,12 +2444,13 @@
   playtestStart.hidden = playtest;
   playtestBanner.hidden = !playtest;
   playtestFileWarning.hidden = !playtest || location.protocol !== "file:";
+  if (atmosphereStudyEnabled) playtestStart.href += "&art=atmosphere-v1";
   playtestRestart.addEventListener("click", () => {
     if (!playtest) return;
     leavingEntry = true;
     clearEntryResume(resumeSlot);
     resetProgress();
-    location.assign("liuyuan-entry.html?playtest=1");
+    location.assign(`liuyuan-entry.html?playtest=1${atmosphereStudyEnabled ? "&art=atmosphere-v1" : ""}`);
   });
   var continueStory = document.getElementById("continueSavedStory");
   var savedStory = liuyuanChapterResumeLink(loadProgress(), location.search);
@@ -2498,6 +2499,7 @@
   reverseStudyLink.href = returnStudy ? "liuyuan-entry.html" : "liuyuan-entry.html?returnStudy=1";
   reverseStudyLink.textContent = returnStudy ? "\u8FD4\u56DE\u5165\u53E3\u7AE0\u6D41" : "\u53E6\u770B\u5939\u5F04\u9006\u884C\u81EA\u7531\u8BD5\u73A9\uFF08\u4E0D\u7B97 CH3\uFF09";
   if (params.get("draft") === "1") reverseStudyLink.href += returnStudy ? "?draft=1" : "&draft=1";
+  if (atmosphereStudyEnabled) reverseStudyLink.href += returnStudy ? "?art=atmosphere-v1" : "&art=atmosphere-v1";
   var draft = readScenePlateDraft(
     "liuyuan-entrance-topology-study",
     1008,

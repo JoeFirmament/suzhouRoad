@@ -200,7 +200,7 @@
   function advanceLiuyuanChapter(progress, flag) {
     if (progress.storyFlags.includes(flag)) return { progress, applied: false, reason: "already-applied" };
     const index = LIUYUAN_CHAPTER_FLAGS.indexOf(flag);
-    const requiredFlag = flag === "ly-gate-passed" ? "ly-errand-offered" : index > 0 ? LIUYUAN_CHAPTER_FLAGS[index - 1] : void 0;
+    const requiredFlag = flag === "ly-gate-passed" ? "ly-errand-offered" : flag === "ly-magnolia-seen" || flag === "ly-study-found" ? "ly-porridge-delivered" : index > 0 ? LIUYUAN_CHAPTER_FLAGS[index - 1] : void 0;
     if (requiredFlag && !progress.storyFlags.includes(requiredFlag)) {
       return { progress, applied: false, reason: "missing-previous", requiredFlag };
     }

@@ -656,14 +656,21 @@
   function carryingLiuyuanPorridge(progress) {
     return hasStoryFlag(progress, "ly-errand-offered") && !hasStoryFlag(progress, "ly-porridge-delivered");
   }
-  function drawLiuyuanPorridgeBucket(ctx2, footX, footY, actorHeight2, direction, carried) {
+  function liuyuanBucketAnchor(footX, footY, actorHeight2, direction, carried) {
+    const side = direction === 2 ? -1 : 1;
+    return {
+      x: footX + (carried ? side * actorHeight2 * 0.27 : 0),
+      y: footY - (carried ? actorHeight2 * 0.16 : 0)
+    };
+  }
+  function drawLiuyuanPorridgeBucket(ctx2, footX, footY, actorHeight2, direction, carried, grounded = !carried) {
     const h = Math.max(9, Math.round(actorHeight2 * 0.23));
     const w = Math.max(8, Math.round(h * 0.78));
-    const side = direction === 2 ? -1 : 1;
-    const x = Math.round(footX + (carried ? side * actorHeight2 * 0.27 : 0) - w / 2);
-    const bottom = Math.round(footY - (carried ? actorHeight2 * 0.16 : 0));
+    const anchor = liuyuanBucketAnchor(footX, footY, actorHeight2, direction, carried);
+    const x = Math.round(anchor.x - w / 2);
+    const bottom = Math.round(anchor.y);
     const y = bottom - h;
-    if (!carried) {
+    if (grounded) {
       ctx2.fillStyle = "rgba(23, 31, 24, .2)";
       ctx2.fillRect(x - 2, bottom - 1, w + 4, 3);
     }

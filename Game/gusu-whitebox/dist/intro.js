@@ -1,7 +1,17 @@
 "use strict";
 (() => {
+  // src/core/liuyuan-playtest.ts
+  function isLiuyuanPlaytest(search) {
+    const current = search ?? (typeof location === "undefined" ? "" : location.search);
+    return new URLSearchParams(current).get("playtest") === "1";
+  }
+
   // src/core/progression.ts
   var SAVE_KEY = "gusu-nine-gardens-rpg-v1";
+  var LIUYUAN_PLAYTEST_KEY = "gusu-nine-gardens-liuyuan-playtest-v1";
+  var activeSaveKey = () => isLiuyuanPlaytest() ? LIUYUAN_PLAYTEST_KEY : SAVE_KEY;
+  var volatileProgress = /* @__PURE__ */ new Map();
+  var storageWriteFailed = /* @__PURE__ */ new Set();
   var FLAG_ALIASES = {
     "opening-arrival-seen": "opening-seen",
     "opening-seen": "opening-arrival-seen",
@@ -31,12 +41,15 @@
     return JSON.parse(JSON.stringify(DEFAULT_PROGRESS));
   }
   function loadProgress() {
+    const key = activeSaveKey();
+    const fallback = volatileProgress.get(key);
+    if (storageWriteFailed.has(key) && fallback) return structuredClone(fallback);
     try {
-      const raw = localStorage.getItem(SAVE_KEY);
-      if (!raw) return cloneDefault();
+      const raw = localStorage.getItem(key);
+      if (!raw) return fallback ? structuredClone(fallback) : cloneDefault();
       const saved = JSON.parse(raw);
       const base = cloneDefault();
-      return {
+      const progress2 = {
         ...base,
         ...saved,
         arts: { ...base.arts, ...saved.arts ?? {} },
@@ -46,8 +59,10 @@
         storyFlags: Array.isArray(saved.storyFlags) ? saved.storyFlags : [],
         updatedAt: typeof saved.updatedAt === "number" ? saved.updatedAt : 0
       };
+      volatileProgress.set(key, structuredClone(progress2));
+      return progress2;
     } catch {
-      return cloneDefault();
+      return fallback ? structuredClone(fallback) : cloneDefault();
     }
   }
   function hasStoryFlag(progress2, flag) {
@@ -63,10 +78,14 @@
     return progress2;
   }
   function saveProgress(progress2) {
+    progress2.updatedAt = Date.now();
+    const key = activeSaveKey();
+    volatileProgress.set(key, structuredClone(progress2));
     try {
-      progress2.updatedAt = Date.now();
-      localStorage.setItem(SAVE_KEY, JSON.stringify(progress2));
+      localStorage.setItem(key, JSON.stringify(progress2));
+      storageWriteFailed.delete(key);
     } catch {
+      storageWriteFailed.add(key);
     }
   }
   function resetProgress() {

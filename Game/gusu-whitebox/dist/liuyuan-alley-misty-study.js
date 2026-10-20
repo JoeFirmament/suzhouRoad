@@ -217,6 +217,55 @@
   }
 
   // src/core/scene-validation.ts
+  function unreachableSceneFeet(scene2, targets, profile, step = 4) {
+    if (!targets.length) return [];
+    if (collides(
+      scene2.map,
+      scene2.spawn.x,
+      scene2.spawn.y,
+      scene2.w,
+      scene2.h,
+      scene2.obstacles ?? [],
+      profile
+    )) return targets.map((target) => target.id);
+    const remaining = new Map(targets.map((target) => [target.id, target]));
+    const blockedFeet = targets.filter((target) => target.mustStand && collides(
+      scene2.map,
+      target.x,
+      target.y,
+      scene2.w,
+      scene2.h,
+      scene2.obstacles ?? [],
+      profile
+    )).map((target) => target.id);
+    if (blockedFeet.length) return blockedFeet;
+    const queue = [[scene2.spawn.x, scene2.spawn.y]];
+    const visited = /* @__PURE__ */ new Set([`${scene2.spawn.x},${scene2.spawn.y}`]);
+    const worldW = scene2.w * 16, worldH = scene2.h * 16;
+    for (let cursor = 0; cursor < queue.length && remaining.size; cursor++) {
+      const [x, y] = queue[cursor];
+      for (const target of remaining.values()) {
+        if (Math.hypot(x - target.x, y - target.y) <= target.radius) remaining.delete(target.id);
+      }
+      for (const [dx, dy] of [[step, 0], [-step, 0], [0, step], [0, -step]]) {
+        const nextX = x + dx, nextY = y + dy;
+        if (nextX < 0 || nextY < 0 || nextX >= worldW || nextY >= worldH) continue;
+        const key = `${nextX},${nextY}`;
+        if (visited.has(key) || collides(
+          scene2.map,
+          nextX,
+          nextY,
+          scene2.w,
+          scene2.h,
+          scene2.obstacles ?? [],
+          profile
+        )) continue;
+        visited.add(key);
+        queue.push([nextX, nextY]);
+      }
+    }
+    return [...remaining.keys()];
+  }
   function validateTileScene(id, scene2, profile) {
     const errors = [];
     if (!Number.isInteger(scene2.w) || !Number.isInteger(scene2.h) || scene2.w <= 0 || scene2.h <= 0) {
@@ -257,7 +306,7 @@
     }
     return candidates.filter((item) => typeof item.value === "string" && Number.isFinite(item.savedAt)).sort((a, b) => b.savedAt - a.savedAt);
   }
-  function readScenePlateDraft(sceneId, worldW, worldH, buildMap) {
+  function readScenePlateDraft(sceneId, worldW, worldH, buildMap, requiredFeet = []) {
     if (new URLSearchParams(location.search).get("draft") !== "1") return null;
     const validPolygon = (value) => Array.isArray(value) && value.length >= 3 && value.every((point) => Array.isArray(point) && point.length === 2 && point.every(Number.isFinite) && point[0] >= 0 && point[1] >= 0 && point[0] <= worldW && point[1] <= worldH);
     const validCollider = (value) => {
@@ -299,6 +348,7 @@
         const scene2 = buildMap(data.tileRegions);
         const obstacles2 = geometry2.flatMap((object) => object.colliders ?? []);
         if (validateTileScene(sceneId, { ...scene2, obstacles: obstacles2 }, STANDARD_PLAYER_PROFILE).length) continue;
+        if (unreachableSceneFeet({ ...scene2, obstacles: obstacles2 }, requiredFeet, STANDARD_PLAYER_PROFILE).length) continue;
         return {
           regions: data.tileRegions,
           geometry: geometry2,
