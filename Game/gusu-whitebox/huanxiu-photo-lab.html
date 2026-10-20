@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>环秀山庄 · 实景取景对照</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #141613; color: #e6e2d6; font: 15px/1.6 "PingFang SC","Microsoft YaHei",sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 16px 16px 40px; }
+  h1 { font-size: 1.2rem; margin: 4px 0 2px; }
+  .sub { color: #9aa094; font-size: .84rem; margin-bottom: 12px; }
+  .stage { position: relative; border: 1px solid #4b5249; background: #0e100d; }
+  #view { display: block; width: 100%; height: auto; image-rendering: auto; }
+  .hud { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0; }
+  button { min-height: 34px; padding: 0 12px; border: 1px solid #5b655b; background: #20251f; color: #e6e2d6; border-radius: 3px; font: inherit; cursor: pointer; }
+  button:hover { background: #2b332a; }
+  button[aria-pressed="true"] { background: #3c4a3c; border-color: #93a58c; }
+  .legend { color: #9aa094; font-size: .8rem; }
+  .note { margin-top: 14px; color: #8f968a; font-size: .8rem; }
+  .note b { color: #c9d1c1; }
+</style>
+</head>
+<body>
+<main>
+  <h1>环秀山庄 · 实景取景对照</h1>
+  <p class="sub">用真实照片定构图，不画 SVG 假山。参考图只作研究，不进游戏资源。</p>
+
+  <div class="stage"><canvas id="view" width="1008" height="688"></canvas></div>
+
+  <div class="hud">
+    <button data-mode="pano" aria-pressed="true">宽景（7-1）</button>
+    <button data-mode="door">门框（框景）</button>
+    <button id="guides" aria-pressed="true">辅助线 G</button>
+    <span class="legend">← → 平移（宽景）· G 辅助线</span>
+  </div>
+
+  <p class="note">
+    <b>宽景里看三件事：</b>楼在左、山在右、池栏在下；山是**连续的岩壁**，不是居中的主峰。
+    <br><b>门框里看一件事：</b>门洞就是取景匣——人站在屋里，山被门框框住。
+    <br><b>比例尺：</b>楼是两层，人站在楼前约到一层檐下；山高约楼高的 1.2–1.5 倍。
+  </p>
+</main>
+<script>
+(() => {
+  const W = 1008, H = 688;
+  const canvas = document.getElementById('view');
+  const ctx = canvas.getContext('2d');
+  const pano = new Image(); pano.src = 'control/huanxiu/ref/panorama-7-1.jpg';
+  const door = new Image(); door.src = 'control/huanxiu/ref/doorway.jpg';
+  let mode = 'pano', camX = 0, showGuides = true;
+  const maxX = () => Math.max(0, (pano.naturalWidth || 1205) - W);
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    if (mode === 'pano' && pano.complete) {
+      ctx.drawImage(pano, camX, 0, pano.naturalWidth, H, 0, 0, W, H);
+    } else if (mode === 'door' && door.complete) {
+      ctx.drawImage(door, 0, 0, W, H);
+    } else {
+      ctx.fillStyle = '#1b1e1a'; ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = '#9aa094'; ctx.font = '14px sans-serif'; ctx.fillText('参考图加载中…', 24, 40);
+    }
+
+    if (!showGuides) return;
+    ctx.save();
+    // 三分线
+    ctx.strokeStyle = 'rgba(255,226,122,.55)'; ctx.lineWidth = 1; ctx.setLineDash([5, 7]);
+    for (let i = 1; i < 3; i++) {
+      ctx.beginPath(); ctx.moveTo(W * i / 3, 0); ctx.lineTo(W * i / 3, H); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, H * i / 3); ctx.lineTo(W, H * i / 3); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    ctx.strokeStyle = 'rgba(217,75,63,.9)'; ctx.lineWidth = 2; ctx.strokeRect(1, 1, W - 2, H - 2);
+
+    // 标注
+    const tag = (text, x, y, color = '#ffe27a') => {
+      ctx.fillStyle = 'rgba(14,16,13,.72)';
+      ctx.fillRect(x - 4, y - 15, ctx.measureText(text).width + 10, 20);
+      ctx.fillStyle = color; ctx.font = '13px monospace'; ctx.fillText(text, x + 1, y);
+    };
+    if (mode === 'pano') {
+      tag('楼（比例尺）', 40, 300);
+      tag('山：连续岩壁 · 洞在脚下', 520, 260);
+      tag('栏 / 池 / 路', 430, 620);
+      tag('树冠压在山顶', 760, 90, '#9fe0a8');
+      for (const [x, lab] of [[220, 'A 西'], [520, 'B 中'], [820, 'C 东']]) {
+        const sx = x - camX;
+        if (sx > -20 && sx < W + 20) {
+          ctx.fillStyle = 'rgba(127,214,255,.9)';
+          ctx.beginPath(); ctx.moveTo(sx - 8, H); ctx.lineTo(sx + 8, H); ctx.lineTo(sx, H - 14); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = '#7fd6ff'; ctx.font = '12px monospace'; ctx.fillText(lab, sx + 10, H - 4);
+        }
+      }
+      const label = '宽景 · 7-1 · 相机 x ' + Math.round(camX) + ' / ' + maxX();
+      ctx.fillStyle = 'rgba(14,16,13,.72)'; ctx.fillRect(6, 6, ctx.measureText(label).width + 14, 18);
+      ctx.fillStyle = '#7fd6ff'; ctx.font = '12px monospace'; ctx.fillText(label, 12, 20);
+    } else {
+      tag('门洞 = 取景框', 42, 60);
+      tag('山在门洞里，人不过去', 42, 82, '#9fe0a8');
+      ctx.strokeStyle = 'rgba(217,75,63,.8)'; ctx.lineWidth = 2;
+      ctx.strokeRect(340, 310, 360, 378);
+      const label = '门框 · 框景 · 竖构图';
+      ctx.fillStyle = 'rgba(14,16,13,.72)'; ctx.fillRect(6, H - 30, ctx.measureText(label).width + 14, 20);
+      ctx.fillStyle = '#7fd6ff'; ctx.font = '12px monospace'; ctx.fillText(label, 12, H - 15);
+    }
+    ctx.restore();
+  }
+
+  function setMode(m) {
+    mode = m; camX = 0;
+    document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === m)));
+  }
+  document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  document.getElementById('guides').addEventListener('click', e => { showGuides = !showGuides; e.currentTarget.setAttribute('aria-pressed', String(showGuides)); });
+  addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') { mode = 'pano'; camX = Math.max(0, camX - 30); }
+    else if (e.key === 'ArrowRight') { mode = 'pano'; camX = Math.min(maxX(), camX + 30); }
+    else if (e.key.toLowerCase() === 'g') { showGuides = !showGuides; document.getElementById('guides').setAttribute('aria-pressed', String(showGuides)); }
+    else return;
+    e.preventDefault();
+  });
+  let last = 0;
+  function tick(now) { draw(); requestAnimationFrame(tick); }
+  pano.addEventListener('load', () => { setMode((new URLSearchParams(location.search).get('m') || 'pano').toLowerCase()); });
+  door.addEventListener('load', draw);
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
