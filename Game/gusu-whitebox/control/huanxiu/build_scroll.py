@@ -100,6 +100,19 @@ def main():
     for cx,cy,rx,ry in [(610,340,16,10),(660,470,12,8),(1610,340,14,9),(2350,360,15,10),(2700,470,12,8)]:
         parts.append(f'<ellipse cx="{cx}" cy="{cy}" rx="{rx+3}" ry="{ry+2}" fill="{C["rock_hi"]}" opacity=".25"/>')
         parts.append(f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="#141714"/>')
+    # B→C 段缝：墙垛（在山前，像院墙在尽头转了个角）
+    parts.append(f'<rect x="1982" y="216" width="68" height="432" fill="{C["wall_hi"]}"/>')
+    parts.append(f'<rect x="1976" y="204" width="80" height="16" fill="{C["roof"]}"/>')
+    parts.append(f'<rect x="1976" y="220" width="80" height="8" fill="{C["roof_hi"] if "roof_hi" in C else C["roof"]}" opacity=".8"/>')
+    parts.append(f'<rect x="1982" y="216" width="68" height="10" fill="{C["wall_hi"]}" opacity=".9"/>')
+    parts.append(f'<rect x="1982" y="226" width="6" height="422" fill="{C["wall_lo"]}" opacity=".55"/>')
+    parts.append(f'<rect x="2044" y="226" width="6" height="422" fill="{C["wall_lo"]}" opacity=".45"/>')
+    parts.append(f'<rect x="1982" y="590" width="68" height="58" fill="{C["wall_lo"]}"/>')
+    parts.append(f'<rect x="2014" y="224" width="3" height="370" fill="{C["wall_lo"]}" opacity=".45"/>')
+    parts.append(f'<rect x="1982" y="520" width="68" height="4" fill="{C["wall_lo"]}" opacity=".6"/>')
+    # 墙垛脚下两块矮石，接住山脚
+    parts.append(poly([(1968,648),(1974,616),(1988,626),(2002,648)], C["rock2"]))
+    parts.append(poly([(2044,648),(2052,614),(2066,626),(2074,648)], C["rock2"]))
     # 磴道（看得见、上不去）
     parts.append('<path d="M1690 520 L1662 482 L1680 450 L1650 420 L1666 392" stroke="#9a9d8e" stroke-width="4" fill="none" opacity=".5"/>')
     parts.append('<path d="M2440 470 L2412 432 L2430 400 L2400 370 L2416 342" stroke="#9a9d8e" stroke-width="4" fill="none" opacity=".45"/>')
@@ -155,6 +168,13 @@ def main():
   {body}
 </svg>'''
     (OUT/"seam.svg").write_text(seam, encoding="utf8")
+
+    seam_bc=f'''<svg xmlns="http://www.w3.org/2000/svg" width="2016" height="{H}" viewBox="1008 0 2016 {H}" shape-rendering="crispEdges">
+  <title>环秀山庄 · B→C 段缝试段</title>
+  <desc>B（1008–2016）→ 缝（2016，墙垛 + 石笋）→ C（2016–3024）。相机固定 1×，连续平移。</desc>
+  {body}
+</svg>'''
+    (OUT/"seam-bc.svg").write_text(seam_bc, encoding="utf8")
     print("wrote scroll.svg / scroll-overlay.svg")
 
 if __name__=="__main__":

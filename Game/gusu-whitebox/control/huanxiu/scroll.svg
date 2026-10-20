@@ -41,6 +41,17 @@
   <ellipse cx="2350" cy="360" rx="15" ry="10" fill="#141714"/>
   <ellipse cx="2700" cy="470" rx="15" ry="10" fill="#8a8f82" opacity=".25"/>
   <ellipse cx="2700" cy="470" rx="12" ry="8" fill="#141714"/>
+  <rect x="1982" y="216" width="68" height="432" fill="#a8a296"/>
+  <rect x="1976" y="204" width="80" height="16" fill="#3b3d3c"/>
+  <rect x="1976" y="220" width="80" height="8" fill="#3b3d3c" opacity=".8"/>
+  <rect x="1982" y="216" width="68" height="10" fill="#a8a296" opacity=".9"/>
+  <rect x="1982" y="226" width="6" height="422" fill="#7a756c" opacity=".55"/>
+  <rect x="2044" y="226" width="6" height="422" fill="#7a756c" opacity=".45"/>
+  <rect x="1982" y="590" width="68" height="58" fill="#7a756c"/>
+  <rect x="2014" y="224" width="3" height="370" fill="#7a756c" opacity=".45"/>
+  <rect x="1982" y="520" width="68" height="4" fill="#7a756c" opacity=".6"/>
+  <path d="M1968.0,648.0 L1974.0,616.0 L1988.0,626.0 L2002.0,648.0 Z" fill="#6b7066"/>
+  <path d="M2044.0,648.0 L2052.0,614.0 L2066.0,626.0 L2074.0,648.0 Z" fill="#6b7066"/>
   <path d="M1690 520 L1662 482 L1680 450 L1650 420 L1666 392" stroke="#9a9d8e" stroke-width="4" fill="none" opacity=".5"/>
   <path d="M2440 470 L2412 432 L2430 400 L2400 370 L2416 342" stroke="#9a9d8e" stroke-width="4" fill="none" opacity=".45"/>
   <rect x="998" y="176" width="20" height="472" fill="#4a3f32"/>

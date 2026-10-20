@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>环秀山庄 · A→B 段缝试段</title>
+<title>环秀山庄 · 段缝试段</title>
 <style>
   :root { color-scheme: dark; }
   * { box-sizing: border-box; }
@@ -25,8 +25,8 @@
 </head>
 <body>
 <main>
-  <h1>环秀山庄 · A→B 段缝试段</h1>
-  <p class="sub">2016×688；相机固定 1×，连续平移。只回答一件事：过缝的时候跳不跳。</p>
+  <h1 id="h1">环秀山庄 · A→B 段缝试段</h1>
+  <p class="sub" id="sub">2016×688；相机固定 1×，连续平移。只回答一件事：过缝的时候跳不跳。</p>
 
   <div class="stage"><canvas id="view" width="1008" height="688"></canvas></div>
 
@@ -42,8 +42,8 @@
 
   <p class="note">
     <b>怎么判：</b>点“播放”，让镜头从 A 慢慢走到 B。看三样——
-    ① 山形有没有突然换一张；② 树干有没有“贴”在缝上；③ 栏杆、墙、路是不是一根线到底。
-    <br><b>树的作用：</b>树干挡缝、树冠挡天、山坳挡地。三样同时成立，缝才看不见。
+    ① 山形有没有突然换一张；② 遮挡物（树／墙垛）有没有“贴”在缝上；③ 栏杆、墙、路是不是一根线到底。
+    <br><b>遮挡物：</b>A→B 用树（干挡缝、冠挡天、坳挡地）；B→C 用墙垛（白墙压缝、矮石接脚）。
   </p>
 </main>
 <script>
@@ -52,7 +52,12 @@
   const PRESETS = { A: 0, S: 504, B: 1008 };
   const canvas = document.getElementById('view');
   const ctx = canvas.getContext('2d'); ctx.imageSmoothingEnabled = false;
-  const img = new Image(); img.src = 'control/huanxiu/seam.svg';
+  const SEG = (new URLSearchParams(location.search).get('seg') || 'ab').toLowerCase();
+  const img = new Image(); img.src = SEG === 'bc' ? 'control/huanxiu/seam-bc.svg' : 'control/huanxiu/seam.svg';
+  if (SEG === 'bc') {
+    document.getElementById('h1').textContent = '环秀山庄 · B→C 段缝试段';
+    document.getElementById('sub').textContent = '2016×688；相机固定 1×，连续平移。缝上是墙垛 + 矮石，不是树。';
+  }
   let camX = 0, playing = false, showGuides = true, last = 0, speed = 60, active = 'A';
 
   const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
