@@ -1,0 +1,31 @@
+【主提示词 · 中文】
+以参考图的构图与色块为准，重绘为 2.5D 像素风游戏背景：
+清末苏州环秀山庄假山主面，左侧廊与亭，中间湖石假山与深洞，
+前方低石栏、水池、三曲石桥，右侧粉墙黛瓦高墙，
+山上有松，廊前有桂，墙边有竹，洞口有芭蕉；
+阴天湿润，石面湿，灰绿低饱和，左上柔光，层次分明；
+16-bit 像素，2-3px 色簇，无抗锯齿；
+画面无文字、无人物、无蓝天、无现代金属栏杆、无匾额。
+
+【Negative · 若平台支持】
+photo, photorealistic, 3D render, smooth gradients, blurry, depth of field,
+text, watermark, signature, plaque, Chinese characters,
+blue sky, bright sunlight, modern metal railing, people, crowd,
+extra buildings, anime, cartoon, thick outlines, low resolution,
+jpeg artifacts, oversaturated, HDR
+
+【English positive · optional】
+2.5D pixel art game background, late Qing Suzhou classical garden,
+Huanxiu Shanzhuang rockery, massive Taihu limestone rockery with a deep cave
+and overhanging crags, low stone railing and pond in front, zigzag stone bridge,
+corridor and pavilion on the left, two-story wooden building behind,
+high white plaster wall with dark tile cap on the right, pine on the rock,
+osmanthus by the corridor, bamboo at the wall, banana at the cave,
+overcast humid day, wet stone, muted gray-green palette,
+soft diffused light from upper left, layered depth,
+16-bit pixel art, 2-3 px clusters, no anti-aliasing,
+no text, no people, no blue sky, 1008x688
+
+【尺寸】1024×704（或 1008×688）
+【数量】6 张
+【命名】candidate-01 … candidate-06
