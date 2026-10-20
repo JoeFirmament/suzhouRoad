@@ -9,7 +9,8 @@
     "build": "node scripts/build.mjs",
     "verify:scenes": "node scripts/verify.mjs verify-all-scenes",
     "verify:chapter": "node scripts/verify.mjs verify-liuyuan-input-smoke verify-liuyuan-home-return",
-    "check": "npm run typecheck && npm run build && npm run verify:scenes"
+    "verify:1890": "node scripts/verify.mjs verify-1890-vocab",
+    "check": "npm run typecheck && npm run build && npm run verify:scenes && npm run verify:1890"
   },
   "devDependencies": {
     "esbuild": "^0.28.2",
