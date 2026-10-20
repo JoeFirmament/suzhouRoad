@@ -1,0 +1,36 @@
+GIMP Palette
+Name: Gusu Jiuyuan Global 32
+Columns: 8
+#
+251 247 236	wall 白墙亮（画面最亮）
+242 234 214	paper 宣纸底/地面
+230 220 194	path 路径亮/纸阴
+216 206 174	pathAlt 路径暗/纸纹
+217 210 192	wallShade 白墙暗面
+184 178 162	roof 瓦顶亮
+168 162 146	roofDark 瓦顶暗
+163 157 144	inkPale 淡墨（拓片浅线）
+126 121 109	inkMid 中墨（次要线）
+ 85  82  74	inkHeavy 重墨（主要线）
+ 43  40  36	ink 焦墨（文字/轮廓）
+ 23  21  18	stele 碑墨（拓片最深）
+194 224 218	waterHi 水光/波线
+158 207 201	water 水色
+111 168 158	waterDeep 水深
+ 61 112 104	qing 青（判定UI/深水）
+ 42  81  76	qingDeep 深潭/夜水
+200 160  75	gold 金棕（窗格/题签）
+138 104  68	wood 木色（柱/栏）
+107  76  47	woodDark 木影
+217  85  67	zhuBright 朱亮（点睛高光）
+176  58  46	zhu 朱红（唯一重色）
+143  39  29	sealRed 印泥深红
+188 214 164	grass 草地亮
+179 207 155	grassAlt 草地暗
+156 196 135	leafHi 叶亮
+143 187 120	leafMid 叶中
+127 174 106	leafDark 叶暗
+ 95 125  79	pine 松柏深叶
+176 191 168	rockTop 石顶受光
+147 164 140	rockBase 石面
+120 135 111	rockDark 石暗

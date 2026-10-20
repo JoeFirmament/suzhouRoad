@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>姑苏九园 · 基础白模沙盒</title>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="pixel-theme.css">
+</head>
+<body>
+<main class="game-shell">
+  <nav class="mode-nav" aria-label="原型模式">
+    <strong>沧浪亭白模沙盒</strong>
+    <span><a href="index.html">返回标题</a><a href="corridor.html">复廊近景</a><a href="garden.html">整园导航</a><a href="slice.html">结构试铺</a></span>
+  </nav>
+  <div class="stage"><canvas id="game" aria-label="沧浪亭白模。使用方向键或 WASD 移动，E 键取景。"></canvas></div>
+  <nav class="touch-controls" data-touch-controls aria-label="触摸操作">
+    <div class="dpad">
+      <span></span><button type="button" data-move="w" aria-label="向上移动">↑</button><span></span>
+      <button type="button" data-move="a" aria-label="向左移动">←</button><button type="button" data-move="s" aria-label="向下移动">↓</button><button type="button" data-move="d" aria-label="向右移动">→</button>
+    </div>
+    <div class="action-pad"><button type="button" data-action="interact">取景</button><button type="button" data-action="cancel">退出</button></div>
+  </nav>
+</main>
+<script src="dist/game.js?v=geometry-22"></script>
+</body>
+</html>

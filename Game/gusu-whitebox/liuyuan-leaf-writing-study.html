@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>留园 · 题叶操作研究</title><link rel="stylesheet" href="pixel-theme.css">
+<style>
+body{margin:0;background:#252c29;color:#eee9d9;font:16px/1.55 "PingFang SC","Microsoft YaHei",sans-serif}main{max-width:850px;margin:auto;padding:10px}header{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:end}.badge{color:#cbbf9e;font-size:.78rem;letter-spacing:.12em}h1{font-size:1.35rem;font-weight:600;margin:4px 0 8px}a{color:#c5d8be}.scene{border:3px solid #718272;background:#18241f;box-shadow:0 14px 34px #121b16a8}canvas{display:block;width:100%;height:auto;image-rendering:pixelated;touch-action:none}.status{min-height:2.6em;padding:8px 12px;background:#303d33;border:1px solid #70816f;margin:8px 0}.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}button{font:inherit;min-height:44px;padding:7px 14px;border:1px solid #aeb8a3;color:#26352b;background:#d7d6bf;border-radius:2px;cursor:pointer}button:hover{background:#e9e3c9}button:focus-visible{outline:3px solid #f7d889;outline-offset:2px}.hint{color:#c3c9bc}.note{font-size:.87rem;color:#bbc7b8;border-top:1px solid #607062;padding-top:10px}#strokeControls button{min-width:110px}.controls[hidden]{display:none}#leafStatus{color:#d8d5bb}
+@media(max-width:650px){main{padding:8px}h1{font-size:1.18rem}.status{margin-top:8px}.controls button{flex:1 1 130px}}
+</style></head><body><main>
+<header><div><div class="badge" id="modeBadge">留园 · CH3-09 · 独立操作研究</div><h1>挑一片新叶</h1></div><a href="liuyuan-study-interior.html">回到书斋内景研究页</a></header>
+<div class="scene"><canvas id="leafScene" width="400" height="225" aria-label="蕉叶与书写位置的像素操作研究图。沿亮点和笔路拖动临写，下方按钮支持键盘方向续写。"></canvas></div>
+<aside aria-label="题叶所记的原句"><small>自拟园记 · 游戏故事</small><p id="variantWords"></p></aside>
+<div class="status" id="leafStatus" role="status" aria-live="polite">窗外的风停了片刻。两片叶子，一片旧，一片新。</div>
+<div class="controls" id="chooseControls"><button data-leaf-action="old">1 · 看老叶</button><button data-leaf-action="new">2 · 挑新叶</button></div>
+<div class="controls" id="trialControls" hidden><button data-leaf-action="test-ink">1 · 先试一笔</button></div>
+<div class="controls" id="supportControls" hidden><button data-leaf-action="hard-write">1 · 再用力写</button><button data-leaf-action="take-board">2 · 找个平整处托住</button></div>
+<div class="controls" id="strokeControls" hidden aria-label="从叶柄到叶尖，逐处落笔"><button data-stroke="0">1 · 落笔叶柄侧</button><button data-stroke="1">2 · 落笔叶心</button><button data-stroke="2">3 · 落笔叶尖</button><button data-trace-dir="up" aria-label="向上续写">↑</button><button data-trace-dir="right" aria-label="向右续写">→</button><button data-trace-dir="down" aria-label="向下续写">↓</button><button data-trace-dir="left" aria-label="向左续写">←</button></div>
+<div class="controls" id="doneControls" hidden><button data-leaf-action="retry">再试一片</button><a id="returnFromDone" href="liuyuan-study-interior.html">沿来路回书斋院</a></div>
+<p class="hint" id="operationHint">键盘按数字 1、2 选择；触屏可点按钮。失手不会扣分。</p>
+<p class="note" id="routeNotice">此页独立打开时只作剧情与手感研究，不写章节进度或结算“书”艺。旧书斋的蕉株位置、携纸处境和漆板摆位均未证。陆羽《僧怀素传》分别记载蕉叶与漆板为书写面，<strong>并不记载以漆板托蕉叶书写</strong>；这里的组合是待材料实测的游戏演绎。画面中三段原创笔路仅作临写操作，并非故事里的异文。叶面墨迹效果、干湿时长仍待实测；本页原句为游戏自拟园记，不冒称历史异文。</p>
+<a id="returnToCourt" href="liuyuan-study-interior.html" hidden>返程目标</a>
+</main><script src="dist/liuyuan-leaf-writing-study.js?v=6"></script></body></html>

@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>留园章 · 画风校准研究</title>
+  <style>
+    :root { color-scheme: light; font-family: "Noto Serif SC", "Songti SC", serif; color: #26312c; background: #e9e7dd; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: clamp(16px, 3vw, 36px); }
+    main { max-width: 1600px; margin: 0 auto; }
+    h1 { margin: 0 0 8px; font-size: clamp(24px, 3vw, 36px); font-weight: 600; }
+    p { line-height: 1.65; max-width: 88ch; }
+    .warning { border-left: 4px solid #9d6c4f; padding: 8px 14px; background: #f4eee6; }
+    .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 24px 0 36px; }
+    figure { margin: 0; border: 1px solid #a5aa9e; background: #f7f5ee; }
+    figure img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: #d5d1c5; image-rendering: auto; }
+    figcaption { padding: 10px 12px 14px; line-height: 1.5; }
+    figcaption strong { display: block; margin-bottom: 4px; }
+    a { color: #315449; }
+    .probe { margin: 26px 0; padding: 16px; border: 1px solid #a5aa9e; background: #f7f5ee; }
+    .probe-controls { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; margin: 12px 0; }
+    .probe-controls label { display: inline-flex; align-items: center; gap: 8px; }
+    .probe canvas { display: block; width: 100%; height: auto; border: 1px solid #a5aa9e; image-rendering: pixelated; cursor: crosshair; touch-action: none; }
+    .pair canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+    .probe small { display: block; margin-top: 10px; line-height: 1.6; }
+    .route-plate { position: relative; width: 100%; aspect-ratio: 1008 / 688; }
+    .route-plate img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: fill; }
+    .route-plate svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .route-plate polyline { fill: none; stroke: #ca3f29; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; paint-order: stroke; }
+    .route-plate circle { fill: #fff4df; stroke: #a3281f; stroke-width: 4; }
+    @media (max-width: 780px) { .pair { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <p><a href="LIUYUAN_VISUAL_STYLE_AUDIT.md">← 画风审查与晋级门槛</a></p>
+    <h1>留园章 · 分幕画风校准</h1>
+    <section id="courtPixelPass" class="probe" aria-labelledby="courtPixelTitle">
+      <h2 id="courtPixelTitle">本轮 · 小庭同镜头、同角色比较</h2>
+      <p>两侧使用正式小庭的镜头、书生精灵、鞋底位置和 126px 显示身高。切换五个真实行走位置，检查路面、窗高、树根和前景屋檐；候选尚待审查，正式场景与编辑器草稿保留当前图。</p>
+      <div class="probe-controls">
+        <label>候选 <select id="courtCandidate"><option value="v2">第二版 · 像素簇修订</option><option value="v1">第一版 · 纹理仍细</option></select></label>
+        <label>站位 <select id="courtCameraFoot"><option value="entry">东侧入庭</option><option value="windows">六窗前</option><option value="floor">庭中石路</option><option value="bend">西折处</option><option value="exit">临池转场口</option></select></label>
+        <label><input type="checkbox" id="courtShowRoute"> 叠加正式路线</label>
+      </div>
+      <div class="pair">
+        <figure><canvas id="courtCurrentCanvas" width="960" height="640" aria-label="正式小庭同镜头画面"></canvas><figcaption><strong>当前正式底图</strong>用实际游戏镜头查看。</figcaption></figure>
+        <figure><canvas id="courtCandidateCanvas" width="960" height="640" aria-label="小庭艺术候选同镜头画面"></canvas><figcaption><strong>本轮候选</strong>像素密度、树形和路线对位均需看图确认。</figcaption></figure>
+      </div>
+      <p id="courtComparisonStatus" role="status">载入两张底图……</p>
+      <p><a href="../research-art/liuyuan-court-pixel-cluster-candidates-2026-10-12.md">来源、提示词与审图记录</a> · <a href="liuyuan-entry.html?playtest=1">入口试玩</a></p>
+    </section>
+    <p class="warning">研究对照，不是章节试玩。第一、二节的旧右图将书生烘焙在画面中；第三、四节的新图虽无角色，仍没有与整幕几何对齐。生成门位、树石和窗格不是清末留园实景；两幕尚未达到同一像素网格，均未替换原场景或浏览器草稿。</p>
+    <h2>一 · 门外至门槛</h2>
+    <div class="pair">
+      <figure><a href="../research-art/liuyuan-entry-gate-style-study-v1.png"><img src="../research-art/liuyuan-entry-gate-style-study-v1.png" alt="旧门外研究稿：高细节绘画、居中门与双侧花池"></a><figcaption><strong>旧研究稿 · 未通过</strong>高细节绘画、居中门及对称花池；只供编辑器几何研究。</figcaption></figure>
+      <figure><a href="../research-art/liuyuan-entry-pixel-language-pair-gate-v1.png"><img src="../research-art/liuyuan-entry-pixel-language-pair-gate-v1.png" alt="新入口像素语言样本：门墙、石地和一位背向书生"></a><figcaption><strong>像素语言样本 · 仍未通过晋级</strong>人物脚底与块面更清楚，但门位、厅内盆景和像素密度仍待校。</figcaption></figure>
+    </div>
+    <h2>二 · 古木交柯小庭</h2>
+    <div class="pair">
+      <figure><a href="../assets/scene25d/liuyuan-tree-court-no-water-study-v1.png"><img src="../assets/scene25d/liuyuan-tree-court-no-water-study-v1.png" alt="当前小庭试玩底图：高细节绘画的双树、花窗、廊路"></a><figcaption><strong>当前小庭底图 · 可走研究</strong>斜俯视关系可用，但仍是绘画式纹理；运行时另绘书生。</figcaption></figure>
+      <figure><a href="../research-art/liuyuan-entry-pixel-language-pair-court-v1.png"><img src="../research-art/liuyuan-entry-pixel-language-pair-court-v1.png" alt="小庭像素语言样本：保留双树花窗，加入一位背向书生"></a><figcaption><strong>同批像素语言样本 · 未通过</strong>近景人物比例可看，树冠与屋瓦的细碎绘画纹理仍与入口样本不一致。</figcaption></figure>
+    </div>
+    <h2>三 · 粉墙黛瓦、烟雨江南的同批研究</h2>
+    <p>这两张没有烘焙角色，转为冷白墙、黛瓦、灰石、克制深绿与柔和天光。它们只是相邻镜头的美术方向候选；入口只是一处门墙，不等于整条夹弄，小庭六窗纹样与树位也没有原位和清末证据。图面仍有细碎纹理，尚未确定共同逻辑像素网格。</p>
+    <div class="pair">
+      <figure><a href="../research-art/liuyuan-entry-gate-misty-pixel-study-v3.png"><img src="../research-art/liuyuan-entry-gate-misty-pixel-study-v3.png" alt="无人物入口门墙烟雨像素研究图"></a><figcaption><strong>入口门墙 · 无人物研究稿</strong>门洞、门槛和石地可读；位置与整幕路径未核，不进入游戏包。</figcaption></figure>
+      <figure><a href="../research-art/liuyuan-tree-court-misty-pixel-study-v2.png"><img src="../research-art/liuyuan-tree-court-misty-pixel-study-v2.png" alt="无人物古木交柯小庭烟雨像素研究图"></a><figcaption><strong>相邻小庭 · 无人物研究稿</strong>色温接近入口，树冠和墙面仍需统一像素颗粒；花窗不可当史实实例。</figcaption></figure>
+    </div>
+    <p><a href="liuyuan-entry-gate-misty-study.html">独立试走门墙裁片</a> · <a href="geometry-editor.html?scene=liuyuan-entry-gate-misty-study-v2">在统一编辑器校准本幕</a>。二者不接 CH3 正式入口，旧草稿保持独立。</p>
+    <h2>四 · 入口镜头重构（未接游戏）</h2>
+    <p>在旧俯视拓扑上补墙面厚度仍读作平面图，所以另做了斜俯视的无角色像素候选。它解决了门墙、檐口与行走地面同屏的镜头问题，却<strong>没有</strong>对齐旧入口的 11 段脚点，也没有可靠的清末门位、树位或铺地原位；不能直接替换试玩底图。</p>
+    <div class="pair">
+      <figure><a href="../assets/scene25d/liuyuan-entrance-walkable-study-v2.svg?v=6"><img src="../assets/scene25d/liuyuan-entrance-walkable-study-v2.svg?v=6" alt="当前入口正式试玩底图，南门、转角与北墙六窗已有局部立面，整幕仍待美术验收"></a><figcaption><strong>正式试玩现状 · 三段局部加深</strong>南门、第二天井东侧与古木交柯前六窗已有墙面和檐口层次；路线未挪，六窗为不可穿行实墙，整幕画风仍未通过。</figcaption></figure>
+      <figure><a href="../research-art/liuyuan-entry-oblique-pixel-study-v1.png"><img src="../research-art/liuyuan-entry-oblique-pixel-study-v1.png" alt="斜俯视入口像素候选：门墙、檐口和连续石路" style="image-rendering:pixelated"></a><figcaption><strong>新斜俯视候选 · 仅校准镜头</strong>入口门、转折石路和墙檐有了空间层次；图面细部均为游戏候选，未获原位或年代核证。</figcaption></figure>
+    </div>
+    <p>这张新图已有独立的<a href="liuyuan-entry-oblique-study.html">脚点试走</a>与<a href="geometry-editor.html?scene=liuyuan-entry-oblique-shot-study-v1">统一编辑器轮廓</a>；仍不接 CH3 旗标，不能与旧入口世界坐标混用。</p>
+    <h2>四补 · 整张入口换画的路线校验（拒稿）</h2>
+    <p>红线是正式章流从门外经前厅、两处转角到小庭口的脚点中心线，两图使用同一 1008×688 世界坐标。新图虽有更好的墙檐立面和克制色温，但它重排了通道、庭院及池岸：红线在西折和北段没有连续可见的铺地。因此它是<strong>失败的美术候选，不可替换正式底图，不进入统一编辑器，也不改旧草稿</strong>。下一稿应先用确定的地面／Tile 图做不可挪动的下层，再逐物件叠加墙面、门檐和植物；每层对齐脚点与落地深度，不再要求一张生成图同时负责拓扑和艺术。</p>
+    <div class="pair">
+      <figure><div class="route-plate"><img src="../assets/scene25d/liuyuan-entrance-walkable-study-v2.svg?v=6" alt="入口正式底图三段局部立面与正式路线红线"><svg viewBox="0 0 1008 688" aria-label="正式可走路线"><polyline points="520,656 520,610 520,550 520,480 520,400 430,400 430,374 430,300 430,250 420,232 340,232 290,232"/><circle cx="520" cy="656" r="8"/><circle cx="290" cy="232" r="8"/></svg></div><figcaption><strong>正式拓扑 · 三段局部修订</strong>红线是运行世界坐标；新增立面不挪 Tile 或脚点，六窗临路处保持非通路，整幕画风尚未验收。</figcaption></figure>
+      <figure><div class="route-plate"><img src="../research-art/liuyuan-entry-topology-style-candidate-2026-10-12.png" alt="未对齐路线的入口立面美术候选与正式路线红线"><svg viewBox="0 0 1008 688" aria-label="正式可走路线"><polyline points="520,656 520,610 520,550 520,480 520,400 430,400 430,374 430,300 430,250 420,232 340,232 290,232"/><circle cx="520" cy="656" r="8"/><circle cx="290" cy="232" r="8"/></svg></div><figcaption><strong>斜俯视整图 · 路线不合格</strong>1519×1036 的无角色候选；缩到世界坐标后西折与北段的石路没有跟随正式红线，细纹仍偏绘画而非统一像素网格。</figcaption></figure>
+    </div>
+    <p>2026-10-12 在正式 1008×688 SVG 的门外和第二天井东侧补代码原生瓦檐、墙厚、格窗与柱脚：不改人物、Tile、交互点和转场；保留 x=496…544 的小门走线与西折石路，新增立面不跨脚下道路。原先两处重复菱形「花街」没有入口具体部位图版，已撤回为不指认纹样的石板；留园别处花街图版不能直接挪来。这只是南段与转角的局部制作，不采用右侧整图候选，不把侧翼或窗式称作 1890 年实景。可在<a href="liuyuan-entry.html?playtest=1">入口独立试玩</a>和<a href="geometry-editor.html?scene=liuyuan-entrance-topology-study">统一编辑器</a>对位；旧草稿需人工重新审遮挡。</p>
+    <h2>五 · 绿荫轩临池的像素化对照</h2>
+    <p>在同一张旧可走图上定向改为克制的像素块面，保留轩廊、栏杆、水岸和东侧干路的构图。新图是美术研究，不证明这些构件在 1890 年的位置；栏脚和岸线还须在编辑器逐点对位。旧图与新图的独立草稿互不覆盖。</p>
+    <div class="pair">
+      <figure><a href="../assets/scene25d/liuyuan-lvyin-pond-study-v1.png"><img src="../assets/scene25d/liuyuan-lvyin-pond-study-v1.png" alt="旧绿荫轩临池游戏试走图，细腻绘画质感"></a><figcaption><strong>旧临池可走图 · 画风未过</strong>路线与第一次望池操作已经可用；植物和水纹过细过亮，与入口像素候选脱节。</figcaption></figure>
+      <figure><a href="../research-art/liuyuan-lvyin-pixel-language-study-v2.png"><img src="../research-art/liuyuan-lvyin-pixel-language-study-v2.png" alt="修订树形与远岸层次的绿荫轩临池像素研究图" style="image-rendering:pixelated"></a><figcaption><strong>新临池像素候选 · 独立校位</strong>西侧开枝、东侧阔冠与竹影分出层次；远岸有进退与石形变化。可亭等对岸主景仍不明确，不算美术验收。</figcaption></figure>
+    </div>
+    <p>可用<a href="liuyuan-lvyin.html?artStudy=pixel-v2&draft=1">新图独立试走</a>和<a href="geometry-editor.html?scene=liuyuan-lvyin-pond-pixel-study-v2">统一编辑器校轮廓</a>；正式绿荫轩页面仍用旧图。</p>
+    <h2>六 · 临池岸线艺术方向待审（不进入游戏）</h2>
+    <p>玩家指出上面的像素稿仍偏细密、树种单一，后续候选又出现黄石感过重、岸线过于规整，以及竹丛过高的问题。下列两张只比较植物层次和驳岸节奏；它们的镜头与世界坐标不同于现有可走图，<strong>没有碰撞、遮挡或章节接入，也不是已确认的艺术风格</strong>。确认画风后才会另行固定可复用提示词。<a href="../research-art/liuyuan-lvyin-artstyle-approval-candidate-v1.png">更早的规整岸线候选</a>仍保留供对照。</p>
+    <div class="pair">
+      <figure><a href="../research-art/liuyuan-lvyin-artstyle-approval-candidate-v2.png"><img src="../research-art/liuyuan-lvyin-artstyle-approval-candidate-v2.png" alt="留园临池候选第二版：岸线有变化，但竹丛过高，前景湖石过大" style="image-rendering:pixelated"></a><figcaption><strong>候选二 · 竹丛与湖石未过</strong>岸线有内凹外伸，但高竹与乔木争主景，近岸大穿孔湖石像孤立摆件。</figcaption></figure>
+      <figure><a href="../research-art/liuyuan-lvyin-artstyle-approval-candidate-v3.png"><img src="../research-art/liuyuan-lvyin-artstyle-approval-candidate-v3.png" alt="留园临池候选第三版：降低墙边竹丛，加入墙隅芭蕉，缩低近岸湖石" style="image-rendering:pixelated"></a><figcaption><strong>候选三 · 最新待审</strong>墙边竹丛退为次景，墙隅少量芭蕉叶，近岸湖石压低并埋入植被。芭蕉与竹的本镜原位未证；未获艺术风格批准。</figcaption></figure>
+    </div>
+    <p>来源、生成过程与未核项见<a href="../research-art/liuyuan-lvyin-artstyle-approval-candidates.md">候选记录</a>。现有正式临池图、编辑器 ID 和浏览器草稿均未变更。</p>
+    <section class="probe" aria-labelledby="probeTitle">
+      <h2 id="probeTitle">角色比例与鞋底脚点校准台</h2>
+      <p>用游戏真实书生精灵叠在两张研究图上；拖动画面放置鞋底、调可见身高。这里不读取或保存游戏/编辑器草稿，也不改变正式人物比例。</p>
+      <div class="probe-controls">
+        <label>画面 <select id="probeScene"><option value="gate">入口门墙</option><option value="court">古木交柯小庭</option><option value="gateOblique">入口斜俯视新候选</option><option value="lvyinPixel">绿荫轩像素候选</option></select></label>
+        <label>人物可见高度 <input id="probeHeight" type="range" min="70" max="260" value="174"><output id="probeHeightText">174 px</output></label>
+        <span id="probeFoot">鞋底脚点：等待图片</span>
+      </div>
+      <canvas id="probeCanvas" aria-label="角色脚点与比例研究画布"></canvas>
+      <small>观察重点：脚底是否接地、人物与门洞/墙高是否相称、近远景尺度是否连续。原精灵边缘仍是平滑卡通，不能因为放在候选像素底图上就视作风格统一。</small>
+    </section>
+    <p>全作统一约束见<a href="GAME_ART_DIRECTION_STANDARD.md">场景美术与表达标准</a>；铺地不能统一刷灰石板，见<a href="LIUYUAN_PAVING_RESEARCH.md">留园铺地向量资料与核位清单</a>。</p>
+    <p>制作方法、离线检索和逐项红线见<a href="../research-art/liuyuan-entry-pixel-language-pair-v1.prompt.md">旧批记录</a>及<a href="../research-art/liuyuan-misty-style-pair-v2.prompt.md">本批记录</a>。此页不会保存或读取游戏进度。</p>
+  </main>
+  <script>
+    const sources = {
+      gate: '../research-art/liuyuan-entry-gate-misty-pixel-study-v3.png',
+      court: '../research-art/liuyuan-tree-court-misty-pixel-study-v2.png',
+      gateOblique: '../research-art/liuyuan-entry-oblique-pixel-study-v1.png',
+      lvyinPixel: '../research-art/liuyuan-lvyin-pixel-language-study-v2.png',
+    };
+    const canvas = document.getElementById('probeCanvas');
+    const ctx = canvas.getContext('2d');
+    const choice = document.getElementById('probeScene');
+    const slider = document.getElementById('probeHeight');
+    const heightText = document.getElementById('probeHeightText');
+    const footText = document.getElementById('probeFoot');
+    const plate = new Image();
+    const actor = new Image();
+    actor.src = '../assets/characters/scholar-player-sprites-v1.png';
+    let foot = { x: 836, y: 760 };
+    function draw() {
+      if (!plate.complete || !plate.naturalWidth) return;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(plate, 0, 0);
+      const h = Number(slider.value);
+      heightText.value = `${h} px`;
+      footText.textContent = `鞋底脚点：(${Math.round(foot.x)}, ${Math.round(foot.y)})`;
+      ctx.fillStyle = 'rgba(21, 28, 29, .32)';
+      ctx.fillRect(Math.round(foot.x - h * .22), Math.round(foot.y - 3), Math.round(h * .44), 5);
+      if (actor.complete && actor.naturalWidth) {
+        const sx = 157, sy = 1069, sw = 175, sh = 337;
+        const w = Math.round(h * sw / sh);
+        ctx.drawImage(actor, sx, sy, sw, sh, Math.round(foot.x - w / 2), Math.round(foot.y - h), w, h);
+      }
+      ctx.strokeStyle = '#a44638';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(foot.x - 9, foot.y);
+      ctx.lineTo(foot.x + 9, foot.y);
+      ctx.moveTo(foot.x, foot.y - 9);
+      ctx.lineTo(foot.x, foot.y + 9);
+      ctx.stroke();
+    }
+    function loadPlate() {
+      plate.src = sources[choice.value];
+    }
+    choice.addEventListener('change', loadPlate);
+    slider.addEventListener('input', draw);
+    plate.addEventListener('load', () => {
+      canvas.width = plate.naturalWidth;
+      canvas.height = plate.naturalHeight;
+      foot = choice.value === 'gate' ? { x: 836, y: 760 }
+        : choice.value === 'gateOblique' ? { x: 760, y: 850 }
+        : choice.value === 'lvyinPixel' ? { x: 930, y: 690 } : { x: 887, y: 750 };
+      draw();
+    });
+    actor.addEventListener('load', draw);
+    function placeFoot(event) {
+      const bounds = canvas.getBoundingClientRect();
+      foot = { x: (event.clientX - bounds.left) * canvas.width / bounds.width,
+        y: (event.clientY - bounds.top) * canvas.height / bounds.height };
+      draw();
+    }
+    canvas.addEventListener('pointerdown', event => { canvas.setPointerCapture(event.pointerId); placeFoot(event); });
+    canvas.addEventListener('pointermove', event => { if (event.buttons) placeFoot(event); });
+    loadPlate();
+  </script>
+  <script src="dist/liuyuan-art-calibration.js?v=1"></script>
+</body>
+</html>

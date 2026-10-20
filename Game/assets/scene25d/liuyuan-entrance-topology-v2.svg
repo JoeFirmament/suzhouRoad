@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1008" height="688" viewBox="0 0 1008 688" role="img" aria-labelledby="title desc">
+  <title id="title">留园入口现状空间拓扑校对图 v2</title>
+  <desc id="desc">现状平面关系示意，非1890测绘。街面由南入前厅，经过天井、两段曲廊与小庭，到古木交柯；北墙六扇漏窗只供观景，往西折至绿荫轩方向才临中部池园。</desc>
+  <rect width="1008" height="688" fill="#ebe8df"/>
+  <path d="M520 650V550 480 400H430V300 245H290" fill="none" stroke="#57625b" stroke-width="46" stroke-linejoin="round" stroke-linecap="square"/>
+  <path d="M520 650V550 480 400H430V300 245H290" fill="none" stroke="#c8c1af" stroke-width="38" stroke-linejoin="round" stroke-linecap="square"/>
+  <g fill="#dae0d3" stroke="#738473" stroke-width="3">
+    <rect x="475" y="510" width="90" height="67"/>
+    <rect x="480" y="441" width="84" height="58"/>
+    <rect x="378" y="340" width="102" height="83"/>
+    <rect x="377" y="277" width="106" height="57"/>
+    <rect x="364" y="216" width="117" height="62"/>
+  </g>
+  <g fill="none" stroke="#926e9d" stroke-width="3" stroke-dasharray="7 5">
+    <rect x="489" y="585" width="62" height="19"/>
+    <rect x="397" y="323" width="63" height="18"/>
+    <rect x="381" y="199" width="88" height="18"/>
+  </g>
+  <rect x="368" y="208" width="131" height="16" fill="#b7aaa0" stroke="#655b58" stroke-width="2"/>
+  <g fill="#e5e0d1" stroke="#6d716c" stroke-width="2">
+    <rect x="376" y="210" width="13" height="12"/><rect x="396" y="210" width="13" height="12"/>
+    <rect x="416" y="210" width="13" height="12"/><rect x="436" y="210" width="13" height="12"/>
+    <rect x="456" y="210" width="13" height="12"/><rect x="476" y="210" width="13" height="12"/>
+  </g>
+  <rect x="242" y="208" width="91" height="72" fill="#d8dfd0" stroke="#657966" stroke-width="3"/>
+  <rect x="95" y="35" width="236" height="105" rx="8" fill="#a8c0bc" stroke="#5c7e7a" stroke-width="3"/>
+  <path d="M276 204L245 145" fill="none" stroke="#5c7e7a" stroke-width="3"/>
+  <g font-family="'PingFang SC','Noto Sans CJK SC',sans-serif" fill="#2f3b35">
+    <text x="112" y="75" font-size="19">中部池园 · 终段才可见</text>
+    <text x="112" y="108" font-size="14">不从漏窗直接穿入</text>
+    <text x="579" y="643" font-size="18">南侧街面 → 小门</text>
+    <text x="579" y="553" font-size="18">前厅 / 第一处见光</text>
+    <text x="579" y="459" font-size="18">狭长曲廊 · 第一收</text>
+    <text x="508" y="371" font-size="18">第二小庭 · 再放</text>
+    <text x="508" y="300" font-size="18">短廊 · 再收</text>
+    <text x="508" y="250" font-size="18">古木交柯小景</text>
+    <text x="508" y="209" font-size="17">北侧六扇漏窗：取景，不通行</text>
+    <text x="119" y="269" font-size="17">西折：绿荫轩方向</text>
+  </g>
+  <g font-family="'PingFang SC','Noto Sans CJK SC',sans-serif" fill="#68576d" font-size="15">
+    <text x="622" y="69">紫色虚框：门位与旧构件待核</text>
+    <text x="622" y="95">通路：现状拓扑试验，不是实测比例</text>
+    <text x="622" y="121">1890 年通路与植栽仍需史料复核</text>
+  </g>
+  <text x="44" y="665" font-family="'PingFang SC','Noto Sans CJK SC',sans-serif" font-size="14" fill="#625e54">v2 修正：漏窗在古木交柯北侧；去绿荫轩向西折。参照园林局、入口空间分析与刘敦桢留园平面图。</text>
+</svg>

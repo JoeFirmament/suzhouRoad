@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#171512">
+<title>姑苏九园 · 今按层实验场</title>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="annotation.css">
+<link rel="stylesheet" href="pixel-theme.css">
+</head>
+<body>
+<main>
+  <header class="top">
+    <div>
+      <p class="eyebrow">白模 · 工程债 C-1 · 已欠 CH5–CH9 五章</p>
+      <h1>「今按」层 · 实验场</h1>
+      <p class="sub">
+        把《剧本文件规范》§2.6.3 <b>规格 5</b>「今按须用与手迹不同的字体／墨色，玩家一眼可辨"这不是他写的"」
+        从一句要求，变成一处<b>能看、能调、能自检</b>的东西。终章乙幕整幕靠它。
+      </p>
+    </div>
+    <nav aria-label="相关页面">
+      <a href="index.html">标题</a>
+      <a href="home.html">府学</a>
+      <a href="journal.html">园谱</a>
+      <a href="corridor.html">复廊</a>
+      <a href="standard.html">样板入口</a>
+      <a class="here" href="annotation-lab.html" aria-current="page">今按实验场</a>
+    </nav>
+  </header>
+
+  <div class="grid1">
+    <section class="block stagewrap" aria-label="舞台">
+      <canvas id="labCanvas" tabindex="0"
+              aria-label="模拟一页园谱：左半是清末故事中的世界文字与玩家手迹，右半是今按。今按在玩家动作之后延迟浮现。"></canvas>
+      <p class="readout" id="readout">初始化…</p>
+    </section>
+
+    <section class="block" aria-label="参数控制">
+      <h2>浮现时序 <em>规格 1 · 今按永远在玩家之后</em></h2>
+
+      <div class="ctl">
+        <label for="delayRange"><b>TUNING.annotationDelayMs</b><span id="delayRangeOut">—</span></label>
+        <input id="delayRange" type="range" min="0" max="3000" step="50" value="1000">
+        <p class="hint">就是剧本里那个「<b>稍顿</b>」：落笔 → 页成 → <b>稍顿</b> → 今按浮出。
+          建议区间 <b>800–1200</b>（&lt;500 像自动弹出，丢了"读者稍后才附一笔"的意思；&gt;2500 像卡住）。
+          <b>最终值由纸面测试定。</b></p>
+      </div>
+
+      <div class="ctl">
+        <label for="fadeRange"><b>TUNING.annotationFadeMs</b><span id="fadeRangeOut">—</span></label>
+        <input id="fadeRange" type="range" min="0" max="900" step="20" value="260">
+        <p class="hint">阶梯淡入时长。不是 CSS 缓动——按《统一像素视觉系统》的阶梯纪律走。</p>
+      </div>
+
+      <div class="ctl">
+        <label for="stepsRange"><b>TUNING.annotationSteps</b><span id="stepsRangeOut">—</span></label>
+        <input id="stepsRange" type="range" min="1" max="10" step="1" value="4">
+        <p class="hint">淡入的级数。级少＝更"像素"；级多＝更接近平滑（不推荐）。</p>
+      </div>
+
+      <div class="btnrow">
+        <button id="replayBtn" type="button">走一遍（重放动作）</button>
+        <button id="compareBtn" type="button">对照模式 · 关</button>
+        <button id="resetTimingBtn" type="button">恢复 TUNING 默认</button>
+        <button id="tidyBtn" type="button">收起界面</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="grid2">
+    <section class="block" aria-label="全作今按实例">
+      <h2>全作 12 处今按 <em>规范 §2.6.6 全表 · 点一条看它怎么浮出来</em></h2>
+      <ul class="list" id="annList"></ul>
+    </section>
+
+    <div>
+      <section class="block" aria-label="详情" style="margin-bottom:14px">
+        <h2>这一条 <em>内容逐字取自各章脚本</em></h2>
+        <div id="annDetail"></div>
+      </section>
+
+      <section class="block" aria-label="分离轴">
+        <h2>三层文字的分离轴 <em>唯一真源：<code>config.ts → TYPE_LAYERS</code></em></h2>
+        <table class="axes">
+          <thead><tr><th>轴</th><th>玩家手迹</th><th>今按（后世之评）</th></tr></thead>
+          <tbody>
+            <tr><td class="k">字体</td><td class="w">楷体（写出来的）</td><td class="a">宋体（印出来的）</td></tr>
+            <tr><td class="k">墨色</td><td class="w">焦墨 #2b2824</td><td class="a">重墨 #55524a（轻一档）</td></tr>
+            <tr><td class="k">字号</td><td class="w">16 px</td><td class="a">12 px（小字）</td></tr>
+            <tr><td class="k">起首</td><td class="w">无</td><td class="a">「今按」二字</td></tr>
+            <tr><td class="k">界行</td><td class="w">无</td><td class="a">左侧细竖线（版框界行的意译）</td></tr>
+            <tr><td class="k">纸底</td><td class="w">正文纸 #f2ead6</td><td class="a">贴条纸 #fbf7ec（更亮更冷）</td></tr>
+            <tr><td class="k">印</td><td class="w">朱印 #b03a2e</td><td class="a">绝无印</td></tr>
+            <tr><td class="k">时序</td><td class="w">玩家的即时动作</td><td class="a">动作之后再等 delayMs</td></tr>
+          </tbody>
+        </table>
+        <p class="kv">
+          <p id="sizesOut">—</p>
+          <p id="inksOut">—</p>
+        </p>
+      </section>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <section class="block" aria-label="自检">
+      <h2>五条硬规格自检 <em>规范 §2.6.3 · 每次打开重跑</em></h2>
+      <div id="lintBox"></div>
+      <p id="lintSummary">—</p>
+    </section>
+
+    <div>
+      <section class="block" aria-label="字体探针" style="margin-bottom:14px">
+        <h2>字体探针 <em>楷体在不在？不在的话"字体轴"就失效了</em></h2>
+        <div class="probe" id="fontProbe"></div>
+      </section>
+
+      <section class="block notes" aria-label="这页怎么用">
+        <h2>这页怎么用</h2>
+        <ol>
+          <li><b>先拉 delayRange</b>：找出"像一个人读完那行字、停了一下才落笔"的那个数。这是本章唯一要定的数。</li>
+          <li><b>再按「对照模式」</b>：三层全显，检查"一眼可辨"。认不出来就把 PALE／HEAVY 那一档再拉开。</li>
+          <li><b>逐条点 12 处实例</b>：看引文型的出处行够不够醒目；名物型有没有话说多了。</li>
+          <li><b>读自检面板</b>：规格 5／4／2／3 里能机器查的都查了；查不了的（"像不像人话"）交给你。</li>
+          <li><b>定完之后</b>：把 delayMs 写回 <code>config.ts</code>，并把《剧本文件规范》§2.6.3 里这条债划掉。</li>
+        </ol>
+      </section>
+    </div>
+  </div>
+
+  <section class="block notes" style="margin-top:14px" aria-label="边界">
+    <h2>边界（别误用）</h2>
+    <ol>
+      <li><b>今按不入存档</b>：不进 <code>progress.knowledge</code>、不给 <code>storyFlags</code>、不进园谱索引、不上《蘇城全圖》。它是渲染层的一层，不是存档层的一项（规格 4）。</li>
+      <li><b>本页不是游戏画面</b>：它是验收台。真画面里今按只出现在三处——园谱页、章末、终章乙幕（<code>ANNOTE_HOSTS</code>）。</li>
+      <li><b>零新增颜色</b>：今按全部复用既有色板（重墨／中墨／淡墨／朱／纸／白墙亮），没有为它开一个新色。</li>
+      <li><b>「今按」不是可以随便加的东西</b>：一章 ≤2 条、引文型 ≤1 条；只有终章乙幕是全作唯一例外（规范 §2.6.2／§2.6.7）。</li>
+    </ol>
+  </section>
+</main>
+<script src="dist/annotation-lab.js?v=time2"></script>
+</body>
+</html>

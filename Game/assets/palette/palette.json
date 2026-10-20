@@ -1,0 +1,184 @@
+{
+ "纸/墙": {
+  "wall": {
+   "hex": "#fbf7ec",
+   "use": "白墙亮（画面最亮）"
+  },
+  "paper": {
+   "hex": "#f2ead6",
+   "use": "宣纸底/地面"
+  },
+  "path": {
+   "hex": "#e6dcc2",
+   "use": "路径亮/纸阴"
+  },
+  "pathAlt": {
+   "hex": "#d8ceae",
+   "use": "路径暗/纸纹"
+  },
+  "wallShade": {
+   "hex": "#d9d2c0",
+   "use": "白墙暗面"
+  }
+ },
+ "墨/瓦": {
+  "roof": {
+   "hex": "#b8b2a2",
+   "use": "瓦顶亮"
+  },
+  "roofDark": {
+   "hex": "#a8a292",
+   "use": "瓦顶暗"
+  },
+  "roofChar": {
+   "hex": "#4e4c45",
+   "use": "瓦炭（2.5D 坡面主色，深灰瓦）"
+  },
+  "roofRidge": {
+   "hex": "#33322d",
+   "use": "脊墨（屋脊）"
+  },
+  "inkPale": {
+   "hex": "#a39d90",
+   "use": "淡墨（拓片浅线）"
+  },
+  "inkMid": {
+   "hex": "#7e796d",
+   "use": "中墨（次要线）"
+  },
+  "inkHeavy": {
+   "hex": "#55524a",
+   "use": "重墨（主要线）"
+  },
+  "ink": {
+   "hex": "#2b2824",
+   "use": "焦墨（文字/轮廓）"
+  },
+  "stele": {
+   "hex": "#171512",
+   "use": "碑墨（拓片最深）"
+  }
+ },
+ "青水": {
+  "waterHi": {
+   "hex": "#c2e0da",
+   "use": "水光/波线"
+  },
+  "water": {
+   "hex": "#9ecfc9",
+   "use": "水色"
+  },
+  "waterDeep": {
+   "hex": "#6fa89e",
+   "use": "水深"
+  },
+  "waterTeal": {
+   "hex": "#5b9484",
+   "use": "饱和青绿水（v3 基调）"
+  },
+  "waterTealDeep": {
+   "hex": "#3c6e63",
+   "use": "青绿深水（v3 基调）"
+  },
+  "waterGlow": {
+   "hex": "#a5cdb4",
+   "use": "水面波光（v3 基调）"
+  },
+  "qing": {
+   "hex": "#3d7068",
+   "use": "青（判定UI/深水）"
+  },
+  "qingDeep": {
+   "hex": "#2a514c",
+   "use": "深潭/夜水"
+  }
+ },
+ "木/金": {
+  "gold": {
+   "hex": "#c8a04b",
+   "use": "金棕（窗格/题签）"
+  },
+  "wood": {
+   "hex": "#8a6844",
+   "use": "木色（柱/栏）"
+  },
+  "woodDark": {
+   "hex": "#6b4c2f",
+   "use": "木影"
+  }
+ },
+ "朱": {
+  "zhuBright": {
+   "hex": "#d95543",
+   "use": "朱亮（点睛高光）"
+  },
+  "zhu": {
+   "hex": "#b03a2e",
+   "use": "朱红（唯一重色）"
+  },
+  "sealRed": {
+   "hex": "#8f271d",
+   "use": "印泥深红"
+  }
+ },
+ "植物": {
+  "grass": {
+   "hex": "#bcd6a4",
+   "use": "草地亮"
+  },
+  "grassAlt": {
+   "hex": "#b3cf9b",
+   "use": "草地暗"
+  },
+  "leafHi": {
+   "hex": "#9cc487",
+   "use": "叶亮"
+  },
+  "leafMid": {
+   "hex": "#8fbb78",
+   "use": "叶中"
+  },
+  "leafDark": {
+   "hex": "#7fae6a",
+   "use": "叶暗"
+  },
+  "pine": {
+   "hex": "#5f7d4f",
+   "use": "松柏深叶"
+  },
+  "leafSat": {
+   "hex": "#71b054",
+   "use": "饱和叶（v3 基调）"
+  },
+  "leafDeep": {
+   "hex": "#4c8a42",
+   "use": "深叶（v3 基调）"
+  },
+  "willow": {
+   "hex": "#8fc065",
+   "use": "柳黄（v3 基调）"
+  }
+ },
+ "湖石": {
+  "rockTop": {
+   "hex": "#b0bfa8",
+   "use": "石顶受光"
+  },
+  "rockBase": {
+   "hex": "#93a48c",
+   "use": "石面"
+  },
+  "rockDark": {
+   "hex": "#78876f",
+   "use": "石暗"
+  }
+ },
+ "_meta": {
+  "version": "P0-1 v1.1",
+  "count": 40,
+  "date": "2026-09-30",
+  "rule": "全管线唯一色源；新色必须登记进本文件",
+  "whitebox_superset": true,
+  "note_2026_09_30": "补登记 config.ts 里 8 个未登记的 v3 风格基线色（瓦炭/脊墨/青绿×2/波光/饱和叶/深叶/柳黄），消除色板漂移（原 count 32 → 40）。同日「今按」层落地，**零新增颜色**——今按只用 inkHeavy/inkMid/inkPale/zhu/paper/wall 六个既有色。"
+ }
+}

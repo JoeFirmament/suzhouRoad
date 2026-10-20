@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>留园 · 古木交柯小庭试走</title>
+  <link rel="stylesheet" href="pixel-theme.css">
+  <style>
+    body { margin: 0; background: #242c29; color: #e8e8db; font: 15px/1.55 "PingFang SC", "Microsoft YaHei", sans-serif; }
+    main { max-width: 1000px; margin: auto; padding: 12px; }
+    header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+    h1 { margin: 5px 0 9px; font-size: 1.22rem; font-weight: 600; letter-spacing: .08em; }
+    a { color: #c0d5c2; }
+    .badge { color: #c6b99b; font-size: .78rem; letter-spacing: .15em; }
+    .stage { position: relative; border: 3px solid #68756b; box-shadow: 0 12px 38px #101713b0; overflow: hidden; }
+    canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+    .stage-note { position: absolute; left: 12px; bottom: 12px; max-width: 440px; padding: 7px 10px; background: #19251ed6; border: 1px solid #68756b; font-size: .86rem; }
+    .stage-action { position: absolute; right: 12px; bottom: 12px; z-index: 2; box-shadow: 3px 3px 0 #15231a; }
+    .stage-note[hidden], .stage-action[hidden] { display: none; }
+    .hud { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; padding: 11px 1px; }
+    #status { min-height: 2em; }
+    label { white-space: nowrap; }
+    button { min-height: 42px; padding: 5px 12px; background: #d5d5c3; border: 1px solid #9ca893; color: #26382c; font: inherit; border-radius: 2px; }
+    .controls { display: grid; grid-template-columns: repeat(3, 46px); gap: 5px; width: max-content; touch-action: none; }
+    .controls button { padding: 0; }
+    .controls button:first-child { grid-column: 2; }
+    .controls button:nth-child(2) { grid-column: 1; grid-row: 2; }
+    .controls button:nth-child(3) { grid-column: 2; grid-row: 2; }
+    .controls button:nth-child(4) { grid-column: 3; grid-row: 2; }
+    .controls button:nth-child(5) { grid-column: 3; grid-row: 3; }
+    .footnote { margin: 10px 0 0; color: #b6c2b5; font-size: .83rem; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div><div class="badge" id="sceneBadge">CH3 · 留园 · 局部游戏场景试走</div><h1>古木交柯 · 不见池的一段</h1></div>
+    <nav id="sceneTools"><a id="sceneNav" href="liuyuan-lvyin.html">看下一幕独立试走 ↗</a> · <a id="editorNav" href="geometry-editor.html?scene=liuyuan-tree-court-no-water-study-v1">编辑此场景几何 ↗</a></nav>
+  </header>
+  <div class="stage">
+    <canvas id="scene" width="960" height="640" aria-label="留园小庭可行走场景；方向键或 WASD 移动，E 观察"></canvas>
+    <div class="stage-note" id="stageNote">脚下是小庭石路。北墙的窗只能望，西边的廊才可走。</div>
+    <button class="stage-action" id="continueChapter" type="button" hidden>沿西廊继续</button>
+    <button class="stage-action" id="toEntryReturn" type="button" hidden>沿来路回夹弄</button>
+  </div>
+  <div class="hud">
+    <span id="status" role="status" aria-live="polite">从小庭东侧向西走。</span>
+    <label><input id="showGeometry" type="checkbox"> 显示可走地面、碰撞与遮挡</label>
+    <span id="coords" hidden></span>
+    <button id="reset" type="button">回到小庭</button>
+  </div>
+  <div class="controls" aria-label="触屏控制">
+    <button data-dir="up" aria-label="向上">↑</button>
+    <button data-dir="left" aria-label="向左">←</button>
+    <button data-dir="down" aria-label="向下">↓</button>
+    <button data-dir="right" aria-label="向右">→</button>
+    <button id="look" aria-label="观察">看</button>
+  </div>
+  <details class="footnote"><summary>操作与场景说明</summary><p id="routeNotice">方向键 / WASD 移动；走近北墙后按 E 观察。从入口章来到此处后，须亲自走到西廊尽头才可继续绿荫轩切片。两幕以经核对的“西折临池”空间顺序作镜头剪接，不宣称精确旧门位；历史树形与像素精修仍待验收。</p></details>
+</main>
+<script src="dist/liuyuan-court.js?v=16"></script>
+</body>
+</html>

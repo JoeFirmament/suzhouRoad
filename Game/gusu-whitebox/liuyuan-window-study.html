@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>留园 · 三窗辨影 · 研究小样</title>
+  <link rel="stylesheet" href="pixel-theme.css">
+  <style>
+    body{margin:0;background:#202824;color:#e2e4d9;font:16px/1.55 "PingFang SC","Microsoft YaHei",sans-serif}
+    main{max-width:1010px;margin:auto;padding:16px}header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+    h1{font-size:1.35rem;letter-spacing:.08em;margin:.2em 0}.eyebrow{color:#aebaa7;font-size:.85rem}a{color:#b6d2b7}
+    .frame{border:4px solid #667a6b;background:#202824;box-shadow:0 12px 30px #0d1712a8;margin-top:15px}
+    canvas{display:block;width:100%;height:auto;image-rendering:pixelated;touch-action:none}
+    .story{min-height:3.4em;border-left:3px solid #899a83;background:#29382d;padding:10px 14px;margin:16px 0;color:#f0ecd8}
+    .controls{display:flex;gap:8px;flex-wrap:wrap}.controls button,.shadow-game button{min-height:46px;padding:8px 15px;border:2px solid #889989;border-radius:0;background:#c8d0bd;color:#213429;font:inherit;touch-action:none}
+    .controls button:focus-visible,a:focus-visible{outline:3px solid #e1c982;outline-offset:2px}
+    .small{font-size:.88rem;color:#b5c3b5}.production{margin-top:18px;padding:10px 14px;border:1px solid #607166;background:#253128}
+    .production summary{cursor:pointer}.production p{margin:.65em 0}
+    .shadow-game{margin:12px 0;padding:12px 16px;border:3px solid #81765d;background:#d0c5a6;color:#26312b;box-shadow:inset 0 0 0 3px #b4a887,4px 4px 0 #121b16}
+    .shadow-game[hidden]{display:none}.shadow-game p{margin:.2em 0 .7em}.shadow-game .small{color:#455448}
+    .shadow-track{height:24px;position:relative;margin:18px 12px 10px;background:repeating-linear-gradient(90deg,#a99d7c 0 2px,#b9ad8a 2px 27px);border:2px solid #756a52}
+    .shadow-target{position:absolute;top:0;bottom:0;background:#dfdbb48a;transform:translateX(-50%);border-left:2px solid #ece7c2;border-right:2px solid #ece7c2}
+    .shadow-marker{position:absolute;top:-5px;bottom:-5px;width:8px;background:#324739;transform:translateX(-50%);box-shadow:0 0 0 2px #ebe2c2}
+    .shadow-game label{display:inline-flex;align-items:center;gap:6px;min-height:36px}.shadow-game input{width:18px;height:18px}
+  </style>
+</head>
+<body><main>
+  <header><div><div class="eyebrow">石林小院 · 独立玩法研究 / 不进入 CH3 存档</div><h1>三窗辨影</h1></div>
+    <nav><a id="returnStone" href="liuyuan-stone-forest.html" hidden>回石林轩前（研究剪接）</a> <a href="geometry-editor.html?scene=liuyuan-dongtian-three-windows-study-v1">编辑本幕几何</a> · <a href="liuyuan-window-study.html?debug=geometry">看调试轮廓</a></nav></header>
+  <div class="frame"><canvas id="view" width="960" height="544" aria-label="研究示意：学子在洞天一碧小屋的窗前铺地行走，观察窗后竹、石、蕉的不同"></canvas></div>
+  <p class="story" id="story" role="status" aria-live="polite">纸角上画着三道窗影、一片阔叶。先认窗，再试着将纸上的三道记号对齐。</p>
+  <section id="shadowGame" class="shadow-game" aria-label="纸角对影小游戏" hidden>
+    <p>纸角对影 <span id="shadowProgress">0 / 3</span> · 看游标走入浅色区域，按空格（或点“记在纸上”）连中三次。</p>
+    <div class="shadow-track" role="img" aria-label="移动游标与目标区域">
+      <span id="shadowTarget" class="shadow-target"></span><span id="shadowMarker" class="shadow-marker"></span>
+    </div>
+    <label><input id="shadowSlow" type="checkbox">慢速／宽判定</label>
+    <button id="shadowLeave" type="button">放下纸角</button>
+    <span class="small">失手只重试连拍，不用重新认窗；Esc 也可退出。</span>
+  </section>
+  <div class="controls" aria-label="游戏控制">
+    <button id="moveUp" type="button" aria-label="向窗前走">↑ 向上</button>
+    <button id="moveLeft" type="button" aria-label="向左走">← 向左</button>
+    <button id="moveDown" type="button" aria-label="向屋内退">↓ 向下</button>
+    <button id="moveRight" type="button" aria-label="向右走">向右 →</button>
+    <button id="inspect" type="button">看窗 E</button>
+    <button id="note" type="button">记在纸上 空格</button>
+    <button id="restart" type="button">从头再看</button>
+  </div>
+  <p class="small">WASD 或方向键在窗前铺地移动，靠近窗按 E 观察；看过三处，在合适的窗前按空格开启纸角对影。谜题可回走、可重试，不发六艺、不更改章节状态。可在编辑器调整地面与脚点后预览草稿。</p>
+  <details class="production"><summary>制作依据与未核边界</summary>
+    <p>本地文字向量检索指向曹林娣《图说苏州园林·门窗》图 5-47、5-56：书中称“洞天一碧”小屋三面环墙，中间八角、两侧六角，东竹西蕉。已人工查看两张图版；游戏底图据此重新绘制，非原书扫描。墙角、窗距、铺地、站位和通路均非实测，不是清末复原。</p>
+    <p>纸角、辨影任务与游标节奏玩法为游戏创作，并非史料中的装置或活动；小屋三窗的清末存貌、玩家可走廊道与 CH3 书斋之间的真实接点尚未核。不能把本页图案或坐标直接移进正式石林底图。</p>
+  </details>
+</main><script src="dist/liuyuan-window-study.js?v=16"></script></body>
+</html>

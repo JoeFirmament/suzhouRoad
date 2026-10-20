@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>留园 · 现状圆门几何研究</title><link rel="stylesheet" href="pixel-theme.css">
+  <style>
+    body{margin:0;background:#242c29;color:#e8e8db;font:15px/1.55 "PingFang SC","Microsoft YaHei",sans-serif}
+    main{max-width:1000px;margin:auto;padding:12px}header,.hud{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    h1{margin:5px 0 9px;font-size:1.22rem;font-weight:600;letter-spacing:.08em}a{color:#c0d5c2}.badge{color:#c6b99b;font-size:.78rem;letter-spacing:.15em}
+    .stage{border:3px solid #68756b;box-shadow:0 12px 38px #101713b0;overflow:hidden}canvas{display:block;width:100%;height:auto;image-rendering:pixelated}
+    .hud{padding:11px 1px}#status{min-height:2em;max-width:580px}label{white-space:nowrap}
+    button{min-height:42px;padding:5px 12px;background:#d5d5c3;border:1px solid #9ca893;color:#26382c;font:inherit;border-radius:2px}
+    .controls{display:grid;grid-template-columns:repeat(3,46px);gap:5px;width:max-content;touch-action:none}.controls button{padding:0}
+    .controls button:first-child{grid-column:2}.controls button:nth-child(2){grid-column:1;grid-row:2}.controls button:nth-child(3){grid-column:2;grid-row:2}.controls button:nth-child(4){grid-column:3;grid-row:2}.controls button:nth-child(5){grid-column:3;grid-row:3}
+    .footnote{margin:10px 0 0;color:#b6c2b5;font-size:.83rem}
+  </style>
+</head>
+<body><main>
+  <header><div><div class="badge">留园 · 现状圆门 · 独立几何研究</div><h1>穿门与回望</h1></div>
+    <nav><a id="returnToFlower" href="liuyuan-flower.html">回花木院 ↗</a> · <a href="geometry-editor.html?scene=liuyuan-youyicun-transition-study-v1">编辑本幕几何 ↗</a></nav></header>
+  <div class="stage"><canvas id="scene" width="960" height="640" aria-label="留园现状圆门的几何研究场景；方向键或 WASD 行走，不代表清末旧游线"></canvas></div>
+  <div class="hud"><span id="status" role="status" aria-live="polite">沿铺地走过圆门，再回头看。靠近门按 E。</span><label><input id="showGeometry" type="checkbox"> 显示可走网格、脚点和碰撞</label><span id="coords" hidden></span><button id="restart" type="button">回到起点</button><button id="recallClue" type="button" hidden>回想花匠的话</button><button id="researchContinue" type="button" hidden>离开本图 · 另看石林研究片段</button></div>
+  <div class="controls" aria-label="触屏控制"><button data-dir="up" aria-label="向上">↑</button><button data-dir="left" aria-label="向左">←</button><button data-dir="down" aria-label="向下">↓</button><button data-dir="right" aria-label="向右">→</button><button id="look" aria-label="观察">看</button></div>
+  <p class="footnote">走过门槛、回望，再到止步点后可按 F 或点按钮另看石林研究片段。这是现状圆门的原创像素几何练习，不是清末返园路。民国《游苏备览》记花房／小蓬莱—又一村—四面厅的文字顺序；<a href="https://kwansei.repo.nii.ac.jp/record/29225/files/%E7%B7%92%E6%96%B9%E8%B3%A2%E4%B8%80.pdf">档案研究</a>的可检索文字却提示 1909 年“又一村”为林泉耆硕之馆西侧廊段。原图版尚未复核，更不能把本圆门当作 1890 年同一门。绿色网格只表示这张图暂定可走区；不会写入章节存档，也不表示花房到石林的正式游线已通。</p>
+</main><script src="dist/liuyuan-youyicun-study.js?v=11"></script></body>
+</html>

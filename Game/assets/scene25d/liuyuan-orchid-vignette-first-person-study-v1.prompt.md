@@ -1,0 +1,9 @@
+# 留园一盆兰 · 第一人称构图研究图 v1
+
+- 生成方式：Codex 内置 imagegen，参考 `liuyuan-flower-work-yard-first-person-study-v1.png` 的色调、白墙和木作质感，重新生成单一小品近景；非旧图裁切，也未复制 RAG 图版。
+- 用途：`Game/gusu-whitebox/liuyuan-composition-study.html` 的眼高构图背景。玩家只调整取景方向与远近，不移动兰盆。
+- 历史边界：研究美术，不声称该盆兰、盆架或立面是留园某一时期的实存原貌。
+
+## 最终生成提示
+
+> Use case: stylized-concept. Asset type: first-person close-up pixel-art background for a Chinese-painting-composition minigame in the Suzhou Liuyuan flower work courtyard. Image 1 is only a continuity reference for muted palette, white plaster wall, woodwork, worn stone and handmade pixel-art finish; this is a NEW intimate camera view, not a crop of the whole yard. From the player's own standing eye-level, looking at ONE modest potted orchid on a simple low wooden plant stand near an aged warm-white plaster wall. One orchid pot is the sole visual subject: convincing slender leaves with naturally varied angles and density, one restrained arc of leaf tips, pot rooted visibly on the stand, fine contact shadow. No second pot, no other flowers, no scenic rock, no character, no large courtyard panorama. Leave broad, unpatterned but subtly textured white wall around the orchid, especially to its right, so the game can shift a camera crop and teach presence/absence, sparse/dense and opening/closure. A little timber edge or shadow may indicate the real courtyard but must remain subordinate. Human-scale frontal/oblique eye-level perspective, not aerial, not isometric, not an illustration on paper. Refined Chinese garden pixel art with crisp intentional pixel clusters, restrained grey-green, weathered ivory, dark wood, quiet warm afternoon light, low saturation. Wide landscape 16:9, full bleed, no UI, no viewfinder, no text, no label, no watermark. Research artwork only; do not imply an exact historical orchid location.

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2a2923">
+  <title>姑苏九园 · 蘇城全圖</title>
+  <link rel="stylesheet" href="pingjiang.css">
+  <link rel="stylesheet" href="pixel-theme.css">
+</head>
+<body>
+<main class="world-shell">
+  <header>
+    <div>
+      <p class="eyebrow">RPG 世界层 · 清末苏州</p>
+      <h1>蘇城全圖</h1>
+      <p class="intro">初入苏州府学的学子，以清末《蘇城全圖》访街巷、走水路、寻园林；完成课业与城中委托，让新的地点逐渐在图上显形。</p>
+    </div>
+    <div class="header-actions">
+      <a class="design-link" href="index.html">标题</a>
+      <a class="design-link primary-link" href="home.html">返回府学 Home</a>
+      <a class="design-link" href="journal.html">学籍与园谱</a>
+      <a class="design-link" href="standard.html">查看设计标准</a>
+    </div>
+  </header>
+
+  <section class="world-grid">
+    <div class="map-board sucheng-board" aria-label="蘇城全圖城市探索界面">
+      <img src="../assets/sucheng1890/citymap_skeleton_v03.png" alt="由清末蘇城全圖转译的城墙、河道和主街骨架">
+      <a class="map-node canglang-node" data-garden="canglang" href="garden.html">
+        <i></i><span>沧浪亭<small data-state>可入园</small></span>
+      </a>
+      <div class="map-node wangshi-node" data-garden="wangshi">
+        <i></i><span>网师园<small data-state>未解锁</small></span>
+      </div>
+      <div class="map-legend">世界层以清末《蘇城全圖》转译稿为底；园林点位随考据与任务逐步显形</div>
+    </div>
+
+    <aside>
+      <section class="identity-card">
+        <p class="eyebrow">玩家身份</p>
+        <h2>苏州府学 · 新入学子</h2>
+        <p>府学是修业起点与归处；你带回的不只是任务奖励，还有对街巷、碑刻、水路和园林的新认识。</p>
+        <a class="home-return" href="home.html">回到园谱书案</a>
+      </section>
+
+      <section class="quest-card">
+        <p class="eyebrow">当前课业</p>
+        <h2 id="questTitle">课一 · 到了复廊，替我看一眼水</h2>
+        <p id="questBody">从城南进入沧浪亭，沿临水复廊完成“看—对—合”，修习数艺的第一课。</p>
+        <a href="garden.html">放大至沧浪亭园林图</a>
+      </section>
+
+      <section id="liuyuanJourney" class="liuyuan-journey" hidden>
+        <p class="eyebrow">刚走过的一程</p>
+        <h2>留园 · 一支粥的路</h2>
+        <p id="liuyuanJourneyWords">空桶已还，叶上异文等着核本。</p>
+        <a href="journal.html">把这一程收入园谱</a> · <a href="liuyuan-entry.html">回看留园门外</a>
+        <p class="quiet-note">人物和具体门路是游戏演绎；城图暂不标未经核定的留园入口坐标。</p>
+      </section>
+
+      <section class="companion-card">
+        <p class="eyebrow">本段同行</p>
+        <h2>沈砚秋 · 同窗</h2>
+        <p>“从府学去沧浪亭不难。难的是到了窗前，你还只顾着看窗。”</p>
+      </section>
+
+      <section class="arts-card">
+        <p class="eyebrow">六艺修习</p>
+        <ul>
+          <li data-art="li"><b>礼</b><span>未习</span></li>
+          <li data-art="yue"><b>乐</b><span>未习</span></li>
+          <li data-art="she"><b>射</b><span>未习</span></li>
+          <li data-art="yu"><b>御</b><span>未习</span></li>
+          <li data-art="shu"><b>书</b><span>未习</span></li>
+          <li data-art="shuMath"><b>数</b><span>未习</span></li>
+        </ul>
+        <p class="quiet-note">六艺来自具体课业，并改变学子能看见、理解和进入的地方；不靠重复刷取。</p>
+      </section>
+
+      <section class="garden-list">
+        <p class="eyebrow">九园谱</p>
+        <div><span>沧浪亭</span><b data-garden="canglang"><em data-state>可入园</em></b></div>
+        <div><span>网师园</span><b data-garden="wangshi"><em data-state>未解锁</em></b></div>
+        <div><span>拙政园</span><b data-garden="zhuozheng"><em data-state>未解锁</em></b></div>
+        <div><span>留园</span><b data-garden="liuyuan"><em data-state>未解锁</em></b></div>
+        <div><span>狮子林 · 耦园 · 艺圃 · 环秀山庄 · 退思园</span><b>线索未得</b></div>
+      </section>
+
+      <section class="artifact-card">
+        <p class="eyebrow">府学藏碑</p>
+        <h2>《平江图》</h2>
+        <p>它不是清末日常导航底图，而是府学文庙中的宋代城市记忆：通过拓碑和古今对照，帮助玩家看见苏州八百年的延续与变化。</p>
+      </section>
+    </aside>
+  </section>
+
+  <footer><span>蘇城全圖</span><i>→</i><span>园林图</span><i>→</i><span>近景图</span></footer>
+</main>
+<script src="dist/world.js?v=3"></script>
+</body>
+</html>

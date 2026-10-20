@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#16251f">
+  <title>小飞虹漫游 · 姑苏九园</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <a class="back-link" href="../../index.html" aria-label="返回姑苏九园主页">← 姑苏九园</a>
+      <div class="title-block">
+        <p>拙政园 · 中部景区</p>
+        <h1>小飞虹漫游</h1>
+      </div>
+      <button class="sound-button" id="resetButton" type="button">重新开始</button>
+    </header>
+
+    <section class="game-panel" aria-labelledby="gameTitle">
+      <h2 class="sr-only" id="gameTitle">小飞虹像素漫游场景</h2>
+      <div class="stage-frame">
+        <canvas id="gameCanvas" width="627" height="627" tabindex="0" aria-label="小飞虹像素场景。使用方向键或 WASD 沿廊桥行走，也可以点击桥面移动。">
+          浏览器不支持 Canvas，无法运行漫游场景。
+        </canvas>
+        <div class="loading" id="loading" role="status">正在载入小飞虹……</div>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="hud">
+        <div>
+          <p class="hud-label">本次游历</p>
+          <p class="hud-value" id="objective">沿廊桥收集三枚景观印记</p>
+        </div>
+        <div class="stamp-list" id="stampList" aria-label="景观印记收集进度">
+          <span data-stamp="vermilion">朱栏</span>
+          <span data-stamp="reflection">水影</span>
+          <span data-stamp="rock">湖石</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide" aria-label="操作说明">
+      <div>
+        <strong>行走</strong>
+        <span>← → / A D 沿桥移动，↑ ↓ / W S 调整前后位置</span>
+      </div>
+      <div>
+        <strong>指向</strong>
+        <span>点击或轻触桥面，人物会走向对应位置</span>
+      </div>
+      <div>
+        <strong>画面</strong>
+        <span>桥顶与近岸植被取自原画，朱栏以像素前景补绘</span>
+      </div>
+    </section>
+
+    <nav class="touch-controls" aria-label="触摸移动控制">
+      <button type="button" data-control="back" aria-label="沿桥向左移动">←</button>
+      <button type="button" data-control="up" aria-label="向桥内侧移动">↑</button>
+      <button type="button" data-control="down" aria-label="向桥外侧移动">↓</button>
+      <button type="button" data-control="forward" aria-label="沿桥向右移动">→</button>
+    </nav>
+
+    <aside class="site-note">
+      <p class="site-note-kicker">场景依据</p>
+      <p>以生成的小飞虹像素图为底图，保留折线廊桥、朱红几何栏杆、黛瓦屋面、池水倒影和岸边湖石。游戏交互限制在这一真实局部之内。</p>
+    </aside>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>

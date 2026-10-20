@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1008" height="688" viewBox="0 0 1008 688" role="img" aria-labelledby="title desc">
+  <title id="title">留园入口通路试演底图</title>
+  <desc id="desc">由入口现状拓扑白模去除工程标注的游戏试演图。非晚清测绘，非正式场景美术。</desc>
+  <rect width="1008" height="688" fill="#e8e4db"/>
+  <path d="M520 650V550 480 400H430V300 245H290" fill="none" stroke="#60675e" stroke-width="48" stroke-linejoin="round" stroke-linecap="square"/>
+  <path d="M520 650V550 480 400H430V300 245H290" fill="none" stroke="#c8c1af" stroke-width="40" stroke-linejoin="round" stroke-linecap="square"/>
+  <g fill="#d4dbd0" stroke="#718070" stroke-width="3">
+    <rect x="475" y="510" width="90" height="67"/>
+    <rect x="480" y="441" width="84" height="58"/>
+    <rect x="378" y="340" width="102" height="83"/>
+    <rect x="377" y="277" width="106" height="57"/>
+    <rect x="364" y="216" width="117" height="62"/>
+  </g>
+  <rect x="368" y="208" width="131" height="16" fill="#aa9e95" stroke="#655b58" stroke-width="2"/>
+  <g fill="#e5e0d1" stroke="#6d716c" stroke-width="2">
+    <rect x="376" y="210" width="13" height="12"/><rect x="396" y="210" width="13" height="12"/>
+    <rect x="416" y="210" width="13" height="12"/><rect x="436" y="210" width="13" height="12"/>
+    <rect x="456" y="210" width="13" height="12"/><rect x="476" y="210" width="13" height="12"/>
+  </g>
+  <rect x="242" y="208" width="91" height="72" fill="#d3d9cc" stroke="#657966" stroke-width="3"/>
+  <rect x="95" y="35" width="236" height="105" rx="8" fill="#a8c0bc" stroke="#5c7e7a" stroke-width="3"/>
+</svg>

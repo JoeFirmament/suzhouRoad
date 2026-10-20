@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>留园入口 · 粉墙黛瓦门墙研究试走</title><link rel="stylesheet" href="pixel-theme.css">
+  <style>
+    body{margin:0;background:#222b2d;color:#e4e8e5;font:15px/1.55 "PingFang SC","Microsoft YaHei",sans-serif}
+    main{max-width:1540px;margin:auto;padding:12px}header,.hud{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    h1{margin:5px 0 9px;font-size:1.25rem;font-weight:600}a{color:#c5d9d5}.badge{color:#b4c6c5;font-size:.78rem;letter-spacing:.12em}
+    .stage{border:3px solid #63767a;box-shadow:0 12px 38px #101919b0;overflow:hidden}canvas{display:block;width:100%;height:auto;image-rendering:pixelated}
+    .hud{padding:11px 1px}#status{min-height:2em;max-width:760px}label{white-space:nowrap}
+    button{min-height:42px;padding:5px 12px;background:#d4dcd9;border:1px solid #9daead;color:#253537;font:inherit;border-radius:2px}
+    .controls{display:grid;grid-template-columns:repeat(3,46px);gap:5px;width:max-content;touch-action:none}.controls button{padding:0}
+    .controls button:first-child{grid-column:2}.controls button:nth-child(2){grid-column:1;grid-row:2}.controls button:nth-child(3){grid-column:2;grid-row:2}.controls button:nth-child(4){grid-column:3;grid-row:2}.controls button:nth-child(5){grid-column:3;grid-row:3}
+    .footnote{margin:10px 0;color:#b9c9c5;font-size:.84rem}
+  </style>
+</head>
+<body><main>
+  <header><div><div class="badge">留园 · 门外—门厅 · 独立美术／几何研究</div><h1>粉墙黛瓦，试走门槛</h1></div>
+    <nav><a href="liuyuan-style-calibration.html">画风并排 ↗</a> · <a href="geometry-editor.html?scene=liuyuan-entry-gate-misty-study-v2">编辑本幕几何 ↗</a></nav></header>
+  <div class="stage"><canvas id="scene" width="1664" height="944" aria-label="留园门墙独立研究场景；方向键或 WASD 行走，E 观察，不代表清末旧门"></canvas></div>
+  <div class="hud"><span id="status" role="status" aria-live="polite">沿石路走到门槛，再进门厅看看。</span><label><input id="showGeometry" type="checkbox"> 显示可走网格、碰撞和脚点</label><span id="coords" hidden></span><button id="restart" type="button">回到门外</button><button id="look" type="button">观察</button></div>
+  <div class="controls" aria-label="触屏方向控制"><button data-dir="up" aria-label="向上">↑</button><button data-dir="left" aria-label="向左">←</button><button data-dir="down" aria-label="向下">↓</button><button data-dir="right" aria-label="向右">→</button><button id="touchLook" aria-label="观察">看</button></div>
+  <p class="footnote">这是单镜研究，不写 CH3 存档，不连后续夹弄，也不替换正式入口。门位、树位、门柱和铺地仍未核到清末原址；图像是 AI 辅助原创视觉候选，须再统一逻辑像素网格。此处暂只用灰石路，不把向量库中仅标“留园”的花街铺地图版误植到门外。</p>
+</main><script src="dist/liuyuan-entry-gate-misty-study.js?v=1"></script></body>
+</html>

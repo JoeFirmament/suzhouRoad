@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>姑苏九园 · 首章纸面测试盒 · 沧浪亭 Day1</title>
+<style>
+  :root{
+    --paper:#f7f2e7; --ink:#2b2824; --ink2:#6b6355; --zhu:#b03a2e; --qing:#3d7068;
+    --line:#c9bfa8; --card-w:88mm; --card-h:56mm;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#d8d2c2;font-family:"Songti SC","STSong","SimSun",serif;color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .tip{max-width:900px;margin:14px auto;padding:12px 18px;background:#fffbe9;border:1px dashed var(--zhu);font-size:14px;line-height:1.7}
+  .page{background:var(--paper);width:210mm;min-height:296mm;margin:10px auto;padding:14mm 12mm;box-shadow:0 2px 10px rgba(0,0,0,.25);position:relative;overflow:hidden}
+  .page.a3land{width:420mm;min-height:295mm;padding:12mm}
+  @media print{
+    body{background:none}
+    .tip{display:none}
+    .page{box-shadow:none;margin:0;page-break-after:always}
+    .page.a3land{width:420mm;min-height:295mm}
+    @page{size:auto;margin:0}
+  }
+  h1{font-size:22px;letter-spacing:2px} h1 .zhu{color:var(--zhu)}
+  h2{font-size:16px;border-bottom:2px solid var(--ink);padding-bottom:4px;margin:14px 0 8px}
+  h3{font-size:13px;margin:10px 0 4px;color:var(--qing)}
+  p,li,td,th{font-size:12px;line-height:1.65}
+  .seal{display:inline-block;border:2px solid var(--zhu);color:var(--zhu);padding:1px 7px;font-size:12px;letter-spacing:2px;transform:rotate(-4deg);margin-left:6px}
+  .note{color:var(--ink2);font-size:11px}
+  .wm{position:absolute;right:10mm;bottom:6mm;font-size:10px;color:var(--ink2);opacity:.75}
+
+  /* 地图页 */
+  .mapwrap{width:100%;text-align:center}
+  .legend{display:flex;gap:16px;justify-content:center;font-size:11px;margin-top:4px;flex-wrap:wrap}
+  .legend span::before{content:"";display:inline-block;width:10px;height:10px;margin-right:4px;vertical-align:-1px;border:1px solid var(--ink)}
+  .lg-win::before{background:#e8b84b!important}
+  .lg-view::before{background:var(--zhu)!important;border-radius:50%!important}
+  .lg-cross::before{background:var(--qing)!important;border-radius:50%!important}
+  .lg-soft::before{background:#fff!important;border-style:dashed!important}
+
+  /* 卡片 */
+  .cards{display:flex;flex-wrap:wrap;gap:6mm}
+  .card{width:var(--card-w);height:var(--card-h);border:1.5px solid var(--ink);background:#fbf7ec;padding:5mm 6mm;position:relative;page-break-inside:avoid;display:flex;flex-direction:column;justify-content:center}
+  .card .tag{position:absolute;top:3mm;right:4mm;font-size:9px;color:var(--ink2);letter-spacing:1px}
+  .card .no{position:absolute;left:4mm;top:2.5mm;font-size:9px;color:var(--zhu)}
+  .card.bignum{font-size:20px;letter-spacing:3px;text-align:center;line-height:1.6}
+  .card.poem{font-size:15px;letter-spacing:2px;line-height:2;text-align:center}
+  .card.cut{border-style:dashed}
+  .card h4{font-size:12px;margin-bottom:3mm;color:var(--zhu)}
+  .card p{font-size:11px;line-height:1.6}
+  .card .q{font-style:normal;color:var(--qing);font-size:10px;margin-top:2mm}
+  .card.inkcard{background:#2b2824;color:#efe9d8}
+  .card.inkcard h4{color:#e8b84b}
+  .card.inkcard p{color:#efe9d8}
+  .card.inkcard .tag,.card.inkcard .q{color:#9aa38e}
+  .coinrow{display:flex;flex-wrap:wrap;gap:4mm}
+  .coin{width:16mm;height:16mm;border-radius:50%;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:13px;background:#fbf7ec}
+
+  /* 手册与表格 */
+  table{border-collapse:collapse;width:100%;margin:6px 0}
+  th,td{border:1px solid var(--ink);padding:4px 7px;text-align:left;vertical-align:top}
+  th{background:#efe8d6;font-weight:700}
+  .sig{font-size:11px}
+  .checkbox{display:inline-block;width:11px;height:11px;border:1.5px solid var(--ink);margin-right:5px;vertical-align:-1px}
+  .two{display:flex;gap:8mm}
+  .two>div{flex:1}
+  ol.steps{padding-left:18px}
+  ol.steps li{margin-bottom:4px}
+  .quote{background:#efe8d6;border-left:3px solid var(--qing);padding:5px 9px;font-size:12px;margin:6px 0}
+</style>
+</head>
+<body>
+
+<div class="tip">
+  <b style="color:#b03a2e">⚠ 废止提示（2026-09-30）</b>：本盒所配套的《首章入园一日完整剧本·沧浪亭Day1》<b>已不再执行</b>——其<b>现代开场、圆窗穿越、师承信、银钱结算、90 分钟长局均已废止</b>，玩家自始至终是苏州府学学子。<b>"现代玩家"这条线已整体删除</b>：盒内凡标"穿越锚点"处（◎）以及过窗、穿回、照片、师承、银元等判定条目<b>一律作废，不得据以实现</b>。本盒仅保留<b>复廊三窗取景对位教学</b>与城南动线的历史参考价值。<br><br>
+  <b>使用说明</b>：① 第 1 页为 A3 横版复廊平面图（打印选 A3 横向，或按比例缩放到 A4 拼接）；② 第 2–4 页 A4 纵向；③ 卡片页沿虚线剪开；④ 主持人持手册第 5 页与判定卡，玩家持棋子在平面图上移动。全部方位与尺寸为<b>示意白模</b>，待刘敦桢《苏州古典园林》沧浪亭分论总平面图裁决后修订。
+</div>
+
+<!-- ============ 第 1 页 · A3 复廊平面图 ============ -->
+<section class="page a3land">
+  <h1>沧浪亭复廊平面图 <span class="zhu">示意白模</span><span class="seal">纸面测试</span></h1>
+  <p class="note">方位待裁决：面水轩端位与复廊长度现存两说（刘敦桢书 vs 网络百科），本图暂按"水面在北、廊沿水南岸"绘制。★ 取景点编号对应判定卡；◎ 圆窗（原穿越锚点·已废）；◇ 软任务点。</p>
+  <div class="mapwrap">
+  <svg viewBox="0 0 1180 640" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="'Songti SC','STSong',serif">
+    <!-- 宣纸底 -->
+    <rect width="1180" height="640" fill="#f7f2e7"/>
+    <!-- 北面外水（葑溪） -->
+    <rect x="40" y="40" width="1100" height="120" fill="#cfe3df"/>
+    <path d="M60 90 q30 -8 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0" fill="none" stroke="#8fb5ae" stroke-width="2"/>
+    <text x="590" y="80" text-anchor="middle" font-size="20" fill="#3d7068">北 · 外水（葑溪）</text>
+    <!-- 石岸 -->
+    <rect x="40" y="160" width="1100" height="14" fill="#d3cdbd" stroke="#b9b3a5"/>
+    <!-- 复廊：外廊 / 中墙 / 内廊 -->
+    <rect x="70" y="188" width="1040" height="34" fill="#efe8d6" stroke="#2b2824"/>
+    <rect x="70" y="222" width="1040" height="16" fill="#fbf7ec" stroke="#2b2824"/>
+    <rect x="70" y="238" width="1040" height="34" fill="#efe8d6" stroke="#2b2824"/>
+    <!-- 漏窗（普通） -->
+    <g fill="#e8e0c8" stroke="#2b2824">
+      <rect x="150" y="224" width="24" height="12"/><rect x="230" y="224" width="24" height="12"/>
+      <rect x="310" y="224" width="24" height="12"/><rect x="470" y="224" width="24" height="12"/>
+      <rect x="550" y="224" width="24" height="12"/><rect x="630" y="224" width="24" height="12"/>
+      <rect x="710" y="224" width="24" height="12"/><rect x="870" y="224" width="24" height="12"/>
+      <rect x="950" y="224" width="24" height="12"/><rect x="1030" y="224" width="24" height="12"/>
+    </g>
+    <!-- 三扇特殊窗（教学窗，金底） -->
+    <g stroke="#b03a2e" stroke-width="2">
+      <rect x="180" y="220" width="34" height="20" fill="#f0dfa8"/>
+      <rect x="380" y="220" width="34" height="20" fill="#f0dfa8"/>
+      <rect x="600" y="220" width="34" height="20" fill="#f0dfa8"/>
+    </g>
+    <!-- 圆窗（原穿越锚点·已废） -->
+    <circle cx="980" cy="230" r="17" fill="#dff0ec" stroke="#3d7068" stroke-width="3"/>
+    <circle cx="980" cy="230" r="10" fill="none" stroke="#3d7068" stroke-dasharray="3 3"/>
+    <!-- 廊两端开口 -->
+    <rect x="66" y="188" width="6" height="84" fill="#f7f2e7"/>
+    <rect x="1108" y="188" width="6" height="84" fill="#f7f2e7"/>
+    <!-- 廊南侧：假山带 / 建筑 -->
+    <g>
+      <ellipse cx="300" cy="330" rx="130" ry="42" fill="#b9c4ae" stroke="#8a9a84"/>
+      <ellipse cx="270" cy="322" rx="46" ry="20" fill="#a5b39a"/>
+      <ellipse cx="345" cy="345" rx="38" ry="16" fill="#a5b39a"/>
+      <text x="300" y="336" text-anchor="middle" font-size="14" fill="#4a544a">假山带</text>
+      <rect x="520" y="300" width="110" height="66" fill="#efe8d6" stroke="#2b2824"/>
+      <text x="575" y="328" text-anchor="middle" font-size="14">明道堂</text>
+      <text x="575" y="348" text-anchor="middle" font-size="10" fill="#6b6355">[方位待核]</text>
+      <rect x="700" y="308" width="86" height="54" fill="#efe8d6" stroke="#2b2824"/>
+      <text x="743" y="330" text-anchor="middle" font-size="13">翠玲珑</text>
+      <text x="743" y="348" text-anchor="middle" font-size="10" fill="#6b6355">[方位待核]</text>
+      <!-- 观鱼处 -->
+      <rect x="565" y="196" width="46" height="22" fill="#f7f2e7" stroke="#b03a2e" stroke-dasharray="4 2"/>
+      <text x="588" y="212" text-anchor="middle" font-size="10" fill="#b03a2e">观鱼处</text>
+      <!-- 面水轩（西端·端位存疑） -->
+      <rect x="72" y="180" width="70" height="50" fill="#efe8d6" stroke="#2b2824"/>
+      <text x="107" y="200" text-anchor="middle" font-size="12">面水轩</text>
+      <text x="107" y="216" text-anchor="middle" font-size="9" fill="#b03a2e">端位两说待裁</text>
+      <!-- 园门 -->
+      <rect x="575" y="272" width="34" height="14" fill="#2b2824"/>
+      <text x="592" y="264" text-anchor="middle" font-size="12" fill="#2b2824">园门</text>
+    </g>
+    <!-- 南界 -->
+    <rect x="40" y="420" width="1100" height="10" fill="#d9d2c0" stroke="#b9b3a5"/>
+    <text x="590" y="455" text-anchor="middle" font-size="16" fill="#6b6355">南 · 园外街巷（通城南动线图）</text>
+    <!-- 取景点标注 -->
+    <g font-size="13" font-weight="bold" fill="#b03a2e">
+      <circle cx="197" cy="256" r="10" fill="#b03a2e"/><text x="197" y="261" text-anchor="middle" fill="#fbf7ec" font-size="12">1</text>
+      <circle cx="397" cy="256" r="10" fill="#b03a2e"/><text x="397" y="261" text-anchor="middle" fill="#fbf7ec" font-size="12">2</text>
+      <circle cx="617" cy="256" r="10" fill="#b03a2e"/><text x="617" y="261" text-anchor="middle" fill="#fbf7ec" font-size="12">3</text>
+      <circle cx="980" cy="262" r="10" fill="#3d7068"/><text x="980" y="266" text-anchor="middle" fill="#fbf7ec" font-size="11">◎</text>
+    </g>
+    <text x="197" y="288" text-anchor="middle" font-size="12" fill="#2b2824">窗一·静止对位</text>
+    <text x="397" y="288" text-anchor="middle" font-size="12" fill="#2b2824">窗二·纹样匹配</text>
+    <text x="617" y="288" text-anchor="middle" font-size="12" fill="#2b2824">窗三·移动对位</text>
+    <text x="1010" y="286" font-size="12" fill="#3d7068">◎ 圆窗（原穿越锚点·已废）</text>
+    <!-- 软任务点 -->
+    <g font-size="11" fill="#3d7068">
+      <text x="130" y="395">◇ 古树寻访（线索卡九）[株位待勘]</text>
+      <text x="560" y="395">◇ 观鱼处闲坐</text>
+      <text x="760" y="395">◇ 翠玲珑听竹</text>
+    </g>
+    <!-- 图例 -->
+    <g font-size="12">
+      <rect x="900" y="560" width="16" height="12" fill="#f0dfa8" stroke="#b03a2e" stroke-width="2"/><text x="922" y="571">教学漏窗（★1–3）</text>
+      <circle cx="908" cy="590" r="7" fill="#b03a2e"/><text x="922" y="595">取景点 / 判定卡编号</text>
+      <circle cx="908" cy="616" r="7" fill="#dff0ec" stroke="#3d7068" stroke-width="2"/><text x="922" y="621">◎ 圆窗（原穿越设定·已废）</text>
+    </g>
+  </svg>
+  </div>
+  <div class="legend">
+    <span class="lg-win">教学漏窗</span><span class="lg-view">取景点</span><span class="lg-cross">圆窗（已废）</span><span class="lg-soft">软任务</span>
+  </div>
+  <div class="wm">示意白模 · 面水轩端位 / 复廊长度 / 窗纹 / 树位全部待刘敦桢总平面图与实勘裁决 · 禁止当实测图使用</div>
+</section>
+
+<!-- ============ 第 2 页 · 城南动线图 ============ -->
+<section class="page">
+  <h1>城南动线图 <span class="seal">第二幕用</span></h1>
+  <p class="note">辰时—午时。玩家自◎圆窗入复廊起，到园门止。地名按《平江图》格局示意，店名全部占位。</p>
+  <svg viewBox="0 0 760 560" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="'Songti SC','STSong',serif">
+    <rect width="760" height="560" fill="#f7f2e7"/>
+    <!-- 河道（第三直河·平江河 向南） -->
+    <path d="M110 0 V 300 Q110 360 170 380 L 170 560" fill="none" stroke="#8fb5ae" stroke-width="26" opacity=".55"/>
+    <text x="96" y="250" font-size="13" fill="#3d7068" transform="rotate(-90 96 250)">河（第三直河）[示意]</text>
+    <!-- 街（护龙街） -->
+    <rect x="360" y="0" width="30" height="560" fill="#e6dcc2" stroke="#b9b3a5"/>
+    <text x="382" y="270" font-size="13" fill="#6b6355" transform="rotate(-90 382 270)">护龙街（今人民路）</text>
+    <!-- 横街 -->
+    <rect x="0" y="300" width="760" height="24" fill="#e6dcc2" stroke="#b9b3a5"/>
+    <text x="600" y="317" font-size="12" fill="#6b6355">横街 [名待考]</text>
+    <!-- 场所 -->
+    <g font-size="13">
+      <rect x="140" y="60" width="96" height="52" fill="#fbf7ec" stroke="#2b2824"/><text x="188" y="82" text-anchor="middle">客栈</text><text x="188" y="100" text-anchor="middle" font-size="9" fill="#b03a2e">名号占位</text>
+      <rect x="140" y="180" width="96" height="52" fill="#fbf7ec" stroke="#2b2824"/><text x="188" y="202" text-anchor="middle">茶馆</text><text x="188" y="220" text-anchor="middle" font-size="9" fill="#b03a2e">说书·软任务</text>
+      <rect x="420" y="180" width="96" height="52" fill="#fbf7ec" stroke="#2b2824"/><text x="468" y="202" text-anchor="middle">书肆</text><text x="468" y="220" text-anchor="middle" font-size="9" fill="#b03a2e">周先生[虚构]</text>
+      <rect x="420" y="60" width="96" height="52" fill="#fbf7ec" stroke="#2b2824"/><text x="468" y="82" text-anchor="middle">药铺</text><text x="468" y="100" text-anchor="middle" font-size="9" fill="#b03a2e">软任务·人情</text>
+      <rect x="140" y="400" width="96" height="46" fill="#dff0ec" stroke="#3d7068" stroke-width="2"/><text x="188" y="428" text-anchor="middle" fill="#3d7068" font-weight="bold">园门</text>
+      <circle cx="188" cy="500" r="16" fill="#dff0ec" stroke="#3d7068" stroke-width="3"/><text x="188" y="506" text-anchor="middle" fill="#3d7068" font-size="12">◎</text>
+      <text x="188" y="536" text-anchor="middle" font-size="11" fill="#3d7068">圆窗·复廊（衔接大图）</text>
+    </g>
+    <!-- 委托动线 -->
+    <path d="M236 86 C 300 86, 320 60, 420 60" fill="none" stroke="#b03a2e" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#r1)"/>
+    <path d="M236 206 C 320 206, 340 206, 420 206" fill="none" stroke="#b03a2e" stroke-width="2" marker-end="url(#r1)"/>
+    <path d="M468 232 C 468 330, 300 410, 236 416" fill="none" stroke="#b03a2e" stroke-width="2" marker-end="url(#r1)"/>
+    <path d="M236 400 C 200 440, 192 460, 188 482" fill="none" stroke="#3d7068" stroke-width="2" marker-end="url(#r2)"/>
+    <defs>
+      <marker id="r1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#b03a2e"/></marker>
+      <marker id="r2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#3d7068"/></marker>
+    </defs>
+    <text x="330" y="48" font-size="11" fill="#b03a2e">① 船家救起→客栈（得银钱180文）</text>
+    <text x="286" y="196" font-size="11" fill="#b03a2e">② 送纸样委托（工钱20文）</text>
+    <text x="490" y="320" font-size="11" fill="#b03a2e">③ 周先生线索：师父在城里养病 / 园门话头"苏公旧祠问字"</text>
+    <text x="240" y="452" font-size="11" fill="#3d7068">④ 入园→三窗→诗卡→师承→黄昏回◎穿回</text>
+    <g font-size="11" fill="#3d7068">
+      <text x="30" y="360">◇ 码头看船</text>
+      <text x="560" y="130">◇ 雷允上王鸿翥堂（1882，考据有据）见闻</text>
+    </g>
+  </svg>
+  <div class="wm">方位示意 · 沿河动线按《平江图》水网格局，精确街巷待方志核对</div>
+</section>
+
+<!-- ============ 第 3 页 · 卡片 I（叙事卡） ============ -->
+<section class="page">
+  <h1>卡片 · 叙事（沿虚线剪开）</h1>
+  <div class="cards">
+    <div class="card cut">
+      <span class="no">壹</span><span class="tag">第一幕·开局念</span>
+      <h4>信一（画轴夹层·火漆拆开）</h4>
+      <p>拆信的后来人：这卷《九园图》到了你手里，就是它认定了你。九页空白，是我留给你的九座园子。先去城南沧浪亭。它最老，也最不会骗人——三面是水，一条复廊绕着走。人说一百零八扇花窗，一扇一个画框。记住：不是你找景，是你走到它愿意给你看的位置。到了复廊，替我看一眼水。——光绪□年，梅雨前</p>
+      <p class="q">主持人：念完停 5 秒。玩家追问窗/水 → 记"钩子成立"。</p>
+    </div>
+    <div class="card cut">
+      <span class="no">贰</span><span class="tag">第二幕·阿桂</span>
+      <h4>船家阿桂（虚构）</h4>
+      <p>"后生，吓糊涂了？城里没有走不出的廊子，只有不肯回头的人。"</p>
+      <p class="q">动作：撑船送玩家去客栈。追问来历一律打岔过去。</p>
+    </div>
+    <div class="card cut">
+      <span class="no">叁</span><span class="tag">第二幕·掌柜</span>
+      <h4>客栈掌柜 · 委托</h4>
+      <p>"这包纸样烦你捎给护龙街书肆的周先生，就说去年那批纸，他要的身子骨配上了。工钱二十文，回来给你。"</p>
+      <p class="q">发道具：纸样包卡（伍）+ 20 文钱币。</p>
+    </div>
+    <div class="card cut">
+      <span class="no">肆</span><span class="tag">第四幕·穿回</span>
+      <h4>圆窗 · 规则一句</h4>
+      <p>"匣子认卷，卷认你。"——残卷、信、取景匣随人过窗，这是"只带走眼睛"的唯一例外。</p>
+      <p class="q">主持人：黄昏玩家回到◎时念。多数玩家会自己走向圆窗。</p>
+    </div>
+    <div class="card cut">
+      <span class="no">伍</span><span class="tag">道具</span>
+      <h4>纸样包</h4>
+      <p>一包帘匠新抄的竹纸样。周先生认纸的凭据。</p>
+      <p class="q">交给周先生后收回。</p>
+    </div>
+    <div class="card cut">
+      <span class="no">陆</span><span class="tag">第二幕·书肆</span>
+      <h4>周先生（虚构）· 两句话</h4>
+      <p>"这竹纸是城东乐桥那家帘匠的手艺，近十年独一份。画这卷子的人……就在城里养病。腿脚不便，脾气不小。"</p>
+      <p>"看园子？私家园林凭帖。沧浪亭好在是先贤旧祠，香火情分在——你去园门报'苏公旧祠问字'。"</p>
+      <p class="q">付工钱 20 文。玩家追问师父 → 只答"急什么"。</p>
+    </div>
+    <div class="card cut">
+      <span class="no">柒</span><span class="tag">第三幕·师承</span>
+      <h4>扫叶叟（虚构）</h4>
+      <p>"后生，你的匣子里装了两幅画了。"</p>
+      <p>"我在这廊下扫了三十年叶。你要学东西，我只教一样——学了这门，另一门就得等下一座园子。你自己挑。"</p>
+      <p class="q">选项见背面卡（捌）。</p>
+    </div>
+    <div class="card cut">
+      <span class="no">捌</span><span class="tag">师承选项</span>
+      <h4>乐 / 御 二选一</h4>
+      <p><b>乐·循声</b>："雨天来这儿。雨打芭蕉、水滴船篷、风穿窗棂——三种声音三处景，你耳朵比眼睛先找到。"（错过：御·本园水上机位）</p>
+      <p><b>御·舟行</b>："复廊底下泊着条小船。上了水，廊子里的景就都成了看你的景。"（错过：乐·本园雨声寻景）</p>
+      <p class="q">计时选择时长，>3 分钟记信号。</p>
+    </div>
+  </div>
+  <div class="wm">虚构 NPC 已标注 · 真实史实不混入 NPC 台词</div>
+</section>
+
+<!-- ============ 第 4 页 · 卡片 II（判定卡与道具） ============ -->
+<section class="page">
+  <h1>卡片 · 判定与道具（沿虚线剪开）</h1>
+  <div class="cards">
+    <div class="card cut inkcard">
+      <span class="no">A</span><span class="tag">★窗一</span>
+      <h4>静止对位 · 教"看"</h4>
+      <p>玩家到★1 廊段即成功。窗外所见（主持人念）："水榭一角压着水面，水色比天深一档。"</p>
+      <p>成片台词："窗是死的，景是活的。"</p>
+    </div>
+    <div class="card cut inkcard">
+      <span class="no">B</span><span class="tag">★窗二</span>
+      <h4>纹样匹配 · 教"对"</h4>
+      <p>玩家须走到★2 附近约 4 米廊段并面向窗。窗纹（冰裂/如意/海棠[待勘]）与窗外景轮廓重合即成。</p>
+      <p>错位时主持人只说："景没成，窗纹和山对不上。"台词："古人凿窗时，早把外面的景算好了。"</p>
+    </div>
+    <div class="card cut inkcard">
+      <span class="no">C</span><span class="tag">★窗三</span>
+      <h4>移动对位 · 教"合"</h4>
+      <p>玩家沿廊西行（★3 段），每走一步主持人报一次窗内景变化；玩家随时喊"停"。停在"曲桥+倒影+对岸亭角三元素齐全"的一步即成。</p>
+      <p>判定格：主持人心中记 3 步区间。台词："合上了。九园的窗，合的都是这一下。"（观察停步犹豫）</p>
+    </div>
+    <div class="card cut inkcard">
+      <span class="no">D</span><span class="tag">诗卡</span>
+      <h4>近水远山皆有情</h4>
+      <p class="poem">清风明月本无价，</p>
+      <p>玩家在观鱼处一带举匣。必需元素 3：水面（≥1/3）、对岸假山轮廓、垂枝入画。主持人按玩家站位口述"框内有什么"，玩家自答"成/不成"。</p>
+      <p class="q">成片：主持人念下半联"——近水远山皆有情"，并逐字写上玩家记录纸。3 次不成 → 扫叶叟提前出场指方位。</p>
+    </div>
+    <div class="card cut">
+      <span class="no">E</span><span class="tag">软任务</span>
+      <h4>古树线索卡</h4>
+      <p>①叶形剪影（主持人口述："扇形小叶，一把小折扇"）→②树皮特写（"皮像龟甲开裂"）→③方位诗签（"在山之阴，客袖拂云"[占位]）。</p>
+      <p class="q">树位主持人自定（图上◇附近）。拍到 → 图鉴第一格 [树种待勘]。</p>
+    </div>
+    <div class="card cut">
+      <span class="no">F</span><span class="tag">第四幕</span>
+      <h4>存印</h4>
+      <p class="bignum">存</p>
+      <p>现代同机位仍在。圆窗必得一枚。配文："这扇窗活着，一百多年就隔一个窗框。"</p>
+    </div>
+    <div class="card cut">
+      <span class="no">G</span><span class="tag">第四幕</span>
+      <h4>佚印</h4>
+      <p class="bignum">佚</p>
+      <p>原物已毁或改。面水轩旧匾[名占位]：原匾已佚，今匾重书。配文："旧匾毁于□年[待考]，字换了一代人。"</p>
+      <p class="q">首章配比：2 存 1 佚。第三枚由主持人视玩家拍照自定。</p>
+    </div>
+    <div class="card cut">
+      <span class="no">H</span><span class="tag">第五幕</span>
+      <h4>信二 · 只露半行</h4>
+      <p class="bignum" style="font-size:15px">网师园的那条船……</p>
+      <p class="q">吹灯后主持人缓慢念出。记玩家反应与追问。</p>
+    </div>
+  </div>
+  <div class="coinrow" style="margin-top:6mm">
+    <div class="coin">拾文</div><div class="coin">拾文</div><div class="coin">拾文</div>
+    <div class="coin">拾文</div><div class="coin">拾文</div><div class="coin">拾文</div>
+    <div class="coin">拾文</div><div class="coin">拾文</div><div class="coin">拾文</div>
+    <div class="coin">拾文</div><div class="coin">拾文</div><div class="coin">拾文</div>
+    <div class="coin">拾文</div><div class="coin">拾文</div><div class="coin">拾文</div>
+    <div class="coin">拾文</div><div class="coin">拾文</div><div class="coin">拾文</div>
+    <p class="note" style="width:100%">钱币裁开使用：开局银元换 180 文（18 枚）→ 房钱 15 文 → 工钱 +20 文 → 茶资 3 文 [全部 PLACEHOLDER]。收支曲线即 tuning 第一手数据：记录玩家每笔支出时的犹豫。</p>
+  </div>
+</section>
+
+<!-- ============ 第 5 页 · 主持人手册 + 记录表 ============ -->
+<section class="page">
+  <h1>主持人手册 &amp; 玩家记录表 <span class="seal">一页开测</span></h1>
+  <div class="two">
+    <div>
+      <h2>流程速查（90 min）</h2>
+      <ol class="steps">
+        <li><b>一·现代 10'</b>：念信一 → 玩家棋子走到◎ → "水色重合" → 过窗（0.3 秒停顿再宣布）。</li>
+        <li><b>二·清末 20'</b>：阿桂救起（卡贰）→ 客栈得 180 文 + 委托（卡叁）→ 茶馆/码头/药铺自由 → 书肆（卡陆）→ 园门报话头。</li>
+        <li><b>三·入园 40'</b>：★1→★2→★3（卡 A/B/C）→ 诗卡（卡 D）→ 古树（卡 E，可跳）→ 廊尾扫叶叟（卡柒/捌）。</li>
+        <li><b>四·穿回 10'</b>：黄昏回◎（卡肆）→ 存/佚印（卡 F/G，2存1佚）。</li>
+        <li><b>五·宿 10'</b>：客栈付 15 文 → 掌柜对话 → 吹灯 → 信二半行（卡 H）→ 结束访谈。</li>
+      </ol>
+      <h2>主持人三不</h2>
+      <ol class="steps">
+        <li>不解释系统——玩家问"这是任务吗"只答"你说了算"。</li>
+        <li>不救判定——卡上没写的口述不加码，让玩家自己比对。</li>
+        <li>不催——静默是数据。每次停顿记下位置与时长。</li>
+      </ol>
+      <h2>结束访谈三问</h2>
+      <ol class="steps">
+        <li>今天哪一下你印象最深？（期待：窗三停步 / 过窗）</li>
+        <li>如果明天继续，你想先去哪？（期待：网师园那条船 / 师父）</li>
+        <li>有没有哪个时刻你忘了自己在玩纸面测试？</li>
+      </ol>
+    </div>
+    <div>
+      <h2>玩家记录表（每人一张）</h2>
+      <table>
+        <tr><th>玩家</th><td colspan="3"></td><th>日期</th><td></td></tr>
+        <tr><th>幕</th><th>用时</th><th>停顿位置×时长</th><th colspan="3">原话摘录</th></tr>
+        <tr><td>一 现代</td><td></td><td></td><td colspan="3"></td></tr>
+        <tr><td>二 入城</td><td></td><td></td><td colspan="3"></td></tr>
+        <tr><td>三 入园</td><td></td><td></td><td colspan="3"></td></tr>
+        <tr><td>四 穿回</td><td></td><td></td><td colspan="3"></td></tr>
+        <tr><td>五 宿</td><td></td><td></td><td colspan="3"></td></tr>
+      </table>
+      <h2>失败信号勾选（命中即圈）</h2>
+      <table class="sig">
+        <tr><th>信号</th><th>阈值</th><th>勾</th></tr>
+        <tr><td>B 读信无追问</td><td>不问信中细节</td><td><span class="checkbox"></span></td></tr>
+        <tr><td>过窗困惑</td><td>问"怎么过去的"≥1 次</td><td><span class="checkbox"></span></td></tr>
+        <tr><td>窗三犹豫</td><td>问"停在哪">2 次</td><td><span class="checkbox"></span></td></tr>
+        <tr><td>师承为难</td><td>选择>3 min / "随便"</td><td><span class="checkbox"></span></td></tr>
+        <tr><td>C 不看照片</td><td>穿回后不问照片长相</td><td><span class="checkbox"></span></td></tr>
+        <tr><td>D 清单化</td><td>"先跑完委托再进园"</td><td><span class="checkbox"></span></td></tr>
+        <tr><td><s>E 穿越廉价</s></td><td><s>把◎当快速旅行</s></td><td><span class="checkbox"></span></td></tr>
+        <tr><td>经济困惑</td><td>追问银元汇率</td><td><span class="checkbox"></span></td></tr>
+      </table>
+      <h2>数值回填</h2>
+      <table class="sig">
+        <tr><th>项</th><th>实测值</th></tr>
+        <tr><td>三窗总用时</td><td></td></tr>
+        <tr><td>窗三停步前平均步数</td><td></td></tr>
+        <tr><td>诗卡尝试次数</td><td></td></tr>
+        <tr><td>软任务参与数 / 5</td><td></td></tr>
+        <tr><td>支出犹豫次数</td><td></td></tr>
+        <tr><td>师承选择用时</td><td></td></tr>
+      </table>
+      <p class="note" style="margin-top:6mm">测毕：本表数据回填《首章剧本》与《纸面原型素材》全部 [PLACEHOLDER]，作为 tuning 表第一行。5 名玩家 ≥3 人命中同一信号 → 对应系统重做。</p>
+    </div>
+  </div>
+  <div class="wm">《姑苏九园》纸面测试盒 v1.0 · 配套剧本 Day1 · 考据占位项见剧本 §8</div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#17251f">
+  <title>姑苏九园 · 沧浪亭复廊英雄场景</title>
+  <link rel="stylesheet" href="ui.css">
+  <link rel="stylesheet" href="corridor.css">
+  <link rel="stylesheet" href="story.css">
+  <link rel="stylesheet" href="pixel-theme.css">
+</head>
+<body>
+<main class="game-shell hero-game-shell">
+  <nav class="mode-nav scale-nav" aria-label="空间层级">
+    <span class="scale-path"><a href="index.html">标题</a><i>›</i><a href="sucheng.html">蘇城全圖</a><i>›</i><a href="garden.html">沧浪亭园林图</a><i>›</i><strong>复廊近景</strong></span>
+    <span class="student-mark">苏州府学 · 新入学子</span>
+  </nav>
+
+  <section class="hero-stage" aria-labelledby="sceneTitle">
+    <h1 class="sr-only" id="sceneTitle">沧浪亭复廊三窗取景</h1>
+    <canvas id="corridorGame" width="793" height="496" tabindex="0" aria-label="沧浪亭临水复廊。沿复廊移动到发光窗位，依次完成看、对、合三次取景。"></canvas>
+    <div class="loading" id="loading" role="status">正在进入复廊……</div>
+    <div class="scene-toast" id="toast" role="status" aria-live="polite"></div>
+  </section>
+
+  <section class="scene-hud" aria-label="三窗进度">
+    <div>
+      <p class="hud-kicker">府学课业 · 数艺初修 · 复廊三窗</p>
+      <p class="hud-objective" id="objective">沿廊走到第一扇花窗前，按 E 取景</p>
+    </div>
+    <ol id="windowProgress">
+      <li data-window="0"><b>一</b><span>看</span></li>
+      <li data-window="1"><b>二</b><span>对</span></li>
+      <li data-window="2"><b>三</b><span>合</span></li>
+    </ol>
+  </section>
+
+  <nav class="touch-controls corridor-controls" data-touch-controls aria-label="触摸操作">
+    <div class="dpad">
+      <span></span><button type="button" data-move="w" aria-label="向复廊内侧移动">↑</button><span></span>
+      <button type="button" data-move="a" aria-label="沿复廊向左移动">←</button><button type="button" data-move="s" aria-label="向临水一侧移动">↓</button><button type="button" data-move="d" aria-label="沿复廊向右移动">→</button>
+    </div>
+    <div class="action-pad"><button type="button" data-action="interact">取景</button><button type="button" id="resetButton">重走</button></div>
+  </nav>
+
+  <footer class="scene-note">
+    <p><strong>移动</strong> WASD / 方向键 / 点击廊道</p>
+    <p><strong>取景</strong> 靠近当前亮框花窗后按 E、空格或“取景”</p>
+    <p><strong>课业所得</strong> 完成三窗可领悟数艺「观位」，并让下一处园林线索在《蘇城全圖》上显形</p>
+  </footer>
+</main>
+
+<section class="story-layer" id="completionLayer" hidden>
+  <article class="story-panel" role="dialog" aria-modal="true" aria-labelledby="completionTitle">
+    <div class="story-copy">
+      <p class="story-kicker">课一完成 · 数艺初修</p>
+      <p class="story-speaker">复廊三窗</p>
+      <h2 id="completionTitle">窗没有动，景却随脚步连成了一段长卷。</h2>
+      <p class="story-aside">所得：数 · 观位初识。沧浪亭页已经可以带回府学整理。</p>
+    </div>
+    <div class="story-actions">
+      <button class="story-quiet" id="stayButton" type="button">留在复廊</button>
+      <a class="story-primary" href="home.html?scene=return&amp;from=corridor">返回府学 · 整理园谱</a>
+    </div>
+  </article>
+</section>
+<script src="dist/corridor.js?v=geometry-28"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#171512">
+  <title>姑苏九园 · 苏州府学 Home</title>
+  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="pixel-theme.css">
+</head>
+<body>
+<main class="home-game-shell">
+  <nav class="home-nav" aria-label="府学导航">
+    <span><a href="index.html">标题</a><i>›</i><strong>苏州府学 · 西学</strong></span>
+    <span class="nav-actions"><a id="homeJournal" href="journal.html">学籍与园谱</a><a id="homeCity" href="sucheng.html">《蘇城全圖》</a></span>
+  </nav>
+
+  <section class="home-stage" aria-label="苏州府学西学可行走场景">
+    <canvas id="homeGame" width="960" height="600" tabindex="0" aria-label="苏州府学西学。使用方向键或 WASD 行走，靠近物体按 E 交互。"></canvas>
+    <div class="home-hud">
+      <p>府学日课</p>
+      <strong id="homeObjective">先去斋舍放下书箱</strong>
+    </div>
+    <div class="interaction-prompt" id="interactionPrompt" hidden><kbd>E</kbd><span></span></div>
+
+    <section class="home-dialogue" id="homeDialogue" hidden aria-live="polite" aria-labelledby="dialogueSpeaker">
+      <p id="dialogueSpeaker">沈砚秋</p>
+      <strong id="dialogueLine"></strong>
+      <small id="dialogueAside"></small>
+      <div class="dialogue-actions">
+        <span id="dialogueChoices" class="dialogue-choices" hidden></span>
+        <button id="dialogueNext" type="button">继续</button>
+      </div>
+    </section>
+
+    <section class="album-return variant-collation" id="homeVariant" hidden role="dialog" aria-modal="true" aria-labelledby="variantTitle">
+      <p>自拟园记 · 游戏故事</p><h2 id="variantTitle">把原本翻到那一页</h2>
+      <p id="collationBook"></p><button id="readVariantBook" type="button">1 · 展开藏本</button>
+      <p id="collationLeaf"></p><button id="readVariantLeaf" type="button">2 · 展平叶片</button>
+      <p id="collationResult" aria-live="polite"></p>
+      <button id="recordVariant" type="button" disabled>3 · 将差异收入园谱</button>
+      <button id="otherVariantBooks" type="button">另看书架上的旧书</button>
+      <button id="closeVariant" type="button">收起 · Esc</button>
+    </section>
+    <section class="album-return" id="homeAlbum" hidden aria-live="polite" aria-labelledby="albumTitle">
+      <p>园谱 · 沧浪亭</p>
+      <h2 id="albumTitle">把三处水景放回窗框</h2>
+      <small>次序由你。这里不是考试，只是把刚才看见的留下来。</small>
+      <div class="album-windows" id="albumWindows">
+        <button type="button" data-fragment="water"><i></i><b>水外</b><span>第一处景</span></button>
+        <button type="button" data-fragment="rock"><i></i><b>山影</b><span>第二处景</span></button>
+        <button type="button" data-fragment="corridor"><i></i><b>廊尽</b><span>第三处景</span></button>
+      </div>
+      <p class="album-result" id="albumResult">窗框还是空的，笔却是新添的。</p>
+      <button class="album-close" id="albumClose" type="button" disabled>收起园谱</button>
+    </section>
+  </section>
+
+  <footer class="home-legend">
+    <span><b>西学</b> 日常修习与居处</span>
+    <span><b>东庙</b> 墙后礼仪空间，暂不开放</span>
+    <span>WASD / 方向键移动 · E 交互</span>
+  </footer>
+
+  <nav class="touch-controls" data-touch-controls aria-label="触摸操作">
+    <div class="dpad">
+      <span></span><button type="button" data-move="w" aria-label="向上移动">↑</button><span></span>
+      <button type="button" data-move="a" aria-label="向左移动">←</button><button type="button" data-move="s" aria-label="向下移动">↓</button><button type="button" data-move="d" aria-label="向右移动">→</button>
+    </div>
+    <div class="action-pad"><button type="button" data-action="interact">交互</button><button type="button" data-action="cancel">返回</button></div>
+  </nav>
+</main>
+<script src="dist/home.js?v=story-home-5"></script>
+</body>
+</html>

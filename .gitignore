@@ -36,3 +36,29 @@ SuzhouClassicGardenRag/Resource/
 SuzhouClassicGardenRag/Project/vendor/
 SuzhouClassicGardenRag/Project/data/
 SuzhouClassicGardenRag/Project/converted/
+
+# ========== Game · 研究图 / 第三方图版 / 高分派生素材（本地保留，不进公开仓库） ==========
+# 研究图与 AI 生成实验（约 111MB）：含用户提供的私人参考照片，且按 Game/AGENTS.md 不得进入公开资源
+Game/research-art/
+Game/generated-images/
+# 内部工作日志
+Game/.workbuddy/
+# 第三方图版扫描（版权未清）
+Game/assets/composition-book/
+Game/assets/pingjiang/
+# 清代城图的高分派生素材（约 91MB，可由已忽略的 PDF 重新渲染）
+Game/assets/sucheng1890/page1_x3.png
+Game/assets/sucheng1890/page2_x3.png
+Game/assets/sucheng1890/detail_center.png
+Game/assets/sucheng1890/detail_center_800.png
+Game/assets/sucheng1890/preview_page1.png
+Game/assets/sucheng1890/preview_page2.png
+Game/assets/sucheng1890/ref_page1_grid.png
+# 早期整园研究图（已被 fuxue-west-home-game-v2 取代）
+Game/assets/fuxue/fuxue-home-hub-v1.png
+Game/assets/fuxue/fuxue-home-hub-v2-dual-axis.png
+Game/assets/fuxue/fuxue-home-hub-v3-street-front.png
+Game/assets/fuxue/fuxue-west-home-game-v1.png
+# 用户提供的参考图（非项目源码）
+artwork/
+xiaofeihong-reference.jpg

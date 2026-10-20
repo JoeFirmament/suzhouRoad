@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#172019">
+  <title>姑苏九园 · 学籍与园谱</title>
+  <link rel="stylesheet" href="journal.css">
+  <link rel="stylesheet" href="pixel-theme.css">
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <p class="eyebrow">府学游历档案</p>
+      <h1>学籍与园谱</h1>
+      <p>不是任务清单，而是玩家逐渐看懂苏州的证据。</p>
+    </div>
+    <nav><a href="index.html">返回标题</a><a id="journalHome" href="home.html">回到府学</a></nav>
+  </header>
+
+  <section class="chapter-card">
+    <div><p class="eyebrow">当前章节</p><h2 id="chapterTitle">第一章 · 水外有园</h2></div>
+    <div><p class="eyebrow">下一步</p><strong id="currentObjective">前往府学共读区</strong></div>
+    <div><p class="eyebrow">园林进度</p><strong id="gardenCount">0 / 9</strong></div>
+  </section>
+
+  <section class="section-block" id="variantRecord" hidden>
+    <div class="section-heading"><p class="eyebrow">题叶记录 · 自拟园记</p><h2>一个字，还没有答案</h2></div>
+    <p>你记得的府学本：<span id="variantAcademy"></span></p>
+    <p>叶上记下的原句：<span id="variantLeaf"></span></p>
+    <p id="variantFollowup">先保存所见，回府学再核原本。同与异，究竟是传抄的差别，还是看景的差别？</p>
+    <a id="variantHomeLink" href="home.html">回府学书架核本</a>
+    <p class="evidence-note">两句园记均为本作原创，不引自历史文献；核本只确认写着哪个字，不代表已找出正确版本。</p>
+  </section>
+  <section class="section-block" id="liuyuanRewards" hidden><div class="section-heading"><p class="eyebrow">留园本章所得</p><h2>亲手完成的动作</h2></div><p id="liuyuanWritingReward"></p><p id="liuyuanGuardReward"></p><p>普通行走、听话与还桶不增加六艺；已经领取的奖励不会因回看或重试重复发放。</p></section>
+  <section class="section-block liuyuan-note" id="liuyuanNote" hidden>
+    <div class="section-heading"><p class="eyebrow">已走过 · 留园</p><h2>一支粥的路</h2></div>
+    <p id="liuyuanEcho">从乔老叟的粥桶，到花匠的“笔树”、书斋里的纸声，再循夹弄出来。</p>
+    <p class="evidence-note">这一章的门房、抄书人与题叶经过是游戏故事；城图中的确切旧门位、蕉株和漆板仍待核，不收入史实栏。</p>
+  </section>
+
+  <section class="section-block">
+    <div class="section-heading"><p class="eyebrow">人物谱</p><h2>先记住他们怎样行动</h2></div>
+    <article class="player-profile">
+      <img src="../assets/characters/scholar-cute-v1.png" alt="玩家角色：抱着地图与空白园谱的新入府学学子">
+      <div>
+        <p class="eyebrow">PLAYER · 苏州府学新生</p>
+        <h3>新入府学的学子</h3>
+        <strong>名字与来处由玩家决定</strong>
+        <span>带着《蘇城全圖》和一册空白《九园图》入城。你的成长不是变得更强，而是学会用六艺去看水路、园林与生活在其中的人。</span>
+      </div>
+    </article>
+    <div class="character-grid">
+      <article><i>顾</i><div><h3>顾惟清</h3><p>府学师长 · 游戏虚构人物</p><span>很少直接给答案；用问题迫使学生带着证据回来。</span></div></article>
+      <article><i>沈</i><div><h3>沈砚秋</h3><p>同窗 · 游戏虚构人物</p><span>熟河街、桥梁与坊巷，是玩家认识苏州城的第一位同行者。</span></div></article>
+      <article><i>槿</i><div><h3>阿槿</h3><p>城南书坊学徒 · 游戏虚构人物</p><span>收集不在正史正文里的街巷记忆，把生活线索带进园谱。</span></div></article>
+      <article class="locked"><i>？</i><div><h3>园中旧影</h3><p>随任务显形</p><span>文徵明、林则徐等真实人物只在有历史依据的园谱旧影中出现。</span></div></article>
+    </div>
+  </section>
+
+  <section class="two-column">
+    <div class="section-block">
+      <div class="section-heading"><p class="eyebrow">六艺</p><h2>已经学会的新动作</h2></div>
+      <ul class="arts-list" id="artsList"></ul>
+    </div>
+    <div class="section-block">
+      <div class="section-heading"><p class="eyebrow">九园谱</p><h2>从空页到可理解的地方</h2></div>
+      <ol class="garden-list" id="gardenList"></ol>
+    </div>
+  </section>
+
+  <section class="section-block">
+    <div class="section-heading"><p class="eyebrow">见闻</p><h2>带回府学的证据</h2></div>
+    <div class="knowledge-list" id="knowledgeList"><p>尚未带回园林见闻。</p></div>
+  </section>
+  <section class="section-block" id="drawingAlbum" hidden>
+    <div class="section-heading"><p class="eyebrow">画册 · 一页</p><h2>檐下兰稿</h2></div>
+    <canvas id="orchidLeaf" width="160" height="104" role="img" aria-label="原创像素兰稿：数片兰叶从纸页下方舒展开，一朵小花留在右侧" style="width:320px;max-width:100%;image-rendering:pixelated"></canvas>
+    <p>花匠把抢回的稿页赠给了你。画意留在纸上，那句“别急着碰他的纸”仍在耳边。</p>
+  </section>
+</main>
+<script src="dist/journal.js?v=8"></script>
+</body>
+</html>

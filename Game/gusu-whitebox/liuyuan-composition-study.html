@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>留园 · 三石小稿</title>
+  <link rel="stylesheet" href="pixel-theme.css">
+  <style>
+    body{margin:0;background:#222c27;color:#e7e8dd;font:15px/1.58 "PingFang SC","Microsoft YaHei",sans-serif}
+    main{max-width:1060px;margin:auto;padding:14px 16px 30px}
+    header{display:flex;justify-content:space-between;align-items:start;gap:14px;flex-wrap:wrap}
+    h1{font-size:1.35rem;letter-spacing:.08em;margin:3px 0 6px}.badge{font-size:.78rem;color:#cdbd98;letter-spacing:.12em}
+    a{color:#bcd3c4}.lead{max-width:850px;margin:8px 0 15px}
+    .story{border-left:3px solid #b9a57d;background:#28362d;padding:9px 13px;margin:12px 0}
+    .book{padding:14px;background:#e8e2d4;color:#252d27;border:3px solid #968c73;margin:14px 0}
+    .book h2{font-size:1.03rem;margin:0 0 5px}.book p{margin:6px 0}.book cite{display:block;margin-top:10px;font-size:.83rem;color:#424a40;font-style:normal}
+    .figures{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px;align-items:stretch}
+    figure{margin:0;background:#f7f5ee;border:1px solid #aaa28e;padding:9px;display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+    figure a{display:flex;align-items:center;justify-content:center;min-height:130px}
+    figure img{display:block;width:auto;height:auto;max-width:100%;max-height:230px;object-fit:contain}
+    figcaption{font-size:.82rem;color:#3b433c;margin-top:8px}
+    .rule{font-size:.88rem;color:#394238;background:#dcd5c4;padding:7px 9px;margin-top:10px}
+    #startPractice{display:block;margin:12px auto;min-height:46px;padding-inline:18px}
+    #practice[hidden]{display:none}
+    .brief{padding:10px 13px;background:#303c32;border:1px solid #758274;margin:12px 0}.brief strong{color:#e6d3a5}
+    .stage{border:3px solid #798879;background:#141d18;box-shadow:0 12px 30px #0e1714a8}
+    canvas{display:block;width:100%;height:auto;image-rendering:pixelated;touch-action:none;cursor:grab}
+    canvas:active{cursor:grabbing}canvas:focus-visible{outline:3px solid #e4c47f;outline-offset:3px}
+    .caption{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:6px 10px;background:#29362d;color:#cbd4c4;font-size:.82rem}
+    .controls{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin-top:12px}
+    .stone-select,.nudge,.actions{display:flex;gap:7px;flex-wrap:wrap}
+    button{font:inherit;color:#24342b;background:#d7d7c6;border:2px solid #879889;border-radius:2px;min-height:42px;padding:6px 12px;cursor:pointer}
+    button:hover,button:focus-visible{outline:3px solid #e4c47f;outline-offset:2px}
+    button[aria-pressed="true"]{background:#d8c597;border-color:#f0dca9;box-shadow:inset 0 0 0 2px #776342}
+    .tools{display:flex;justify-content:space-between;align-items:center;gap:9px;flex-wrap:wrap;margin-top:9px}
+    .tools-label{font-size:.84rem;color:#cad3c5}
+    .primary{background:#d9c49a;font-weight:700;border-color:#b4a071}
+    #feedback{min-height:2.8em;padding:10px 12px;margin:11px 0 6px;background:#1b2820;border-left:3px solid #9cb197}
+    #liveRead,#saveNote{font-size:.84rem;color:#c1cdbf;margin:6px 0}
+    #analysis{margin:12px 0;padding:12px 14px;background:#2a372d;border:1px solid #778775}
+    #analysis[hidden],#nextAfterReview[hidden]{display:none}#analysis h2{font-size:1rem;margin:0 0 5px;color:#e7d4ab}
+    .boundary{font-size:.83rem;color:#bdc7b9;border-top:1px solid #5a6a5d;padding-top:12px;margin-top:17px}
+    kbd{font:inherit;font-size:.83em;background:#1b2820;color:#f2e9d3;padding:1px 5px;border:1px solid #839181}
+    @media(max-width:690px){main{padding:10px}.figures{grid-template-columns:1fr}.figures figure{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:8px;align-items:center}.figures figure a{min-height:0}.figures img{max-height:150px}.controls{grid-template-columns:1fr}.nudge button,.stone-select button{flex:1}}
+  </style>
+</head>
+<body><main>
+  <header><div><div class="badge">留园 · 构图小局 01 · 独立练习，不动实景</div><h1>三石小稿：相依与疏开</h1></div>
+    <nav><a id="returnFlower" href="liuyuan-flower.html">回花木作业院</a></nav></header>
+  <p class="lead">花匠把旧画册翻到石页。石匠在一张可擦改的稿纸上放下三块石样：“不必照着描。你试试看，怎样让三块石都认得出，又不排得像尺量。”</p>
+  <section class="book" aria-labelledby="bookTitle">
+    <h2 id="bookTitle">先看完整例图：三块石如何聚散</h2>
+    <p>先比较图六一、图六二，再看图六三：前两幅虽取法不同，仍能读出三块石的关系；图六三有两块靠得太近，容易并成一团。留意的不是“摆到某个坐标”，而是石形、间距与前后关系能不能读清。</p>
+    <div class="figures" aria-label="潘天寿原书完整图例">
+      <figure><a href="../assets/composition-book/pan-fig61-three-stones.jpg" target="_blank" rel="noopener"><img src="../assets/composition-book/pan-fig61-three-stones.jpg" alt="潘天寿《关于构图问题》图六一完整图例，三块石有疏密层次"></a><figcaption>图六一 · 相邻而仍可辨</figcaption></figure>
+      <figure><a href="../assets/composition-book/pan-fig62-three-stones.jpg" target="_blank" rel="noopener"><img src="../assets/composition-book/pan-fig62-three-stones.jpg" alt="潘天寿《关于构图问题》图六二完整图例，三块石的距离有变化"></a><figcaption>图六二 · 间距有变化</figcaption></figure>
+      <figure><a href="../assets/composition-book/pan-fig63-three-stones-merged.jpg" target="_blank" rel="noopener"><img src="../assets/composition-book/pan-fig63-three-stones-merged.jpg" alt="潘天寿《关于构图问题》图六三完整图例，右侧两石并合而层次减弱"></a><figcaption>图六三 · 两石趋于并合</figcaption></figure>
+    </div>
+    <p class="rule">这局的委托条件：三块石样仍各自分明，彼此有近有远。程序只检查“是否过度并合、间距是否变化”；它不是潘天寿的唯一正确构图，也不替观者判断哪张最美。</p>
+    <cite>潘天寿：《关于构图问题》，“虚实与疏密”部分，图六一至六三，书内第57–58页（PDF第58–59页）。完整图例从用户提供的 PDF 提取，未经重绘。</cite>
+  </section>
+  <button id="startPractice" class="primary" type="button">看过原图，开始摆石样</button>
+  <section id="practice" hidden aria-label="三石聚散构图游戏">
+  <p class="story">这三枚石样只在画稿上移动。留园里的冠云峰、石林和其他固定山石都不是谜题道具，也不会被玩家挪动。</p>
+  <div class="brief"><strong>请石匠收一张小稿：</strong>拖动任一石形。让三块仍可辨，并试出一处相依、一处舒展；满意时点“请石匠看稿”。这是一道有明确条件的练习，不是临摹，也没有唯一摆法。</div>
+  <figure class="stage"><canvas id="scene" width="960" height="480" tabindex="0" aria-label="一张可拖动三枚石样的构图练习稿纸。点击石样选择，拖动调整疏密；方向键也可以微调。"></canvas><figcaption class="caption"><span>留园石林主题的游戏化画稿 · 仅移动纸上石样</span><span>拖动 / 选择后用方向键　·　<kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> 选石</span></figcaption></figure>
+  <p id="liveRead" role="status" aria-live="polite">当前观察：三块石样各自可辨；再看看空隙是否过于齐整。</p>
+  <div class="controls"><div class="stone-select" aria-label="选择要移动的石样"><button type="button" data-stone="0" aria-pressed="true">石样一 · 主</button><button type="button" data-stone="1" aria-pressed="false">石样二</button><button type="button" data-stone="2" aria-pressed="false">石样三</button></div>
+    <div class="nudge" aria-label="微调选中的石样"><button type="button" data-nudge="left" aria-label="左移">←</button><button type="button" data-nudge="up" aria-label="上移">↑</button><button type="button" data-nudge="down" aria-label="下移">↓</button><button type="button" data-nudge="right" aria-label="右移">→</button></div>
+  </div>
+  <div class="tools"><span class="tools-label">可随时换石、撤回或重来；不同的摆法可能都成立。</span><div class="actions"><button id="undo" type="button">退一步</button><button id="reset" type="button">重新摆稿</button><button id="review" class="primary" type="button">请石匠看稿</button></div></div>
+  <p id="feedback" role="status" aria-live="polite">先拖一块石样试试。也可以选中石样后，用方向键慢慢挪动。</p>
+  <aside id="analysis" hidden><h2>石匠看稿</h2><p id="analysisText"></p><p>潘天寿书中的图六一、六二、六三是构图示例；这道游戏委托是据此设计的观察练习，不是把书中的某一张规定成留园的“标准答案”。</p></aside>
+  <p id="saveNote" role="status">练习进度保存在本机浏览器；不改动园林地图、编辑器草稿、主线旗标或六艺。</p>
+  <p id="nextAfterReview" hidden>石匠收起纸稿：“石有聚散，画也不止一种走法。下一步先挑个有意思的玩法，再让构图真正影响局面。”<br><a href="liuyuan-composition-atlas.html">比较构图小游戏方案 →</a> · <a id="returnAlbum" href="liuyuan-flower.html?album=done">把石稿交回花木院</a></p>
+  <p class="boundary">场景依据：游戏以留园石林主题承接这道画稿练习；摆动的是可擦改的示意石样，不是现实中的冠云峰、名石或园林遗存。人物与石样是原创研究画面，不把书里的构图图例说成留园实景图。完整书页图像只用于本地原型；公开发布前仍须核实图像授权。</p>
+  </section>
+</main><script src="dist/liuyuan-composition-study.js?v=11"></script></body>
+</html>

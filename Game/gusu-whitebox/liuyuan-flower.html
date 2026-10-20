@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>留园 · 花木作业院</title>
+  <link rel="stylesheet" href="pixel-theme.css">
+  <style>
+    body{margin:0;background:#242c29;color:#e8e8db;font:15px/1.55 "PingFang SC","Microsoft YaHei",sans-serif}
+    main{max-width:1000px;margin:auto;padding:12px}header,.hud{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    h1{margin:5px 0 9px;font-size:1.22rem;font-weight:600;letter-spacing:.08em}a{color:#c0d5c2}
+    .badge{color:#c6b99b;font-size:.78rem;letter-spacing:.15em}.stage{position:relative;border:3px solid #68756b;box-shadow:0 12px 38px #101713b0;overflow:hidden}
+    canvas{display:block;width:100%;height:auto;image-rendering:pixelated}.stage-note{position:absolute;left:12px;bottom:12px;max-width:440px;padding:7px 10px;background:#19251ed6;border:1px solid #68756b;font-size:.86rem}
+    .stage-note[hidden],.stage-actions button[hidden],.interaction-cue[hidden],.scene-message[hidden]{display:none}
+    .stage-actions{position:absolute;right:12px;bottom:12px;z-index:2;display:flex;flex-direction:column;align-items:flex-end;gap:6px}.stage-actions button{box-shadow:3px 3px 0 #16241a}
+    .interaction-cue{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);padding:4px 10px;background:#eee9daed;border:1px solid #68756b;color:#26382c;white-space:nowrap;pointer-events:none}
+    .scene-message{position:absolute;z-index:3;left:3%;right:3%;bottom:3%;max-height:34%;overflow:auto;padding:9px 12px;background:#f5f1e8ee;border:2px solid #53655b;color:#26382c;box-shadow:4px 4px 0 #41574d}
+    .hud{padding:11px 1px;min-height:102px;align-content:start}
+    #status{flex:1 1 100%;height:3.2em;overflow-y:auto}
+    label{white-space:nowrap}
+    .dialogue-actions{position:absolute;z-index:4;left:3%;right:3%;bottom:3%;max-height:50%;overflow:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:9px 12px;background:#f5f1e8;border:2px solid #53655b;color:#26382c;box-shadow:4px 4px 0 #41574d}
+    .dialogue-actions[hidden]{display:none}
+    button{min-height:42px;padding:5px 12px;background:#d5d5c3;border:1px solid #9ca893;color:#26382c;font:inherit;border-radius:2px}
+    .controls{display:grid;grid-template-columns:repeat(3,46px);gap:5px;width:max-content;touch-action:none}.controls button{padding:0}
+    .controls button:first-child{grid-column:2}.controls button:nth-child(2){grid-column:1;grid-row:2}.controls button:nth-child(3){grid-column:2;grid-row:2}.controls button:nth-child(4){grid-column:3;grid-row:2}.controls button:nth-child(5){grid-column:3;grid-row:3}
+    @media(max-width:600px){#status{height:8em}.dialogue-actions{left:1%;right:1%;bottom:1%;max-height:70%;padding:6px;font-size:.8rem}.dialogue-actions button{min-height:34px}.scene-message{left:1%;right:1%;bottom:1%;max-height:55%;font-size:.8rem}}
+    .footnote{margin:10px 0 0;color:#b6c2b5;font-size:.83rem}
+    .story-transition{position:fixed;inset:0;z-index:20;background:#18221e;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;color:#eee9da}.story-transition[hidden]{display:none}.story-transition img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;opacity:.38}.transition-copy{position:relative;max-width:560px;padding:24px;background:#18221ee8;border:1px solid #829080;line-height:1.9}.transition-copy h2{font-size:1.3rem}.transition-copy button{margin-top:12px}
+  
+.stage-actions a[hidden]{display:none}.stage-actions a{padding:7px 10px;border:1px solid #68756b;background:#eee9da;color:#26382c;text-decoration:none}
+.drawing-shade{position:fixed;inset:0;z-index:29;background:#15231ad9}.drawing-shade[hidden]{display:none}.lantern-puzzle{position:fixed;z-index:30;inset:4vh max(12px,calc((100vw - 760px)/2));overflow:auto;background:#eee9da;color:#26382c;padding:16px;border:3px solid #52645a;box-shadow:0 0 0 100vmax #15231ad9;box-sizing:border-box}.lantern-puzzle[hidden]{display:none}.lantern-puzzle h2{margin:0}.rain-visual{width:min(100%,560px,calc((100dvh - 360px)*320/251));min-width:min(240px,100%);margin:8px auto}.lantern-puzzle #rainArena{width:100%;margin:0;touch-action:none}.lantern-puzzle #rainAlbum{width:100%;margin:3px 0 0;pointer-events:none}.rain-legend,.rain-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.rain-pad{display:flex;gap:4px;touch-action:none}.rain-pad button{min-width:42px;min-height:44px}.rain-hud{padding:8px;background:#d2d8c9}.rain-legend span{font-size:.8rem}.rain-legend i{display:inline-block;width:14px;height:10px;margin-right:4px}.rain-light{background:#dbc896}.rain-gap{border:1px dashed #638579}.rain-danger{background:#687d83}.lantern-puzzle .note{font-size:.82rem}.rain-help{margin:8px 0;font-size:.82rem}.rain-help summary{cursor:pointer;color:#52675c}
+.lantern-puzzle{padding:12px}.lantern-puzzle h2{font-size:1.2rem;line-height:1.4}.lantern-puzzle p{margin:4px 0 8px}
+.rain-gap{border:0;position:relative}.rain-gap::before,.rain-gap::after{content:"";position:absolute;top:1px;width:5px;height:8px;background:#48755f;clip-path:polygon(0 50%,100% 0,60% 50%,100% 100%)}.rain-gap::before{left:0}.rain-gap::after{right:0;transform:scaleX(-1)}
+.rain-danger{background:repeating-linear-gradient(125deg,transparent 0 3px,#66776c 3px 4px,transparent 4px 8px)}
+.lantern-puzzle{inset:2vh max(10px,calc((100vw - 1040px)/2))}.rain-visual{width:min(100%,960px,calc((100dvh - 225px)*16/9));min-width:min(260px,100%)}.lantern-puzzle #rainArena{aspect-ratio:16/9;display:block}.lantern-puzzle #rainAlbum{width:min(100%,480px);margin:6px auto}.lantern-puzzle #rainAlbum[hidden]{display:none}.lantern-puzzle .note{font-size:.75rem}.rain-legend{gap:4px 10px}.rain-legend span{font-size:.75rem}.rain-hud{padding:4px 8px}.rain-help{margin:4px 0}.rain-actions{position:sticky;bottom:0;background:#eee9da;padding:4px 0;z-index:1}
+</style>
+</head>
+<body><main>
+  <header><div><div class="badge" id="sceneBadge">CH3-05 · 花房试走 · 盆兰作业</div><h1>花匠不抬头</h1></div>
+    <nav id="sceneTools"><a id="returnLvyin" href="liuyuan-lvyin.html">回临池处 ↗</a><span id="toolSeparator"> · </span><a id="editorLink" href="geometry-editor.html?scene=liuyuan-flower-work-yard-study-v3">编辑本幕几何 ↗</a></nav></header>
+  <div class="stage"><canvas id="scene" width="960" height="640" aria-label="留园花木作业院可行走场景；方向键或 WASD 移动，E 互动"></canvas><div class="stage-note" id="stageNote">石院里有人蹲着换兰土。粥桶还在你手里。</div><span id="interactionCue" class="interaction-cue" hidden></span><div id="sceneMessage" class="scene-message" aria-live="polite" hidden></div><div class="stage-actions"><a id="viewCollected" href="journal.html" hidden>翻看兰稿册页 ↗</a><button id="helpDrawing" type="button" hidden>檐边纸要落了 · 抢画</button><button id="borrowAlbum" type="button" hidden>替花匠取一景 · 兰谱</button><button id="continueChapter" type="button" hidden>沿当代游线 · 寻笔树</button><button id="returnWithStory" type="button" hidden>沿来路 · 回夹弄</button><button id="toLvyinReturn" type="button" hidden>提空桶 · 回临池</button></div><div class="dialogue-actions" id="leafCarryActions" hidden aria-label="返程收好蕉叶"><span id="leafCarryPrompt">湿墨还未干，把叶子——</span><button id="placeInBucket" type="button">1 · 夹在空桶里</button><button id="keepInSleeve" type="button">2 · 仍揣在袖中</button><button id="closeLeafCarry" type="button">暂且不动</button></div><div class="dialogue-actions" id="dialogueActions" hidden aria-label="与花匠交谈"><span id="dialoguePrompt">花匠没有停下手里的活。</span><button id="askStudy" type="button">问书斋里的人 · 1</button><button id="watchSoil" type="button">先看他换土 · 2</button><button id="closeFloristDialogue" type="button">先离开</button></div></div>
+  <div class="hud"><span id="status" role="status" aria-live="polite">走近花匠或檐下，按 E。</span><label><input id="showGeometry" type="checkbox"> 显示可走地面与碰撞</label><span id="coords" hidden></span><button id="reset" type="button">回到院口</button><button id="recallClue" type="button" hidden>回想花匠的话</button></div>
+  <div class="controls" aria-label="触屏控制"><button data-dir="up" aria-label="向上">↑</button><button data-dir="left" aria-label="向左">←</button><button data-dir="down" aria-label="向下">↓</button><button data-dir="right" aria-label="向右">→</button><button id="look" aria-label="交互">看</button></div>
+  <details class="footnote"><summary>操作与场景说明</summary><p id="routeNotice">方向键 / WASD 移动，E 或“看”交互。盆中的是兰；玉兰不是花房盆栽，也不直接指认书斋。作业院是游戏增设，下一幕借当代导览游线作空间剪接，不代表清末门路或真实相邻门洞；不经过现状“又一村”圆门。兰谱与画谱为可选美学支线。</p></details>
+  <div id="drawingShade" class="drawing-shade" hidden></div>
+  <section id="lanternPuzzle" class="lantern-puzzle" role="dialog" aria-modal="true" aria-labelledby="rainTitle" hidden>
+    <h2 id="rainTitle">雨中抢画</h2>
+    <p>持伞去救兰稿。斜雨会从伞侧打来，X 可短时撑稳伞；淋雨、猫扑各扣 1 HP，一共 3 HP。</p>
+    <div class="rain-visual">
+      <canvas id="rainArena" width="1280" height="720" aria-label="雨中抢画：固定720P画布，先拾起金色画稿，纸伞和两侧短叶提示可避雨位置，猫伏身时地面浮现灰褐猫影，侧移避开其扑向"></canvas>
+      <canvas id="rainAlbum" width="320" height="43" aria-label="兰稿：待拾起"></canvas>
+    </div>
+    <div class="rain-legend" aria-label="挑战图例">
+      <span><i class="rain-light" aria-hidden="true"></i>金色画稿：走近自动拾起，不挡雨</span>
+      <span><i class="rain-gap" aria-hidden="true"></i>纸伞与短叶：可避雨位置提示，不是道具</span>
+      <span><i class="rain-danger" aria-hidden="true"></i>灰青雨线：避开</span>
+      <span style="color:#816347">灰褐猫影：预示扑向，侧移让开</span>
+    </div>
+    <div id="rainHud" class="rain-hud"></div>
+    <div class="rain-actions">
+      <button id="rainAction" type="button">抢回画稿</button><button id="rainPause" type="button" hidden>稍歇 / 暂停</button>
+      <label><input id="rainGentle" type="checkbox"> 雨缓一些</label>
+      <label><input id="rainQuiet" type="checkbox"> 少些动效</label>
+      <label><input id="rainSound" type="checkbox"> 轻音效</label>
+      <div class="rain-pad" aria-label="穿廊触屏控制">
+        <button data-rain-dir="left" aria-label="穿廊向左">←</button><button data-rain-dir="up" aria-label="穿廊向上">↑</button><button data-rain-dir="down" aria-label="穿廊向下">↓</button><button data-rain-dir="right" aria-label="穿廊向右">→</button><button id="rainGuard" type="button">撑稳伞 / X</button>
+      </div>
+    </div>
+    <p id="rainSoundStatus" class="note" role="status" hidden></p>
+    <p id="rainArtStatus" class="note" role="status" hidden></p>
+    <p id="lanternFeedback" role="status" aria-live="polite"></p>
+    <details class="rain-help"><summary>操作与规则 · 方向键走位 / X 护画 / P 暂停</summary>
+    <p class="note">方向键 / WASD 移动；空格 / X 护画 0.6 秒，回气 2 秒；P / Esc 暂停。也可按住方向按钮或拖动画面。普通与缓雨都只有 3 HP，淋雨或被猫扑中都扣 1 HP，第三次受击后失败；受击保护 0.6 秒，同刻猫雨不双扣。缓雨只放缓雨势和猫扑，不增加 HP。先在 4 秒内捡画（缓雨档 6 秒），再护画 18 秒。三段八阵雨、五次猫扑逐渐变难：青绿虚线是雨缝，灰褐猫影预示扑向。猫伏身时锁定位置，猫影只是预告，不扣 HP，也不是多只猫；侧移让开实体猫，不会追着转弯。护画仍挡雨，不挡猫。捡画前没有雨或猫扑；失败是回檐下休息，不伤猫、不改章节生命值。可重试或回院继续寻人。</p>
+    <p class="note">轻音效默认关闭，勾选后有拾画、雨滴、猫蓄势/扑近、护画、受击和结果的短提示；暂停、失焦或回院立即停声。关闭声音也有完整视觉提示。成功首次获得御 +1 和原创兰稿册页，独立练习不记录奖励。</p></details>
+    <button type="button" id="lanternLeave">回到院里</button>
+  </section>
+</main><section id="storyTransition" class="story-transition" role="dialog" aria-modal="true" aria-labelledby="transitionTitle" hidden><img id="transitionImage" src="../assets/scene25d/liuyuan-east-hall-magnolia-court-study-v1.png" alt="" aria-hidden="true"><div class="transition-copy"><h2 id="transitionTitle">循着“笔树”</h2><p id="transitionWords"></p><button id="transitionContinue" type="button">继续寻人 · Enter / E</button></div></section><script src="dist/liuyuan-flower.js?v=41"></script></body>
+</html>

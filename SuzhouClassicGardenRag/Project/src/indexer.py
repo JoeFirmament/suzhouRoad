@@ -85,6 +85,7 @@ def _index_texts(
     from llama_index.embeddings.huggingface import HuggingFaceEmbedding
     from llama_index.vector_stores.qdrant import QdrantVectorStore
     from llama_index.core import Document as LIDocument
+    from huggingface_hub.constants import HF_HUB_CACHE
     from src.sparse import encode_sparse
 
     qdrant_path = Path(qdrant_cfg["path"])
@@ -94,6 +95,10 @@ def _index_texts(
         model_name=embedding_cfg["model_name"],
         device=embedding_cfg.get("device", "cpu"),
         embed_batch_size=embedding_cfg.get("batch_size", 8),
+        # LlamaIndex 默认改用自己的缓存目录；离线模式下该目录为空时，
+        # transformers 4.57 会把缺失的权重解析成 None 并在加载时报错。
+        # 显式复用 Hugging Face 缓存，与 MinerU 下载模型的位置保持一致。
+        cache_folder=HF_HUB_CACHE,
         trust_remote_code=True,
     )
 

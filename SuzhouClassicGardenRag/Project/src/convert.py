@@ -111,6 +111,12 @@ def _save_hash_db(hash_db_path: Path, db: dict):
         json.dump(db, f, indent=2, ensure_ascii=False)
 
 
+def _conversion_output_exists(filepath: Path, converted_dir: Path) -> bool:
+    """确认源文件对应的 Markdown 转换产物仍然存在。"""
+    output_dir = converted_dir / filepath.stem
+    return output_dir.is_dir() and any(output_dir.rglob("*.md"))
+
+
 def _find_files(resource_dir: Path) -> dict:
     """
     扫描 Resource 目录，将文件按类型分组。
@@ -176,13 +182,18 @@ def convert_all(incremental: bool = True):
         print("[提示] Resource 目录下没有可转换的文件。")
         return [], []
 
-    # 过滤 MinerU 文件：跳过已转换且哈希未变的
+    # 过滤 MinerU 文件：只有“成功记录、哈希未变、产物存在”才跳过。
     pending_mineru = []
     skipped_mineru = []
     for fp in all_mineru_files:
         fhash = _file_hash(fp)
         key = fp.name
-        if incremental and key in hash_db and hash_db[key] == fhash:
+        already_converted = (
+            incremental
+            and hash_db.get(key) == fhash
+            and _conversion_output_exists(fp, converted_dir)
+        )
+        if already_converted:
             skipped_mineru.append(fp)
         else:
             pending_mineru.append((fp, fhash))
@@ -198,7 +209,12 @@ def convert_all(incremental: bool = True):
     for fp in all_epub_files:
         fhash = _file_hash(fp)
         key = fp.name
-        if incremental and key in hash_db and hash_db[key] == fhash:
+        already_converted = (
+            incremental
+            and hash_db.get(key) == fhash
+            and _conversion_output_exists(fp, converted_dir)
+        )
+        if already_converted:
             skipped_epub.append(fp)
         else:
             pending_epub.append((fp, fhash))
@@ -283,6 +299,14 @@ def convert_all(incremental: bool = True):
             paths = [p for p in pp.split(":") if p and vendor_prefix not in p]
             clean_env["PYTHONPATH"] = ":".join(paths)
 
+            # MinerU 默认只等待单个任务 3600 秒。大体量扫描 PDF 经常需要
+            # 超过一小时，因此允许在 config.yaml 中提高上限；用户显式设置
+            # 环境变量时仍优先采用用户值。
+            task_timeout = mineru_cfg.get("task_timeout_seconds", 21600)
+            clean_env.setdefault(
+                "MINERU_TASK_RESULT_TIMEOUT_SECONDS", str(task_timeout)
+            )
+
             # 用 Popen 以便能在运行时终止
             proc = subprocess.Popen(cmd, env=clean_env)
 
@@ -334,8 +358,7 @@ def convert_all(incremental: bool = True):
         print(f"\n   ❌ 失败: {len(failed_files)} 个")
         for f in failed_files:
             print(f"       {f}")
-        print(f"\n   💡 失败的文件已记录，下次运行会自动跳过。")
-        print(f"      如需重试，请删除 data/converted_hashes.json 中对应的条目后再次运行。")
+        print(f"\n   💡 失败文件不会写入成功记录，下次运行会自动重试。")
     if not converted_files and not failed_files and not skipped_files:
         print("   没有需要处理的文件。")
     print()

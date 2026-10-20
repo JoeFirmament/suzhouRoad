@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>姑苏九园 · 场景几何编辑器</title>
+  <link rel="stylesheet" href="geometry-editor.css">
+</head>
+<body>
+<main class="editor-shell">
+  <header class="editor-header">
+    <div>
+      <p>《姑苏九园》制作工具</p>
+      <h1 id="editorTitle">场景几何编辑器</h1>
+    </div>
+    <nav><a id="previewLink" href="home.html?debug=geometry&amp;draft=1">返回府学 · 预览草稿</a></nav>
+  </header>
+
+  <aside class="editor-panel">
+    <section>
+      <h2>编辑目标</h2>
+      <label>场景底图<select id="sceneSelect"></select></label>
+      <small>按园林分组；切换场景会先保存当前浏览器草稿。标有“当前草稿”的试玩链接会载入 Tile 和物件轮廓；其余底图先在编辑器内核对并导出 JSON。</small>
+      <p class="coord" id="sceneNote">—</p>
+      <label>编辑层
+        <select id="editLayer">
+          <option value="shape">精细轮廓</option>
+          <option value="tile">大片 Tile 网格</option>
+          <option value="story">剧本元素 / 触发点</option>
+          <option value="route">通路骨架 / 门洞</option>
+          <option value="actor">人物比例 / 脚点</option>
+        </select>
+      </label>
+      <div id="shapeControls">
+        <label>物件<select id="objectSelect"></select></label>
+        <label>新物件 ID
+          <input id="newObjectId" type="text" inputmode="latin" placeholder="例如 tree-east">
+          <small>只使用小写字母、数字和连字符；每件物体拥有自己的落地线。</small>
+        </label>
+        <div class="button-row">
+          <button id="newObject" type="button">新建空物件</button>
+          <button id="splitToObject" type="button">当前轮廓拆出</button>
+        </div>
+        <label>几何类型
+          <select id="geometryType">
+            <option value="collider">碰撞体</option>
+            <option value="occluder">遮挡轮廓</option>
+            <option value="effect">特效区域</option>
+            <option value="hole">特效扣除区</option>
+          </select>
+        </label>
+        <label>轮廓<select id="shapeSelect"></select></label>
+        <label id="depthField">落地线 Y<input id="depthInput" type="number" min="0" max="416" step="1">
+          <small>人物脚底在黄线后方时被物件遮住；同一物件的全部青色轮廓共用这条线。</small>
+        </label>
+        <div class="button-row">
+          <button id="newShape" type="button">新建轮廓</button>
+          <button id="deleteShape" class="danger" type="button">删除轮廓</button>
+        </div>
+        <div class="button-row">
+          <button id="addPoint" type="button" aria-pressed="false">添加点</button>
+          <button id="deletePoint" class="danger" type="button">删除选中点</button>
+        </div>
+      </div>
+      <div id="tileControls" hidden>
+        <label>网格区域<select id="tileRegionSelect"></select></label>
+        <label>区域类型<select id="tileTypeSelect"></select></label>
+        <p class="coord" id="tileMetrics">—</p>
+        <div class="button-row">
+          <button id="newTileRegion" type="button">新建区域</button>
+          <button id="deleteTileRegion" class="danger" type="button">删除区域</button>
+        </div>
+      </div>
+      <div id="storyControls" hidden>
+        <label>剧本锚点<select id="storyAnchorSelect"></select></label>
+        <label>短名<input id="storyAnchorLabel" type="text" maxlength="24"></label>
+        <label>类型<select id="storyAnchorKind">
+          <option value="interaction">绿色 · 玩家交互</option>
+          <option value="trigger">黄色 · 场景触发</option>
+          <option value="npc">紫色 · 人物活动</option>
+          <option value="visual">灰色 · 只供观看</option>
+          <option value="boundary">红色 · 禁行边界</option>
+        </select></label>
+        <label>剧本场次<input id="storyAnchorScript" type="text" placeholder="CH7-04"></label>
+        <label>制作说明<input id="storyAnchorNote" type="text"></label>
+        <p class="coord" id="storyAnchorCoords">—</p>
+        <div class="button-row">
+          <button id="newStoryAnchor" type="button">新增锚点</button>
+          <button id="deleteStoryAnchor" class="danger" type="button">删除锚点</button>
+        </div>
+        <small>拖动画布上的圆点改位置。灰色仅是视觉伏笔，不应接交互。</small>
+      </div>
+      <div id="routeControls" hidden>
+        <p class="coord">虚线是候选路线。按人物脚底盒每 4px 检查直线段；转弯请增加路点，碰撞通过仍须贴图与实走复核。</p>
+        <label>路线节点<select id="routeNodeSelect"></select></label>
+        <label>节点名称<input id="routeNodeLabel" type="text" maxlength="24"></label>
+        <label>节点类型<select id="routeNodeKind">
+          <option value="entry">入口</option><option value="portal">门洞</option>
+          <option value="waypoint">途中</option><option value="goal">剧情抵达点</option>
+        </select></label>
+        <label>路线层高（0 地面 / 1+ 上层）<input id="routeNodeLevel" type="number" min="0" max="4" step="1"></label>
+        <label>对应剧本锚点<select id="routeNodeAnchor"></select></label>
+        <label>核对说明<input id="routeNodeNote" type="text"></label>
+        <div class="button-row"><button id="newRouteNode" type="button">新增节点</button><button id="deleteRouteNode" class="danger" type="button">删除节点</button></div>
+        <label>路线连线<select id="routeEdgeSelect"></select></label>
+        <label>连线状态<select id="routeEdgeState">
+          <option value="candidate">候选 · 未实走</option>
+          <option value="confirmed">确认 · 已核门路</option>
+          <option value="blocked">禁行 · 隔墙/关门</option>
+        </select></label>
+        <label>连接方式<select id="routeEdgeVia">
+          <option value="walk">平层步行</option><option value="stairs">楼梯 / 上山径</option>
+          <option value="bridge">桥面</option>
+        </select></label>
+        <label>连线说明<input id="routeEdgeNote" type="text"></label>
+        <label>新增连线起点<select id="routeEdgeFrom"></select></label>
+        <label>新增连线终点<select id="routeEdgeTo"></select></label>
+        <div class="button-row"><button id="newRouteEdge" type="button">连接两点</button><button id="deleteRouteEdge" class="danger" type="button">删除连线</button></div>
+        <p class="status" id="routeAudit">—</p>
+      </div>
+      <div id="actorControls" hidden>
+        <label>人物可见身高比例 <input id="actorScaleSlider" type="range" min="40" max="250" step="5" value="100"></label>
+        <label>比例（%）<input id="actorScaleInput" type="number" min="40" max="250" step="5" value="100"></label>
+        <p class="coord" id="actorScaleReadout">—</p>
+        <button id="actorScaleReset" type="button">恢复本幕 100%</button>
+        <small>点击或拖动画布中的人物，移到门前、台阶或廊下对比。留园章同时显示世界身高与正式试玩镜头预计屏幕身高；编辑器画布缩放不是游戏镜头缩放。这里调整的是精灵可见大小，不改变鞋底脚点、碰撞盒或画面缩放；保存草稿后从右上角预览。</small>
+      </div>
+    </section>
+
+    <section>
+      <h2>府学标准 · 本幕分层</h2>
+      <ul id="sceneReadiness" class="production-list" aria-live="polite"></ul>
+      <p id="nextCalibrationStep" class="coord">—</p>
+      <small>有数据只代表可校准，不代表史实、画面和键盘／触屏已经验收。</small>
+    </section>
+
+    <section>
+      <details class="evidence-card">
+        <summary>本幕考据卡 · 已知与演绎</summary>
+        <p id="evidencePeriod" class="coord">—</p>
+        <h3>可据以定位</h3><ul id="evidenceFacts"></ul>
+        <h3>为游戏演绎</h3><ul id="evidenceInferences"></ul>
+        <h3>制作红线</h3><ul id="evidenceRedLines"></ul>
+        <h3>来源</h3><ul id="evidenceSources"></ul>
+      </details>
+    </section>
+
+    <section id="researchSection" hidden>
+      <details class="evidence-card">
+        <summary>本地 RAG 候选 · 仅供制作核查</summary>
+        <p class="coord">这些是检索定位线索，不是已核史实；书中原图和文字不会直接进入游戏。</p>
+        <ul id="researchCandidates"></ul>
+      </details>
+    </section>
+
+    <section>
+      <h2>精度与显示</h2>
+      <label>画布缩放
+        <select id="zoomSelect">
+          <option value="1">100%</option>
+          <option value="1.5">150%</option>
+          <option value="2" selected>200%</option>
+          <option value="3">300%</option>
+        </select>
+      </label>
+      <label>坐标吸附
+        <select id="snapSelect">
+          <option value="1">1 px</option>
+          <option value="2" selected>2 px</option>
+          <option value="4">4 px</option>
+          <option value="8">8 px</option>
+        </select>
+      </label>
+      <label class="check"><input id="showTiles" type="checkbox">显示 Tile 粗碰撞</label>
+      <label class="check"><input id="showAll" type="checkbox" checked>显示其他物件</label>
+      <p class="coord" id="coordReadout">世界坐标 x — · y —</p>
+    </section>
+
+    <section>
+      <h2>操作</h2>
+      <ul class="help">
+        <li>不同落地点必须拆成不同物件</li>
+        <li>Tile 模式：拖内部移动，拖四角缩放</li>
+        <li>剧本元素模式：选择锚点并拖动；点选可看场次和说明</li>
+        <li>通路模式：拖动节点；点选连线改状态；禁行线不计入可达性</li>
+        <li>“添加点”后点击画布：在最近边上插点</li>
+        <li>拖拽圆点：移动一个顶点</li>
+        <li>拖拽边线：一起移动这条边的两点</li>
+        <li>拖拽多边形内部：整体移动轮廓</li>
+        <li>Shift + 点击边：插入顶点</li>
+        <li>右键圆点：删除顶点</li>
+        <li>拖拽黄色线：调整落地深度</li>
+        <li>凹形碰撞：拆成多个凸轮廓</li>
+      </ul>
+      <div class="button-row">
+        <button id="undoButton" type="button">撤销</button>
+        <button id="redoButton" type="button">重做</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>保存与交接</h2>
+      <div class="button-stack">
+        <button id="commitLatest" class="primary" type="button">确认保存为最新版本</button>
+        <button id="saveDraft" type="button">保存浏览器草稿</button>
+        <button id="copyJson" type="button">复制 JSON</button>
+        <button id="downloadJson" type="button">下载 JSON 文件</button>
+        <label class="file-button">导入 JSON<input id="importJson" type="file" accept="application/json,.json"></label>
+        <button id="resetData" class="danger" type="button">恢复代码中的版本</button>
+      </div>
+      <p class="status" id="statusText" aria-live="polite">尚未修改</p>
+    </section>
+  </aside>
+
+  <section class="workspace">
+    <div class="legend" aria-label="几何颜色图例">
+      <span class="collision">红色 · 实体碰撞</span>
+      <span class="occlusion">青色 · 遮挡轮廓</span>
+      <span class="depth">黄色 · 落地深度线</span>
+      <span class="effect">蓝色 · 动态特效区域</span>
+      <span class="hole">橙色 · 特效扣除区</span>
+      <span class="interaction">绿色 · 交互锚点</span>
+      <span class="story-trigger">黄色 · 场次触发</span>
+      <span class="story-npc">紫色 · 人物活动</span>
+      <span class="story-visual">灰色 · 视觉伏笔</span>
+      <span class="story-boundary">红色 · 禁行边界</span>
+      <span class="route-candidate">虚黄 · 待核通路</span>
+      <span class="route-confirmed">实绿 · 已核通路</span>
+      <span class="route-blocked">红叉 · 禁行连接</span>
+      <span class="route-blocked">红点 · 当前路线受阻脚点</span>
+      <span class="actor">洋红 · 人物脚底盒（比例层中精灵可拖动）</span>
+    </div>
+    <div class="canvas-scroll" id="canvasScroll">
+      <canvas id="geometryCanvas" width="736" height="416" aria-label="场景几何编辑画布"></canvas>
+    </div>
+    <footer>
+      <strong id="selectionLabel">未选择轮廓</strong>
+      <span id="worldSizeLabel">所有数值均为 736 × 416 世界像素坐标；相机坐标不参与编辑。</span>
+    </footer>
+  </section>
+</main>
+<script src="dist/geometry-editor.js?v=61"></script>
+</body>
+</html>

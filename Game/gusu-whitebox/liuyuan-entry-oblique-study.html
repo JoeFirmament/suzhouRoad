@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>留园入口 · 斜俯视首镜头校位</title><link rel="stylesheet" href="pixel-theme.css">
+  <style>
+    body{margin:0;background:#222a29;color:#e5e8df;font:15px/1.55 "PingFang SC","Microsoft YaHei",sans-serif}
+    main{max-width:1540px;margin:auto;padding:12px}header,.hud{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    h1{margin:5px 0 9px;font-size:1.25rem;font-weight:600}a{color:#c6d8ca}.badge{color:#bdc8b2;font-size:.78rem;letter-spacing:.12em}
+    .stage{border:3px solid #66746a;box-shadow:0 12px 38px #101713b0;overflow:hidden}canvas{display:block;width:100%;height:auto;image-rendering:pixelated}
+    .hud{padding:11px 1px}#status{min-height:2em;max-width:800px}label{white-space:nowrap}
+    button{min-height:42px;padding:5px 12px;background:#d9dacc;border:1px solid #a7afa2;color:#26342c;font:inherit;border-radius:2px}
+    .controls{display:grid;grid-template-columns:repeat(3,46px);gap:5px;width:max-content;touch-action:none}.controls button{padding:0}
+    .controls button:first-child{grid-column:2}.controls button:nth-child(2){grid-column:1;grid-row:2}.controls button:nth-child(3){grid-column:2;grid-row:2}.controls button:nth-child(4){grid-column:3;grid-row:2}.controls button:nth-child(5){grid-column:3;grid-row:3}
+    .footnote{margin:10px 0;color:#bcc8ba;font-size:.84rem}
+  </style>
+</head>
+<body><main>
+  <header><div><div class="badge">CH3 入口首镜头 · 美术与几何校位；不写章节状态</div><h1>门外一段石路</h1></div>
+    <nav><a href="liuyuan-style-calibration.html">画风并排 ↗</a> · <a href="geometry-editor.html?scene=liuyuan-entry-oblique-shot-study-v1">在统一编辑器调整轮廓 ↗</a></nav></header>
+  <div class="stage"><canvas id="scene" width="1536" height="1024" aria-label="斜俯视留园入口首镜头候选；方向键或 WASD 行走，E 观察"></canvas></div>
+  <div class="hud"><span id="status" role="status" aria-live="polite">从门外踏上石路，先试门槛与前景屋檐。</span><label><input id="showGeometry" type="checkbox"> 显示可走网格、碰撞、遮挡和脚点</label><span id="coords" hidden></span><button id="restart" type="button">回到门外</button><button id="look" type="button">观察</button></div>
+  <div class="controls" aria-label="触屏方向控制"><button data-dir="up" aria-label="向上">↑</button><button data-dir="left" aria-label="向左">←</button><button data-dir="down" aria-label="向下">↓</button><button data-dir="right" aria-label="向右">→</button><button id="touchLook" aria-label="观察">看</button></div>
+  <p class="footnote">这幅图只校准门外—门槛—门内转折的镜头与脚点，不等于完整入口关卡。门墙、树位、铺地均是游戏候选，尚非清末实景复原。保存浏览器草稿后可从统一编辑器预览；原 CH3 入口和旧草稿不会被改写。</p>
+</main><script src="dist/liuyuan-entry-oblique-study.js?v=1"></script></body>
+</html>

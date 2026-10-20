@@ -1,0 +1,92 @@
+/* 姑苏九园统一像素视觉层：必须最后加载，以覆盖各页面的临时白模样式。 */
+:root {
+  --px-unit: 4px;
+  --px-ink: #171512;
+  --px-ink-mid: #2b2824;
+  --px-paper: #f2ead6;
+  --px-paper-dim: #a39d90;
+  --px-gold: #c8a04b;
+  --px-zhu: #8f271d;
+  --px-water: #6fa89e;
+  --px-qing: #2a514c;
+  --px-line: rgba(242, 234, 214, .2);
+
+  /* 将旧页面变量收束到唯一色源 palette.json。 */
+  --ink: var(--px-ink);
+  --ink-2: var(--px-ink-mid);
+  --panel: var(--px-ink-mid);
+  --paper: var(--px-paper);
+  --paper-dim: var(--px-paper-dim);
+  --muted: var(--px-paper-dim);
+  --gold: var(--px-gold);
+  --cinnabar: var(--px-zhu);
+  --zhu: var(--px-zhu);
+  --water: var(--px-water);
+  --line: var(--px-line);
+}
+
+html { background: var(--px-ink); image-rendering: pixelated; }
+body { background-color: var(--px-ink); }
+
+/* 极轻的 4px 像素网纹把地图、菜单和对话放进同一套画面语言。 */
+body::after {
+  content: "";
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  pointer-events: none;
+  opacity: .035;
+  background-image:
+    linear-gradient(rgba(242,234,214,.36) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242,234,214,.28) 1px, transparent 1px);
+  background-size: var(--px-unit) var(--px-unit);
+}
+
+img, canvas, .title-map, .opening-image, .opening-animation {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+button, a, input, select, textarea { border-radius: 0 !important; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--px-gold);
+  outline-offset: 2px;
+}
+
+/* 中文仍用清晰宋体；边框、位移和阴影承担像素感。 */
+h1, h2, h3, blockquote { text-rendering: geometricPrecision; }
+.title-copy h1 { text-shadow: var(--px-unit) var(--px-unit) 0 rgba(23,21,18,.72); }
+
+.title-menu button,
+.title-menu a,
+.design-link,
+.enter-scene,
+.story-controls button,
+.story-actions a,
+.story-actions button,
+.confirm-layer button,
+.home-zone,
+.character-grid article,
+.arts-list li {
+  box-shadow: var(--px-unit) var(--px-unit) 0 rgba(23,21,18,.38);
+}
+
+.story-layer { backdrop-filter: none !important; }
+.story-panel,
+.confirm-layer article,
+.hero-stage {
+  box-shadow: calc(var(--px-unit) * 2) calc(var(--px-unit) * 2) 0 rgba(23,21,18,.58) !important;
+}
+.home-zone { box-shadow: var(--px-unit) var(--px-unit) 0 rgba(43,40,36,.22) !important; }
+.map-board::after,
+.campus-board::after { box-shadow: inset 0 0 0 var(--px-unit) rgba(23,21,18,.14) !important; }
+
+.scene-toast { transition: opacity 120ms steps(2,end), translate 120ms steps(2,end) !important; }
+.opening-image { transition: background-position 1400ms steps(10,end), filter 400ms steps(4,end) !important; }
+
+::selection { background: var(--px-zhu); color: var(--px-paper); }
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-toast, .opening-image { transition: none !important; }
+}

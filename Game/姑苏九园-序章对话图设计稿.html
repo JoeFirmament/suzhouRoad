@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>姑苏九园 · 序章对话图《隔水一声》v0.8</title>
+<style>
+:root{
+  --s:3; /* 画布整数倍率 */
+  --ink:#171512; --ink2:#2b2824; --paper:#f2ead6; --paledim:#a39d90;
+  --gold:#c8a04b; --zhu:#8f271d; --water:#6fa89e; --qing:#2a514c;
+}
+*{box-sizing:border-box;margin:0;padding:0;border-radius:0!important;}
+html{background:var(--ink);}
+body{
+  background:var(--ink); color:var(--paper);
+  font-family:"Songti SC","Noto Serif SC","SimSun",serif;
+  padding:24px 28px 64px; max-width:1760px; margin:0 auto;
+  line-height:1.6;
+}
+body::after{
+  content:""; position:fixed; inset:0; z-index:100; pointer-events:none; opacity:.035;
+  background-image:
+    linear-gradient(rgba(242,234,214,.36) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242,234,214,.28) 1px, transparent 1px);
+  background-size:4px 4px;
+}
+
+/* ============ 头部 ============ */
+header{border:1px solid rgba(242,234,214,.25); padding:16px 20px; margin-bottom:24px;
+  box-shadow:4px 4px 0 rgba(23,21,18,.38); background:var(--ink2);}
+header h1{font-size:22px; letter-spacing:.08em; font-weight:600;}
+header h1 em{font-style:normal; color:var(--gold);}
+header .sub{color:var(--paledim); font-size:13px; margin-top:6px;}
+header .refs{font-size:12px; color:var(--paledim); margin-top:10px; border-top:1px solid rgba(242,234,214,.15); padding-top:10px;}
+.controls{margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+.controls button{
+  font-family:inherit; font-size:12px; letter-spacing:.1em; cursor:pointer;
+  background:var(--ink); color:var(--paledim); border:1px solid rgba(242,234,214,.3);
+  padding:6px 12px;
+}
+.controls button.on{background:var(--zhu); color:var(--paper); border-color:var(--gold);}
+.controls .sep{width:1px; height:18px; background:rgba(242,234,214,.25); margin:0 4px;}
+.controls .hint{font-size:12px; color:var(--paledim);}
+
+/* ============ 章节标题 ============ */
+h2.sec{
+  font-size:15px; letter-spacing:.24em; color:var(--gold); font-weight:600;
+  margin:36px 0 4px; padding-left:12px; border-left:3px solid var(--zhu);
+}
+p.sec-note{color:var(--paledim); font-size:12px; margin:0 0 14px 15px;}
+
+/* ============ 对话图卡片 ============ */
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(540px,1fr)); gap:24px;}
+article.frame{background:var(--ink2); border:1px solid rgba(242,234,214,.2);
+  box-shadow:4px 4px 0 rgba(23,21,18,.38); padding:12px;}
+.stage{position:relative; width:calc(160px * var(--s)); max-width:100%;
+  outline:2px solid var(--ink); outline-offset:0;}
+.stage canvas{
+  display:block; width:calc(160px * var(--s)); height:calc(90px * var(--s));
+  image-rendering:pixelated; background:#171512;
+}
+
+/* 题签（地点时间） */
+.slip{
+  position:absolute; top:6%; left:50%; transform:translateX(-50%);
+  background:var(--paper); color:var(--ink); font-size:11px; letter-spacing:.3em;
+  padding:3px 10px 3px 13px; border:1px solid var(--ink); box-shadow:2px 2px 0 rgba(23,21,18,.5);
+  white-space:nowrap;
+}
+
+/* 对话框（游戏 UI 层：原生分辨率，4px 网格） */
+.dbox{
+  position:absolute; left:4%; right:4%; bottom:4%;
+  background:rgba(23,21,18,.92); border:1px solid var(--paper);
+  box-shadow:4px 4px 0 rgba(23,21,18,.55);
+  padding:8px 12px 10px; min-height:64px;
+}
+.dbox::before{content:""; position:absolute; inset:2px; border:1px solid rgba(242,234,214,.25); pointer-events:none;}
+.name{
+  display:inline-block; background:var(--paper); color:var(--ink);
+  font-size:12px; letter-spacing:.2em; padding:1px 8px 1px 10px;
+  border-left:3px solid var(--gold); margin-bottom:4px;
+  box-shadow:2px 2px 0 rgba(23,21,18,.6);
+}
+.name.gu{border-left-color:var(--zhu);}
+.line{font-size:14px; color:var(--paper); letter-spacing:.04em;}
+.line .act{color:var(--paledim); font-size:12.5px;}
+.line .cont{display:block; color:var(--paledim); font-size:12.5px; margin-top:2px;}
+.cue{
+  position:absolute; right:8px; bottom:4px; width:0; height:0;
+  border-left:5px solid transparent; border-right:5px solid transparent;
+  border-top:7px solid var(--gold);
+  animation:cue 1s steps(2,end) infinite;
+}
+@keyframes cue{50%{opacity:.15;}}
+
+/* 选项 */
+.opts{margin-top:6px; display:flex; flex-direction:column; gap:4px;}
+.opt{
+  font-size:13px; padding:4px 10px; border:1px solid rgba(242,234,214,.35);
+  color:var(--paledim); background:var(--ink);
+}
+.opt.sel{
+  background:var(--zhu); color:var(--paper); border-color:var(--gold);
+  box-shadow:2px 2px 0 rgba(23,21,18,.6);
+}
+.opt.sel::before{content:"▸ "; color:var(--gold);}
+
+/* 声音字幕（无障碍字幕样式：画面上方居中，无框） */
+.vcap{
+  position:absolute; top:14%; left:50%; transform:translateX(-50%);
+  color:var(--paledim); font-size:12.5px; letter-spacing:.12em; white-space:nowrap;
+  text-shadow:1px 1px 0 rgba(23,21,18,.8);
+}
+
+/* 观察文字样式 */
+.obsbox{
+  position:absolute; left:4%; right:4%; bottom:4%;
+  border:1px solid var(--paledim); background:rgba(23,21,18,.78);
+  padding:8px 12px; font-size:13px; color:var(--paper); letter-spacing:.06em;
+}
+.obsbox::before{content:"观察 "; color:var(--paledim); font-size:10px; letter-spacing:.3em; display:block; margin-bottom:2px;}
+
+/* 系统文字样式 */
+.sysline{
+  position:absolute; left:4%; right:4%; bottom:8%;
+  text-align:center; font-size:13px; letter-spacing:.2em; color:var(--paper);
+  background:rgba(23,21,18,.65); padding:4px 0;
+}
+
+/* 卡片元信息 */
+footer.meta{margin-top:10px; border-top:1px solid rgba(242,234,214,.15); padding-top:8px;}
+footer.meta .row{display:flex; gap:8px; flex-wrap:wrap; align-items:baseline;}
+.fid{font-size:12px; color:var(--paper); background:var(--zhu); padding:0 6px; letter-spacing:.1em;}
+.fscene{font-size:13px; color:var(--gold); letter-spacing:.1em;}
+.fstate{font-size:11px; color:var(--paledim); font-family:"SF Mono",Menlo,monospace;}
+.ftype{font-size:11px; color:var(--paledim); border:1px solid rgba(242,234,214,.25); padding:0 6px;}
+ul.notes{margin:6px 0 0 0; padding-left:0; list-style:none;}
+ul.notes li{font-size:12px; color:var(--paledim); padding-left:14px; position:relative;}
+ul.notes li::before{content:"·"; position:absolute; left:2px; color:var(--gold);}
+ul.notes li b{color:var(--paper); font-weight:600;}
+
+/* ============ 规范区 ============ */
+.spec{display:grid; grid-template-columns:repeat(auto-fill,minmax(400px,1fr)); gap:24px;}
+.spec .card{background:var(--ink2); border:1px solid rgba(242,234,214,.2);
+  box-shadow:4px 4px 0 rgba(23,21,18,.38); padding:16px 18px;}
+.spec h3{font-size:14px; color:var(--gold); letter-spacing:.18em; margin-bottom:12px; font-weight:600;}
+.spec .demo{position:relative; height:150px; background:#171512; outline:1px solid rgba(242,234,214,.2); margin-bottom:10px;}
+.callouts{list-style:none; font-size:12px; color:var(--paledim);}
+.callouts li{padding:2px 0;}
+.callouts b{color:var(--paper);}
+.rules{display:flex; flex-wrap:wrap; gap:8px; list-style:none;}
+.rules li{font-size:12px; border:1px solid rgba(242,234,214,.3); color:var(--paper); padding:3px 10px; letter-spacing:.08em;}
+.rules li.warn{background:var(--zhu); border-color:var(--zhu);}
+.swatches{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
+.sw{display:flex; align-items:center; gap:5px; font-size:11px; color:var(--paledim); font-family:"SF Mono",Menlo,monospace;}
+.sw i{width:14px; height:14px; display:inline-block; border:1px solid rgba(242,234,214,.4);}
+.tbl{width:100%; border-collapse:collapse; font-size:12px; margin-top:4px;}
+.tbl th,.tbl td{border:1px solid rgba(242,234,214,.2); padding:5px 8px; text-align:left; color:var(--paledim);}
+.tbl th{color:var(--gold); font-weight:600; letter-spacing:.1em;}
+.tbl td b{color:var(--paper);}
+.tbl td.miss{color:var(--gold); font-weight:600;}
+
+/* ============ 人物声纹表 ============ */
+.voice{background:var(--ink2); border:1px solid rgba(242,234,214,.2);
+  box-shadow:4px 4px 0 rgba(23,21,18,.38); padding:16px 18px;}
+.voice h3{font-size:14px; color:var(--gold); letter-spacing:.16em; font-weight:600; margin-bottom:4px;}
+.voice h3 em{font-style:normal; color:var(--paper); font-size:12px; letter-spacing:.06em; margin-left:8px;}
+.voice .tagline{font-size:12px; color:var(--paledim); margin:2px 0 10px;}
+.voice dl{font-size:12px; color:var(--paledim); margin:0 0 10px;}
+.voice dt{color:var(--paper); float:left; margin-right:6px; letter-spacing:.1em;}
+.voice dd{margin:0 0 3px; padding-left:4.2em;}
+.qline{border-left:3px solid var(--gold); padding:5px 0 5px 10px; margin:7px 0; font-size:13.5px; color:var(--paper);}
+.qline span.n{display:block; color:var(--gold); font-size:10.5px; letter-spacing:.2em; margin-bottom:2px;}
+.qline.ban{border-left-color:var(--gold); color:var(--paledim);}
+.qline.ban span.n{color:var(--paledim);}
+.voice .who{display:inline-block; background:var(--zhu); color:var(--paper); font-size:11px;
+  letter-spacing:.16em; padding:1px 8px; margin-bottom:6px;}
+
+/* ============ 打印 ============ */
+@media print{
+  body{background:#fff; color:#171512; padding:0;}
+  body::after{display:none;}
+  header,.stage,.dbox,.opt{box-shadow:none!important;}
+  .controls{display:none;}
+  .grid{grid-template-columns:1fr 1fr; gap:12px;}
+  article.frame{break-inside:avoid; background:#fff; border-color:#999;}
+  footer.meta,.name,.line,.fid{color:#171512;}
+  ul.notes li{color:#555;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>姑苏九园 · 序章对话图 <em>《隔水一声》</em></h1>
+  <div class="sub">v0.8 · 2026-09-30 · 画面 160×90（整数倍缩放）· 对话 UI 为原生分辨率 HTML 层 · 共 18 框（序章 12 + 阿槿书线 6）· 基调：诙谐 · 第五人乔禾（声纹：报数｜来历已定）· 附完成度核对表 + 糖粥考据注</div>
+  <div class="refs">
+    台词与状态键均引自定案文档，未新写剧情：《连续序章与府学初到流程定案》v1.0（对白原文）·《统一像素视觉系统定案》（色板 / 4px 网格 / 直角 / 硬边）·《故事开篇与核心人物定案》（人物职责）· 色值取自 assets/palette/palette.json。
+  </div>
+  <div class="controls">
+    <button id="btnNotes" class="on">批注 开</button>
+    <button id="btnAnim" class="on">动效 开</button>
+    <span class="sep"></span>
+    <span class="hint">倍率</span>
+    <button data-s="2">×2</button>
+    <button data-s="3" class="on">×3</button>
+    <button data-s="4">×4</button>
+  </div>
+</header>
+
+<!-- ================= 规范 ================= -->
+<h2 class="sec">壹 · 对话框规范（先立规矩，再摆画面）</h2>
+<p class="sec-note">以下 5 条结构贯穿全部 18 框；任何一框不合规即视为白模。</p>
+
+<div class="spec">
+  <div class="card">
+    <h3>对话框解剖</h3>
+    <div class="demo">
+      <div class="dbox" style="position:absolute; left:16px; right:16px; bottom:16px;">
+        <div class="name">沈砚秋</div>
+        <p class="line">唱在水那边，声音却绕到这里。<span class="cue"></span></p>
+      </div>
+    </div>
+    <ul class="callouts">
+      <li><b>① 名字牌</b>：宣纸底 + 焦墨字 + 金棕左条；师长（顾惟清）左条改印泥深红。</li>
+      <li><b>② 台词区</b>：宋体 14px，一框 8–28 字；动作行（看见名帖）用淡墨小字缀于句前。</li>
+      <li><b>③ 继续指示</b>：金棕 ▼，steps(2) 闪烁，不用弹性动画。</li>
+      <li><b>④ 选项区</b>：直角两行；选中 = 印泥深红底 + 金棕边，未选 = 焦墨底淡墨字。</li>
+      <li><b>⑤ 声音字幕</b>：画面上方居中，淡墨 + 细描边，无框无名牌。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>三类文字分工（定案 §6.2）</h3>
+    <div class="demo">
+      <div class="dbox" style="position:absolute; left:16px; right:16px; top:12px; min-height:0; padding-bottom:8px;">
+        <div class="name">沈砚秋</div>
+        <p class="line">先认得回来，再忙着出去。</p>
+      </div>
+      <div class="obsbox" style="position:absolute; left:16px; right:16px; top:76px;">案角有一道被衣袖磨亮的弧。</div>
+      <div class="sysline" style="position:absolute; left:16px; right:16px; bottom:10px;">你把书箱放稳了。</div>
+    </div>
+    <table class="tbl">
+      <tr><th>类型</th><th>用法</th><th>样式</th></tr>
+      <tr><td><b>人物台词</b></td><td>推进关系与眼前行动</td><td>名牌 + 双线框 + ▼</td></tr>
+      <tr><td><b>观察文字</b></td><td>写材质、痕迹，不下结论</td><td>单线框，无名牌无▼</td></tr>
+      <tr><td><b>系统文字</b></td><td>只确认动作结果</td><td>无框，居中一行</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>硬规则（验收清单摘录）</h3>
+    <ul class="rules">
+      <li class="warn">一律直角</li>
+      <li>1–2px 边框</li>
+      <li>4px 网格</li>
+      <li>硬位移阴影</li>
+      <li class="warn">无圆角 / 无模糊 / 无玻璃拟态</li>
+      <li>朱色只点睛</li>
+      <li>一轮对话 ≤ 4 句</li>
+      <li>不替玩家感动</li>
+      <li>无教程弹窗</li>
+    </ul>
+    <h3 style="margin-top:16px;">角色精灵色（母版 PNG 取样）</h3>
+    <div style="font-size:12px;color:var(--paledim);">场景色全部来自 palette.json（32 色，未新增）。以下角色色取样自 scholar / shen 母版，<b style="color:var(--paper)">尚未登记色源</b>，建议并入 palette.json 或另立 sprite.json 后使用：</div>
+    <div class="swatches">
+      <span class="sw"><i style="background:#484040"></i>儒巾 #484040</span>
+      <span class="sw"><i style="background:#f8c8b0"></i>肤色 #f8c8b0</span>
+      <span class="sw"><i style="background:#e8d8c8"></i>米白衫 #e8d8c8</span>
+      <span class="sw"><i style="background:#384840"></i>灰绿缘 #384840</span>
+      <span class="sw"><i style="background:#983020"></i>赭红带 #983020</span>
+      <span class="sw"><i style="background:#687070"></i>沈衫 #687070</span>
+      <span class="sw"><i style="background:#304038"></i>沈衫暗 #304038</span>
+      <span class="sw"><i style="background:#304050"></i>书蓝 #304050</span>
+      <span class="sw"><i style="background:#3d7068"></i>顾衫(青) #3d7068</span>
+      <span class="sw"><i style="background:#a39d90"></i>顾发(灰) #a39d90</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>诙谐基调（v0.3 新增）</h3>
+    <div style="font-size:12px;color:var(--paledim);">笑点只从这三处来，不从"讲笑话"来：</div>
+    <ul class="callouts">
+      <li><b>① 人物反差</b>：沈砚秋嘴快爱断言（"名帖拿倒了"）／阿槿一本正经说行内话／顾惟清寡言到全场只有一句——<b>他不抖包袱就是包袱</b>。</li>
+      <li><b>② 苏州生活梗</b>：桥比路多、门槛比先生高、水送声不送路、纸比人老实、抄错的第三回。</li>
+      <li><b>③ 嘴硬与抬杠</b>：玩家的选项里永远留一个嘴硬的（"我不是迷路，我是在听曲"）。</li>
+    </ul>
+    <h3 style="margin-top:14px;">四条禁令</h3>
+    <ul class="rules">
+      <li class="warn">不用网络热词</li>
+      <li class="warn">不破时代</li>
+      <li>不嘲身体 / 籍贯 / 性别 / 贫富</li>
+      <li>包袱不解释、人物不为自己刚才的话笑</li>
+    </ul>
+    <h3 style="margin-top:14px;">包袱清单（可按框删）</h3>
+    <table class="tbl">
+      <tr><th>框</th><th>梗</th><th>类型</th></tr>
+      <tr><td>D-02</td><td>府学也唱，只是不当着人唱</td><td>官学吐槽</td></tr>
+      <tr><td>D-03</td><td>名帖拿倒了</td><td>冷幽默（呼应"顺着桥看"）</td></tr>
+      <tr><td>D-05</td><td>耳朵拐弯，脚不拐</td><td>俏皮对仗</td></tr>
+      <tr><td>D-06</td><td>路就换一条，跟人一样</td><td>拟人</td></tr>
+      <tr><td>D-07</td><td>门槛比先生高</td><td>实物梗（场景自证）</td></tr>
+      <tr><td>D-08</td><td>水送声，墙也送声，就是不肯送路</td><td>排比反转</td></tr>
+      <tr><td>D-09</td><td>他数纸，比数钱仔细</td><td>守碑人行业梗</td></tr>
+      <tr><td>D-11</td><td>我多半在，也多半没空</td><td>自嘲</td></tr>
+      <tr><td>D-13</td><td>门是都开着，人比门难找</td><td>门房吐槽</td></tr>
+      <tr><td>D-15</td><td>换个人来送，得问三回</td><td>行内人得意</td></tr>
+      <tr><td>D-17</td><td>第三回照着前两回的错抄</td><td>版本学（她的能力方向）</td></tr>
+      <tr><td>D-18</td><td>帘子好，脾气比帘子硬</td><td>行业 + 人物</td></tr>
+    </table>
+    <div style="font-size:12px;color:var(--paledim);margin-top:10px;">
+      <b style="color:var(--paper)">观察文字与系统文字不搞笑</b>（D-16 保留原句）：玩家能笑的只有人物，痕迹与系统提示保持克制，否则笑点会盖住"看"本身。
+    </div>
+  </div>
+</div>
+
+<!-- ================= 对话图 ================= -->
+<h2 class="sec">贰 · 序章对话图 18 框</h2>
+<p class="sec-note">按《隔水一声》时序排列：沿声而行 → 岔路相遇 → 同行 → 府学门槛 → Home 四物件 → 姓名 → 顾惟清 → 阿槿书线（D-13～D-18，台词为本稿新写，待审）。</p>
+
+<div class="grid" id="frames"></div>
+
+<h2 class="sec">叁 · 待办与红线</h2>
+<div class="spec">
+  <div class="card">
+    <h3>本稿待办</h3>    <ul class="notes" style="font-size:13px;">
+      <li><b>✅ 已回写定案 v1.1</b>（2026-09-30）：诙谐基调写入 §6.1 / §6.4，人物声纹表写入 §6.5，声纹验收法 §6.6，声纹 × 六艺映射 §6.7；定案 §3 与 §4 的对白已同步为本稿诙谐版，<b>两份文档现已一致</b>。</li>
+      <li><b>引文待核</b>：顾惟清三段引文分别出《论语·卫灵公》《为政》《学而》，入正文前逐条核校字句；阿槿唱词出《牡丹亭》，曲牌工尺待音乐顾问确认。</li>
+      <li><b>次角声纹未定案</b>：守碑老先生、院门老仆、书肆周先生仅有建议声纹，启用前需先落人物卡与来源卡。</li>
+      <li><b>阿槿外形未定案</b>：本稿为占位设计（双丫髻 + 靛蓝短衫 + 白围裙），定案前不得进正式资产。</li>
+      <li><b>乐桥帘匠补来源卡</b>：乐桥为真实地名有据；"帘匠"行业真实存在，具体店家与传人为虚构——D-18 入正文前需标注史实/演绎边界。</li>
+      <li><b>沈砚秋「束书带」动作帧</b>：D-03 应有专属手臂动作帧，本稿暂用站立帧代替。</li>
+      <li><b>顾惟清立绘</b>：师长形象仅有文字定案（克制寡言），像素稿为首次尝试，待审定。</li>
+      <li><b>场景白模</b>：9 张 160×90 背景为矢量像素直绘，与 gusu-whitebox 场景管线（SCENE_GEOMETRY.md）并轨前仅作构图参考。</li>
+    </ul>
+      <li><b>次角声纹未定案</b>：守碑老先生、院门老仆、书肆周先生仅有建议声纹，启用前需先落人物卡与来源卡。</li>
+      <li><b>阿槿外形未定案</b>：本稿为占位设计（双丫髻 + 靛蓝短衫 + 白围裙），定案前不得进正式资产。</li>
+      <li><b>乐桥帘匠补来源卡</b>：乐桥为真实地名有据；"帘匠"行业真实存在，具体店家与传人为虚构——D-18 入正文前需标注史实/演绎边界。</li>
+      <li><b>沈砚秋「束书带」动作帧</b>：D-03 应有专属手臂动作帧，本稿暂用站立帧代替。</li>
+      <li><b>顾惟清立绘</b>：师长形象仅有文字定案（克制寡言），像素稿为首次尝试，待审定。</li>
+      <li><b>场景白模</b>：9 张 160×90 背景为矢量像素直绘，与 gusu-whitebox 场景管线（SCENE_GEOMETRY.md）并轨前仅作构图参考。</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>红线自查（对照定案）</h3>
+    <ul class="notes" style="font-size:13px;">
+      <li><b>剧情事件与状态键仍依定案</b>（shen-met / home-* / gu-met / ajin-met）；台词已于 v0.3 改为诙谐版，并已于 2026-09-30 回写定案 v1.1 —— <b>两份文档现已逐句一致</b>。</li>
+      <li>序章不讲：地图功能、空谱原因、九园名单、六艺、沧浪亭谜题——本稿无一框越界。</li>
+      <li>沈砚秋先行动后报名：姓名置于 D-11（Home 两物件之后），未提前。</li>
+      <li>阿槿同样不自报家门、不解释书坊与府学的关系，只办事、只留一件小事。</li>
+      <li>笑点全部落在人物与清末生活里：<b>无网络热词、不破时代、不嘲身体与出身</b>；观察文字与系统文字保持不搞笑。</li>
+      <li>NPC 不站桩等待：每框人物均带手上的事（束书、按纸、抱卷、拢绳），不摆"等待对话"姿势。</li>
+      <li>无 UI 教程弹窗、无属性面板、无任务清单——18 框内只有台词 / 观察 / 系统 / 选项四类文字。</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>序章完成度核对（对照定案 v1.1 逐条核）</h3>
+    <table class="tbl" style="font-size:12px;">
+      <tr><th style="width:150px;">定案条目</th><th style="width:96px;">本稿覆盖</th><th>缺口</th></tr>
+      <tr><td>§3.1 幕前（黑屏/檀板/题签）</td><td>D-01</td><td>黑屏两秒与题签淡出的时序未标</td></tr>
+      <tr><td>§3.2 沿声而行</td><td>D-01</td><td>“船过遮视线但曲声不断”简化为静态背景</td></tr>
+      <tr><td>§3.3 岔路相遇</td><td>D-02～D-05</td><td>—</td></tr>
+      <tr><td>§3.4 同行不讲解</td><td>D-06</td><td>—</td></tr>
+      <tr><td>§3.5 府学门槛</td><td>D-07</td><td>—</td></tr>
+      <tr><td class="miss">§4.1 放下书箱</td><td class="miss">缺</td><td class="miss">两句台词无框：「这张案空着，你先用。」「窗纸是新换的，案角却旧。」</td></tr>
+      <tr><td>§4.2 A–D 四物件</td><td>D-11 / D-09 / D-08 / D-10</td><td>—</td></tr>
+      <tr><td>§4.3 报名</td><td>D-11</td><td>—</td></tr>
+      <tr><td>§5 阶段一 顾惟清</td><td>D-12</td><td>半：缺“帮他把书卷放回”的观察—搬放—回应交互</td></tr>
+      <tr><td class="miss">§5 阶段二《蘇城全圖》</td><td>分镜草案</td><td class="miss">7 拍分镜已拟（见柒节），<b>像素帧未画</b>；乔禾在此段出场</td></tr>
+      <tr><td>§5 阶段三 阿槿</td><td>D-13～D-18</td><td>—（本稿新写，待审）</td></tr>
+      <tr><td class="miss">§5 阶段四 空园谱·第一道题</td><td class="miss">整段缺</td><td class="miss">沧浪亭残页 → 打开《九园图》→ 空页。属序章收尾兼第一章起点</td></tr>
+      <tr><td>§9 状态键（12 条）</td><td>9 / 12</td><td>缺 home-orientation-complete / city-map-introduced / nine-gardens-album-introduced / first-lesson-offered；另本稿自造 follow-shen、gate-arrival 尚未回写定案</td></tr>
+      <tr><td>§2 时长控制</td><td>—</td><td>未标（90–120s / 30–45s / 4–7min）</td></tr>
+      <tr><td>§7 昆曲三空间混音</td><td>仅批注</td><td>未落为交付项</td></tr>
+    </table>
+    <div class="notes" style="font-size:12px;">
+      <b style="color:var(--paper)">结论</b>：序章<b>未完成</b>。18 框覆盖 §3 全段 + §4 主体 + §5 阶段一（半）/ 阶段三；<b>缺 §4.1 书箱框、§5 阶段二地图整段、§5 阶段四空园谱整段</b>。<br>
+      <b style="color:var(--paper)">推进顺序</b>：阶段二（地图）在定案里位于阿槿之前，本稿 D-12 → D-13 之间被跳过——应先补地图段，再动沧浪亭。
+    </div>
+  </div>
+</div>
+
+<h2 class="sec">肆 · 人物声纹表（谁怎么说话）</h2>
+<p class="sec-note">一条原则：<b>性格不靠形容词交代，靠他把同一件事说成什么样。</b>四人四声，互不串味。本表是后续所有章节写对白的依据。</p>
+
+<div class="spec">
+  <div class="voice">
+    <span class="who">顾惟清 · 府学师长</span>
+    <h3>引经据典 <em>一句经典砸下来，转身就走</em></h3>
+    <div class="tagline">全场话最少的人，也是最"有文化"的人——他的笑点来自反差：引圣人言，办杂事。</div>
+    <dl>
+      <dt>性格</dt><dd>克制、寡言、问题比答案多；相信典籍与碑刻，也慢慢承认学生的现场经验。</dd>
+      <dt>声线</dt><dd>一框一句，句长 6–14 字；引文在前，实用的话在后，从不解释引文。</dd>
+      <dt>习惯</dt><dd>引完即止；手不停（取镇纸、翻页、挪书）；用"你"称呼，不用"弟子"。</dd>
+      <dt>禁用</dt><dd>不长篇讲学、不一次给两个问题、不用现代口语、不抖包袱（他不搞笑，他是反衬）。</dd>
+    </dl>
+    <div class="qline"><span class="n">示例 · 日常</span>「『工欲善其事，必先利其器。』——先把墨磨了。」</div>
+    <div class="qline"><span class="n">示例 · 追问</span>「『知之为知之。』不知道就说不知道。」</div>
+    <div class="qline"><span class="n">示例 · 看穿</span>「『不患人之不己知。』——我看你的字，就知道你急。」</div>
+    <div class="qline ban"><span class="n">引文纪律</span>三段引文分别出《论语·卫灵公》《为政》《学而》，<b>入正文前逐条核校版本与字句</b>；引文全游戏不超过 X 处待定。</div>
+  </div>
+
+  <div class="voice">
+    <span class="who">阿槿 · 城南书坊学徒</span>
+    <h3>掺昆曲唱调 <em>说正事干净，一提曲词就带板眼</em></h3>
+    <div class="tagline">最安静的人，一碰唱本就刹不住——语言反差就是她的喜剧位置，也是她"书与乐"的能力出口。</div>
+    <dl>
+      <dt>性格</dt><dd>安静敏锐，记人比记地名准；掌握重要信息，却常因不在府学体系而不被当作"知识"。</dd>
+      <dt>声线</dt><dd>平常 8–20 字，语气平；涉及唱本、节令、纸墨时句尾带板眼，最多半句唱出来。</dd>
+      <dt>习惯</dt><dd>报细节报得离谱地准（"抄过三回""第三回照着前两回的错抄"）；一唱完立刻回手上活。</dd>
+      <dt>禁用</dt><dd>不整段唱、不炫技、不主动开唱（玩家点唱才唱）；不解释昆曲是什么；不用文人腔。</dd>
+    </dl>
+    <div class="qline"><span class="n">示例 · 带腔</span>「『良辰美景奈何天』——喏，这纸就是那天下雨前晒的。」</div>
+    <div class="qline"><span class="n">示例 · 行内</span>「抄错一个字，跟唱错一个板一样，都得重来。」</div>
+    <div class="qline"><span class="n">示例 · 刹不住</span>「『原来姹紫嫣红开遍』——这句书坊里刻错过三回。三回啊。」</div>
+    <div class="qline ban"><span class="n">考据纪律</span>唱词出汤显祖《牡丹亭》；<b>曲牌、工尺、口音与录音须经音乐顾问确认</b>（沿用《连续序章》§3.1 音乐边界）。</div>
+  </div>
+
+  <div class="voice">
+    <span class="who">沈砚秋 · 同窗</span>
+    <h3>幽默诙谐 <em>嘴快、爱断言、被顶回来立刻认</em></h3>
+    <div class="tagline">玩笑全从苏州的生活细节里长出来，不靠俏皮话凑。他是玩家的"嘴"——玩家不敢说的，他先说。</div>
+    <dl>
+      <dt>性格</dt><dd>熟路、嘴快、行动先于解释；以为熟悉苏州就不会迷路，后来发现自己也不懂园林为何这样组织。</dd>
+      <dt>声线</dt><dd>8–24 字，两句以内说完；爱用数字打比方（三里、两河、三桥）；一句话最多一个包袱。</dd>
+      <dt>习惯</dt><dd>先下结论再补理由；说错就认、认完不改（"行行行，你对"然后继续走原路）；不解释笑点。</dd>
+      <dt>禁用</dt><dd>不做捧哏式附和、不嘲身体与出身、不连续抖两个包袱、不在危险场景插科打诨。</dd>
+    </dl>
+    <div class="qline"><span class="n">示例 · 城市梗</span>「苏州的桥，比衙门管的事还多。」</div>
+    <div class="qline"><span class="n">示例 · 分工</span>「字你认，路我认。谁也别抢谁的活。」</div>
+    <div class="qline"><span class="n">示例 · 吐槽</span>「你这步子，走得比我祖母还稳。稳是好事，就是太慢。」</div>
+  </div>
+
+  <div class="voice">
+    <span class="who">玩家 · 新入府学的学子</span>
+    <h3>鲁莽 <em>两档选项：莽一步 / 稳一步</em></h3>
+    <div class="tagline">"鲁莽"不是缺点设定，是一个<b>永远存在的选项位</b>——由同伴当场吐槽来收笑点，玩家因此有性格。</div>
+    <dl>
+      <dt>性格</dt><dd>知识上的新人、行动上的主动者；起初把地图、园名和诗句当成彼此分离的知识。</dd>
+      <dt>声线</dt><dd>永远由选项发声；每轮给"莽"与"稳"各一条，两条都推进剧情，无错误选项。</dd>
+      <dt>习惯</dt><dd>莽档宁可有代价也不清档（最多掉一地东西、被人笑）；同伴必须当场接一句，让玩家自己笑。</dd>
+      <dt>禁用</dt><dd>不给玩家配音念完整台词（保持投射空间）；不预设性别、籍贯；莽档不做残忍或不义的选择。</dd>
+    </dl>
+    <div class="qline"><span class="n">莽档示例</span>「先翻过墙再说。」→ 沈砚秋：「墙那边是茅房。」</div>
+    <div class="qline"><span class="n">稳档示例</span>「先绕一圈，看它朝哪边开门。」→ 阿槿：「这话像是你师父教的。」</div>
+    <div class="qline ban"><span class="n">长线设计</span>玩家的语言能力 = 六艺进度：掌握"数"后选项里出现算距离的口径，掌握"书"后能指出异文。<b>六艺不是数值，是六种说话方式。</b></div>
+  </div>
+
+  <div class="voice">
+    <span class="who">乔禾 · 巷子里的八岁小姑娘</span>
+    <h3>报数 <em>先报数字，再报名字</em></h3>
+    <div class="tagline">全场句子最短的人。她的"聪明"从不由台词自夸——由结果证明：她说三百七十二级，你数一遍，就是三百七十二级。</div>
+    <dl>
+      <dt>来历</dt><dd>府学杂役兼卖糖粥的<b>乔老叟</b>的孙女；跟着糖粥担走遍全城，也在府学院里跑遍。</dd>
+      <dt>性格</dt><dd>活泼、精力用不完、没有怕心；对成人的道理没兴趣，对自己的发现极有兴趣。</dd>
+      <dt>声线</dt><dd>全场最短，4–12 字；只说具体的数与动作，不说道理；常是"数字 + 名词"，或一句反问。</dd>
+      <dt>习惯</dt><dd>先报数、后报名；说完就跑，不留场；把大人的问题悄悄换成她自己的问题。</dd>
+      <dt>禁用</dt><dd>不掉书袋、不背诗、不说成人话、不卖萌、不装天真；不用"奴家"，也不用"叔叔""大哥哥"这类后起称呼。</dd>
+    </dl>
+    <div class="qline"><span class="n">示例 · 清点</span>「三百七十二级。我数过两回，第二回也是。」</div>
+    <div class="qline"><span class="n">示例 · 图上 vs 身体</span>「图上就一根线。它十九步，中间还有三个门。」</div>
+    <div class="qline"><span class="n">示例 · 看穿动作</span>「你投不中的——你肩膀先动了。」</div>
+    <div class="qline"><span class="n">示例 · 动因</span>「我跟着担子走的。担子停哪儿，我就认得哪儿。」</div>
+    <div class="qline"><span class="n">示例 · 府学索引</span>「西边第三间下雨要漏。别把纸搁那儿。」</div>
+    <div class="qline ban"><span class="n">与沈砚秋的界</span>沈砚秋是<b>估算</b>（三里、两河，约莫对）；乔禾是<b>清点</b>（三百七十二级，当场数）。一个靠经验，一个靠数——两人数字不许混用。</div>
+  </div>
+</div>
+
+<h2 class="sec">伍 · 同题三答（验声纹的唯一方法）</h2>
+<p class="sec-note">同一件事，三个人各说一句——只要三句能互换，声纹就没立住。下表的"事件"取玩家把地图拿倒。</p>
+<div class="card" style="background:var(--ink2);border:1px solid rgba(242,234,214,.2);box-shadow:4px 4px 0 rgba(23,21,18,.38);padding:16px 18px;">
+  <table class="tbl">
+    <tr><th style="width:110px;">人物</th><th>他会怎么说</th><th style="width:230px;">暴露了什么</th></tr>
+    <tr><td><b>顾惟清</b></td><td>「『君子求诸己。』——图在你手里。」</td><td>引经据典 + 不替你解决</td></tr>
+    <tr><td><b>沈砚秋</b></td><td>「这我方才就说了。你没听。」</td><td>嘴快、爱算旧账</td></tr>
+    <tr><td><b>阿槿</b></td><td>「倒着看，桥的位置倒是对的。」</td><td>版本功夫：从错处读信息</td></tr>
+    <tr><td><b>乔禾</b></td><td>「不用看图。我闭着眼都走得到。」</td><td>身体记忆优先于图纸</td></tr>
+    <tr><td><b>玩家（莽档）</b></td><td>「那就倒着走，反正都是路。」</td><td>行动先于方法</td></tr>
+  </table>
+  <div class="notes" style="font-size:12px;color:var(--paledim);margin-top:10px;">
+    <b style="color:var(--paper)">使用规则</b>：新写任何一段对白后，把句子换成另一个人试读一遍。读得通，说明这段是"通用台词"，重写。五人的句长区间、称呼方式与用词来源都不允许重叠。
+  </div>
+</div>
+
+<h2 class="sec">陆 · 声纹 × 六艺 映射（语言即能力）</h2>
+<div class="spec">
+  <div class="card">
+    <h3>谁用什么语言看世界</h3>
+    <table class="tbl">
+      <tr><th>人物</th><th>擅长方向</th><th>语言来源</th><th>声纹标记</th></tr>
+      <tr><td><b>顾惟清</b></td><td>礼（典籍·碑刻）</td><td>经史引文</td><td>引一句，不解释</td></tr>
+      <tr><td><b>沈砚秋</b></td><td>御 + 数（路线·距离）</td><td>街巷与数目</td><td>三里、两河、三桥</td></tr>
+      <tr><td><b>阿槿</b></td><td>书 + 乐（异文·声音·节令）</td><td>唱本与手艺人行话</td><td>带板眼、报版本</td></tr>
+      <tr><td><b>乔禾</b></td><td>射（童蒙）+ 数的身体版</td><td>实物计数与手眼</td><td>报数字，不解释</td></tr>
+      <tr><td><b>玩家</b></td><td>起步无六艺</td><td>只有莽与稳</td><td>随六艺解锁新选项口径</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>次角声纹（建议·未定案）</h3>
+    <ul class="callouts">
+      <li><b>守碑的老先生</b>（D-09 提及）：比碑还紧。声纹建议——把话说成碑文，短、硬、不接话：「看可以。手，别过线。」</li>
+      <li><b>院门上的老仆</b>（D-13 提及）：只答"在"或"不在"，不耐烦但守规矩。</li>
+      <li><b>书肆周先生</b>（旧案人物，如启用）：行家口吻，只认纸墨不认人。</li>
+      <li>以上三人未进任何定案，<b>启用前需先落人物卡与来源卡</b>。</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="sec">柒 · 乔禾 · 角色设定卡（新增第五人）</h2>
+<p class="sec-note">2026-09-30 大 Q 指定新增：可爱聪慧的八岁小姑娘，活泼的小天才。<b>处置方式：加入，不替换</b>——四人声纹各占一角（引经据典／掺曲／诙谐／鲁莽），换掉任何一个都是拆结构；第五人只要不撞车就能立住。</p>
+
+<div class="spec">
+  <div class="card">
+    <h3>一句话定位</h3>
+    <p style="color:var(--paper);font-size:15px;">巷子里长大的八岁小姑娘，眼睛比尺子准。<b>不读书，但什么都能数清、看准、打中。</b></p>
+    <table class="tbl">
+      <tr><th style="width:92px;">项</th><th>定案草案</th></tr>
+      <tr><td>年龄</td><td>八岁（清末习惯用虚岁；台词里不强调数字，由身高与说话方式体现）</td></tr>
+      <tr><td>六艺方向</td><td><b>射（童蒙）</b>+ 数的身体版——靠手眼与清点，不靠计算</td></tr>
+      <tr><td>声纹</td><td><b>报数</b>——全场最短，4–12 字，只说数与动作</td></tr>
+      <tr><td>出场位置</td><td>§5 阶段二《蘇城全圖》（地图段）——见下方分镜草案</td></tr>
+      <tr><td>母题作用</td><td>正面演出 §3.2「空间需要身体理解」：图上的一根线 ≠ 身体走的十九步</td></tr>
+      <tr><td>与玩家的关系</td><td>唯一能当场指出玩家动作错在哪的人——吐槽来自八岁小孩，喜剧效果最强</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>来历（已定 · 2026-09-30 大 Q 拍板）</h3>
+    <p style="color:var(--paper);font-size:14px;margin:4px 0 10px;">府学杂役 <b>兼</b> 城中卖糖粥的<b>乔老叟</b>的孙女。<b>精通苏州地图与府学各种事。</b></p>
+    <table class="tbl" style="font-size:12px;">
+      <tr><th style="width:104px;">项</th><th>内容</th></tr>
+      <tr><td>爷爷</td><td><b>乔老叟</b>——白天在府学做杂役（扫院、生火、看门），其余时间挑<b>糖粥担</b>穿街走巷。一人两役，清末底层的真实生计。</td></tr>
+      <tr><td>她的动因</td><td>跟着担子走街串巷 → 全城一步一步数出来。<b>「我认得的地，都是我走过的地方。」</b></td></tr>
+      <tr><td>她的知识</td><td>① 苏州地图——担子到过的每条巷子；② 府学各种事——爷爷当差，她跟着在院里跑</td></tr>
+      <tr><td>能力来源</td><td>她的"小天才"<b>不是天赋异禀，是跟着担子走出来的</b>——这一点须由玩家自己发现，不由她解释</td></tr>
+      <tr><td>落选案</td><td>A 书坊女儿（与阿槿撞位）／ C 顾惟清幼女（把师长私事提前拖进序章）——已弃</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>乔老叟 与 糖粥担（新增次角）</h3>
+    <table class="tbl" style="font-size:12px;">
+      <tr><th style="width:92px;">项</th><th>内容</th></tr>
+      <tr><td>身份</td><td>府学杂役 + 糖粥担贩；乔禾的爷爷。全作第一个"一人两役"的市井角色</td></tr>
+      <tr><td>出场方式</td><td><b>只闻其声</b>——画外一喊把乔禾叫走，顺手交代她的来历；不抢序章的台词预算</td></tr>
+      <tr><td>声纹</td><td><b>吆喝腔</b>——三字一顿，喊人先喊名：「阿禾——回转来！」（常年卖粥要喊，他说话就是喊）</td></tr>
+      <tr><td>标志声</td><td><b>竹梆</b>：笃、笃、笃。担子走到哪儿，声音先到哪儿——听觉版的"活地图"</td></tr>
+    </table>
+    <div class="notes" style="font-size:12px;">
+      <b style="color:var(--paper)">糖粥担（骆驼担）形制</b>：一头木桶围着大锅熬稠白粥，一头竹柜抽屉放碗盏与赤豆沙，中间一根扁担挑起；行走时两头高耸、状如骆驼，故名"骆驼担"。像素作画辨识度极高，且是<b>天然的移动场景道具</b>——担子停在哪里，哪里就是一个小场景。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>糖粥 · 考据注与一个视觉发现</h3>
+    <table class="tbl" style="font-size:12px;">
+      <tr><th style="width:140px;">项</th><th>结论</th><th style="width:82px;">依据</th></tr>
+      <tr><td>竹梆招徕（笃笃声）</td><td><b>可用</b>——敲竹筒表示糖粥担来了，是传统招徕方式</td><td>有据<br>姑苏吆喝（非遗）</td></tr>
+      <tr><td>骆驼担形制</td><td><b>可用</b>——两头高耸、前锅后柜、中挑扁担</td><td>有据<br>文献记载</td></tr>
+      <tr><td>糖粥做法</td><td><b>可用</b>——粥豆分煮，赤豆沙浇白粥，撒糖桂花，俗称"红云盖白雪"</td><td>有据</td></tr>
+      <tr><td class="miss">「笃笃笃，卖糖粥」童谣</td><td class="miss"><b>年代待核</b>——该叫卖调传唱近百年，多见于民国以降；光绪年间是否已有存疑。<b>本作只用竹梆声，不用完整童谣句</b></td><td class="miss">需核<br>民俗顾问</td></tr>
+      <tr><td>《水巷寻梦》火光描写</td><td>陆文夫为现代追忆文字，<b>只作氛围参考</b>，不作时代依据</td><td>不可引</td></tr>
+    </table>
+    <div class="notes" style="font-size:12px;">
+      <b style="color:var(--gold)">配色发现（重要）</b>：糖粥盛碗是<b>赤豆沙的红盖在白粥上</b>——"红云盖白雪"。这正好是本作已锁定的配色关系：<b>朱砂红（唯一点缀色）压宣纸白</b>。糖粥担因此可以<b>零新增色</b>并入现有视觉系统，还能当全作"红白关系"的实物注脚。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>出场分镜草案（§5 阶段二 · 地图段）</h3>
+    <p style="color:var(--paledim);font-size:12px;margin:0 0 8px;">该段目前在设计稿里<b style="color:var(--gold)">整段缺</b>（见叁节核对表）。乔禾的出场与它合流——上一轮建议先补这段，正好由她承担。</p>
+    <table class="tbl" style="font-size:12px;">
+      <tr><th style="width:48px;">节拍</th><th>画面</th><th style="width:230px;">谁说话</th><th>作用</th></tr>
+      <tr><td>1</td><td>沈砚秋说要去城南办件小事，把图铺在共读桌上</td><td>沈砚秋</td><td>地图登场，但不解释所有地点</td></tr>
+      <tr><td>2</td><td>图上只有三样：府学、目的地、走过的街段</td><td>—</td><td>地图只给"已走过的"</td></tr>
+      <tr><td>3</td><td>乔禾跑进院门找她爷爷，路过桌边扫了一眼图</td><td><b>乔禾：</b>「不用看图。我闭着眼都走得到。」</td><td>孩子对图纸的傲慢 ＝ 母题的正面陈述</td></tr>
+      <tr><td>4</td><td>玩家不信，她当场报数</td><td><b>乔禾：</b>「出门十七步，转弯，再十九步。中间三级石阶。」</td><td>精确到荒谬，能力由结果证明</td></tr>
+      <tr><td>5</td><td>沈砚秋愣半秒，跟一句自嘲</td><td>沈砚秋</td><td>笑点由同伴收，不由乔禾抖</td></tr>
+      <tr><td>6</td><td>画外三声竹梆，爷爷隔墙一喊，她说完就跑</td><td>乔老叟（画外）：「阿禾——回转来！」</td><td>竹梆声先到 → 交代糖粥担与来历；八岁儿童有人管，不脱缰</td></tr>
+      <tr><td>7</td><td>玩家出门，地图成为常驻入口</td><td>—</td><td>city-map-introduced 落地</td></tr>
+    </table>
+    <div class="notes" style="font-size:12px;"><b>硬规矩</b>：乔禾不解释自己为什么数得清、不接任务、不留场超过两句；不进任何任务清单。</div>
+  </div>
+
+  <div class="card">
+    <h3>红线与风险</h3>
+    <ul class="notes" style="font-size:13px;">
+      <li><b>可爱来自能力，不来自形态</b>：禁止卖萌语气词、禁止"大哥哥 / 叔叔"式称呼、禁止靠外貌描写讨喜。</li>
+      <li><b>八岁儿童在清末的言行边界</b>：有人管（爷爷一喊就走）；不单独远行；不涉成人话题。</li>
+      <li><b>与阿槿不撞位</b>：阿槿是"被体系不当知识的知识"（社会性）；乔禾是"无师自通的手眼"（身体性）。</li>
+      <li><b>与沈砚秋的数字不混用</b>：沈＝估算（三里、两河），乔＝清点（三百七十二级）。</li>
+      <li><b>考据待补</b>：乔老叟“府学杂役兼营糖粥担”的生计组合需一条来源卡；清末八岁女童的活动范围与称呼方式需一条考据注；糖粥童谣年代见上一卡。</li>
+      <li><b>外形待画（来历已定，可开工）</b>：乔禾——身高约玩家的 2/3、总角双髻、靛蓝短衫 + 白围裙、袖子挽起（跟着担子跑）；乔老叟——竹布短打 + 糖粥担（骆驼担）。</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* ================= 色板 ================= */
+const P = {
+  // palette.json（场景唯一色源）
+  wall:'#fbf7ec', paper:'#f2ead6', path:'#e6dcc2', pathAlt:'#d8ceae', wallShade:'#d9d2c0',
+  roof:'#b8b2a2', roofDark:'#a8a292', inkPale:'#a39d90', inkMid:'#7e796d', inkHeavy:'#55524a',
+  ink:'#2b2824', stele:'#171512',
+  waterHi:'#c2e0da', water:'#9ecfc9', waterDeep:'#6fa89e', qing:'#3d7068', qingDeep:'#2a514c',
+  gold:'#c8a04b', wood:'#8a6844', woodDark:'#6b4c2f',
+  zhuB:'#d95543', zhuC:'#b03a2e', seal:'#8f271d',
+  grass:'#bcd6a4', grassAlt:'#b3cf9b', leafHi:'#9cc487', leafMid:'#8fbb78', leafDark:'#7fae6a', pine:'#5f7d4f',
+  rockT:'#b0bfa8', rock:'#93a48c', rockD:'#78876f',
+  // 角色精灵色（母版取样，待登记）
+  cap:'#484040', skin:'#f8c8b0', robe:'#e8d8c8', robeHi:'#f0e4d4', trim:'#384840', sash:'#983020',
+  shenRobe:'#687070', shenDark:'#304038', book:'#304050', white:'#f0e0d0'
+};
+
+/* ================= 精灵 ================= */
+const M_PLAYER = {c:P.cap, s:P.skin, r:P.robe, t:P.trim, d:P.sash, b:P.ink, k:P.stele};
+const SPR_PLAYER = [
+'.....cccc....',
+'...ccccccc...',
+'..ccccccccc..',
+'..ccccccccc..',
+'..ccccccccc..',
+'...ccccccc...',
+'..sssssssss..',
+'..sskssskss..',
+'..sssssssss..',
+'...sssssss...',
+'....sssss....',
+'...trrrrt....',
+'..trrrrrrt...',
+'..srrrrrrs...',
+'..rrrrrrrr...',
+'..rrrrrrrr...',
+'..rrddddrr...',
+'..rrddddrr...',
+'..rrrddrrr...',
+'..rrrrrrrr...',
+'..rrrrrrrr...',
+'..hhhhhhhh...'.replace(/h/g,'r'),
+'...bb..bb....',
+'...bb..bb....',
+'...bb..bb....',
+'..bbb..bbb...'];
+
+const M_SHEN = {c:P.cap, s:P.skin, S:P.shenRobe, T:P.shenDark, w:P.white, g:P.gold, B:P.book, b:P.ink, k:P.stele};
+const SPR_SHEN = [
+'.....cccc....',
+'...ccccccc...',
+'..ccccccccc..',
+'..ccccccccc..',
+'..ccccccccc..',
+'...ccccccc...',
+'..sssssssss..',
+'..sskssskss..',
+'..sssssssss..',
+'...sssssss...',
+'....sssss....',
+'...TSSSST....',
+'..TSSSSSST...',
+'..TSSwwSST...',
+'..SBBwwBBS...',
+'..SBBwwBBS...',
+'..SSSwwSSS...',
+'..SSSggSSS...',
+'..SSggggSS...',
+'..SSSggSSS...',
+'..SSSSSSSS...',
+'..wwwwwwww...',
+'...bb..bb....',
+'...bb..bb....',
+'...bb..bb....',
+'..bbb..bbb...'];
+
+const SPR_SHEN_BACK = [
+'....cccc...',
+'..ccccccc..',
+'..ccccccc..',
+'..ccccccc..',
+'...ccccc...',
+'..kkkkkkk..',
+'..kkkkkkk..',
+'..SSSSSSS..',
+'..SSSSSSS..',
+'..SSgSSSS..',
+'..SSgSSSS..',
+'..SSgSSSS..',
+'..SSgSSSS..',
+'..SSgSSSS..',
+'..SSgSSSS..',
+'..SSgSSSS..',
+'..SSSSSSS..',
+'..wwwwwww..',
+'...bb.bb...',
+'...bb.bb...',
+'...bb.bb...',
+'..bbb.bbb..'];
+const M_SHEN_BACK = M_SHEN;
+
+const M_GU = {c:P.cap, s:P.skin, h:P.inkPale, Q:P.qing, D:P.qingDeep, g:P.gold, b:P.ink, k:P.stele};
+const SPR_GU = [
+'....cccc....',
+'..cccccccc..',
+'..cccccccc..',
+'..cccccccc..',
+'...cccccc...',
+'..ssssssss..',
+'..ssssssss..',
+'..ssksskss..',
+'..ssssssss..',
+'..hhhhhhhh..',
+'...hhhhhh...',
+'...QQQQQQ...',
+'..DQQQQQQD..',
+'..DQQQQQQD..',
+'..DQQQQQQD..',
+'..DQgggQQD..',
+'..DQgggQQD..',
+'..DQQQQQQD..',
+'..DQQQQQQD..',
+'..DQQQQQQD..',
+'..hhhhhhhh..',
+'...bb..bb...',
+'...bb..bb...',
+'..bbb..bbb..'];
+
+/* 阿槿：外形未定案，占位设计（双丫髻 + 靛蓝短衫 + 白围裙） */
+const M_AJIN = {k:P.ink, s:P.skin, B:P.book, w:P.white, p:P.pathAlt, b:P.ink};
+const SPR_AJIN = [
+'..k......k..',
+'..kk....kk..',
+'..kkkkkkkk..',
+'..ssssssss..',
+'..skssssks..',
+'..ssssssss..',
+'...ssssss...',
+'..BBBBBBBB..',
+'..BBBBBBBB..',
+'..sBBBBBBs..',
+'..wwwwwwww..',
+'..wwwwwwww..',
+'..wwwwwwww..',
+'..pppppppp..',
+'..pppppppp..',
+'..pppppppp..',
+'...bb..bb...',
+'...bb..bb...',
+'..bbb..bbb..'];
+
+/* ================= 绘制工具 ================= */
+function rng(seed){
+  return function(){ seed|=0; seed=seed+0x6D2B79F5|0;
+    let t=Math.imul(seed^seed>>>15,1|seed);
+    t=t+Math.imul(t^t>>>7,61|t)^t;
+    return ((t^t>>>14)>>>0)/4294967296; };
+}
+function hash(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function R(c,x,y,w,h,col){c.fillStyle=col;c.fillRect(x,y,w,h);}
+function dith(c,x,y,w,h,a,b,seed){const r=rng(seed);for(let j=0;j<h;j++)for(let i=0;i<w;i++){R(c,x+i,y+j,1,1,(i+j)%2? a : ((r()<.85?b:a)));}}
+function slant(c,x0,y0,x1,y1,w,col){
+  const n=Math.max(1,Math.abs(y1-y0));
+  for(let i=0;i<=n;i++){const t=i/n;
+    R(c,Math.round(x0+(x1-x0)*t-w/2),Math.round(y0+(y1-y0)*t),w,1,col);}
+}
+function ring(c,cx,cy,r,col){
+  for(let a=0;a<64;a++){const t=a/64*Math.PI*2;
+    R(c,Math.round(cx+Math.cos(t)*r),Math.round(cy+Math.sin(t)*r*.45),1,1,col);}
+}
+function sprite(c,rows,map,x,y,flip){
+  const w=rows[0].length;
+  rows.forEach((row,j)=>{for(let i=0;i<row.length;i++){
+    const ch=row[i]; if(ch==='.')continue;
+    const col=map[ch]; if(!col)continue;
+    R(c,x+(flip? w-1-i:i), y+j,1,1,col);
+  }});
+}
+function ripples(c,y0,y1,ph){
+  for(let y=y0;y<y1;y+=9){
+    const r=rng(y*77+1);
+    for(let x=((y*5+ph*2)%24);x<160;x+=26+Math.floor(r()*16)){
+      const w=5+Math.floor(r()*6);
+      R(c,x,y,w,1,P.waterHi);
+    }
+  }
+}
+
+/* ================= 场景 ================= */
+const SCENES = {
+
+/* 城南水岸 · 晨（D-01） */
+riverDawn(c,ph){
+  R(c,0,0,160,34,P.paper);
+  R(c,0,22,160,12,P.wallShade);
+  // 远屋脊
+  const r=rng(7);
+  for(let x=0;x<160;x+=10+Math.floor(r()*8)){
+    const h=4+Math.floor(r()*7);
+    R(c,x,34-h,8+Math.floor(r()*6),h,P.inkPale);
+  }
+  R(c,0,32,160,2,P.inkMid);
+  // 左岸粉墙
+  R(c,0,18,18,18,P.wall); R(c,0,16,18,2,P.inkHeavy);
+  R(c,4,24,8,7,P.gold); dith(c,5,25,6,5,P.gold,P.wall,31);
+  // 水面
+  R(c,0,34,160,44,P.waterDeep);
+  R(c,0,34,160,6,P.water);
+  R(c,0,40,160,3,P.waterDeep);
+  ripples(c,46,74,ph);
+  // 曲声落点涟漪（隔水一声）
+  ring(c,50,58,5+ph*2,P.waterHi);
+  ring(c,50,58,11+ph*2,P.water);
+  // 河埠石阶
+  for(let i=0;i<5;i++)R(c,136+i*4,42+i*7,24-i*4,7,P.wallShade);
+  R(c,136,42,24,1,P.inkMid);
+  // 沿河步道（人物立足处）
+  R(c,0,76,160,14,P.path);
+  R(c,0,75,160,1,P.inkPale);
+  dith(c,0,76,160,4,P.path,P.pathAlt,19);
+},
+
+/* 岔路 · 桥影（D-02~05） */
+forkRoad(c,ph){
+  R(c,0,0,160,20,P.paper);
+  const r=rng(11);
+  for(let x=0;x<160;x+=9+Math.floor(r()*7)){
+    const h=3+Math.floor(r()*6);
+    R(c,x,20-h,7+Math.floor(r()*5),h,P.inkPale);
+  }
+  // 右侧粉墙与漏窗
+  R(c,100,12,60,6,P.roofDark); R(c,100,11,60,1,P.roof);
+  R(c,100,18,60,36,P.wall);
+  R(c,100,50,60,3,P.wallShade);
+  [[108,26],[134,26]].forEach(([wx,wy])=>{
+    R(c,wx,wy,12,10,P.gold); R(c,wx+1,wy+1,10,8,P.wall);
+    for(let i=2;i<10;i+=3){R(c,wx+i,wy+1,1,8,P.gold);R(c,wx+1,wy+i+1,10,1,P.gold);}
+  });
+  // 远处桥洞
+  R(c,58,24,36,8,P.roofDark); R(c,58,23,36,1,P.roof);
+  R(c,58,32,36,22,P.rock);
+  R(c,68,36,16,18,P.qingDeep);
+  R(c,66,34,20,2,P.rockD);
+  // 水带
+  R(c,0,54,96,10,P.waterDeep);
+  ripples(c,56,62,ph);
+  R(c,0,63,96,1,P.inkMid);
+  // 地面与岔路
+  R(c,0,64,160,26,P.pathAlt);
+  dith(c,0,64,160,6,P.pathAlt,P.path,71);
+  slant(c,80,90,52,66,14,P.path);
+  slant(c,86,90,116,64,14,P.path);
+  slant(c,80,90,84,66,16,P.path);
+},
+
+/* 同行短街（D-06） */
+shortStreet(c,ph){
+  R(c,0,0,160,22,P.paper);
+  // 桥
+  R(c,0,14,160,3,P.roof); R(c,0,17,160,3,P.roofDark);
+  for(let x=4;x<160;x+=12)R(c,x,10,2,4,P.woodDark);
+  R(c,0,20,160,2,P.woodDark);
+  R(c,40,22,64,10,P.qingDeep); // 桥洞影
+  // 晾纸
+  R(c,4,36,2,22,P.woodDark); R(c,44,36,2,22,P.woodDark);
+  R(c,4,36,42,1,P.wood);
+  for(let x=8;x<42;x+=9){R(c,x,37,7,14,P.paper);R(c,x,50,7,1,P.inkPale);}
+  // 店铺铺板（半开）
+  R(c,118,30,42,30,P.wood); R(c,118,30,42,2,P.woodDark);
+  R(c,140,32,20,28,P.woodDark);
+  R(c,122,34,14,10,P.paper);
+  // 挑担人剪影
+  R(c,96,38,16,1,P.inkHeavy);
+  R(c,97,39,4,4,P.inkHeavy); R(c,107,39,4,4,P.inkHeavy);
+  R(c,100,36,4,4,P.inkHeavy); R(c,99,40,6,10,P.inkHeavy);
+  R(c,99,50,2,6,P.inkHeavy); R(c,103,50,2,6,P.inkHeavy);
+  // 地面
+  R(c,0,60,160,30,P.path);
+  dith(c,0,60,160,8,P.path,P.pathAlt,53);
+},
+
+/* 府学门槛（D-07 / D-10 翻转） */
+fuxueGate(c,ph,flip){
+  c.save();
+  if(flip){c.translate(160,0);c.scale(-1,1);}
+  R(c,0,0,160,18,P.paper);
+  // 墙与瓦顶
+  R(c,0,12,160,4,P.roofDark); R(c,0,11,160,1,P.roof);
+  R(c,0,16,160,50,P.wall);
+  dith(c,0,40,160,26,P.wall,P.wallShade,97);
+  // 树（右上）
+  R(c,140,4,8,50,P.woodDark); R(c,142,4,3,50,P.wood);
+  const cl=[[112,6,26,16],[130,0,30,14],[150,10,10,12]];
+  cl.forEach(([x,y,w,h],i)=>{
+    R(c,x+(ph&&i===1?1:0),y,w,h,P.leafDark);
+    R(c,x+3,y+2,w-8,h-5,P.pine);
+    R(c,x+6,y+3,w-14,4,P.leafMid);
+  });
+  // 匾额
+  R(c,70,20,20,8,P.paper); R(c,70,20,20,1,P.inkHeavy);
+  R(c,73,23,14,1,P.inkMid); R(c,73,25,10,1,P.inkMid);
+  // 门洞
+  R(c,54,20,44,46,P.stele);
+  R(c,54,20,5,46,P.woodDark); R(c,93,20,5,46,P.woodDark);
+  R(c,59,20,34,4,P.woodDark);
+  R(c,60,24,10,42,P.woodDark); // 半开左门
+  R(c,60,24,10,1,P.wood);
+  // 门槛与石阶
+  R(c,50,64,52,3,P.woodDark); R(c,50,64,52,1,P.wood);
+  R(c,0,67,160,23,P.path);
+  dith(c,0,67,160,7,P.path,P.pathAlt,23);
+  // 扫过的落叶
+  R(c,30,78,3,2,P.gold); R(c,36,81,3,2,P.gold); R(c,118,80,3,2,P.gold);
+  c.restore();
+},
+
+/* 静院树下（D-08） */
+quietCourt(c,ph){
+  R(c,0,0,160,26,P.paper);
+  R(c,0,20,160,4,P.roofDark); R(c,0,19,160,1,P.roof);
+  R(c,0,24,160,26,P.wall);
+  dith(c,0,36,160,14,P.wall,P.wallShade,41);
+  // 地面方砖
+  R(c,0,50,160,40,P.path);
+  for(let y=50;y<90;y+=10)R(c,0,y,160,1,P.inkPale);
+  for(let x=(ph?4:0);x<160;x+=12)R(c,x,50,1,40,P.inkPale);
+  // 大树
+  R(c,62,10,9,42,P.woodDark); R(c,64,10,4,42,P.wood);
+  const clumps=[[28,4,30,14],[52,0,34,16],[84,2,32,14],[104,8,22,10]];
+  clumps.forEach(([x,y,w,h],i)=>{
+    const dx=(ph&&i%2)?1:0;
+    R(c,x+dx,y,w,h,P.leafDark);
+    R(c,x+4+dx,y+2,w-10,h-6,P.leafMid);
+    R(c,x+8+dx,y+4,w-18,3,P.leafHi);
+  });
+  R(c,66,26,1,26,P.inkHeavy); // 树干暗线
+  // 树影落在地面
+  dith(c,54,52,44,10,P.path,P.wallShade,67);
+  // 石凳
+  R(c,100,58,16,9,P.rock); R(c,100,58,16,2,P.rockT); R(c,100,65,16,2,P.rockD);
+  // 墙头曲声示意：一处极小的檐角
+  R(c,146,16,10,4,P.roofDark);
+},
+
+/* 拓片架（D-09） */
+rubbingShelf(c,ph){
+  R(c,0,0,160,90,P.paper);
+  dith(c,0,0,160,90,P.paper,P.path,13);
+  R(c,0,76,160,14,P.pathAlt);
+  // 窗（右）
+  R(c,128,14,28,42,P.woodDark);
+  R(c,131,17,22,36,P.wall);
+  for(let i=0;i<3;i++){R(c,131,17+i*12,22,2,P.gold);R(c,131+ i*8+4,17,2,36,P.gold);}
+  // 架
+  R(c,34,16,4,60,P.woodDark); R(c,120,16,4,60,P.woodDark);
+  [26,44,62].forEach((y,ri)=>{
+    R(c,34,y,90,3,P.wood); R(c,34,y+3,90,1,P.woodDark);
+    const r=rng(ri*13+5);
+    let x=40;
+    while(x<108){
+      const w=10+Math.floor(r()*6);
+      R(c,x,y-9,w,9,P.paper);
+      R(c,x,y-9,w,1,P.inkPale);
+      R(c,x,y-2,w,1,P.inkPale);
+      R(c,x+w-2,y-8,2,7,P.woodDark);
+      x+=w+3+Math.floor(r()*5);
+    }
+  });
+  // 纸背凹凸（一张摊开的）
+  R(c,60,68,44,8,P.paper);
+  for(let x=62;x<102;x+=4)R(c,x,70,1,4,P.path);
+},
+
+/* 窗下书案（D-11） */
+deskWindow(c,ph){
+  R(c,0,0,160,90,P.paper);
+  dith(c,0,0,160,60,P.paper,P.path,29);
+  R(c,0,72,160,18,P.pathAlt);
+  // 窗（右，见水）
+  R(c,118,8,38,40,P.woodDark);
+  R(c,121,11,32,34,P.water);
+  for(let y=15;y<45;y+=6)R(c,123+((y*3+ph*2)%8),y,8,1,P.waterHi);
+  for(let i=0;i<3;i++){R(c,121,11+i*12,32,2,P.woodDark);}
+  R(c,135,11,2,34,P.woodDark);
+  // 书案
+  R(c,36,58,96,8,P.wood); R(c,36,64,96,2,P.woodDark);
+  R(c,40,66,6,16,P.woodDark); R(c,122,66,6,16,P.woodDark);
+  // 案上：砚 / 笔洗 / 未点的灯
+  R(c,58,52,10,6,P.stele); R(c,58,52,10,2,P.inkMid);
+  R(c,84,52,12,6,P.qingDeep); R(c,84,52,12,1,P.waterHi);
+  R(c,110,48,7,10,P.gold); R(c,109,58,9,2,P.woodDark);
+  // 书箱（地面）
+  R(c,14,64,22,13,P.wood); R(c,14,64,22,2,P.woodDark);
+  R(c,14,70,22,2,P.woodDark);
+  R(c,22,60,3,17,P.inkHeavy);
+},
+
+/* 共读桌（D-12） */
+studyTable(c,ph){
+  R(c,0,0,160,90,P.wallShade);
+  dith(c,0,0,160,90,P.wallShade,P.path,83);
+  R(c,0,0,160,14,P.ink2); // 梁暗
+  R(c,8,18,30,34,P.paper); // 左窗光
+  for(let i=0;i<2;i++){R(c,12,22+i*12,22,2,P.gold);}
+  R(c,0,70,160,20,P.pathAlt);
+  // 顾惟清（桌后，先画人再压桌）
+  sprite(c,SPR_GU,M_GU,86,36,false);
+  // 共读桌
+  R(c,44,56,76,8,P.wood); R(c,44,62,76,2,P.woodDark);
+  R(c,48,64,6,18,P.woodDark); R(c,110,64,6,18,P.woodDark);
+  // 未校完的纸与镇纸
+  R(c,70,50,22,7,P.paper);
+  R(c,73,52,16,1,P.inkPale); R(c,73,54,10,1,P.inkPale);
+  R(c,64,49,12,2,P.stele); R(c,94,49,12,2,P.stele);
+}};
+
+/* ================= 帧数据 ================= */
+const FRAMES = [
+ {id:'D-01', scene:'riverDawn', title:'沿声而行', state:'opening-arrival-seen', type:'声音字幕',
+  slip:'光绪十六年前后 · 苏州城南',
+  vcap:'［隔水传来曲笛与缓慢的拍板］',
+  chars:[{s:'PLAYER',x:82,y:54}],
+  notes:['开场黑屏两秒，先闻檀板，再显画面——先感受，后命名。','字幕只描述方向与质感，不告知声源；无歌词曲牌待音乐顾问确认。','镜头低位：先鞋尖，后全身；不切地图，不出现箭头。']},
+
+ {id:'D-02', scene:'forkRoad', title:'岔路相遇', state:'shen-met · 步1', type:'人物台词',
+  name:'沈砚秋', line:'再往前是去听曲的。<span class="cont">府学也唱，只是不当着人唱。</span>',
+  chars:[{s:'SHEN',x:94,y:42},{s:'PLAYER',x:56,y:46}],
+  notes:['他先越过玩家、听见脚步停住才回头——<b>人先于功能</b>。','说话时不正面站桩：一边重新束书带一边说（本稿暂用站立帧）。','无名牌自我介绍，无好感度提示。']},
+
+ {id:'D-03', scene:'forkRoad', title:'岔路相遇', state:'shen-met · 步2', type:'人物台词（动作行）',
+  name:'沈砚秋', line:'<span class="act">（扫一眼名帖）</span>今日来的新生？<span class="cont">名帖拿倒了。</span>',
+  chars:[{s:'SHEN',x:94,y:42},{s:'PLAYER',x:56,y:46}],
+  notes:['身份由道具（腰间名帖）交代，不由台词自述。','动作行淡墨缀于句前，不单独占一框。']},
+
+ {id:'D-04', scene:'forkRoad', title:'岔路相遇', state:'shen-met · 步3', type:'性格选择',
+  choice:['把名帖递过去（已经摆正了）。','「我不是迷路，我是在听曲。」'],
+  chars:[{s:'SHEN',x:94,y:42},{s:'PLAYER',x:56,y:46}],
+  notes:['两选项均无对错，只分性格；不显示"正确答案"。','选中态 = 印泥深红底 + 金棕边（唯一重色用法）。']},
+
+ {id:'D-05', scene:'forkRoad', title:'岔路相遇', state:'shen-met · 步4', type:'人物台词（分支回应）',
+  name:'沈砚秋', line:'唱的在河那边，声儿绕到这边。<span class="cont">苏州的路，耳朵拐弯，脚不拐。</span>',
+  chars:[{s:'SHEN',x:94,y:42},{s:'PLAYER',x:56,y:46}],
+  notes:['两分支在此汇合为同一句——路线可变，认知结论一致。','一句话只承担一个任务：这句只讲"声音≠方向"。']},
+
+ {id:'D-06', scene:'shortStreet', title:'同行短街', state:'follow-shen', type:'人物台词（可选）',
+  name:'沈砚秋', line:'不一定。涨水、落雨、桥上堵了人——<span class="cont">路就换一条，跟人一样。</span>',
+  chars:[{s:'SHEN_BACK',x:98,y:42,flip:false},{s:'PLAYER',x:62,y:46}],
+  notes:['可选短对话：玩家主动问才触发，不自动播。','他走在前面、随时停步等——用行为给"路会变"做注脚。','挑担人、晾纸、铺板只是生活，不弹名词卡。']},
+
+ {id:'D-07', scene:'fuxueGate', title:'府学门槛', state:'gate-arrival', type:'人物台词',
+  name:'沈砚秋', line:'先别忙着找先生。<span class="cont">门槛比先生高，先跨过去。</span>',
+  chars:[{s:'SHEN_BACK',x:74,y:40},{s:'PLAYER',x:44,y:44}],
+  notes:['昆曲声被院墙压低——用混音写空间，不用旁白。','台词嫌你"不知道放书箱"，是同行者的口气，不是向导的。','说完即跨门入内，交权提示「跟上沈砚秋」极轻出现。']},
+
+ {id:'D-08', scene:'quietCourt', title:'静院树下', state:'home-courtyard-heard', type:'人物台词',
+  name:'沈砚秋', line:'唱曲的人未必在近处。<span class="cont">水送声，墙也送声，就是不肯送路。</span>',
+  chars:[{s:'PLAYER_SEAT',x:99,y:40},{s:'SHEN',x:124,y:44}],
+  notes:['同一折昆曲第二次出现：从开场配乐变成世界内部的声音。','玩家坐下方触发——先有身体的停，再有对话。','三个混音版本的第三档：静院极远。']},
+
+ {id:'D-09', scene:'rubbingShelf', title:'拓片架', state:'home-rubbings-known', type:'人物台词',
+  name:'沈砚秋', line:'别揭。守碑的老先生看得比碑还紧。<span class="cont">他数纸，比数钱仔细。</span>',
+  chars:[{s:'SHEN',x:124,y:44},{s:'PLAYER',x:74,y:48}],
+  notes:['只种"这里存着很久以前的城市"，不讲平江图年代与价值。','旧物保存人的痕迹：纸背凹凸先于内容出现。']},
+
+ {id:'D-10', scene:'fuxueGateFlip', title:'院门（内侧）', state:'home-gate-known', type:'人物台词',
+  name:'沈砚秋', line:'先认得回来，再忙着出去。<span class="cont">迷路的，都是急着走的。</span>',
+  chars:[{s:'SHEN',x:44,y:42},{s:'PLAYER',x:80,y:44}],
+  notes:['第一次不能直接离开——边界先于地图出现。','不出示地图界面，只给一句规矩。']},
+
+ {id:'D-11', scene:'deskWindow', title:'窗下书案', state:'home-desk-known → 姓名', type:'人物台词（报名）',
+  name:'沈砚秋', line:'我叫沈砚秋。砚台的砚，秋水的秋。<span class="cont">找不着路可以问我——我多半在，也多半没空。</span>',
+  chars:[{s:'SHEN',x:100,y:42},{s:'PLAYER',x:58,y:46}],
+  notes:['接触任意两件 Home 事物后才报名——先见其人，后知其名。','书箱放下即存档：系统只说「你把书箱放稳了」。','"未必总在这里"为第三部同行分歧埋线，不解释。']},
+
+ {id:'D-12', scene:'studyTable', title:'共读桌', state:'gu-met', type:'人物台词',
+  name:'顾惟清', gu:true, line:'你看完了？',
+  chars:[],
+  notes:['先见镇纸压着未校完的纸，再见人——道具先于人物。','师长只给一个问题，不当知识广播器。','本次只建立师生关系，不发沧浪亭任务。']},
+
+ {id:'D-13', scene:'fuxueGateFlip', title:'院门来客', state:'ajin-met · 步1', type:'人物台词',
+  name:'阿槿', line:'<span class="act">（把纸卷一拢，用下巴压住松开的系绳）</span>劳驾——共读桌的纸。里头还开着门么？<span class="cont">门是都开着，人比门难找。</span>',
+  chars:[{s:'AJIN',x:44,y:46,flip:false},{s:'PLAYER',x:106,y:46}],
+  notes:['她抱着纸等人、有自己的目的——不由系统弹出人物介绍。','第一句只办自己的事：说明手上是什么、要往哪儿去，<b>不自报姓名与来历</b>。','外形为本稿占位设计（双丫髻 / 靛蓝短衫 / 白围裙），<b>定案前不得进正式资产</b>。','台词为 2026-09-30 新写，按 8–28 字基调；写定前仍需过《任务设计系统定案》来源卡。']},
+
+ {id:'D-14', scene:'fuxueGateFlip', title:'院门来客', state:'ajin-met · 步2', type:'性格选择',
+  name:'你', choice:['「我帮你抱一段。」（正好我也认不清路）','「你怎么知道该送到哪儿？」'],
+  chars:[{s:'AJIN',x:44,y:46},{s:'PLAYER',x:106,y:46}],
+  notes:['两个选项都推进剧情，<b>没有不推进的"错误"选项</b>；分的是玩家关心的方向（人 / 规矩）。','选项不产生数值，与 D-04 同一套选型。']},
+
+ {id:'D-15', scene:'fuxueGateFlip', title:'院门来客', state:'ajin-met · 步3', type:'人物台词（分支回应）',
+  name:'阿槿', line:'纸上有记号，我画的。<span class="cont">换个人来送，得问三回。</span>',
+  chars:[{s:'AJIN',x:44,y:46},{s:'PLAYER',x:106,y:46}],
+  notes:['知识写在纸的记号上，不由她解释系统或讲书坊制度。','<b>另一分支（帮抱纸）改答</b>：「那你扶住这头，别让绳子松。」——两支都不解锁额外奖励。','回应保持 8–28 字；半句、手上不停，符合人物节奏。']},
+
+ {id:'D-16', scene:'deskWindow', title:'送到书案', state:'ajin-met · 步4', type:'观察文字',
+  obsbox:'纸角有一枚小小的指印，墨点还没干透。',
+  chars:[{s:'AJIN',x:64,y:42},{s:'PLAYER',x:106,y:46}],
+  notes:['只写材质与痕迹，<b>不下结论</b>——指印是后文"这纸谁抄过"的种子。','她放纸的位置避开了案角那道磨亮的弧（本框观察文字两条，取其一）。','此框无台词、无名牌、无继续指示：观察文字自成一体。']},
+
+ {id:'D-17', scene:'deskWindow', title:'送到书案', state:'ajin-met · 步5', type:'人物台词（关系分野）',
+  name:'阿槿', line:'册子上记年份。我记得这纸抄过三回——<span class="cont">第三回，是照着前两回的错抄的。</span>',
+  chars:[{s:'AJIN',x:64,y:42},{s:'PLAYER',x:106,y:46}],
+  notes:['一句对照写出她的处境：她的知识不被府学体系当作"知识"。','不辩论、不控诉，只陈述——<b>不替玩家感动</b>。','关系推进靠"是否把日常经验当作可核查线索"，不靠礼物数值。']},
+
+ {id:'D-18', scene:'fuxueGateFlip', title:'院门来客', state:'ajin-met · 步6（钩子）', type:'人物台词',
+  name:'阿槿', line:'下回你去城南，替我打听个人：<span class="cont">乐桥的帘匠。帘子好，脾气比帘子硬。</span>',
+  chars:[{s:'AJIN',x:44,y:46,flip:true},{s:'PLAYER',x:106,y:46}],
+  notes:['钩子落在具体地名与手艺上——她"记人比记地名准"。','<b>乐桥为真实地名；帘匠店家与传人细节为虚构，入正文前补来源卡。</b>','不着"记得帮我"式客套收尾，只留一件要办的小事。']},
+];
+
+/* ================= 渲染 ================= */
+const SPRITES = {PLAYER:[SPR_PLAYER,M_PLAYER], SHEN:[SPR_SHEN,M_SHEN],
+  SHEN_BACK:[SPR_SHEN_BACK,M_SHEN_BACK], GU:[SPR_GU,M_GU], AJIN:[SPR_AJIN,M_AJIN], PLAYER_SEAT:[SPR_PLAYER,M_PLAYER]};
+// 坐姿：脚部两行裁掉，直接压在石凳上
+const seatedRows = SPR_PLAYER.slice(0,22);
+SPRITES.PLAYER_SEAT = [seatedRows, M_PLAYER];
+
+function drawFrame(cv, f, ph){
+  const c = cv.getContext('2d');
+  c.imageSmoothingEnabled = false;
+  let scene = f.scene==='fuxueGateFlip' ? 'fuxueGate' : f.scene;
+  const flip = f.scene==='fuxueGateFlip';
+  c.clearRect(0,0,160,90);
+  SCENES[scene](c, ph, flip);
+  (f.chars||[]).forEach(ch=>{
+    const [rows,map] = SPRITES[ch.s];
+    sprite(c, rows, map, ch.x, ch.y, !!ch.flip);
+  });
+}
+
+const wrap = document.getElementById('frames');
+FRAMES.forEach(f=>{
+  const art = document.createElement('article');
+  art.className = 'frame';
+  let overlay = '';
+  if(f.slip) overlay += `<div class="slip">${f.slip}</div>`;
+  if(f.vcap) overlay += `<div class="vcap">${f.vcap}</div>`;
+  if(f.obsbox) overlay += `<div class="obsbox">${f.obsbox}</div>`;
+  if(f.sysline) overlay += `<div class="sysline">${f.sysline}</div>`;
+  if(f.line){
+    overlay += `<div class="dbox"><div class="name${f.gu?' gu':''}">${f.name}</div><p class="line">${f.line}</p><span class="cue"></span></div>`;
+  }
+  if(f.choice){
+    overlay += `<div class="dbox"><div class="name">${f.name||'你'}</div><div class="opts">
+      <div class="opt sel">${f.choice[0]}</div><div class="opt">${f.choice[1]}</div></div></div>`;
+  }
+  const notes = (f.notes||[]).map(n=>`<li>${n}</li>`).join('');
+  art.innerHTML = `
+    <div class="stage"><canvas width="160" height="90"></canvas>${overlay}</div>
+    <footer class="meta">
+      <div class="row">
+        <span class="fid">${f.id}</span><span class="fscene">${f.title}</span>
+        <span class="fstate">${f.state}</span><span class="ftype">${f.type}</span>
+      </div>
+      <ul class="notes">${notes}</ul>
+    </footer>`;
+  wrap.appendChild(art);
+  f._cv = art.querySelector('canvas');
+  drawFrame(f._cv, f, 0);
+});
+
+/* 控件 */
+let ph = 0, animOn = true, timer = null;
+function loop(){ timer = setInterval(()=>{ ph = 1-ph; if(animOn) FRAMES.forEach(f=>drawFrame(f._cv,f,ph)); }, 700); }
+loop();
+
+const btnNotes = document.getElementById('btnNotes');
+btnNotes.onclick = ()=>{
+  document.body.classList.toggle('no-notes');
+  const on = !document.body.classList.contains('no-notes');
+  btnNotes.classList.toggle('on', on);
+  btnNotes.textContent = '批注 ' + (on?'开':'关');
+};
+const btnAnim = document.getElementById('btnAnim');
+btnAnim.onclick = ()=>{
+  animOn = !animOn;
+  btnAnim.classList.toggle('on', animOn);
+  btnAnim.textContent = '动效 ' + (animOn?'开':'关');
+};
+document.querySelectorAll('[data-s]').forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll('[data-s]').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    document.documentElement.style.setProperty('--s', b.dataset.s);
+  };
+});
+/* 批注开关样式 */
+const st = document.createElement('style');
+st.textContent = 'body.no-notes ul.notes{display:none;}';
+document.head.appendChild(st);
+</script>
+</body>
+</html>

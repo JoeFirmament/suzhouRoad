@@ -1,0 +1,273 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1008" height="688" viewBox="0 0 1008 688" shape-rendering="crispEdges">
+  <title>留园入口 · 烟雨夹弄游戏场景</title>
+  <desc>与入口 Tile、人物脚点和剧情触发共用坐标的原创游戏化场景；粉墙黛瓦、两处天井、曲折石路与隔窗，不复原历史门位。</desc>
+  <defs>
+    <pattern id="wall" width="38" height="34" patternUnits="userSpaceOnUse">
+      <rect width="38" height="34" fill="#d5d0bf"/>
+      <path d="M3 6h8M24 10h4M11 27h5M30 30h5" stroke="#c6c0ae" stroke-width="2"/>
+      <path d="M5 21h2M31 3h2" stroke="#e4decc" stroke-width="2"/>
+    </pattern>
+    <pattern id="roof" width="24" height="18" patternUnits="userSpaceOnUse">
+      <rect width="24" height="18" fill="#5f625b"/>
+      <path d="M0 3h24M0 12h24M6 3v9M18 12v6" stroke="#434943" stroke-width="2"/>
+      <path d="M1 5h9M12 14h9" stroke="#85877c" stroke-width="2"/>
+    </pattern>
+    <pattern id="stone" width="32" height="24" patternUnits="userSpaceOnUse">
+      <rect width="32" height="24" fill="#aaa99b"/>
+      <path d="M0 2h16M20 2h12M0 13h7M11 13h21M0 23h26M15 3v9M7 14v9M27 14v9" stroke="#747a70" stroke-width="2"/>
+      <path d="M3 5h8M18 16h9" stroke="#c5c1ad" stroke-width="2"/>
+    </pattern>
+    <pattern id="sunstone" width="32" height="24" patternUnits="userSpaceOnUse">
+      <rect width="32" height="24" fill="#b9b5a3"/>
+      <path d="M0 2h15M19 2h13M0 14h8M12 14h20M4 3v11M24 15v9" stroke="#8b8b7d" stroke-width="2"/>
+      <path d="M7 7h5M18 19h9" stroke="#d2c9b3" stroke-width="2"/>
+    </pattern>
+    <pattern id="brick" width="26" height="16" patternUnits="userSpaceOnUse">
+      <rect width="26" height="16" fill="#696b60"/>
+      <path d="M0 1h26M0 9h26M13 1v8M6 9v7M20 9v7" stroke="#484f49" stroke-width="2"/>
+      <path d="M2 3h7M15 11h8" stroke="#85877b" stroke-width="2"/>
+    </pattern>
+    <pattern id="river-pebble" width="24" height="20" patternUnits="userSpaceOnUse">
+      <rect width="24" height="20" fill="#999d91"/>
+      <path d="M2 4h6v4H2zM13 2h8v4h-8zM7 12h8v4H7zM19 13h4v4h-4z" fill="#777f75"/>
+      <path d="M3 3h4M14 1h6M8 11h6" stroke="#c8c8b7" stroke-width="2"/>
+    </pattern>
+    <pattern id="moss" width="56" height="44" patternUnits="userSpaceOnUse">
+      <path d="M5 10h7M17 34h9M39 8h8M43 31h6" stroke="#7b8c79" stroke-width="2"/>
+      <path d="M8 13h3M22 38h5M45 12h4" stroke="#687d69" stroke-width="2"/>
+    </pattern>
+    <pattern id="gate-eave" width="16" height="16" patternUnits="userSpaceOnUse">
+      <rect width="16" height="16" fill="#59605b"/>
+      <path d="M0 0h16v3H0zM0 8h16v2H0z" fill="#3d4744"/>
+      <path d="M2 3h6v4H2zM10 10h5v4h-5z" fill="#777d72"/>
+      <path d="M3 3h3M11 10h3" stroke="#a0a296" stroke-width="2"/>
+    </pattern>
+  </defs>
+
+  <!-- Quiet cutaway roofs frame the route, never covering the player's feet. -->
+  <rect width="1008" height="688" fill="#b9b7a8"/>
+  <path d="M0 0h1008v194H632v286h376v208H576V603H354V420H0Z" fill="url(#roof)"/>
+  <path d="M0 136h346v161h34v167h78v145H0Z" fill="url(#wall)"/>
+  <path d="M592 197h416v281H581V434h-58V322h69Z" fill="url(#wall)"/>
+  <path d="M0 574h445v114H0ZM585 588h423v100H585Z" fill="url(#wall)"/>
+  <path d="M208 0h384v178H208Z" fill="url(#wall)"/>
+  <path d="M72 176h208v176H72Z" fill="#879384"/>
+  <path d="M82 186h188v156H82Z" fill="#a4ad97"/>
+  <path d="M96 329h152M106 302h15M138 282h23M201 307h12" stroke="#708477" stroke-width="4"/>
+
+  <!-- Every paved shape follows the default Tile bands exactly; visible turns stay open. -->
+  <path d="M480 624h96v64h-96Z" fill="url(#river-pebble)"/>
+  <path d="M496 576h48v64h-48Z" fill="url(#stone)"/>
+  <path d="M464 512h112v80H464Z" fill="url(#stone)"/>
+  <path d="M464 448h112v80H464Z" fill="url(#sunstone)"/>
+  <path d="M496 384h48v80h-48Z" fill="url(#river-pebble)"/>
+  <path d="M416 368h128v48H416Z" fill="url(#river-pebble)"/>
+  <path d="M384 336h96v80h-96Z" fill="url(#sunstone)"/>
+  <path d="M416 272h48v96h-48Z" fill="url(#river-pebble)"/>
+  <path d="M368 224h128v80H368Z" fill="url(#sunstone)"/>
+  <path d="M288 224h144v48H288Z" fill="url(#stone)"/>
+  <path d="M256 176h80v96h-80Z" fill="url(#sunstone)"/>
+
+  <!-- Dampness sits in joints, not as an indiscriminate green filter.  Each floor
+       finish is bounded by the same walkable region as the Tile map. -->
+  <path d="M480 624h96v64h-96ZM464 448h112v80H464ZM384 336h96v80h-96ZM368 224h128v80H368Z" fill="url(#moss)" opacity=".48"/>
+  <path d="M486 626h84M490 678h38M468 519h49M523 462h35M389 396h50M378 282h50" stroke="#d8d3c1" stroke-width="2" opacity=".7"/>
+  <path d="M504 610h33M478 498h36M428 391h25M402 350h26M390 260h48" stroke="#666f66" stroke-width="2" opacity=".45"/>
+
+  <!-- Wall feet and dark lower edges give the narrow way a human-scale section. -->
+  <path d="M475 600v-84h-17v-77h31v-61h-80v-44h-29v-31h-20v-96h-30" fill="none" stroke="#59645c" stroke-width="6"/>
+  <path d="M583 604v-92h-8v-77h-25v-69h-81v-40h-12v-70h39" fill="none" stroke="#626960" stroke-width="6"/>
+  <path d="M470 604v-90h-13v-73h28v-68h-80" fill="none" stroke="#e8dfca" stroke-width="5"/>
+  <path d="M588 603v-90h-8v-82h-22v-68h-86" fill="none" stroke="#e7dfcd" stroke-width="5"/>
+  <path d="M476 622h22M541 622h34" stroke="#464e46" stroke-width="7"/>
+  <path d="M476 582h18M544 582h31" stroke="#495149" stroke-width="6"/>
+  <path d="M489 376h48M388 336h29M464 336h16" stroke="#6e7267" stroke-width="5"/>
+
+  <!-- Small entrance reveals: jambs outside the walkable strip, no drawn closed door. -->
+  <rect x="469" y="594" width="21" height="31" fill="#463e36"/>
+  <rect x="551" y="594" width="21" height="31" fill="#463e36"/>
+  <rect x="473" y="601" width="13" height="18" fill="#746656"/>
+  <rect x="555" y="601" width="13" height="18" fill="#746656"/>
+  <path d="M467 590h25M549 590h25" stroke="#b2a085" stroke-width="5"/>
+  <path d="M475 586h18M549 586h20" stroke="#343b38" stroke-width="3"/>
+  <path d="M409 266h12M463 266h10" stroke="#564b40" stroke-width="5"/>
+  <path d="M410 275h10M464 275h10" stroke="#b6aa92" stroke-width="5"/>
+  <path d="M284 217h18M327 217h20" stroke="#554d43" stroke-width="5"/>
+
+  <!-- Light wells, a little vegetation, no unverified entrance canal or landmark plaque. -->
+  <path d="M396 343h18v17h-18ZM478 454h12v20h-12Z" fill="#697562"/>
+  <path d="M402 338l-4-18M405 339l8-21M411 340l12-15M480 451l-7-16M485 452l10-15" stroke="#4b654e" stroke-width="3"/>
+  <path d="M373 245h20v20h-20ZM470 245h19v19h-19Z" fill="#6e775f"/>
+  <path d="M376 244l-8-15M381 244l3-22M386 244l12-18M473 244l-5-14M480 244l8-16" stroke="#4b634a" stroke-width="3"/>
+  <path d="M487 478h9M552 482h13M397 351h10M468 355h8" stroke="#dcd2ba" stroke-width="3"/>
+
+
+  <!-- Ancient-tree fore-corridor: six solid-window silhouettes. Suzhou Gazetteer
+       records the current east-to-west motif sequence; these tiny original pixel
+       readings are not tracings or claims about the 1890 joinery. The second
+       motif's source glyph is incomplete, so its core stays an abstract turn. -->
+  <g id="ancient-tree-six-windows">
+    <path d="M368 172h128v52H368Z" fill="#d8d2c1"/>
+    <path d="M368 173h128v5H368Z" fill="#9da194"/>
+    <path d="M365 163h133v10H365Z" fill="url(#gate-eave)"/>
+    <path d="M367 173h129v5H367Z" fill="#424b47"/>
+    <path d="M369 180h4v40h-4ZM489 180h4v40h-4Z" fill="#746b5d"/>
+    <path d="M376 183h16v34h-16ZM395 183h16v34h-16ZM414 183h16v34h-16ZM433 183h16v34h-16ZM452 183h16v34h-16ZM471 183h16v34h-16Z" fill="#5d685e"/>
+    <path d="M378 185h12v30h-12ZM397 185h12v30h-12ZM416 185h12v30h-12ZM435 185h12v30h-12ZM454 185h12v30h-12ZM473 185h12v30h-12Z" fill="#81917e"/>
+    <path d="M379 202h10M398 198h10M417 204h10M436 196h10M455 201h10M474 205h10" stroke="#aeb49e" stroke-width="2"/>
+    <!-- East to west in the source: hexagonal round, an uncertain turned glyph,
+         octagon/begonia, begonia-pearl, sunflower and vine/ruyi. World east is
+         +x, so mirror only the six motifs to read in that order right to left. -->
+    <g transform="translate(864 0) scale(-1 1)">
+    <path d="M381 189h6l3 5v12l-3 5h-6l-3-5v-12Z" fill="none" stroke="#3f4c43" stroke-width="2"/>
+    <path d="M382 196h4v8h-4Z" fill="none" stroke="#c2c8b3" stroke-width="2"/>
+    <path d="M399 189h8v4h-5v5h5v5h-5v7h5" fill="none" stroke="#3f4c43" stroke-width="2"/>
+    <path d="M418 188h8l3 4v16l-3 4h-8l-3-4v-16Z" fill="none" stroke="#3f4c43" stroke-width="2"/>
+    <path d="M421 195v3h-3v4h3v3h3v-3h3v-4h-3v-3Z" fill="none" stroke="#c2c8b3" stroke-width="2"/>
+    <path d="M438 190h6v4h3v5h-3v4h-6v-4h-3v-5h3Z" fill="none" stroke="#3f4c43" stroke-width="2"/>
+    <path d="M440 196h2v2h-2Z" fill="#d7d2bd"/>
+    <path d="M457 194h6v8h-6ZM460 189v4M460 203v5M454 198h2M464 198h2M455 192l2 2M463 202l2 2M463 194l2-2M455 204l2-2" fill="none" stroke="#3f4c43" stroke-width="2"/>
+    <path d="M475 191h7v4h-4v4h5v4h-6v6h-3M480 189v3M476 209h6" fill="none" stroke="#3f4c43" stroke-width="2"/>
+    </g>
+    <path d="M374 219h115v5H374Z" fill="#656e64"/>
+    <path d="M374 219h115" stroke="#e2dcc8" stroke-width="2"/>
+  </g>
+  <path d="M242 174h101v14H242Z" fill="url(#roof)"/>
+  <path d="M345 155h152v16H345Z" fill="url(#roof)"/>
+
+  <!-- South gate: a cropped street elevation on either side of the open passage.
+       Nothing is painted across x=496..544, so the scholar remains legible. -->
+  <path d="M352 544h126v18H352ZM566 544h154v18H566Z" fill="#444b47"/>
+  <path d="M360 532h111v12H360ZM573 532h140v12H573Z" fill="url(#roof)"/>
+  <path d="M368 561h98v67h-98ZM578 561h114v67H578Z" fill="#dbd5c4"/>
+  <path d="M365 562h104v8H365ZM575 562h121v8H575Z" fill="#929486"/>
+  <path d="M380 579h68v43h-68ZM595 579h75v43h-75Z" fill="#bcb6a5"/>
+  <path d="M383 582h62v36h-62ZM598 582h69v36h-69Z" fill="#595f57"/>
+  <path d="M388 586h52v28h-52ZM603 586h59v28h-59Z" fill="#7e897f"/>
+  <path d="M398 586v28M412 586v28M426 586v28M612 586v28M627 586v28M646 586v28" stroke="#454c47" stroke-width="4"/>
+  <path d="M394 598h50M608 600h55" stroke="#bfc5b4" stroke-width="3"/>
+  <path d="M364 625h105M575 625h120" stroke="#5f665d" stroke-width="5"/>
+  <path d="M472 570h22M548 570h24" stroke="#3d443f" stroke-width="8"/>
+  <path d="M478 575h15M548 575h18" stroke="#a7987f" stroke-width="4"/>
+  <path d="M480 616h16M544 616h17" stroke="#d4c4a5" stroke-width="3"/>
+  <!-- Gate-side household objects: a rain jar, broom and modest planting; all
+       stay outside the street/gate walkable Tile. -->
+  <path d="M454 633h20v5h-20v14h-5v-14h-6v-5h11Z" fill="#6a675c"/>
+  <path d="M449 648h28v14h-28Z" fill="#727a70"/>
+  <path d="M451 646h23v4h-23Z" fill="#c3bcaa"/>
+  <path d="M586 620h4v34h-4ZM581 652h15v7h-15Z" fill="#746b58"/>
+  <path d="M590 635l10 8M588 633l-9 10" stroke="#aaa082" stroke-width="3"/>
+  <path d="M444 594h19v4h-19v10h-4v-10h-10v-4h10Z" fill="#536d58"/>
+  <path d="M447 578h5v20h-5Z" fill="#697d60"/>
+  <path d="M445 588l-12-14M453 590l10-17" stroke="#536e56" stroke-width="4"/>
+
+  <!-- Timber-framed side elevations provide an oblique, human-height section.
+       Their lower edges end at the floor boundary, never over the walkway. -->
+  <path d="M360 375h49v160h-49ZM582 380h85v170h-85Z" fill="#d3cebe"/>
+  <path d="M354 360h60v17h-60ZM578 365h95v17h-95Z" fill="#454c48"/>
+  <path d="M358 350h54v10h-54ZM583 355h86v10h-86Z" fill="url(#roof)"/>
+  <path d="M365 392h6v131h-6ZM400 392h6v131h-6ZM590 394h7v142h-7ZM649 394h7v142h-7Z" fill="#66594e"/>
+  <path d="M372 402h25v50h-25ZM600 401h46v63h-46Z" fill="#8f9d90"/>
+  <path d="M375 405h19v44h-19ZM604 405h38v55h-38Z" fill="#6b806f"/>
+  <path d="M381 405v44M388 405v44M615 405v55M629 405v55" stroke="#434c44" stroke-width="3"/>
+  <path d="M371 420h27M601 424h44M601 443h44" stroke="#c3c6b3" stroke-width="3"/>
+  <path d="M362 529h48M582 538h85" stroke="#667064" stroke-width="7"/>
+  <path d="M410 372h7v63h-7ZM575 374h7v58h-7Z" fill="#565b51"/>
+  <path d="M413 376h2v51h-2ZM578 378h2v48h-2Z" fill="#a7a08a"/>
+  <!-- Corridor pools of light remain on the paving, not in the solid wall. -->
+  <path d="M501 444h29v5h-29ZM427 381h28v4h-28" fill="#e1d8c2" opacity=".67"/>
+  <path d="M505 450h23v3h-23ZM428 386h17v3h-17" fill="#697b6b" opacity=".37"/>
+
+  <!-- Second lightwell: one asymmetric bamboo clump in a raised bed, cut off
+       at x=382 outside the path; a small opposite wall-shadow balances it. -->
+  <path d="M344 319h38v101h-38Z" fill="#bcb8a6"/>
+  <path d="M349 374h31v38h-31Z" fill="#737f6d"/>
+  <path d="M350 409h32v7h-32Z" fill="#646a5d"/>
+  <path d="M355 385l4-61M365 391l-1-77M373 388l8-63" stroke="#4e6b57" stroke-width="3"/>
+  <path d="M355 346l-15-10M357 351l13-17M363 338l-10-12M368 352l14-11M377 342l8-15" stroke="#5c765e" stroke-width="4"/>
+  <path d="M365 324l-6-10M381 328l10-7" stroke="#809477" stroke-width="3"/>
+  <path d="M480 342h12v60h-12Z" fill="#b9b5a4"/>
+  <path d="M482 348h6v48h-6Z" fill="#d8d2c0"/>
+  <path d="M484 365h6v3h-6ZM484 380h6v3h-6" fill="#96998b"/>
+
+  <!-- Ancient-tree court: the trunk and crown are entirely on the east bank of
+       the path. It is one airy specimen, not a row of repeated round shrubs. -->
+  <path d="M499 226h115v82H499Z" fill="#b3b7a7"/>
+  <path d="M505 272h82v36h-82Z" fill="#778371"/>
+  <path d="M508 301h81v8h-81Z" fill="#646a5e"/>
+  <path d="M535 225h13v78h-13ZM542 218h9v30h-9Z" fill="#5c5548"/>
+  <path d="M537 239l-26-22M548 236l25-25M545 260l39-13" stroke="#645d4d" stroke-width="8"/>
+  <path d="M513 201h29v16h-29v15h-20v-23h20ZM536 179h43v14h-43v24h-20v-30h20ZM563 195h41v22h-20v13h-25v-23h4Z" fill="#5d7462"/>
+  <path d="M514 197h31v8h-31ZM539 175h37v8h-37ZM568 191h30v9h-30Z" fill="#849781"/>
+  <path d="M502 219h24v8h-24ZM576 215h28v8h-28Z" fill="#485f54"/>
+  <path d="M546 286h23v4h-23ZM552 299h19v3h-19" stroke="#9b9d86" stroke-width="2"/>
+  <!-- North wall and all six windows end at y=224, where walkable paving begins. -->
+
+  <!-- Westward exit through a framed, open threshold: no door leaf or false
+       impassable arch over the x=256..336 route. -->
+  <path d="M235 181h18v88h-18ZM337 181h18v88h-18Z" fill="#d5cebc"/>
+  <path d="M235 185h8v76h-8ZM345 185h8v76h-8Z" fill="#61574b"/>
+  <path d="M226 167h136v13H226Z" fill="url(#roof)"/>
+  <path d="M236 176h19M336 176h18" stroke="#494b43" stroke-width="6"/>
+  <path d="M254 267h82" stroke="#6d746a" stroke-width="5"/>
+
+  <!-- The east face of the second lightwell is another shallow architectural
+       section. It remains behind the south gate wing and outside the x<=544
+       west-bend floor; its window is generic game staging, not a dated relic. -->
+  <g id="second-lightwell-east-face">
+    <path d="M582 322h116v148H582Z" fill="#d0cdbf"/>
+    <path d="M698 322h11v148h-11Z" fill="#a3a699"/>
+    <path d="M588 315h118v8H588Z" fill="#9fa297"/>
+    <path d="M585 297h113l14 18H576Z" fill="url(#gate-eave)"/>
+    <path d="M576 315h136v13H576Z" fill="#424c48"/>
+    <path d="M578 316h132M579 326h131" stroke="#81877b" stroke-width="2"/>
+    <path d="M590 333h7v129h-7ZM687 333h7v129h-7Z" fill="#675d51"/>
+    <path d="M594 337h2v117h-2ZM691 337h2v117h-2Z" fill="#a49c88"/>
+    <path d="M605 349h72v81h-72Z" fill="#aeb2a6"/>
+    <path d="M610 354h62v70h-62Z" fill="#45514c"/>
+    <path d="M614 358h54v62h-54Z" fill="#75867b"/>
+    <path d="M614 370h54M614 398h54M632 358v62M650 358v62" stroke="#424f49" stroke-width="4"/>
+    <path d="M615 365h52M615 393h52" stroke="#b9c0af" stroke-width="2"/>
+    <path d="M606 431h70M584 461h114" stroke="#636d62" stroke-width="5"/>
+  </g>
+
+  <!-- South gate architectural depth pass. Both wings remain entirely outside
+       the x=496..544 gate strip; this is game staging, not a historic elevation. -->
+  <g id="south-gate-depth-pass">
+    <!-- An upper lip, pitched tile planes and thick side returns replace the
+         single dark horizontal band that read as a plan-view diagram. -->
+    <path d="M464 532h16v44h-16ZM564 532h16v44h-16Z" fill="url(#stone)"/>
+    <path d="M350 507h114v116H350Z" fill="#d4d0c2"/>
+    <path d="M580 507h139v116H580Z" fill="#d0ccbd"/>
+    <path d="M464 576h15v47l-15 5Z" fill="#a9aa9c"/>
+    <path d="M580 576h-15v47l15 5Z" fill="#a4a79b"/>
+    <path d="M350 505h114v8H350ZM580 505h139v8H580Z" fill="#aaa99a"/>
+    <path d="M355 469h94l15 20H341Z" fill="url(#gate-eave)"/>
+    <path d="M585 469h126l18 20H580Z" fill="url(#gate-eave)"/>
+    <path d="M341 489h123v16H341ZM580 489h149v16H580Z" fill="#424d49"/>
+    <path d="M343 490h119M582 490h145" stroke="#81867a" stroke-width="3"/>
+    <path d="M346 503h116M583 503h144" stroke="#303b39" stroke-width="3"/>
+    <!-- Posts and recessed lattice windows sit in the wall face; their lower
+         dark line coincides with the non-walkable wall foot, not the passage. -->
+    <path d="M358 508h8v105h-8ZM449 508h8v105h-8ZM590 508h8v105h-8ZM703 508h8v105h-8Z" fill="#675d51"/>
+    <path d="M362 512h3v91h-3ZM453 512h3v91h-3ZM594 512h3v91h-3ZM707 512h3v91h-3Z" fill="#958e7c"/>
+    <path d="M373 529h68v62h-68ZM605 529h89v62h-89Z" fill="#adafa2"/>
+    <path d="M378 534h58v51h-58ZM610 534h79v51h-79Z" fill="#424f4b"/>
+    <path d="M382 538h50v43h-50ZM614 538h71v43h-71Z" fill="#74877d"/>
+    <path d="M382 548h50M382 569h50M396 538v43M415 538v43M614 548h71M614 569h71M632 538v43M657 538v43" stroke="#404d49" stroke-width="4"/>
+    <path d="M383 544h48M615 544h69" stroke="#aeb8a6" stroke-width="2"/>
+    <path d="M373 589h68M605 589h89" stroke="#dcd9c9" stroke-width="4"/>
+    <path d="M350 607h114v7H350ZM580 607h139v7H580Z" fill="#aaa99b"/>
+    <path d="M350 614h114v14H350ZM580 614h139v14H580Z" fill="#626b63"/>
+    <path d="M350 614h114M580 614h139" stroke="#d0cebe" stroke-width="3"/>
+    <!-- A narrow dry joint and inset threshold clarify where shoes cross. -->
+    <path d="M464 562h32v14h-32ZM544 562h36v14h-36Z" fill="url(#stone)"/>
+    <path d="M480 592h15M545 592h20M482 612h14M545 612h17" stroke="#494f48" stroke-width="3"/>
+    <path d="M499 606h42M500 618h40" stroke="#d7d0bc" stroke-width="2"/>
+    <path d="M502 621h36" stroke="#6e776c" stroke-width="2"/>
+    <!-- Irregular but restrained planting, not a repeated line of round trees. -->
+    <path d="M343 621h17v9h-17ZM721 613h19v11h-19Z" fill="#777d70"/>
+    <path d="M350 620l-6-18M350 620l5-26M354 619l10-17M728 614l-7-19M730 614l4-27M733 615l12-17" stroke="#526958" stroke-width="3"/>
+    <path d="M340 599h8M354 591h8M361 602h7M718 594h8M732 585h9M742 596h7" stroke="#788b73" stroke-width="4"/>
+  </g>
+</svg>

@@ -1,0 +1,156 @@
+/* 今按层 · 实验场。视觉沿用白模统一像素层（pixel-theme.css 在其后加载）。 */
+:root {
+  --panel: #202a23;
+  --panel2: #26332b;
+  --line: rgba(242, 234, 214, .18);
+  --paper: #f2ead6;
+  --muted: #a39d90;
+  --faint: #7e796d;
+  --gold: #c8a04b;
+  --zhu: #b03a2e;
+  --qing: #3d7068;
+}
+* { box-sizing: border-box; }
+html { background: var(--px-ink, #171512); }
+body {
+  margin: 0;
+  color: var(--paper);
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 13px;
+  line-height: 1.7;
+}
+main { width: min(1280px, calc(100% - 28px)); margin: 0 auto; padding: 24px 0 72px; }
+
+/* —— 顶栏 —— */
+.top {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap; margin-bottom: 18px;
+  padding-bottom: 14px; border-bottom: 1px solid var(--line);
+}
+.eyebrow { margin: 0 0 6px; color: var(--gold); font-size: 10px; letter-spacing: .2em; }
+h1 { margin: 0; font-family: "Songti SC", serif; font-size: 26px; font-weight: 500; letter-spacing: .06em; }
+.sub { margin: 8px 0 0; color: var(--muted); font-size: 12px; max-width: 62ch; }
+.top nav { display: flex; gap: 8px; flex-wrap: wrap; }
+.top nav a {
+  padding: 7px 11px; border: 1px solid var(--line); color: var(--muted);
+  text-decoration: none; font-size: 12px; white-space: nowrap;
+}
+.top nav a:hover, .top nav a:focus-visible { color: var(--paper); border-color: var(--gold); }
+.top nav a.here { border-color: var(--gold); color: var(--paper); }
+
+/* —— 通用块 —— */
+.block { border: 1px solid var(--line); background: var(--panel); padding: 16px; }
+.block > h2 {
+  margin: 0 0 12px; font-family: "Songti SC", serif; font-size: 16px;
+  font-weight: 500; letter-spacing: .06em; display: flex; align-items: baseline; gap: 10px;
+}
+.block > h2 em { color: var(--faint); font-size: 11px; font-style: normal; font-family: "PingFang SC", sans-serif; letter-spacing: 0; }
+
+.grid1 { display: grid; grid-template-columns: minmax(0, 1fr) 322px; gap: 14px; align-items: start; margin-bottom: 14px; }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 14px; align-items: start; margin-bottom: 14px; }
+@media (max-width: 1020px) { .grid1, .grid2 { grid-template-columns: 1fr; } }
+
+/* —— 舞台 —— */
+.stagewrap { padding: 12px; }
+canvas {
+  display: block; width: 100%; height: auto; image-rendering: pixelated;
+  border: 1px solid var(--line); box-shadow: 6px 6px 0 rgba(0, 0, 0, .38);
+}
+.readout {
+  margin: 10px 0 0; padding: 7px 10px; border-left: 3px solid var(--qing);
+  background: rgba(61, 112, 104, .12); color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px;
+}
+
+/* —— 控件 —— */
+.ctl { margin-bottom: 15px; }
+.ctl:last-child { margin-bottom: 0; }
+.ctl label { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 5px; }
+.ctl label b { font-weight: 500; color: var(--paper); font-size: 12px; }
+.ctl label span { color: var(--gold); font-family: ui-monospace, monospace; font-size: 11.5px; }
+.ctl input[type="range"] {
+  width: 100%; height: 4px; margin: 0; appearance: none;
+  background: var(--line); border: 0; border-radius: 0;
+}
+.ctl input[type="range"]::-webkit-slider-thumb {
+  appearance: none; width: 10px; height: 18px; background: var(--zhu); border: 0; border-radius: 0;
+}
+.ctl input[type="range"]::-moz-range-thumb { width: 10px; height: 18px; background: var(--zhu); border: 0; border-radius: 0; }
+.ctl .hint { margin: 5px 0 0; color: var(--faint); font-size: 11px; }
+
+.btnrow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+.btnrow button {
+  padding: 8px 12px; border: 1px solid var(--line); background: transparent;
+  color: var(--muted); font: inherit; font-size: 12px; cursor: pointer;
+}
+.btnrow button:hover, .btnrow button:focus-visible { color: var(--paper); border-color: var(--gold); }
+.btnrow button.on { border-color: var(--gold); color: var(--paper); background: rgba(200, 160, 75, .14); }
+
+/* —— 分离轴表 —— */
+table.axes { width: 100%; border-collapse: collapse; font-size: 12px; }
+table.axes th, table.axes td { padding: 7px 9px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+table.axes th { color: var(--faint); font-weight: 400; font-size: 11px; letter-spacing: .06em; }
+table.axes td.k { color: var(--muted); white-space: nowrap; }
+table.axes td.w { color: var(--paper); }
+table.axes td.a { color: var(--gold); font-family: ui-monospace, monospace; }
+table.axes tr:last-child td { border-bottom: 0; }
+
+/* —— 实例列表 —— */
+ul.list { margin: 0; padding: 0; list-style: none; }
+ul.list li {
+  display: grid; grid-template-columns: 74px 1fr auto; gap: 4px 10px;
+  padding: 9px 10px; border: 1px solid transparent; border-bottom-color: var(--line);
+  cursor: pointer;
+}
+ul.list li:hover { background: var(--panel2); }
+ul.list li.on { border-color: var(--gold); background: rgba(200, 160, 75, .1); }
+ul.list b { font-family: ui-monospace, monospace; font-size: 12px; color: var(--paper); font-weight: 500; }
+ul.list span { color: var(--muted); font-size: 12px; }
+ul.list em { color: var(--qing); font-style: normal; font-size: 11px; }
+ul.list i { grid-column: 2 / -1; color: var(--faint); font-style: normal; font-size: 11.5px; }
+
+/* —— 详情 —— */
+dl { margin: 0; display: grid; grid-template-columns: 84px 1fr; gap: 6px 12px; }
+dt { color: var(--faint); font-size: 11px; }
+dd { margin: 0; font-size: 12.5px; }
+dd.q { font-family: "Songti SC", serif; color: var(--paper); line-height: 1.85; }
+dd.note { color: var(--muted); font-size: 12px; }
+.warn { color: var(--zhu); }
+mark { background: rgba(200, 160, 75, .18); color: var(--paper); padding: 0 3px; }
+
+/* —— 自检 —— */
+.lintrow { display: grid; grid-template-columns: 20px 1fr; gap: 6px 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.lintrow:last-child { border-bottom: 0; }
+.lintrow > b { font-size: 13px; }
+.lintrow > span { color: var(--paper); font-size: 12.5px; }
+.lintrow > em { grid-column: 2; color: var(--faint); font-style: normal; font-size: 11.5px; }
+.lintrow ul { grid-column: 2; margin: 4px 0 0; padding-left: 14px; }
+.lintrow li { color: var(--muted); font-size: 11.5px; font-family: ui-monospace, monospace; }
+.lintrow.ok > b { color: var(--qing); }
+.lintrow.warnrow > b { color: var(--gold); }
+.lintrow.bad > b { color: var(--zhu); }
+#lintSummary { margin: 12px 0 0; padding-top: 10px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11.5px; }
+
+/* —— 字体探针 —— */
+.probe > div { display: grid; grid-template-columns: 20px 1fr auto; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line); }
+.probe > div:last-child { border-bottom: 0; }
+.probe b { font-size: 13px; }
+.probe .ok b { color: var(--qing); }
+.probe .bad b { color: var(--zhu); }
+.probe em { color: var(--faint); font-style: normal; font-family: ui-monospace, monospace; font-size: 11px; }
+.alert {
+  margin: 10px 0 0; padding: 9px 11px; border-left: 3px solid var(--zhu);
+  background: rgba(176, 58, 46, .12); color: var(--paper); font-size: 12px;
+}
+.kv { margin: 12px 0 0; padding-top: 10px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11.5px; }
+.kv p { margin: 0 0 4px; font-family: ui-monospace, monospace; }
+
+/* —— 底部说明 —— */
+.notes { margin-top: 14px; }
+.notes ol { margin: 0; padding-left: 20px; }
+.notes li { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+.notes li b { color: var(--paper); font-weight: 500; }
+
+/* 「收起界面」：只留画布，用来看真实观感 */
+body.tidy .block:not(.stagewrap), body.tidy .top nav, body.tidy .readout { display: none; }
+body.tidy .grid1, body.tidy .grid2 { grid-template-columns: 1fr; }

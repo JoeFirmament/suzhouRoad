@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>苏州园林构图小游戏 · 跨园连续线索样机</title>
+  <link rel="stylesheet" href="pixel-theme.css">
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#202923;color:#eee9da;font:16px/1.5 "PingFang SC","Microsoft YaHei",sans-serif}main{max-width:1360px;margin:auto;padding:16px}header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.badge{font-size:.75rem;letter-spacing:.15em;color:#c7bb9d}h1{font-size:1.35rem;margin:2px 0 8px;font-weight:600;letter-spacing:.06em}a{color:#c9d4c7}.lead{margin:4px 0 14px;color:#d3d8ce}.topline{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.modes{display:flex;gap:6px;flex-wrap:wrap}.modes button,.restart,.reset-route{min-height:42px;padding:6px 12px;border:1px solid #778174;background:#303b33;color:#eee9da;font:inherit;cursor:pointer}.modes button[aria-pressed="true"]{background:#d4c6a3;color:#26342c;border-color:#e7d7ad;box-shadow:3px 3px 0 #111a14}.restart{background:#8f3a30;border-color:#ae6454}.reset-route{border-color:#9a8c69;background:#3c4035;color:#e6d7ae}.route-state{max-width:1280px;margin:6px auto 8px;padding:8px 12px;background:#2c372f;border-left:3px solid #b8a778;color:#e5dec9;font-size:.9rem;letter-spacing:.02em}.route-state[data-complete="true"]{border-color:#8fa080;color:#e4eadc}.stage{width:100%;max-width:1280px;margin:12px auto 8px;border:3px solid #68756b;box-shadow:0 12px 38px #101713a8;background:#18221c;overflow:hidden}.stage canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;image-rendering:pixelated;touch-action:none;outline:none}.access-hint{max-width:1280px;margin:5px auto;color:#c3ccbf;font-size:.9rem}.key{display:inline-block;padding:1px 6px;margin:0 2px;border:1px solid #879080;background:#2b362e;color:#efe7d2;box-shadow:2px 2px 0 #111a14}.source-note{max-width:1280px;margin:12px auto;padding:10px 12px;background:#2c372f;border-left:3px solid #b8a778;color:#d1d6cb;font-size:.87rem}.source-note b{color:#e6d7ae}.noscript{padding:12px;color:#ffcfb7}
+    .story-beat{max-width:1280px;margin:-3px auto 8px;padding:7px 12px;background:#252e28;border-left:3px solid #788675;color:#c9cbbb;font-size:.88rem;min-height:38px}.story-beat strong{color:#d5c6a1;font-weight:500;letter-spacing:.04em}.preview-banner{max-width:1280px;margin:8px auto;padding:9px 12px;border:1px solid #d0b773;background:#3b382b;color:#f0dfae;font-size:.9rem}.preview-banner[hidden]{display:none}
+    @media(max-width:640px){main{padding:10px}.lead{font-size:.9rem}.stage{overflow-x:auto}.stage canvas{min-width:760px}.modes button,.restart{min-height:44px;padding:5px 8px;font-size:.88rem}.access-hint{font-size:.8rem}}
+  </style>
+</head>
+<body><main>
+  <header><div><div class="badge">苏州园林 · 跨园林连续线索样机</div><h1>游三园寻残记，回府学合读</h1></div><nav><a href="liuyuan-composition-atlas.html">回玩法提案 ↗</a>　<a href="?preview=story">序章试玩（不读写进度）↗</a>　<a href="?preview=all-clues">合笺预览（不读写进度）↗</a></nav></header>
+  <p class="lead">先从苏州府学序章读到一册未题名的手记，再选择先去沧浪亭、网师园或留园；三园没有固定游览顺序，每处只补一段线索，齐备后回府学合笺。A 是独立的躲避动作单测。场景为概念草图，不是实景复原。</p>
+  <div class="topline"><nav class="modes" aria-label="选择章节或玩法样机"><button type="button" data-mode="I" aria-pressed="true">序章 · 读手记</button><button type="button" data-mode="B" aria-pressed="false">沧浪亭 · 寻纹</button><button type="button" data-mode="C" aria-pressed="false">网师园 · 护笺</button><button type="button" data-mode="D" aria-pressed="false">留园 · 寻痕</button><button type="button" data-mode="E" aria-pressed="false">府学 · 合笺</button><button type="button" data-mode="A" aria-pressed="false">A · 躲避单测</button></nav><div><button id="restart" class="restart" type="button">开始游园</button> <button id="resetJourney" class="reset-route" type="button">重置跨园线索</button></div></div>
+  <div id="previewBanner" class="preview-banner" role="status" hidden>演示预览：三园线索仅在本页模拟，刷新可还原；不会覆盖或清除已存的正式进度。</div>
+  <div id="journeyStatus" class="route-state" role="status" aria-live="polite"></div>
+  <div class="story-beat" role="status" aria-live="polite"><strong>手记旁批 · </strong><span id="journeyBeat"></span></div>
+  <div class="stage"><canvas id="game" width="1280" height="720" tabindex="0" aria-label="五个构图游戏节点的720p固定画布试玩区"></canvas></div>
+  <p id="accessHint" class="access-hint" aria-live="polite"></p>
+  <div class="source-note"><b>关于来源：</b>提案页展示潘天寿《关于构图问题》图二五完整例图及出处，供玩家观察。本试玩里的画稿、纸片、证词和规则均为原创，不是书中图像的复刻、考题或“标准构图”。正式绑定某座园林和固定构件前，再按项目流程核查实景资料。</div>
+  <noscript><p class="noscript">试玩需要启用 JavaScript。</p></noscript>
+</main>
+<script>
+(() => {
+  'use strict';
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d', { alpha: false });
+  const hint = document.getElementById('accessHint');
+  const journeyStatus = document.getElementById('journeyStatus');
+  const journeyBeat = document.getElementById('journeyBeat');
+  const previewBanner = document.getElementById('previewBanner');
+  const W = 1280, H = 720, FIELD = 540, HUD = 540;
+  const C = { ink:'#28372f', deep:'#17231e', deep2:'#202b24', paper:'#e8e1d0', paperLight:'#f0eadb', wall:'#c4c0ae', wall2:'#aaa896', stone:'#8c8c7c', stone2:'#a2a08e', moss:'#6f806c', leaf:'#62775e', paleLeaf:'#87937a', water:'#7d9b91', red:'#963c32', red2:'#b56554', gold:'#c8ad70', grey:'#646c61', white:'#f5f0e3' };
+  const directions = [
+    [{sx:156,sy:25,sw:172,sh:350},{sx:455,sy:25,sw:172,sh:354},{sx:755,sy:25,sw:173,sh:354}],
+    [{sx:160,sy:387,sw:172,sh:346},{sx:458,sy:387,sw:175,sh:346},{sx:761,sy:387,sw:167,sh:346}],
+    [{sx:147,sy:741,sw:178,sh:333},{sx:453,sy:741,sw:183,sh:332},{sx:752,sy:741,sw:178,sh:333}],
+    [{sx:157,sy:1081,sw:176,sh:330},{sx:453,sy:1081,sw:176,sh:331},{sx:753,sy:1080,sw:178,sh:334}]
+  ];
+  const sprite = new Image();
+  sprite.src = '../assets/characters/shen-yanqiu-sprites-v1.png';
+  sprite.onload = () => {};
+  const witnessSprite = new Image();
+  witnessSprite.src = '../assets/characters/qiao-he-sprites-concept-v1.png';
+
+  const keys = new Set();
+  let mode = 'I', previousTime = 0, touchTarget = null;
+  const freshA = () => ({form:0,phase:'ready',x:628,y:452,dir:0,walk:0,focus:false,hp:3,time:0,nextWave:.85,wave:0,hazards:[],invuln:0,stamp:false,message:'先选一种笔势，再开始这一回合。'});
+  const freshB = () => ({x:140,y:470,dir:2,walk:0,seen:[false,false],found:false,won:false,message:''});
+  const freshC = () => ({x:140,y:480,dir:2,walk:0,pressed:false,branch:false,view:false,phase:'plan',message:'先去场景中的 1 号点压住花笺，辨出窗影里的燕纹。'});
+  const freshD = () => ({x:140,y:480,dir:2,walk:0,phase:'gather',clues:[false,false,false],won:false,message:'留园的三处痕迹可任意顺序调查；本园只留下石痕与风路。',guessFeedback:''});
+  const freshE = () => ({done:false,order:[],feedback:'三园线索齐备后，先后点选三张拓片，再合笺读一读。'});
+  const states = {A:freshA(),B:freshB(),C:freshC(),D:freshD(),E:freshE()};
+  const JOURNEY_KEY='suzhou-garden-cross-garden-clues-v1';
+  const PREVIEW_MODE=new URLSearchParams(location.search).get('preview');
+  const PREVIEW_ALL_CLUES=PREVIEW_MODE==='all-clues';
+  if(PREVIEW_MODE){previewBanner.hidden=false;previewBanner.textContent=PREVIEW_ALL_CLUES?'合笺预览：三园线索仅在本页模拟，刷新可还原；不会读取、覆盖或清除正式进度。':'序章试玩：从 0/3 开始，试走期间不会读取、覆盖或清除正式进度；刷新可还原。';document.getElementById('resetJourney').textContent='重置预览';}
+  function loadJourney(){
+    const empty={canglang:false,netshi:false,liuyuan:false,ending:false};
+    try{const saved=JSON.parse(localStorage.getItem(JOURNEY_KEY)||'{}');return{...empty,canglang:saved.canglang===true,netshi:saved.netshi===true,liuyuan:saved.liuyuan===true,ending:saved.ending===true};}
+    catch(_){return empty;}
+  }
+  const journey=PREVIEW_ALL_CLUES?{canglang:true,netshi:true,liuyuan:true,ending:false}:PREVIEW_MODE?{canglang:false,netshi:false,liuyuan:false,ending:false}:loadJourney();
+  function saveJourney(){if(PREVIEW_MODE)return;try{localStorage.setItem(JOURNEY_KEY,JSON.stringify(journey));}catch(_){}}
+  states.E.done=journey.ending;
+  function journeyCount(){return['canglang','netshi','liuyuan'].filter(k=>journey[k]).length;}
+  function journeyLabel(){return`跨园线索 ${journeyCount()}/3　·　沧浪亭${journey.canglang?'✓':'○'}　网师园${journey.netshi?'✓':'○'}　留园${journey.liuyuan?'✓':'○'}　→ 府学合笺${journey.ending?'已合笺':journeyCount()===3?'可合笺':'待三园线索齐'}`;}
+  function refreshJourney(){journeyStatus.textContent=journeyLabel();journeyStatus.dataset.complete=String(journey.ending);}
+  function setJourneyBeat(value){journeyBeat.textContent=value;}
+  function recordClue(garden){
+    const already=journey[garden];journey[garden]=true;
+    saveJourney();
+    refreshJourney();if(already)return;
+    const all=journeyCount()===3;
+    const notes={
+      canglang:journey.netshi?'沧浪亭拓下的水纹与已收的燕尾残笔同用一色淡墨；但石痕还没有着落。':journey.liuyuan?'沧浪亭的水纹与留园石痕同在一册，先后关系仍未明。':'沧浪亭拓下的水纹没有题名；朱砂燕尾只露半笔。两种痕迹尚不足以读懂手记。',
+      netshi:journey.canglang?'网师园的风掀起花笺，窗影里的燕尾续上沧浪亭那段淡墨；石痕仍待寻。':journey.liuyuan?'网师园燕尾与留园石痕并置后，砚秋发现两者都在提示“如何看”，而非某件奇闻。':'网师园窗影里的燕尾终于续上；纸页末端却另留一笔石形。还需走访别园。',
+      liuyuan:all?'留园的断口、风向与石痕相互印证。砚秋把最后一枚拓片收好：三处都齐了，该回府学对着整册手记细读。':journey.canglang||journey.netshi?'留园的断口、风向与石痕相互印证。它和已收的园记并在一起，仍要回府学才能读出全意。':'留园的断口、风向与石痕相互印证；这只是手记的一段，水纹与燕尾还在别园。'
+    };
+    setJourneyBeat(notes[garden]||'一枚残记入册。');
+  }
+  function finishJourney(){
+    journey.ending=true;states.E.done=true;saveJourney();refreshJourney();
+    setJourneyBeat('砚秋把三张拓片依次压在窗影下。水线、燕尾、石痕接成一笔：“水外望园，窗中取景，石间循路。”他终于明白，这册手记记的不是三件奇闻，而是一种慢慢读园的法子。');
+  }
+  function resetJourney(){
+    if(PREVIEW_MODE){journey.canglang=PREVIEW_ALL_CLUES;journey.netshi=PREVIEW_ALL_CLUES;journey.liuyuan=PREVIEW_ALL_CLUES;journey.ending=false;setJourneyBeat(PREVIEW_ALL_CLUES?'合笺预览已还原：三园拓片重新摊开，正式进度未读取、未更改。':'序章试玩已还原：从 0/3 重新开始，正式进度未读取、未更改。');}
+    else{journey.canglang=false;journey.netshi=false;journey.liuyuan=false;journey.ending=false;try{localStorage.removeItem(JOURNEY_KEY);}catch(_){}setJourneyBeat('府学旧藏里夹着一册未题名的园游手记。三处残纹散在不同园林；砚秋此行不是找回某一页，而是读懂它们为何被并在一册里。');}
+    states.B=freshB();states.C=freshC();states.D=freshD();states.E=freshE();touchTarget=null;refreshJourney();draw();
+  }
+  const forms = [
+    {name:'斜枝',desc:'斜线扫过 · 窄长空廊'},
+    {name:'花聚',desc:'墨点外散 · 周缘留空'},
+    {name:'燕回',desc:'两势相迎 · 缺口换边'}
+  ];
+
+  function rect(x,y,w,h,color){ctx.fillStyle=color;ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));}
+  function line(x1,y1,x2,y2,color,width=2){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(Math.round(x1),Math.round(y1));ctx.lineTo(Math.round(x2),Math.round(y2));ctx.stroke();}
+  function text(value,x,y,size=22,color=C.ink,align='left'){
+    ctx.fillStyle=color;ctx.font=`${size}px "PingFang SC","Microsoft YaHei",sans-serif`;ctx.textAlign=align;ctx.textBaseline='alphabetic';ctx.fillText(value,x,y);
+  }
+  function outlined(x,y,w,h,fill=C.paper,stroke=C.ink,thick=3){rect(x,y,w,h,fill);ctx.strokeStyle=stroke;ctx.lineWidth=thick;ctx.strokeRect(x+1,y+1,w-2,h-2);}
+  function button(x,y,w,h,label,active=false,disabled=false){
+    rect(x+4,y+4,w,h,'#121a15');rect(x,y,w,h,disabled?'#77796f':active?'#d6c8a5':'#343e35');
+    ctx.strokeStyle=active?C.gold:'#8b9583';ctx.lineWidth=3;ctx.strokeRect(x+1,y+1,w-2,h-2);
+    const fontSize=Math.max(15,Math.min(21,Math.floor((w-22)/(label.length*.92))));
+    text(label,x+w/2,y+h/2+8,fontSize,disabled?'#d5d0c2':active?C.deep:C.paperLight,'center');
+  }
+  function hitButton(p,x,y,w,h){return p.x>=x&&p.x<=x+w&&p.y>=y&&p.y<=y+h;}
+  function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height};}
+  function dist(x1,y1,x2,y2){return Math.hypot(x1-x2,y1-y2);}
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+  function drawShadow(x,y,w=48){rect(x-w/2,y-3,w,6,'#27342c66');rect(x-w*.34,y-2,w*.68,3,'#18241d66');}
+  function drawActor(x,y,dir=0,walking=false,walk=0,height=142){
+    drawShadow(x,y,Math.round(height*.34));
+    if(!sprite.complete||!sprite.naturalWidth)return;
+    const f=directions[Math.max(0,Math.min(3,dir))][walking?Math.floor(walk*9)%3:0];
+    const dh=Math.round(height),dw=Math.round(dh*f.sw/f.sh);
+    ctx.imageSmoothingEnabled=false;
+    ctx.drawImage(sprite,f.sx,f.sy,f.sw,f.sh,Math.round(x-dw/2),Math.round(y-dh),dw,dh);
+  }
+  function drawWitness(x,y,height=112){
+    drawShadow(x,y,Math.round(height*.34));if(!witnessSprite.complete||!witnessSprite.naturalWidth)return;
+    const f=directions[0][0],dh=Math.round(height),dw=Math.round(dh*f.sw/f.sh);ctx.imageSmoothingEnabled=false;
+    ctx.drawImage(witnessSprite,f.sx,f.sy,f.sw,f.sh,Math.round(x-dw/2),Math.round(y-dh),dw,dh);
+  }
+  function drawBough(x,y,scale=1,lean=0){
+    const s=scale;rect(x-6*s,y-95*s,12*s,104*s,'#59634f');rect(x-3*s,y-74*s,7*s,18*s,'#737860');
+    rect(x-48*s+lean,y-84*s,54*s,7*s,'#58634f');rect(x+2*s+lean,y-65*s,50*s,7*s,'#64705a');
+    // Broken, offset leaf clusters keep the silhouette from reading as a bare plus sign.
+    const leaves=[[-73,-101,20,9,C.moss],[-62,-111,25,11,C.leaf],[-43,-105,21,10,C.paleLeaf],[-27,-92,24,9,C.leaf],[21,-80,22,10,C.moss],[38,-91,25,11,C.leaf],[57,-88,18,8,C.paleLeaf],[45,-69,22,8,C.moss],[-10,-83,20,8,C.paleLeaf]];
+    for(const [lx,ly,lw,lh,color] of leaves)rect(x+(lx+lean)*s,y+ly*s,lw*s,lh*s,color);
+    rect(x-46*s+lean,y-88*s,21*s,3*s,'#9aa083');rect(x+25*s+lean,y-69*s,24*s,3*s,'#929a7c');
+  }
+  function drawBamboo(x,y,s=1){
+    const stalks=[-22,-6,15,30];
+    for(let i=0;i<stalks.length;i++){const sx=x+stalks[i]*s,top=y-(124+(i%2)*19)*s;rect(sx,top,5*s,(y-top),i%2?C.leaf:'#728168');for(let k=1;k<5;k++)rect(sx-2*s,top+k*29*s,9*s,2*s,'#4d634f');
+      rect(sx-22*s,top+31*s,22*s,5*s,C.leaf);rect(sx+3*s,top+48*s,25*s,5*s,C.moss);rect(sx-28*s,top+28*s,10*s,4*s,C.paleLeaf);rect(sx+24*s,top+45*s,12*s,4*s,C.paleLeaf);}
+  }
+  function drawWindow(x,y,w=210,h=170,view='plain'){
+    rect(x-13,y-12,w+26,h+27,'#77776b');rect(x-7,y-6,w+14,h+14,'#a59f8c');rect(x,y,w,h,'#d8d3c4');
+    rect(x+8,y+8,w-16,h-16,'#e7e1d2');rect(x+14,y+14,w-28,h-28,view==='water'?'#a9b9ae':view==='plants'?'#cbd2c2':'#d1d0c2');
+    if(view==='water'){
+      rect(x+15,y+h*.38,w-30,8,'#788b7e');rect(x+15,y+h*.44,w-30,h*.42,'#9aafa5');
+      for(let k=0;k<5;k++){const rx=x+25+(k*67)%(w-64),ry=y+h*.52+(k%3)*16;rect(rx,ry,32+(k%2)*16,2,'#c6d0c2');}
+      rect(x+22,y+h*.29,31,5,'#677c68');rect(x+51,y+h*.23,24,6,'#72866f');rect(x+w-57,y+h*.27,33,5,'#657861');
+    }else if(view==='plants'){
+      for(let k=0;k<5;k++){const sx=x+36+k*27;rect(sx,y+22,3,h-46,k%2?'#75856b':'#667960');rect(sx-11,y+45,14,4,'#78886e');rect(sx+2,y+64,16,4,'#879176');}
+      rect(x+w-65,y+34,33,9,'#7b886c');rect(x+w-77,y+46,26,8,'#899177');rect(x+w-49,y+48,29,8,'#6d8064');
+    }
+    for(let k=0;k<=4;k++)rect(x+18+k*(w-36)/4,y+13,4,h-26,'#77786d');
+    for(let k=1;k<=3;k++)rect(x+12,y+k*(h/4),w-24,4,'#827e70');
+    rect(x+7,y+6,w-14,5,'#f2ecdd');rect(x+8,y+h-9,w-16,4,'#b3ac98');
+    // A compact interlocking lattice detail, not scratch-like loose strokes.
+    const mid=x+w/2,cy=y+h/2;for(let k=-1;k<=1;k++){
+      const yy=cy+k*20;line(mid-30,yy,mid,yy+12,'#9b9584',2);line(mid,yy+12,mid+30,yy,'#9b9584',2);
+      line(mid-30,yy,mid,yy-12,'#b0a995',2);line(mid,yy-12,mid+30,yy,'#b0a995',2);
+    }
+  }
+  function polygon(points,fill,stroke=null,width=2){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.stroke();}}
+  function drawRoofline(){
+    polygon([[0,0],[1280,0],[1280,55],[1170,62],[1050,52],[930,63],[800,54],[660,64],[520,53],[385,62],[250,52],[115,63],[0,54]],'#465247');
+    rect(0,48,W,8,'#303d34');rect(0,57,W,8,'#777a6a');rect(0,65,W,6,'#c3bba6');
+    for(let x=-16;x<W;x+=42){rect(x,8,28,5,'#707665');rect(x+5,15,28,5,'#626b5e');rect(x+12,22,27,4,'#515e53');}
+    rect(0,69,W,8,'#8a8777');rect(0,77,W,4,'#ddd6c3');
+  }
+  function drawGardenTree(x,base,scale=1,kind='osmanthus'){
+    const s=scale;drawShadow(x,base,102*s);
+    if(kind==='banana'){
+      rect(x-4*s,base-64*s,9*s,66*s,'#716a4f');rect(x-24*s,base-30*s,43*s,4*s,'#788b68');
+      const leaves=[[-88,-70,-28,-16],[-71,-94,-6,-23],[-49,-106,15,-31],[-18,-92,42,-22],[12,-72,64,-10],[-83,-53,-17,2]];
+      for(let i=0;i<leaves.length;i++){const [a,b,c,d]=leaves[i];polygon([[x+a*s,base+b*s],[x+c*s,base+d*s],[x+4*s,base-32*s]],i%2?'#718765':'#819174');line(x+4*s,base-32*s,x+(a+c)*.48*s,base+(b+d)*.48*s,'#a4aa86',2*s);}
+      return;
+    }
+    rect(x-5*s,base-119*s,12*s,120*s,'#625e4a');rect(x-2*s,base-94*s,7*s,35*s,'#888064');
+    rect(x-34*s,base-92*s,8*s,58*s,'#625e4a');rect(x+8*s,base-101*s,8*s,54*s,'#625e4a');
+    const clusters=[[-58,-115,36,18,'#697b60'],[-32,-132,39,22,'#79866a'],[1,-137,37,21,'#687a5d'],[30,-118,38,20,'#879078'],[-51,-93,43,20,'#7d896e'],[-14,-103,48,25,'#63785c'],[28,-92,38,20,'#74856a'],[-22,-77,42,17,'#89917a']];
+    for(const [a,b,c,d,col] of clusters)rect(x+a*s,base+b*s,c*s,d*s,col);
+    if(kind==='osmanthus')for(const [lx,ly] of [[-37,-126],[15,-119],[39,-101],[-4,-88]]){rect(x+lx*s,base+ly*s,5*s,5*s,'#cdb777');rect(x+(lx+7)*s,base+(ly+5)*s,4*s,4*s,'#b9a66e');}
+  }
+  function drawTaihuRock(x,y,s=1){
+    const p=(pts)=>pts.map(([a,b])=>[x+a*s,y+b*s]);
+    polygon(p([[-54,0],[-48,-30],[-31,-39],[-25,-63],[-8,-70],[5,-48],[22,-55],[34,-31],[49,-22],[54,0]]),'#777c70','#555f55',3);
+    polygon(p([[-38,-4],[-32,-28],[-18,-32],[-13,-53],[-5,-34],[10,-39],[22,-21],[39,-15],[42,-4]]),'#939686');
+    line(x-20*s,y-27*s,x-10*s,y-44*s,'#b1b29e',3*s);line(x+12*s,y-24*s,x+25*s,y-31*s,'#676f63',3*s);
+  }
+  function drawFlowerInlay(x,y,s=1){
+    const r=5*s,c='#b8ab89';for(let i=0;i<8;i++){const a=i*Math.PI/4;rect(x+Math.cos(a)*8*s-r/2,y+Math.sin(a)*8*s-r/2,r,r,c);}rect(x-2*s,y-2*s,4*s,4*s,'#7d8473');
+  }
+  function drawPaving(seed=0){
+    rect(0,296,W,FIELD-296,'#918f80');
+    if(seed===2){
+      // A compact, pebble-rich court for the Netshi composition study; quieter flagstones keep a traversable line.
+      const pebbles=['#b7b09b','#a7a28f','#c1b9a1','#969282','#aca792'];
+      for(let row=0;row<13;row++){const y=307+row*18,offset=(row%2)*13;for(let col=-1;col<49;col++){
+        const x=col*28+offset,tone=pebbles[(row*3+col+80)%pebbles.length];
+        polygon([[x+2,y+5],[x+8,y+1],[x+21,y+2],[x+26,y+7],[x+23,y+14],[x+7,y+15]],tone);
+        if((row+col)%4===0)rect(x+9,y+4,7,2,'#c8c1aa');
+      }}
+      for(let i=0;i<6;i++){const x=80+i*202,y=397+(i%2)*37;polygon([[x,y+7],[x+42,y],[x+96,y+5],[x+106,y+27],[x+54,y+32],[x+5,y+25]],i%2?'#9c9987':'#aaa58f','#77796c',2);}
+      rect(0,FIELD-8,W,8,'#626b5f');drawFlowerInlay(270,462,1.35);drawFlowerInlay(1138,385,1.1);return;
+    }
+    const rows=[{y:310,h:19,w:83},{y:330,h:23,w:99},{y:354,h:27,w:118},{y:382,h:31,w:142},{y:414,h:37,w:169},{y:452,h:43,w:201},{y:496,h:44,w:232}];
+    const stones=['#aaa794','#9b9988','#a3a08d','#888b7e','#b2ad99'];
+    rows.forEach((row,r)=>{let x=-row.w+((r*37+seed*23)%row.w),i=0;const widths=[.72,1.18,.88,1.31,.79,1.04];while(x<W){const tileW=row.w*widths[(i+r+seed)%widths.length],n=i%3;
+      const tone=stones[(i*2+r+seed)%stones.length],left=x+2,right=x+tileW-3,top=row.y+2,bottom=row.y+row.h-2;
+      polygon([[left+3,top],[right-5,top],[right,top+3],[right-2,bottom-2],[right-6,bottom],[left,bottom-1],[left+1,top+5]],tone);
+      line(left+6,top+2,right-7,top+2,'#c0bba8',2);line(right-2,top+7,right-4,bottom-4,'#737668',2);
+      if((i+r+seed)%5===0)rect(x+tileW*.34,row.y+row.h-4,5,3,'#6e7866');
+      if(n===1&&(r+seed)%3===0)line(left+16,top+7,left+25,bottom-5,'#817f72',1);
+      x+=tileW;i++;
+    }});
+    rect(0,FIELD-8,W,8,'#626b5f');
+    if(seed===1){drawFlowerInlay(270,462,1.6);drawFlowerInlay(1140,385,1.2);}
+    else if(seed===2){drawFlowerInlay(1090,455,1.45);}
+    else {drawFlowerInlay(225,390,1.25);}
+  }
+  function drawBase(seed=0){
+    rect(0,0,W,FIELD,'#d9d7ca');
+    rect(0,82,W,214,'#dedacc');rect(0,91,W,7,'#eee8d9');drawRoofline();
+    // Limewash texture: sparse and low-contrast, so it adds age without competing with clues.
+    for(let i=0;i<22;i++){const x=(i*173+seed*61)%W,y=113+(i*37+seed*19)%166;rect(x,y,18+(i%4)*7,2,'#d1cebf');}
+    rect(0,284,W,13,'#858273');rect(0,297,W,7,'#c6c0ac');
+    const wx=seed===2?634:seed===0?498:468,ww=seed===2?266:seed===0?246:278;
+    drawWindow(wx,122,ww,157,seed===1?'water':seed===2?'plants':'plain');
+    if(seed===0){
+      // A threshold into the study makes the clue route read as window → corridor → witness.
+      rect(956,108,226,181,'#666454');rect(965,116,208,164,'#b1aa95');rect(972,123,95,151,'#d4cebc');
+      rect(1075,123,90,151,'#756f5f');rect(1084,131,72,135,'#d5cfbd');
+      for(let k=0;k<4;k++)rect(1092+k*17,136,3,125,'#756f5f');
+      for(let k=1;k<4;k++)rect(1088,130+k*33,64,3,'#756f5f');
+      rect(957,104,224,9,'#5e5b4d');rect(953,281,235,9,'#625f50');
+    }
+    if(seed===2){
+      // Open a second, arched view to make this a compact framed-garden concept rather than another corridor.
+      ctx.beginPath();ctx.moveTo(1000,289);ctx.lineTo(1000,184);ctx.arc(1080,184,80,Math.PI,0);ctx.lineTo(1160,289);ctx.closePath();ctx.fillStyle='#777363';ctx.fill();
+      ctx.beginPath();ctx.moveTo(1010,285);ctx.lineTo(1010,185);ctx.arc(1080,185,70,Math.PI,0);ctx.lineTo(1150,285);ctx.closePath();ctx.fillStyle='#c8cbb9';ctx.fill();
+      rect(1020,252,18,5,'#7c896c');rect(1043,240,25,6,'#697d62');rect(1095,247,29,7,'#7d896e');rect(1126,258,16,5,'#8a9276');
+      line(1030,284,1030,248,'#657861',3);line(1131,284,1131,251,'#657861',3);
+    }
+    // Timber posts and a low sill establish a believable covered-garden depth.
+    const posts=seed===0||seed===2?[28,335,1250]:[28,335,955,1250];for(let i=0;i<posts.length;i++){const x=posts[i];rect(x,83,12,213,'#777363');rect(x+3,89,3,199,'#aaa18a');rect(x-8,287,30,9,'#5d6255');rect(x-4,92,20,7,'#625f52');}
+    for(let x=0;x<W;x+=160){rect(x,291,148,3,'#aaa48f');rect(x+8,295,134,2,'#e8e2d3');}
+    drawPaving(seed);
+    drawTaihuRock(68,354,.86);drawTaihuRock(1206,352,.72);
+    if(seed===1){drawBamboo(157,305,.70);drawGardenTree(1030,309,.72,'osmanthus');drawGardenTree(325,315,.54,'banana');}
+    else if(seed===2){drawGardenTree(190,313,.58,'banana');drawBough(1080,305,.72,-12);}
+    else {drawGardenTree(180,313,.67,'osmanthus');drawBamboo(1205,306,.52);}
+    // A few low, irregular planting mounds define the walkable room edges.
+    for(let i=0;i<7;i++){const x=205+i*27;rect(x,315+(i%2)*5,20,9,i%2?'#77836b':'#687b63');rect(x+5,311+(i%3)*3,12,6,'#899178');}
+  }
+  function drawPaperArena(){
+    rect(0,0,W,FIELD,'#c9cdbf');rect(0,0,W,FIELD,'#d5d1c2');
+    // The dodge arena is a small garden court, not an empty parchment box.
+    drawRoofline();rect(0,78,W,214,'#e0dbcd');rect(0,87,W,8,'#f0eadc');
+    rect(0,277,W,17,'#7b7d70');rect(0,294,W,7,'#c5beaa');
+    drawWindow(466,124,348,152,'plants');
+    for(const x of [58,352,928,1214]){rect(x,78,14,222,'#757264');rect(x+4,86,4,205,'#a49c86');rect(x-8,287,30,11,'#5c6256');}
+    drawPaving(0);
+    drawTaihuRock(72,354,.92);drawTaihuRock(1202,356,.75);
+    drawBamboo(145,302,.66);drawGardenTree(1080,303,.78,'osmanthus');
+    drawBough(132,185,.52,6);drawBough(1150,177,.55,-8);
+    // Quiet courtyard details remain at the edges, leaving the hazard patterns legible.
+    for(let i=0;i<6;i++){const x=453+i*18;rect(x,282,10,5,i%2?'#75826b':'#8c9076');}
+  }
+  function drawHud(title,line1,line2){
+    rect(0,HUD,W,H-HUD,C.deep);rect(0,HUD,W,4,C.gold);text(title,28,568,24,'#e2d4b2');
+    text(line1,30,600,21,C.paperLight);text(line2,30,622,18,'#c4cec0');
+    rect(28,687,1224,1,'#526055');text('720p 固定逻辑画布 · 像素最近邻 · 玩法示意',30,710,16,'#9fac9e');
+  }
+  function drawSeal(x,y){rect(x-15,y-15,30,30,C.red);rect(x-10,y-10,20,20,'#d1b18a');rect(x-6,y-6,12,12,C.red);rect(x-2,y-11,4,22,'#e2c9a4');rect(x-11,y-2,22,4,'#e2c9a4');}
+  function drawSceneNode(x,y,number,label,state='locked'){
+    const edge=state==='done'?C.moss:state==='active'?C.gold:'#89897c';
+    const fill=state==='active'?'#e8d8ad':state==='done'?'#cad0b7':'#c8c5b8';
+    outlined(x-20,y-13,40,26,fill,edge,3);
+    text(number,x,y+6,16,C.ink,'center');
+    text(label,x,y-18,14,state==='active'?'#f1dfb9':'#364139','center');
+  }
+  function drawFormHanging(form){
+    // A narrow hanging scroll previews the selected ink pattern without covering the garden window.
+    const x=842,y=132,w=66,h=142;
+    rect(x-7,y-5,w+14,7,'#766b55');rect(x-2,y,w+4,h,'#c9b991');rect(x,y+4,w,h-8,'#e6dfcc');
+    rect(x-7,y+h-2,w+14,7,'#766b55');rect(x+4,y+11,3,h-22,'#d2c7aa');rect(x+w-7,y+11,3,h-22,'#d2c7aa');
+    if(form===0){
+      line(x+16,y+112,x+49,y+34,'#4b554a',5);line(x+20,y+92,x+7,y+76,'#68745f',3);line(x+32,y+66,x+54,y+56,'#68745f',3);
+      rect(x+4,y+71,12,5,'#77836b');rect(x+45,y+50,13,5,'#77836b');rect(x+37,y+38,12,5,'#879077');
+    }else if(form===1){
+      const dots=[[17,43,10],[32,34,12],[45,46,9],[17,62,8],[44,66,11],[31,77,9],[10,83,7],[52,87,7]];
+      for(let i=0;i<dots.length;i++){const [dx,dy,r]=dots[i];rect(x+dx,y+dy,r,r,i%2?'#566154':'#737966');}
+      rect(x+25,y+53,13,4,'#e6dfcc');
+    }else{
+      line(x+13,y+76,x+29,y+59,'#4e594c',4);line(x+29,y+59,x+45,y+69,'#4e594c',4);line(x+45,y+69,x+54,y+54,'#4e594c',3);
+      polygon([[x+17,y+73],[x+9,y+66],[x+12,y+78]],'#6e7c67');polygon([[x+45,y+67],[x+38,y+58],[x+41,y+72]],'#6e7c67');
+      rect(x+22,y+36,4,4,'#a79b7e');rect(x+46,y+91,4,4,'#a79b7e');
+    }
+  }
+
+  function drawA(){
+    const s=states.A;drawPaperArena();
+    // The safe gap and hit field are kept uncluttered; all textual instructions remain in the lower strip.
+    if(s.phase==='ready')drawFormHanging(s.form);
+    else {
+      for(const h of s.hazards){rect(h.x-h.r,h.y-h.r,h.r*2,h.r*2,h.kind==='line'?'#596c62':C.ink);if(h.kind==='line')rect(h.x-h.r+4,h.y-h.r+4,h.r*2-8,4,'#bdc0aa');else rect(h.x-h.r/2,h.y-h.r/2,h.r,3,'#ddd3bd');}
+      if(!s.stamp)drawSeal(1120,240);
+      const imminent=s.nextWave-s.time;
+      if(s.phase==='active'&&imminent<.5){ctx.globalAlpha=.35;if(s.form===0){for(let i=0;i<12;i++)rect(92+i*92,86+i*17,70,4,C.red);}else if(s.form===1){for(let i=0;i<10;i++){const a=i*Math.PI/5;rect(620+Math.cos(a)*90,170+Math.sin(a)*90,14,14,C.red);}}else{for(let i=0;i<12;i++){const gap=4+(s.wave%4);if(i!==gap)rect(80+i*96,130,24,12,C.red);}}ctx.globalAlpha=1;}
+    }
+    const isPlaying=s.phase==='active';drawActor(s.x,s.y,s.dir,isPlaying&&s.walk>0,s.walk,145);
+    if(s.focus&&isPlaying){rect(s.x-4,s.y-3,8,6,C.red);}
+    if(s.phase==='win'||s.phase==='lost'){
+      rect(385,187,510,126,'#25332b');outlined(392,194,496,112,s.phase==='win'?'#d5c8a7':'#bdb7a8',C.ink,4);
+      text(s.phase==='win'?'这一回合，留白护住了你。':'墨痕逼近，退回去再试。',640,248,27,C.ink,'center');text('按 Enter 返回笔势选择',640,283,19,C.ink,'center');
+    }
+    const hearts='♥ '.repeat(s.hp).trim()||'—';
+    const line1=s.phase==='ready'?`先选笔势：${forms[s.form].name} · ${forms[s.form].desc}`:s.phase==='active'?`气力 ${hearts}　·　${forms[s.form].name}　·　再坚持 ${Math.max(0,9-s.time).toFixed(1)} 秒　·　${s.focus?'凝神中':'常速走位'}`:s.phase==='win'?`此局完成 · ${s.stamp?'朱印已拾':'朱印未拾（可选）'} · 没有减少章节生命`:s.phase==='lost'?`此局结束 · 已拾朱印：${s.stamp?'是':'否'} · 只重试本局，不影响章节进度`:`准备开始`;
+    const line2=s.phase==='ready'?s.message:s.phase==='active'?'方向键 / WASD 移动　·　X 凝神（移动慢些、受击点更小）　·　红印可选拾取':s.phase==='win'?'你可以换一种笔势再玩，比较危险线和安全空处的差异。':'受击后短暂保护；失手只重来这局。';
+    drawHud('A · 燕影留白｜回合躲避',line1,line2);
+    if(s.phase==='ready'){
+      for(let i=0;i<3;i++)button(28+i*302,633,286,43,`${i+1} ${forms[i].name}`,s.form===i);
+      button(958,633,294,43,'开始这一回合',false);
+    } else if(s.phase==='lost'||s.phase==='win')button(1000,633,252,43,'Enter · 返回准备',false);
+  }
+  function spawnInkWave(s){
+    const wave=s.wave++,speed=150+Math.min(55,wave*7);
+    if(s.form===0){
+      const gap=2+(wave%9);
+      for(let i=0;i<15;i++){if(Math.abs(i-gap)<2)continue;s.hazards.push({x:78+i*80,y:90+(i%3)*12,vx:78,vy:speed,r:10,kind:'line'});}
+    } else if(s.form===1){
+      const gap=(wave*2)%12;
+      for(let i=0;i<16;i++){if(i===gap||i===(gap+1)%16)continue;const a=(i/16)*Math.PI*2;const mag=speed*.68;s.hazards.push({x:640+Math.cos(a)*74,y:212+Math.sin(a)*55,vx:Math.cos(a)*mag,vy:Math.sin(a)*mag,r:11,kind:'dot'});}
+    } else {
+      const gap=3+(wave*3)%8;
+      for(let i=0;i<12;i++){if(Math.abs(i-gap)<2)continue;const fromLeft=wave%2===0;s.hazards.push({x:fromLeft?42:1238,y:126+i*26,vx:fromLeft?speed:-speed,vy:(i%2===0?38:-38),r:11,kind:'line'});}
+    }
+  }
+  function updateA(dt){
+    const s=states.A;if(s.phase!=='active')return;
+    s.time+=dt;s.invuln=Math.max(0,s.invuln-dt);s.walk=0;s.focus=keys.has('x');
+    let dx=(keys.has('arrowright')||keys.has('d')?1:0)-(keys.has('arrowleft')||keys.has('a')?1:0);
+    let dy=(keys.has('arrowdown')||keys.has('s')?1:0)-(keys.has('arrowup')||keys.has('w')?1:0);
+    if(touchTarget){dx=touchTarget.x-s.x;dy=touchTarget.y-s.y;if(Math.hypot(dx,dy)<10)touchTarget=null;}
+    const m=Math.hypot(dx,dy);if(m>0){dx/=m;dy/=m;const speed=s.focus?166:274;s.x=clamp(s.x+dx*speed*dt,68,1212);s.y=clamp(s.y+dy*speed*dt,74,497);s.dir=Math.abs(dx)>Math.abs(dy)?(dx>0?2:1):(dy>0?0:3);s.walk+=dt;}
+    if(s.time>=s.nextWave&&s.time<9){spawnInkWave(s);s.nextWave+=1.45;}
+    for(let i=s.hazards.length-1;i>=0;i--){const h=s.hazards[i];h.x+=h.vx*dt;h.y+=h.vy*dt;if(h.x< -70||h.x>1350||h.y< -70||h.y>600){s.hazards.splice(i,1);continue;}
+      const hitRadius=s.focus?13:20;if(s.invuln===0&&dist(s.x,s.y-45,h.x,h.y)<h.r+hitRadius){s.hp--;s.invuln=.82;s.hazards.splice(i,1);if(s.hp<=0){s.phase='lost';s.message='墨痕逼近，先读预告再移动。';break;}}
+    }
+    if(s.phase==='active'&&!s.stamp&&dist(s.x,s.y-25,1120,240)<48){s.stamp=true;s.message='拾到朱印；继续避开后续墨势。';}
+    if(s.phase==='active'&&s.time>=9){s.phase='win';s.hazards=[];s.message='本回合通过。你可以换势体验不同留白。';}
+  }
+
+  function drawB(){
+    const s=states.B;drawBase(1);
+    drawBough(575,300,.72,s.seen[0]?22:0);
+    // Two visible irregularities are clues in the scene, not numbered objectives.
+    rect(674,256,12,6,C.paperLight);rect(684,261,7,19,C.paperLight);rect(689,267,6,8,C.red2);rect(677,277,5,9,C.paperLight);
+    rect(810,441,14,5,C.paperLight);rect(826,435,9,5,C.red2);rect(839,443,13,4,C.paperLight);
+    if(s.seen[0]){rect(673,257,20,3,C.gold);rect(673,278,20,3,C.gold);}
+    if(s.seen[1]){rect(812,433,4,4,C.gold);rect(849,433,4,4,C.gold);}
+    rect(1070,434,78,16,'#716f61');rect(1084,426,54,9,'#9b9583');
+    if(s.seen[0]&&s.seen[1]&&!s.found){rect(1093,416,26,7,C.paperLight);rect(1110,420,14,6,C.red);}
+    if(s.found||s.won){rect(1075,408,54,8,C.paperLight);rect(1113,409,16,7,C.red);}
+    if(s.seen[0]&&s.seen[1]&&!s.found){rect(1083,455,34,4,C.gold);rect(1088,448,4,15,C.gold);rect(1108,448,4,15,C.gold);}
+    drawActor(s.x,s.y,s.dir,s.walk>0,s.walk,122+Math.round((s.y-335)*.08));
+    if(s.won){rect(393,189,494,114,'#25332b');outlined(400,196,480,100,'#d5c8a7',C.ink,4);text('沧浪亭的园记，暂且入册。',640,247,26,C.ink,'center');text('水纹与半枚燕尾，还不能解开整条线索。',640,279,18,C.ink,'center');}
+    const count=s.seen.filter(Boolean).length,near=nearBPoint(s);
+    const line1=s.won?`本园线索已记下 · 跨园 ${journeyCount()}/3`:`自由探索：检查不寻常的纸痕（${count}/2）。`;
+    const line2=s.won?'沧浪亭只交出一段残纹；网师园与留园的续笔可任意顺序寻找，最后回府学合读。':s.seen[0]&&s.seen[1]&&near?'把水纹与半枚燕尾记入园游手记：按 E / 空格。':s.seen[0]&&s.seen[1]?'两处痕迹相合，指向案脚边的残记。':near?'这里有一处不寻常的痕迹：按 E / 空格检查。':s.message||'方向键 / WASD 或点击石径自由走动；发现异样就靠近调查，先后不限。';
+    drawHud('B · 沧浪亭复廊寻纹｜自由探索',line1,line2);
+    const buttonLabel=s.won?'水纹残记已入册':s.seen[0]&&s.seen[1]?(near?'E · 拓下残纹':'走到案脚边'):near?'E · 检查痕迹':'靠近异常处再检查';
+    button(1034,633,218,43,buttonLabel,false,s.won);
+  }
+  const bPoints=[{x:680,y:330},{x:834,y:440}];
+  function nearBPoint(s){return(!s.seen[0]&&dist(s.x,s.y,bPoints[0].x,bPoints[0].y)<76)||(!s.seen[1]&&dist(s.x,s.y,bPoints[1].x,bPoints[1].y)<76)||(s.seen[0]&&s.seen[1]&&!s.found&&dist(s.x,s.y,1100,440)<82);}
+  function interactB(){
+    const s=states.B;if(s.won)return;
+    if(!s.seen[0]&&dist(s.x,s.y,bPoints[0].x,bPoints[0].y)<76){s.seen[0]=true;s.message='窗棂夹着一缕纸纤维，边上有半枚像燕尾的淡墨纹。另一处痕迹也许能补上它。';return;}
+    if(!s.seen[1]&&dist(s.x,s.y,bPoints[1].x,bPoints[1].y)<76){s.seen[1]=true;s.message='石缝纸屑上也有同样的半纹。它们属于一册园游手记，却还缺另外两园的续记。';return;}
+    if(s.seen[0]&&s.seen[1]&&!s.found&&dist(s.x,s.y,1100,440)<85){s.found=true;s.won=true;recordClue('canglang');s.message='沧浪亭残记入册。水纹未完，仍须去别园续寻。';return;}
+    s.message='先在园中找可疑的纸痕；检查顺序不限。';
+  }
+  function updateB(dt){
+    const s=states.B;if(s.won)return;s.walk=0;
+    let dx=(keys.has('arrowright')||keys.has('d')?1:0)-(keys.has('arrowleft')||keys.has('a')?1:0);
+    let dy=(keys.has('arrowdown')||keys.has('s')?1:0)-(keys.has('arrowup')||keys.has('w')?1:0);
+    if(touchTarget){dx=touchTarget.x-s.x;dy=touchTarget.y-s.y;if(Math.hypot(dx,dy)<8)touchTarget=null;}
+    const m=Math.hypot(dx,dy);if(m>0){dx/=m;dy/=m;s.x=clamp(s.x+dx*230*dt,55,1225);s.y=clamp(s.y+dy*190*dt,345,493);s.dir=Math.abs(dx)>Math.abs(dy)?(dx>0?2:1):(dy>0?0:3);s.walk+=dt;}
+  }
+
+  const cNodes={paper:{x:485,y:445},branch:{x:730,y:398},view:{x:930,y:445},wind:{x:644,y:492}};
+  function drawC(){
+    const s=states.C;drawBase(2);
+    // This is a garden viewing corner: a real window is the frame, not a giant UI board.
+    rect(379,389,236,12,'#716a58');rect(388,401,9,42,'#675f50');rect(596,401,9,42,'#675f50');
+    rect(392,385,211,5,'#b5a98e');rect(406,360,174,25,'#e9e2d1');rect(412,364,162,17,'#ded7c5');
+    rect(430,369,39,3,'#6d7065');rect(454,369,4,10,'#6d7065');rect(520,369,27,3,'#6d7065');
+    if(s.pressed){rect(418,354,48,5,'#817967');rect(421,351,40,3,'#b6ad96');}
+    drawSeal(567,369);
+    const bx=s.branch?536:741;drawBough(bx,340,.66,s.branch?-12:12);
+    const birdX=s.view?824:770,birdY=s.view?194:232;
+    if(s.branch||s.view){rect(birdX-12,birdY,22,5,C.ink);rect(birdX+7,birdY-8,9,6,C.ink);rect(birdX+15,birdY-8,6,3,C.red);rect(birdX-18,birdY-6,9,4,C.ink);}
+    if(s.view){rect(790,117,112,4,C.gold);rect(790,117,4,72,C.gold);rect(897,117,5,13,C.gold);}
+    // Two stepping stones make the alternate viewpoint legible; wind-tossed leaves foreshadow step four.
+    polygon([[901,450],[946,444],[967,461],[922,468]],'#92917f','#77796b',2);polygon([[926,478],[966,472],[985,488],[944,495]],'#a29f8b','#77796b',2);
+    for(let i=0;i<5;i++){const x=620+i*13;rect(x,470-(i%2)*5,7,3,i%2?'#899177':'#b2a477');rect(x+5,466-(i%3)*4,3,2,'#ccc29e');}
+    const outcome=s.phase==='win'||s.phase==='miss';
+    const planOne=s.phase==='plan'&&!s.pressed,planTwo=s.phase==='plan'&&s.pressed;
+    drawSceneNode(cNodes.paper.x,cNodes.paper.y,'1','压笺',s.pressed?'done':planOne?'active':'locked');
+    drawSceneNode(cNodes.branch.x,cNodes.branch.y,'2','挪枝',s.branch?'done':planTwo?'active':'locked');
+    drawSceneNode(cNodes.view.x,cNodes.view.y,'3','换位',s.view?'done':planTwo?'active':'locked');
+    drawSceneNode(cNodes.wind.x,cNodes.wind.y,'4','迎风',s.phase==='settle'?'active':outcome?'done':'locked');
+    drawActor(s.x,s.y,s.dir,s.walk>0,s.walk,112+Math.round((s.y-345)*.05));
+    if(outcome){rect(400,176,480,105,'#25332b');outlined(407,183,466,91,s.phase==='win'?'#d5c8a7':'#c9c1ae',C.ink,4);text(s.phase==='win'?'纸笺稳住，燕影也入窗。':'风过了，但画页没能安稳。',640,232,24,C.ink,'center');}
+    const line1=outcome?s.phase==='win'?`网师园燕纹续笔已入册 · 跨园 ${journeyCount()}/3`:'本次未完成，重来观察步骤。':s.phase==='settle'?'第 3 步：走到场景中的 4 号风口，按 E 迎风。':!s.pressed?'第 1 步：走到 1 号花笺旁，按 E 压住纸页。':s.branch||s.view?'第 3 步：走到 4 号风口，按 E 让风过页。':'第 2 步：去 2 号挪枝，或 3 号换位，二选一。';
+    const near=nearCNode(s);
+    const line2=outcome?s.phase==='win'?'迎风显出燕纹续记，但还不能读懂整册手记；另外两园的线索也要齐备，才可回府学合笺。':'这个小游戏的关键是按剧情步骤触发场景变化。':near?'已到当前步骤的场景点：按 E / 空格互动。':'方向键 / WASD 行走，也可点场景地面移动。按 1 → 2/3 → 4 的步骤推进。';
+    drawHud('C · 网师园窗前护笺｜按步骤触发',line1,line2);
+    button(1034,633,218,43,outcome?'重试本局':near?'E · 互动':'走到亮起的场景点',false,outcome?false:!near);
+  }
+  function nearCNode(s){
+    const near=p=>dist(s.x,s.y,p.x,p.y)<78;
+    if(s.phase==='settle')return near(cNodes.wind);
+    if(s.phase!=='plan')return false;
+    if(!s.pressed)return near(cNodes.paper);
+    if(!s.branch&&!s.view)return near(cNodes.branch)||near(cNodes.view);
+    return false;
+  }
+  function interactC(){
+    const s=states.C;if(s.phase==='win'||s.phase==='miss'){states.C=freshC();return;}
+    const near=p=>dist(s.x,s.y,p.x,p.y)<78;
+    if(s.phase==='settle'){
+      if(near(cNodes.wind))resolveC();else s.message='先走到 4 号风口，再按 E 迎风。';return;
+    }
+    if(!s.pressed){
+      if(near(cNodes.paper)){s.pressed=true;s.message='纸页压稳了。现在到 2 或 3 号点选择取景方式。';}
+      else if(near(cNodes.branch)||near(cNodes.view))s.message='顺序很重要：先到 1 号点压住花笺。';
+      else s.message='先走到 1 号花笺旁，按 E 压住纸页。';
+      return;
+    }
+    if(!s.branch&&!s.view){
+      if(near(cNodes.branch)){s.branch=true;s.phase='settle';s.message='枝影移开，燕影入窗。最后到 4 号风口。';}
+      else if(near(cNodes.view)){s.view=true;s.phase='settle';s.message='换位后燕影入窗。最后到 4 号风口。';}
+      else s.message='第二步：到 2 号挪开遮枝，或到 3 号换一个视点。';
+      return;
+    }
+  }
+  function updateC(dt){
+    const s=states.C;if(s.phase==='win'||s.phase==='miss')return;s.walk=0;
+    let dx=(keys.has('arrowright')||keys.has('d')?1:0)-(keys.has('arrowleft')||keys.has('a')?1:0);
+    let dy=(keys.has('arrowdown')||keys.has('s')?1:0)-(keys.has('arrowup')||keys.has('w')?1:0);
+    if(touchTarget){dx=touchTarget.x-s.x;dy=touchTarget.y-s.y;if(Math.hypot(dx,dy)<8)touchTarget=null;}
+    const m=Math.hypot(dx,dy);if(m>0){dx/=m;dy/=m;s.x=clamp(s.x+dx*225*dt,55,1225);s.y=clamp(s.y+dy*190*dt,345,505);s.dir=Math.abs(dx)>Math.abs(dy)?(dx>0?2:1):(dy>0?0:3);s.walk+=dt;}
+  }
+  function resolveC(){const s=states.C;if(s.phase!=='settle')return;if(dist(s.x,s.y,cNodes.wind.x,cNodes.wind.y)>=78){s.message='先走到 4 号风口，再按 E 迎风。';return;}s.phase=s.pressed&&(s.branch||s.view)?'win':'miss';s.message=s.phase==='win'?'风过了，窗上的燕尾纹补全；这是网师园的续笔，不是全册答案。':'风过了，但场景准备顺序还没有完成。';if(s.phase==='win')recordClue('netshi');}
+
+  const dNodes=[{x:680,y:340,label:'窗纸断口'},{x:390,y:442,label:'风向小签'},{x:1040,y:442,label:'乔禾口述'}];
+  const dClueText=['纸角断口与窗边碎纸吻合。','风向小签指向庭内至廊下。','乔禾说：风起时，她看见纸影由庭侧往廊下去。'];
+  const conclusions=['风把画页从庭侧吹进廊里，最后落在案脚。','有人从案边带走画页，再把纸角丢在窗外。','风把画页从廊里吹回庭中。'];
+  function drawD(){
+    const s=states.D;drawBase(0);
+    // The evidence trail spans three connected places: torn window paper, wind-marked paving, and Qiao He by the study threshold.
+    rect(674,282,7,23,C.paperLight);rect(682,288,5,15,C.red2);rect(670,300,6,8,C.paperLight);
+    rect(369,437,21,4,C.paperLight);rect(393,430,15,3,C.red2);rect(416,440,12,4,C.paperLight);
+    line(376,448,405,444,'#b5a477',2);line(404,446,421,451,'#b5a477',2);
+    rect(990,428,83,12,'#665f4e');rect(998,440,7,28,'#625b4b');rect(1058,440,7,28,'#625b4b');
+    rect(1005,419,48,8,'#a49b84');rect(1010,415,37,5,C.paperLight);rect(1047,418,8,5,C.red2);
+    drawWitness(1126,478,108);text('乔禾',1126,360,16,'#e2d5ba','center');
+    for(let i=0;i<dNodes.length;i++)drawSceneNode(dNodes[i].x,dNodes[i].y,'?',dNodes[i].label,s.clues[i]?'done':'active');
+    drawActor(s.x,s.y,s.dir,s.walk>0,s.walk,115);
+    if(s.phase==='done'){rect(400,176,480,105,'#25332b');outlined(407,183,466,91,s.won?'#d5c8a7':'#c9c1ae',C.ink,4);text(s.won?'留园风路已明，石痕记入手记。':'这条说法与留园痕迹不合。',640,232,24,C.ink,'center');text(s.won?'手记仍未读完：带回府学，与另两园合笺。':'可以再看风签与断口。',640,261,17,C.ink,'center');}
+    if(s.phase==='gather'){
+      const count=s.clues.filter(Boolean).length,near=nearDNode(s);
+      const line1=`自由搜证：调查三个场景点（${count}/3），顺序不限。`;
+      const line2=near?'已到线索点：按 E / 空格记录。':s.clues.every(Boolean)?'本园线索齐了：推断留园风路；所得仍只是跨园手记的一段。':count?s.message+' 继续自由调查另外的线索点，先后不限。':'方向键 / WASD 行走或点场景移动；靠近问号线索点后按 E。';
+      drawHud('D · 留园廊下寻痕｜搜证后推断',line1,line2);
+      button(1034,633,218,43,near?'E · 记录线索':'走到任一线索点',false,!near);
+    } else if(s.phase==='deduce'){
+      drawHud('D · 留园廊下寻痕｜判断本园风路','线索齐了：窗纸断口、风向签、乔禾口述。',s.guessFeedback||'选能同时解释这三条留园线索的一句（点击选项或按 1–3）；判断不合时证据会保留。');
+      for(let i=0;i<3;i++){const x=25+i*416;button(x,633,398,43,`${i+1} · ${conclusions[i]}`,false);}
+    } else {
+      const missing=['沧浪亭','网师园','留园'].filter((_,i)=>![journey.canglang,journey.netshi,journey.liuyuan][i]);
+      drawHud('D · 留园廊下寻痕｜本园推断',s.won?`本园线索已记下 · 跨园 ${journeyCount()}/3`:'这条解释与线索不合。',s.won?(journeyCount()===3?'三园线索齐了，但还要回苏州府学合读，才知整册手记的意思。':`还缺${missing.join('、')}的线索；留园这一处不能独自结案。`):'可以再走一遍，换一条解释检验你的判断。');
+      button(979,633,273,43,s.won&&journeyCount()===3?'回府学合笺':s.won?'线索入册 · 继续游园':'重新调查',false,s.won&&journeyCount()<3);
+    }
+  }
+  function drawStudyRoom(){
+    rect(0,0,W,FIELD,'#d7d2c3');rect(0,0,W,66,'#4b554b');
+    rect(0,60,W,8,'#777563');rect(0,68,W,7,'#e9e1cf');rect(0,302,W,14,'#766f5e');
+    rect(0,316,W,FIELD-316,'#8d8978');
+    for(let x=0;x<W;x+=125){rect(x+6,325,108,3,'#aaa18c');rect(x+18,330,87,2,'#747568');}
+    drawWindow(904,99,257,163,'plain');
+    rect(62,98,190,203,'#5d5b4e');rect(71,106,172,188,'#c4bca8');
+    for(let r=0;r<4;r++){const y=116+r*43;rect(74,y,166,6,'#655f50');for(let c=0;c<5;c++){const x=83+c*29;rect(x,y-19-(c%2)*3,18,18,c%2?'#7d765f':'#89816a');rect(x+3,y-16-(c%2)*3,12,12,'#c4b999');}}
+    rect(336,102,224,6,'#756a55');rect(343,108,210,146,'#e5ddc9');rect(336,250,224,7,'#756a55');
+    line(376,221,435,147,'#536052',5);line(400,192,372,170,'#778168',3);line(421,167,460,158,'#778168',3);
+    rect(378,162,18,6,'#7d886e');rect(450,152,20,6,'#879077');
+    // A broad working table gives the three garden rubbings one shared surface to compare on.
+    rect(70,491,1140,13,'#665b49');rect(86,504,16,34,'#5d5547');rect(1178,504,16,34,'#5d5547');rect(78,487,1124,5,'#a09170');
+    for(let i=0;i<4;i++){rect(1030+i*27,278,17,5,'#786e57');rect(1034+i*27,267,10,11,'#c4b893');}
+  }
+  function drawClueCard(x,y,w,garden,caption,found,kind){
+    outlined(x,y,w,145,found?'#e7e0ce':'#bdb8aa',found?'#8d7955':'#888679',3);
+    text(garden,x+w/2,y+27,20,found?C.ink:'#6d6b61','center');
+    text(found?caption:'尚未取得',x+w/2,y+128,17,found?C.ink:'#78766c','center');
+    if(kind==='water'){
+      for(let i=0;i<3;i++){line(x+67,y+54+i*12,x+w-66,y+54+i*12,i===1?'#63766b':'#8a947f',3);}
+      polygon([[x+w*.48,y+48],[x+w*.55,y+60],[x+w*.48,y+72],[x+w*.41,y+60]],found?C.red2:'#8a8b80');
+    }else if(kind==='window'){
+      outlined(x+w/2-37,y+42,74,56,found?'#d5dacd':'#c8c5ba','#837e6e',3);
+      for(let i=1;i<4;i++)line(x+w/2-32+i*21,y+45,x+w/2-32+i*21,y+94,'#8a8575',2);
+      line(x+w/2-31,y+61,x+w/2+31,y+61,'#8a8575',2);line(x+w/2-31,y+79,x+w/2+31,y+79,'#8a8575',2);
+      if(found){rect(x+w/2-5,y+66,10,3,C.red2);rect(x+w/2+4,y+67,5,3,C.red2);}
+    }else{
+      drawTaihuRock(x+w/2,y+104,.43);if(found){line(x+w/2+27,y+73,x+w/2+43,y+91,C.gold,3);line(x+w/2+43,y+91,x+w/2+58,y+70,C.gold,3);}
+    }
+  }
+  function drawCardOrder(x,y,number){if(number){outlined(x,y,34,29,C.gold,C.ink,2);text(String(number),x+17,y+21,17,C.deep,'center');}}
+  function drawE(){
+    drawStudyRoom();
+    const gap=journeyCount()===3,s=states.E;
+    drawClueCard(99,344,300,'沧浪亭','水纹 · 水外见园',journey.canglang,'water');
+    drawClueCard(490,344,300,'网师园','燕纹 · 窗中得景',journey.netshi,'window');
+    drawClueCard(881,344,300,'留园','石痕 · 循径至深',journey.liuyuan,'stone');
+    if(gap){drawCardOrder(111,354,s.order.indexOf('canglang')+1);drawCardOrder(502,354,s.order.indexOf('netshi')+1);drawCardOrder(893,354,s.order.indexOf('liuyuan')+1);}
+    if(gap){line(399,414,489,414,C.gold,4);line(790,414,880,414,C.gold,4);}
+    if(journey.ending){rect(350,150,580,120,'#25332b');outlined(357,157,566,106,'#d5c8a7',C.ink,4);text('三园手记，至此合笺。',640,202,27,C.ink,'center');text('水外望园，窗中取景，石间循路。',640,239,21,C.ink,'center');}
+    const missing=['沧浪亭','网师园','留园'].filter((_,i)=>![journey.canglang,journey.netshi,journey.liuyuan][i]);
+    const line1=journey.ending?'三园所得并非三段各自完结的小事，而是一条完整的读园线索。':gap?'三枚园记都已带回。请根据水纹、窗影、石痕，读出它们共同指向的次序。':`合笺尚未开启：还缺${missing.join('、')}的线索。`;
+    const line2=journey.ending?'这是一种观察路径的提示，不是规定园林只有这一种看法。':gap?(s.order.length===3?s.feedback:`${s.feedback} 已排 ${s.order.length}/3；可点选拓片或按 1–3 排序。`):'每座园林只给出一段残记；任何一处都不能单独解开整册手记。';
+    drawHud('E · 苏州府学合笺｜三园归一',line1,line2);
+    button(24,633,252,43,'撤回上一枚',false,!gap||s.order.length===0||journey.ending);
+    button(292,633,430,43,s.order.length===3?'合笺读一读':`点选拓片（${s.order.length}/3）`,s.order.length===3,!gap||s.order.length!==3||journey.ending);
+    button(738,633,514,43,'清空重排',false,!gap||s.order.length===0||journey.ending);
+  }
+  function drawIntro(){
+    drawStudyRoom();
+    // A folded garden notebook sits on the Fuxue desk; this is an original story prop, not a historical artefact.
+    rect(585,475,116,24,'#b8aa88');rect(592,470,103,7,'#d7c9a5');
+    rect(594,477,46,18,'#e6dfcc');rect(644,477,48,18,'#eee6d4');
+    line(641,477,641,494,'#887d63',2);line(600,482,632,482,'#89917e',2);line(600,487,630,487,'#a09a82',2);
+    line(650,482,681,482,'#89917e',2);line(650,487,678,487,'#a09a82',2);
+    drawActor(816,526,1,false,0,140);
+    rect(590,91,270,7,'#766b55');outlined(594,98,262,82,'#e6dfcc',C.ink,3);
+    text('一册未题名的园游手记',725,131,18,C.ink,'center');
+    text('封面无名，纸间留有三处残纹。',725,157,14,'#586356','center');
+    drawHud('序章 · 苏州府学｜纸页待续',
+      '沈砚秋在书案旁拾到一册未题名的园游手记：水纹、燕尾与石痕，各只留下半笔。',
+      '三园可任意顺序走访；每处只补一段。收齐后回府学合笺，才知道它们如何相连。');
+    button(25,633,397,43,'1 · 沧浪亭｜寻水纹',false);
+    button(441,633,397,43,'2 · 网师园｜护花笺',false);
+    button(857,633,397,43,'3 · 留园｜循石痕',false);
+  }
+  const clueOrder=['canglang','netshi','liuyuan'];
+  function chooseClue(index){
+    const s=states.E;if(journeyCount()<3||journey.ending)return;
+    const clue=clueOrder[index];if(!clue)return;
+    const existing=s.order.indexOf(clue);
+    if(existing>=0){s.feedback=`这张拓片已排在第 ${existing+1} 位；可撤回后重排。`;return;}
+    s.order.push(clue);
+    const names={canglang:'水纹',netshi:'窗影燕纹',liuyuan:'石痕'};
+    s.feedback=s.order.length===3?'三段都已排好。试着合笺，看手记能否读通。':`“${names[clue]}”已放入第 ${s.order.length} 位；想想视线从何处开始，又如何深入。`;
+  }
+  function undoClue(){const s=states.E;if(!s.order.length||journey.ending)return;s.order.pop();s.feedback='已撤回最后一段。可以换个位置继续排。';}
+  function clearClues(){const s=states.E;if(journey.ending)return;s.order=[];s.feedback='拓片已重新摊开；请重新安排次序。';}
+  function submitReading(){
+    const s=states.E;if(journeyCount()<3||journey.ending||s.order.length!==3)return;
+    const wrong=s.order.findIndex((clue,index)=>clue!==clueOrder[index]);
+    if(wrong<0){s.feedback='合上了：水外望园、窗中取景、石间循路，三段残记连成一条观察路径。';finishJourney();return;}
+    const first=s.order[0];
+    s.feedback=first==='liuyuan'?'石痕像是深入园中的一笔；若从它起读，前面的水线与窗影便无从引出。':first==='netshi'?'燕尾续笔像一次转折；想想它之前，水线从哪里起。':'这一起笔似乎太早落在园内；再看水纹如何把目光引向窗中。';
+    s.order=[];
+  }
+  function nearDNode(s){return s.phase==='gather'&&dNodes.some((p,i)=>!s.clues[i]&&dist(s.x,s.y,p.x,p.y)<78);}
+  function interactD(){
+    const s=states.D;if(s.phase!=='gather')return;
+    for(let i=0;i<dNodes.length;i++)if(!s.clues[i]&&dist(s.x,s.y,dNodes[i].x,dNodes[i].y)<78){
+      s.clues[i]=true;s.message=dClueText[i];
+      if(s.clues.every(Boolean)){s.phase='deduce';s.message='三条线索已收齐。现在判断画页的去向。';}
+      return;
+    }
+    s.message='还没到线索点旁。走近任一未调查的编号点，再按 E。';
+  }
+  function updateD(dt){
+    const s=states.D;if(s.phase!=='gather')return;s.walk=0;
+    let dx=(keys.has('arrowright')||keys.has('d')?1:0)-(keys.has('arrowleft')||keys.has('a')?1:0);
+    let dy=(keys.has('arrowdown')||keys.has('s')?1:0)-(keys.has('arrowup')||keys.has('w')?1:0);
+    if(touchTarget){dx=touchTarget.x-s.x;dy=touchTarget.y-s.y;if(Math.hypot(dx,dy)<8)touchTarget=null;}
+    const m=Math.hypot(dx,dy);if(m>0){dx/=m;dy/=m;s.x=clamp(s.x+dx*225*dt,55,1225);s.y=clamp(s.y+dy*190*dt,345,505);s.dir=Math.abs(dx)>Math.abs(dy)?(dx>0?2:1):(dy>0?0:3);s.walk+=dt;}
+  }
+  function deduce(i){
+    const s=states.D;if(s.phase!=='deduce')return;
+    if(i===0){
+      s.phase='done';s.won=true;s.guessFeedback='';
+      s.message='断口、风向和乔禾的口述相互印证：留园本地的风路已明。石痕仍只是跨园手记的一段。';
+      recordClue('liuyuan');return;
+    }
+    s.guessFeedback=i===1
+      ?'风向签与乔禾都指向“庭侧 → 廊下”；若是有人从案边带走，解释不了这两条方向证据。证据仍在，换个判断。'
+      :'断口在窗边，风签与乔禾都指向“庭侧 → 廊下”；说成“廊里 → 庭中”，方向恰好相反。证据仍在，换个判断。';
+    s.message=s.guessFeedback;
+  }
+  function resetD(){states.D=freshD();}
+
+  function draw(){ctx.imageSmoothingEnabled=false;if(mode==='I')drawIntro();else if(mode==='A')drawA();else if(mode==='B')drawB();else if(mode==='C')drawC();else if(mode==='D')drawD();else drawE();}
+  function restart(){if(mode==='I'){setMode('B');return;}touchTarget=null;if(mode==='A')states.A=freshA();else if(mode==='B')states.B=freshB();else if(mode==='C')states.C=freshC();else if(mode==='D')resetD();else states.E=freshE();draw();}
+  function setMode(next){
+    mode=next;touchTarget=null;keys.clear();
+    document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));
+    document.getElementById('restart').textContent=mode==='I'?'开始游园':'重来本局';
+    canvas.setAttribute('aria-label',`${mode} 构图小游戏微型试玩，固定720p逻辑画布`);
+    hint.textContent=mode==='I'?'序章：点击三座园林之一，或按 1/2/3 选择；想单独测试躲避玩法，可选“A · 躲避单测”。':mode==='A'?'A：1–3 选笔势，Enter 开始；方向键 / WASD 走位，X 凝神。':mode==='B'?'沧浪亭：自由调查两处异样，拓下水纹残记；三园没有固定游览先后。方向键 / WASD 或点地面行走，靠近后按 E。':mode==='C'?'网师园：按 1→2/3→4 护住花笺，辨出窗影燕纹；方向键 / WASD 或点地面行走，靠近亮点后按 E。':mode==='D'?'留园：自由搜证并判断本园风路，拓下石痕；方向键 / WASD 或点地面行走，靠近问号后按 E。': '府学合笺：点三张拓片或按 1=沧浪亭、2=网师园、3=留园；Backspace 撤回，Enter 合笺。';
+    if(mode==='I')setJourneyBeat('午后，苏州府学的旧书案上落着一册无名手记。砚秋拾起它，纸页间三处残纹似乎都在指向别处。');
+    if(mode==='A')setJourneyBeat('A 是独立的动作手感练习，不影响园游手记进度。');
+    if(mode==='B')setJourneyBeat(journey.netshi||journey.liuyuan?'重到沧浪亭，砚秋翻看手记中已拓下的别园残片；此处的水纹也许能与它们对读。':'府学旧藏里夹着一册未题名的园游手记。沧浪亭这一页只画了水线与半枚燕尾，砚秋决定先从眼前的纸痕查起。');
+    if(mode==='C')setJourneyBeat(journey.canglang||journey.liuyuan?'重到网师园，砚秋把已有拓片摊开；窗影中的燕尾或许能续上其中一笔，但不能替别园下结论。':'花笺被风掀起，窗棂上的燕尾只现一瞬。砚秋先护住纸页，再看枝影如何落进窗中。');
+    if(mode==='D')setJourneyBeat(journey.canglang||journey.netshi?'重到留园，砚秋将已收的水纹与燕纹夹在手记里；眼前的石痕似乎不是装饰，而是下一段行路的提示。':'留园这一页没有完整图样，只有断口、风向与石痕。砚秋得先查清本园的痕迹，再把它带回府学。');
+    if(mode==='E')setJourneyBeat(journey.ending?'合笺已经完成。砚秋把手记收进书箱，窗外的园影仍在晚风里轻轻摇动。':journeyCount()===3?'三处拓片都已带回府学。把它们并在一处，看看水线、燕尾与石痕怎样接续。':'府学书案仍空着几处。砚秋先将已得残片压在镇纸下；缺下的园记不补齐，整册还读不通。');
+    refreshJourney();draw();
+  }
+
+  function handleCanvas(p){
+    if(mode==='I'){
+      if(p.y>=633&&p.y<=676){if(p.x<422)setMode('B');else if(p.x<838)setMode('C');else if(p.x<=1254)setMode('D');}
+    } else if(mode==='A'){
+      const s=states.A;
+      if(s.phase==='ready'&&p.y>=625){if(p.x<934){s.form=clamp(Math.floor((p.x-28)/302),0,2);}else if(p.x>=958)startA();return;}
+      if((s.phase==='lost'||s.phase==='win')&&p.y>=625){const form=s.form;states.A=freshA();states.A.form=form;return;}
+      if(s.phase==='active'&&p.y<FIELD)touchTarget={x:p.x,y:p.y};
+    } else if(mode==='B'){
+      if(p.y<FIELD){touchTarget={x:clamp(p.x,55,1225),y:clamp(p.y,345,493)};return;}
+      if(p.y>=625)interactB();
+    } else if(mode==='C'){
+      const s=states.C;
+      if(s.phase==='win'||s.phase==='miss'){if(p.y>=625)states.C=freshC();}
+      else if(p.y<FIELD)touchTarget={x:clamp(p.x,55,1225),y:clamp(p.y,345,505)};
+      else if(p.y>=625)interactC();
+    } else if(mode==='D')handleD(p);else handleE(p);
+    draw();
+  }
+  function handleD(p){
+    const s=states.D;
+    if(s.phase==='gather'){
+      if(p.y<FIELD){touchTarget={x:clamp(p.x,55,1225),y:clamp(p.y,345,505)};return;}
+      if(p.y>=625)interactD();
+    }else if(s.phase==='deduce'&&p.y>=625)deduce(clamp(Math.floor((p.x-25)/416),0,2));
+    else if(s.phase==='done'&&p.y>=625){if(s.won&&journeyCount()===3)setMode('E');else if(!s.won)resetD();}
+    draw();
+  }
+  function handleE(p){
+    const s=states.E;if(journeyCount()<3||journey.ending)return;
+    if(p.y>=344&&p.y<=489){
+      const cards=[{x:99,w:300,index:0},{x:490,w:300,index:1},{x:881,w:300,index:2}];
+      const card=cards.find(item=>p.x>=item.x&&p.x<=item.x+item.w);if(card)chooseClue(card.index);
+    }else if(p.y>=633&&p.y<=676){
+      if(p.x>=24&&p.x<=276)undoClue();else if(p.x>=292&&p.x<=722)submitReading();else if(p.x>=738&&p.x<=1252)clearClues();
+    }
+  }
+  function startA(){const s=states.A;s.phase='active';s.x=628;s.y=452;s.hp=3;s.time=0;s.nextWave=.85;s.wave=0;s.hazards=[];s.invuln=0;s.stamp=false;s.message='看红色预告的形状，提前找空处。';}
+  canvas.addEventListener('pointerdown',e=>{canvas.focus();const p=point(e);handleCanvas(p);});
+  canvas.addEventListener('pointermove',e=>{if(e.buttons&&mode==='A'&&states.A.phase==='active'){const p=point(e);if(p.y<FIELD)touchTarget={x:p.x,y:p.y};}});
+  document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+  document.getElementById('restart').addEventListener('click',restart);
+  document.getElementById('resetJourney').addEventListener('click',resetJourney);
+  window.addEventListener('keydown',e=>{
+    const k=e.key.toLowerCase();
+    if(['arrowup','arrowdown','arrowleft','arrowright',' ','spacebar'].includes(k)||(mode==='E'&&k==='backspace'))e.preventDefault();
+    keys.add(k);if(e.repeat)return;
+    if(mode==='I'){
+      if(['1','2','3'].includes(k))setMode(['B','C','D'][Number(k)-1]);else if(k==='enter'||k===' ')setMode('B');
+    } else if(mode==='A'){
+      const s=states.A;if(s.phase==='ready'&&['1','2','3'].includes(k))s.form=Number(k)-1;
+      else if(s.phase==='ready'&&(k==='enter'||k===' '))startA();else if((s.phase==='lost'||s.phase==='win')&&(k==='enter'||k===' ')){const form=s.form;states.A=freshA();states.A.form=form;}
+    } else if(mode==='B'){
+      if(k==='e'||k===' '||k==='enter')interactB();
+    } else if(mode==='C'){
+      if(k==='e'||k===' ')interactC();else if(k==='enter'){if(states.C.phase==='settle')interactC();else if(states.C.phase==='win'||states.C.phase==='miss')states.C=freshC();}
+    } else if(mode==='D'){
+      const s=states.D;if(s.phase==='gather'&&(k==='e'||k===' '))interactD();
+      else if(s.phase==='deduce'&&['1','2','3'].includes(k))deduce(Number(k)-1);
+      else if(k==='enter'&&s.phase==='done'){if(s.won&&journeyCount()===3)setMode('E');else if(!s.won)resetD();}
+    } else if(mode==='E'){
+      if(['1','2','3'].includes(k))chooseClue(Number(k)-1);
+      else if(k==='backspace')undoClue();
+      else if(k==='enter')submitReading();
+    }
+    draw();
+  });
+  window.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));
+  window.addEventListener('blur',()=>keys.clear());
+  function tick(now){const dt=Math.min(.05,Math.max(0,(now-previousTime)/1000||0));previousTime=now;if(mode==='A')updateA(dt);else if(mode==='B')updateB(dt);else if(mode==='C')updateC(dt);else if(mode==='D')updateD(dt);draw();requestAnimationFrame(tick);}
+  refreshJourney();setMode(PREVIEW_ALL_CLUES?'E':'I');requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

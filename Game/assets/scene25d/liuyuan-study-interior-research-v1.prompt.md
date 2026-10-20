@@ -1,0 +1,11 @@
+# 留园书斋内景独立研究底图 v1
+
+2026-10-07，内置 imagegen。第一稿沿用室外庭院参照，错误地把房间画成开放院落，未接入项目。第二稿重新生成 `liuyuan-study-interior-research-v1.png`：2.5D 俯斜视角、整幅为室内木地板，后墙窗外见蕉叶，书案与书架靠后墙，南缘仅保留门槛。禁用匾额、可辨文字、人物和水面。
+
+最终提示词：
+
+> Use case: stylized-concept. Asset type: a single 2.5D RPG pixel-art WALKABLE INTERIOR background, landscape 3:2, 1536×1024-feeling composition. Show the INSIDE of a late-Qing-inspired small Suzhou garden scholar's room as a cutaway game set. The camera is INSIDE the room, looking obliquely toward the back and side walls from a slightly elevated 3/4 perspective. This is NOT a courtyard: the entire bottom 70% of the image is uninterrupted interior wooden or stone floor, bounded by interior plaster-and-timber walls. Absolutely no roofs, exterior front wall, gateposts, front courtyard or garden paving in front of the room. A short doorway opening is at the bottom center edge as an RPG entrance, simply suggested by a low threshold; the player can walk from bottom center across the interior floor. On the left-back side a single practical wooden writing desk with brush, inkstone and blank paper; back-right a plain wooden bookcase. One paper-lattice window in the back wall with a few banana leaves visible OUTSIDE only through that window, and soft daylight falling onto the floor. Place the furnishings against the back wall so there is wide unobstructed interior walking space for an 80-pixel-tall separate player sprite to reach the desk, bookcase, and window. Visual style: meticulous hand-crafted Chinese garden pixel art with crisp clustered pixels and restrained low-saturation ink gray, warm brown, pale plaster and soft leaf green, matched to an established 2.5D Suzhou RPG, never photorealistic. No character baked into the background; a copyist NPC will be a separate sprite. No signs, plaques, readable writing, text, UI, watermark, fantasy props, ornate invented window motifs, water, or plants INSIDE the room. This is original game-art interpretation, not a reconstruction of a documented specific interior.
+
+角色 `../characters/liuyuan-copyist-seated-research-v1.png` 亦用内置 imagegen 生成：以现有玩家精灵作风格参照，创作无名坐姿抄书人。首稿把棋盘格画成 RGB 背景；第二次用 background-extraction 将它转换为真实 RGBA 透明图，已抽样确认角像素 alpha=0。角色独立于底图，表演与身份均为剧本虚构。
+
+本底图没有具体清末内装照片依据。书案、书架、窗、蕉叶位置、地板及门槛均仅为玩法假设；不可称作“还我读书处”史实室内复原。未复制向量库扫描图或网页照片。

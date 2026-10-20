@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>沧浪亭 · 大场景游走测试 v0.1</title>
+<style>
+  html,body{margin:0;padding:0;height:100%;background:#ece7da;overflow:hidden;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-user-select:none;user-select:none;touch-action:none}
+  #wrap{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+  canvas#game{image-rendering:pixelated;image-rendering:crisp-edges;
+    width:min(100vw,calc(100vh*5/3));height:min(100vh,calc(100vw*3/5));
+    box-shadow:0 2px 14px rgba(60,50,30,.18)}
+  #hud{position:absolute;top:10px;left:14px;font-size:12px;color:#5a5248;letter-spacing:1px;pointer-events:none}
+  #seals{position:absolute;top:8px;right:14px;display:flex;gap:6px;pointer-events:none}
+  .seal{width:16px;height:16px;border:1.5px solid #c8bca8;border-radius:2px;background:transparent}
+  .seal.on{background:#c0392b;border-color:#c0392b}
+  #hint{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:11px;color:#8a8172;pointer-events:none}
+  #joy{position:absolute;left:22px;bottom:26px;width:84px;height:84px;border-radius:50%;
+    border:2px solid rgba(90,82,72,.35);background:rgba(255,255,255,.25);touch-action:none}
+  #knob{position:absolute;left:26px;top:26px;width:32px;height:32px;border-radius:50%;
+    background:rgba(90,82,72,.45)}
+  #act{position:absolute;right:24px;bottom:32px;width:64px;height:64px;border-radius:50%;
+    border:2px solid #c0392b;color:#c0392b;background:rgba(255,255,255,.5);
+    font-size:15px;display:flex;align-items:center;justify-content:center;touch-action:none}
+  #toast{position:absolute;top:46px;left:0;right:0;text-align:center;font-size:13px;color:#4a4438;
+    opacity:0;transition:opacity .3s;pointer-events:none}
+  #viewOv{position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+    flex-direction:column;background:rgba(40,36,28,.45)}
+  #frame{background:#f6f2e6;padding:10px;border-radius:4px;box-shadow:0 4px 20px rgba(0,0,0,.3);
+    display:flex;flex-direction:column;align-items:center}
+  #frameCv{image-rendering:pixelated;width:288px;height:180px;border:1px solid #d8d0bc}
+  #poem{margin-top:8px;font-size:15px;color:#3a3428;letter-spacing:3px}
+  #src{margin-top:4px;font-size:11px;color:#8a8172;letter-spacing:2px}
+  #sealBig{margin-top:6px;width:22px;height:22px;background:#c0392b;border-radius:2px;opacity:0;transition:opacity .4s}
+  @media (pointer:fine){ #joy,#act{display:none} }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="game" width="480" height="288"></canvas>
+  <div id="hud">沧浪亭 · 大场景游走测试 v0.1</div>
+  <div id="seals"><div class="seal"></div><div class="seal"></div><div class="seal"></div></div>
+  <div id="toast"></div>
+  <div id="hint">WASD / 方向键移动 · 走到漏窗前按 E 取景（手机：摇杆 + 取景键）</div>
+  <div id="joy"><div id="knob"></div></div>
+  <div id="act">取景</div>
+  <div id="viewOv">
+    <div id="frame">
+      <canvas id="frameCv" width="192" height="120"></canvas>
+      <div id="poem"></div>
+      <div id="src"></div>
+      <div id="sealBig"></div>
+    </div>
+  </div>
+</div>
+<script>
+"use strict";
+/* ========= 基础 ========= */
+const T=16, MW=80, MH=50, WW=MW*T, WH=MH*T;
+const cv=document.getElementById("game"), ctx=cv.getContext("2d");
+ctx.imageSmoothingEnabled=false;
+const view={w:480,h:288};
+const cam={x:0,y:0};
+// tile: 0草 1径 2水 3墙(实) 4廊地面 5湖石(实) 6树(实) 7亭地面 8桥 9花境 10漏窗墙(实)
+const map=new Uint8Array(MW*MH);
+const at=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?3:map[y*MW+x];
+function rect(x0,y0,x1,y1,v){for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)if(x>=0&&y>=0&&x<MW&&y<MH)map[y*MW+x]=v}
+function scatter(v,n,x0,y0,x1,y1){let n2=n,tries=0;const cap=n*60;while(n2>0&&tries<cap){const x=x0+((Math.random()*(x1-x0))|0),y=y0+((Math.random()*(y1-y0))|0);tries++;if(at(x,y)===0){map[y*MW+x]=v;n2--}}}
+// 成组的假山/竹丛：椭圆填充，避免"撒豆子"
+function blob(x0,y0,x1,y1,v){const cx=(x0+x1)/2,cy=(y0+y1)/2,rx=(x1-x0)/2+.5,ry=(y1-y0)/2+.5;
+  for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){const dx=(x-cx)/rx,dy=(y-cy)/ry;
+    const n=((x*13+y*7)%7-3)*0.06;      // 边界加噪，山石轮廓自然不规则
+    if(dx*dx+dy*dy<=1+n&&(at(x,y)===0||at(x,y)===5||at(x,y)===11))map[y*MW+x]=v}}
+/* ========= 地图：沧浪亭意向 ========= */
+rect(0,0,MW-1,MH-1,0);
+rect(0,0,MW-1,3,2);          // 北面外水（葑溪）
+rect(0,4,MW-1,4,12);         // 石岸（可走）
+rect(0,5,MW-1,5,1);          // 岸上小径
+rect(6,6,72,6,4); rect(6,7,72,7,4);   // 复廊外廊（面水）
+rect(6,8,72,8,3);                     // 复廊中墙
+rect(6,9,72,9,4);                     // 复廊内廊（面山）
+[6,7,71,72].forEach(x=>map[8*MW+x]=4);   // 廊两端开口
+const WIN_X=[18,38,58];
+WIN_X.forEach(x=>map[8*MW+x]=10);        // 三扇漏窗
+// 径网
+rect(0,10,MW-1,10,1);        // 廊南横径
+rect(12,10,12,34,1);         // 西主径（南北）
+rect(46,10,46,38,1);         // 东纵径
+rect(10,18,44,18,1);         // 北横径（过月门）
+rect(12,22,70,22,1);         // 中横径
+rect(38,28,54,28,1);         // 水榭前径
+rect(12,34,64,34,1);         // 南横径
+// 粉墙分隔（移步换景的结构骨架：墙 + 月门；门洞留两格，够角色身位通过）
+rect(26,12,26,21,3); map[17*MW+26]=1; map[18*MW+26]=1;    // 西墙，月门 rows17-18
+rect(46,24,46,33,3); map[27*MW+46]=1; map[28*MW+46]=1;    // 东墙，月门 rows27-28
+rect(12,40,40,40,3); map[40*MW+25]=1; map[40*MW+26]=1;    // 南横墙，开口 cols25-26
+// 假山群（成组）
+blob(16,13,25,17,5); blob(30,13,37,16,5); blob(18,25,24,28,5); blob(52,13,60,18,5);
+// 竹丛（成组）
+blob(64,12,69,16,11); blob(7,24,11,28,11); blob(30,38,36,42,11);
+// 水池 + 石桥 + 水榭
+rect(50,26,64,38,2); rect(56,24,57,40,8);
+rect(52,20,58,23,7);
+// 亭
+rect(28,30,33,33,7);
+// 花境
+scatter(9,30,13,11,70,45);
+const TREES=[[9,13],[20,20],[30,12],[40,14],[43,30],[50,32],[62,12],[66,20],[70,26],[74,32],[70,44],
+  [8,33],[16,32],[22,44],[30,44],[40,44],[44,42],[34,22],[52,44],[64,44],[36,26],[24,12]];
+TREES.forEach(([x,y])=>{if(at(x,y)===0)map[y*MW+x]=6});
+rect(0,48,MW-1,48,3);        // 南界墙
+/* ========= 预渲染 ========= */
+function makeLayer(draw){const c=document.createElement("canvas");c.width=WW;c.height=WH;const g=c.getContext("2d");draw(g);return c}
+function px(g,x,y,w,h,col){g.fillStyle=col;g.fillRect(x,y,w,h)}
+function tileTop(g,tx,ty,fn){fn(g,tx*T,ty*T)}
+const base=makeLayer(g=>{
+  for(let y=0;y<MH;y++)for(let x=0;x<MW;x++){
+    const v=at(x,y),X=x*T,Y=y*T;
+    if(v===0){px(g,X,Y,T,T,(x*7+y*13)%9<2?"#bdd6a3":"#b8d29e")}
+    else if(v===1){px(g,X,Y,T,T,"#e6dcc2");if((x+y)%3===0)px(g,X+3,Y+7,2,2,"#d6ccae")}
+    else if(v===2){px(g,X,Y,T,T,"#9ecfc9")}
+    else if(v===4){px(g,X,Y,T,T,"#dcc098");px(g,X,Y,T,1,"#c8ac84")}
+    else if(v===7){px(g,X,Y,T,T,"#e0d2b4");px(g,X,Y,T,1,"#cabca0")}
+    else if(v===8){px(g,X,Y,T,T,"#d8ceba");px(g,X+1,Y+2,T-2,2,"#bcb2a0")}
+    else if(v===9){px(g,X,Y,T,T,"#c9d8a8");const f=["#d88a8a","#e6b45c","#c86a6a"];for(let i=0;i<3;i++)px(g,X+2+((x*5+i*5)%(T-4)),Y+3+((y*7+i*4)%(T-5)),2,2,f[(x+y+i)%3])}
+    else if(v===11){px(g,X,Y,T,T,"#a8c48e");
+      for(let i=0;i<3;i++){px(g,X+3+i*4,Y+1,1,T-2,"#7fa055");px(g,X+2+i*4,Y+2+((x+i)%3),3,2,"#8fbb78")}}
+  }
+  // 水岸描边
+  for(let y=0;y<MH;y++)for(let x=0;x<MW;x++){
+    if(at(x,y)===2&&(at(x,y-1)===0||at(x,y-1)===1))px(g,x*T,y*T,T,2,"#c2e0da");
+    if(at(x,y)===2&&(at(x,y+1)===0||at(x,y+1)===1))px(g,x*T,y*T+T-2,T,2,"#c2e0da");
+    if(at(x,y)===1&&at(x,y+1)===2)px(g,x*T,y*T+T-2,T,2,"#b0a890");
+    // 石岸（石块铺砌，不露出一片沙色）
+    if(at(x,y)===12){const s=(x*5+y*3)%4;
+      px(g,x*T,y*T,T,T,["#d3cdbd","#cdc7b7","#d8d2c2","#c8c2b2"][s]);
+      px(g,x*T,y*T,T,1,"#b9b3a5");px(g,x*T,y*T,1,T,"#bdb7a9")}
+  }
+  // 北墙与复廊中墙
+  for(let y=0;y<MH;y++)for(let x=0;x<MW;x++){
+    const v=at(x,y),X=x*T,Y=y*T;
+    if(v===3){px(g,X,Y,T,T,"#f2ecdd");px(g,X,Y,T,3,"#d9d2c0");if(at(x,y-1)!==3)px(g,X,Y,T,1,"#b8b0a0")}
+    if(v===10){px(g,X,Y,T,T,"#f2ecdd");px(g,X,Y,T,3,"#d9d2c0");
+      px(g,X+2,Y+3,T-4,T-5,"#caa64e");          // 窗框
+      px(g,X+4,Y+5,T-8,T-9,"#9ecfc9");          // 窗芯透水色
+      for(let i=0;i<3;i++){px(g,X+5+i*3,Y+5,1,T-9,"#8a6c2e");px(g,X+4,Y+6+i*3,T-8,1,"#8a6c2e")}
+      px(g,X+2,Y+3,T-4,1,"#a8843a");px(g,X+2,Y+T-3,T-4,1,"#a8843a");
+    }
+  }
+  // 朱柱（廊柱，每 6 格一根）
+  for(let x=8;x<=70;x+=6){px(g,x*T+2,6*T+2,4,T*2-4,"#c05038");px(g,x*T+2,9*T+2,4,T-4,"#c05038")}
+  // 假山（整块石山：不规则轮廓 + 顶部受光 + 底部压深 + 偶发裂缝苔点）
+  for(let y=0;y<MH;y++)for(let x=0;x<MW;x++)if(at(x,y)===5){
+    const X=x*T,Y=y*T;
+    const nUp=at(x,y-1)===5,nL=at(x-1,y)===5,nR=at(x+1,y)===5,nD=at(x,y+1)===5;
+    px(g,X,Y,T,T,["#93a38c","#98a891","#8e9e87"][(x*3+y*7)%3]);
+    if(!nUp)px(g,X,Y,T,3,"#b2c1aa");
+    if(!nD)px(g,X,Y+T-3,T,3,"#75846c");
+    if(!nL)px(g,X,Y,2,T,"#77866f");
+    if(!nR)px(g,X+T-2,Y,2,T,"#77866f");
+    if(!nUp&&!nL)px(g,X,Y,3,3,"#8a9a83");
+    if((x*5+y*3)%13===0)px(g,X+4,Y+4,1,8,"#7b8a73");
+    if((x*3+y*11)%9===0)px(g,X+5,Y+6,3,2,"#6f8a63")}
+  // 树干
+  TREES.forEach(([x,y])=>px(g,x*T+6,y*T+4,4,12,"#8a6844"));
+  // 水榭与亭的屋顶（画进底层，作装饰）
+  px(g,49*T,25*T,13*T,8,"#b0aa9a");for(let x=49*T;x<62*T;x+=10)px(g,x,25*T,5,4,"#a09a8a");
+  g.fillStyle="#b0aa9a";g.fillRect(29*T,31*T,8*T,8);for(let x=29*T;x<37*T;x+=10)g.fillRect(x,31*T,5,4);
+});
+const roofLayer=makeLayer(g=>{
+  // 复廊屋顶
+  px(g,6*T-6,6*T-6,(72-6+1)*T+12,10,"#b8b2a2");
+  for(let x=6*T-6;x<(73)*T+6;x+=8)px(g,x,6*T-6,4,4,"#a8a292");
+  TREES.forEach(([x,y])=>{const X=x*T,Y=y*T;
+    px(g,X-2,Y-13,T+4,3,"#a3ca8d");
+    px(g,X-6,Y-10,T+12,4,"#93c07c");
+    px(g,X-8,Y-6,T+16,4,"#87b470");
+    px(g,X-6,Y-2,T+12,3,"#7aa864");
+    px(g,X-6,Y+1,T+12,1,"#6b9a58")});
+  // 竹梢（在玩家之上，形成穿行感）
+  for(let y=0;y<MH;y++)for(let x=0;x<MW;x++)if(at(x,y)===11){
+    const X=x*T,Y=y*T;px(g,X+3,Y-8,1,10,"#7fa055");px(g,X+2,Y-7,5,2,"#9cc487")};
+});
+/* ========= 玩家 ========= */
+const P={x:12*T+8,y:10*T+10,dir:0,moving:false,wt:0};
+const SOLID=v=>v===3||v===5||v===6||v===10||v===11||v===2;
+function hit(px_,py_){const hw=5;return SOLID(at(((px_-hw)/T)|0,(py_)/T|0))||SOLID(at(((px_+hw)/T)/1|0,py_/T|0))||SOLID(at(((px_-hw)/T)|0,(py_+13)/T|0))||SOLID(at(((px_+hw)/T)|0,(py_+13)/T|0))}
+function move(dx,dy){const nx=P.x+dx;if(!hit(nx,P.y))P.x=nx;const ny=P.y+dy;if(!hit(P.x,ny))P.y=ny}
+function drawPlayer(g){
+  const X=(P.x|0)-6-cam.x, Y=(P.y|0)-10-cam.y, f=P.moving?((P.wt/8)|0)%2:0;
+  px(g,X+3,Y+0,6,3,"#3a3230");               // 发
+  px(g,X+3,Y+3,6,3,"#ecd0a8");               // 脸
+  px(g,X+1,Y+6,10,6,P.dir===3?"#5a7a9a":"#4a6a8a"); // 身
+  px(g,X+1,Y+6,10,1,"#3c5872");
+  if(f){px(g,X+2,Y+12,3,2,"#3a3230");px(g,X+7,Y+12,3,2,"#3a3230")}
+  else{px(g,X+3,Y+12,3,2,"#3a3230");px(g,X+6,Y+12,3,2,"#3a3230")}
+}
+/* ========= 取景点 ========= */
+const VIEWS=[
+ {x:18*T+8,y:9*T+8,poem:"沧浪之水清兮，可以濯吾缨",src:"《楚辞·渔父》",
+  scene:(g,w,h)=>{hillSil(g,w,h);water(g,w,h);pavSil(g,w*0.5,h*0.5,44)}},
+ {x:38*T+8,y:9*T+8,poem:"一径抱幽山，居然城市间",src:"苏舜钦《沧浪亭》",
+  scene:(g,w,h)=>{hillSil(g,w,h);rockSil(g,w,h)}},
+ {x:58*T+8,y:9*T+8,poem:"清风明月本无价，近水远山皆有情",src:"沧浪亭集句联",
+  scene:(g,w,h)=>{hillSil(g,w,h);water(g,w,h);bridgeSil(g,w,h);pavSil(g,w*0.74,h*0.42,30)}}];
+const got=[false,false,false];
+let near=-1,state="walk",vt=0;
+function hillSil(g,w,h){g.fillStyle="#b3c6ae";g.beginPath();g.moveTo(0,h*0.6);
+  for(let i=0;i<=8;i++)g.lineTo(w*i/8,h*0.6-Math.sin(i/8*Math.PI)*h*0.2);g.lineTo(w,h);g.lineTo(0,h);g.fill()}
+function water(g,w,h){g.fillStyle="#9ecfc9";g.fillRect(0,h*0.62,w,h*0.38);
+  g.fillStyle="#c2e0da";for(let i=0;i<9;i++)g.fillRect((i*23)%w,h*0.66+(i*5)%(h*0.3),12,1)}
+function pavSil(g,x,y,s){
+  const base=y+s*0.5;
+  g.fillStyle="#b9d2cb";g.fillRect(x-3,base+3,6,5);              // 水中倒影
+  g.fillStyle="#8b857a";g.fillRect(x-s*0.5,base,s,3);            // 台基
+  g.beginPath();g.moveTo(x-s*0.62,base);g.lineTo(x-s*0.3,base-9);g.lineTo(x+s*0.3,base-9);g.lineTo(x+s*0.62,base);g.fill();
+  g.beginPath();g.moveTo(x-s*0.52,base-9);g.lineTo(x,base-26);g.lineTo(x+s*0.52,base-9);g.fill();  // 歇山顶
+  g.fillStyle="#6f6a60";g.fillRect(x-s*0.26,base-9,3,9);g.fillRect(x+s*0.26-3,base-9,3,9);         // 二柱
+  g.fillStyle="#9a948a";g.fillRect(x-s*0.26,base-9,s*0.52,2)}
+function bridgeSil(g,w,h){g.fillStyle="#a8a29a";g.beginPath();g.moveTo(w*0.2,h*0.78);
+  g.quadraticCurveTo(w*0.5,h*0.44,w*0.8,h*0.78);g.lineTo(w*0.8,h*0.82);g.quadraticCurveTo(w*0.5,h*0.5,w*0.2,h*0.82);g.fill();
+  g.fillStyle="#8e8880";g.fillRect(w*0.3,h*0.72,3,10);g.fillRect(w*0.68,h*0.72,3,10)}
+function rockSil(g,w,h){g.fillStyle="#96a68f";for(let i=0;i<4;i++){const x=w*0.14+i*w*0.2;
+  g.beginPath();g.moveTo(x,h*0.72);g.quadraticCurveTo(x+9,h*0.38,x+22,h*0.72);g.fill()}
+  g.fillStyle="#b0bfa8";for(let i=0;i<4;i++){const x=w*0.14+i*w*0.2;
+  g.beginPath();g.moveTo(x+2,h*0.72);g.quadraticCurveTo(x+9,h*0.46,x+15,h*0.72);g.fill()}}
+/* ========= 输入 ========= */
+const keys={};
+addEventListener("keydown",e=>{keys[e.key.toLowerCase()]=true;if(e.key.toLowerCase()==="e")tryView()});
+addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
+const joy={dx:0,dy:0,id:null};
+const joyEl=document.getElementById("joy"),knob=document.getElementById("knob");
+function joyMove(t){const r=joyEl.getBoundingClientRect(),cx=r.left+42,cy=r.top+42;
+  let dx=t.clientX-cx,dy=t.clientY-cy;const d=Math.hypot(dx,dy),m=34;
+  if(d>m){dx=dx/d*m;dy=dy/d*m}joy.dx=dx/m;joy.dy=dy/m;knob.style.left=26+dx+"px";knob.style.top=26+dy+"px"}
+joyEl.addEventListener("touchstart",e=>{e.preventDefault();joyMove(e.touches[0])},{passive:false});
+joyEl.addEventListener("touchmove",e=>{e.preventDefault();joyMove(e.touches[0])},{passive:false});
+joyEl.addEventListener("touchend",()=>{joy.dx=joy.dy=0;knob.style.left="26px";knob.style.top="26px"});
+document.getElementById("act").addEventListener("touchstart",e=>{e.preventDefault();tryView()},{passive:false});
+cv.addEventListener("click",()=>{if(state==="view")closeView();else tryView()});
+/* ========= 取景流程 ========= */
+const toastEl=document.getElementById("toast");let toastT=null;
+function toast(s){toastEl.textContent=s;toastEl.style.opacity=1;clearTimeout(toastT);toastT=setTimeout(()=>toastEl.style.opacity=0,1800)}
+function tryView(){if(state!=="walk"||near<0)return;state="view";vt=0;
+  const v=VIEWS[near];
+  document.getElementById("poem").textContent=v.poem;
+  document.getElementById("src").textContent=v.src;
+  document.getElementById("sealBig").style.opacity=0;
+  const fc=document.getElementById("frameCv"),fg=fc.getContext("2d");fg.imageSmoothingEnabled=false;
+  fg.fillStyle="#dfe9e2";fg.fillRect(0,0,192,120);
+  fg.fillStyle="#c5d8d2";fg.fillRect(0,80,192,8);
+  v.scene(fg,192,104);
+  document.getElementById("viewOv").style.display="flex";
+  setTimeout(()=>document.getElementById("sealBig").style.opacity=1,700);}
+function closeView(){if(state!=="view")return;state="walk";
+  document.getElementById("viewOv").style.display="none";
+  if(!got[near]){got[near]=true;
+    document.querySelectorAll(".seal")[got.filter(Boolean).length-1].classList.add("on");
+    toast(got.every(Boolean)?"三窗已对位 · 园谱 +1":"景已成 · 诗卡入卷");near=-1}}
+document.getElementById("viewOv").addEventListener("click",closeView);
+/* ========= 主循环 ========= */
+const sparkles=[];for(let i=0;i<26;i++)sparkles.push({x:Math.random()*WW,y:Math.random()*5*T,p:Math.random()*6});
+let last=performance.now();
+function loop(now){
+  const dt=Math.min(0.05,(now-last)/1000);last=now;
+  if(state==="walk"){
+    let dx=(keys["arrowright"]||keys["d"]?1:0)-(keys["arrowleft"]||keys["a"]?1:0)+joy.dx;
+    let dy=(keys["arrowdown"]||keys["s"]?1:0)-(keys["arrowup"]||keys["w"]?1:0)+joy.dy;
+    const d=Math.hypot(dx,dy);P.moving=d>0.15;
+    if(P.moving){const sp=64*dt;move(dx/d*Math.min(1,d)*sp,dy/d*Math.min(1,d)*sp);P.wt+=dt*60;
+      if(Math.abs(dx)>Math.abs(dy))P.dir=dx>0?1:3;else P.dir=dy>0?2:0;}
+    near=-1;VIEWS.forEach((v,i)=>{if(!got[i]&&Math.hypot(P.x-v.x,P.y-v.y)<22)near=i});
+  }else{vt+=dt;if(vt>2.6)closeView()}
+  cam.x=Math.max(0,Math.min(WW-view.w,P.x-view.w/2));
+  cam.y=Math.max(0,Math.min(WH-view.h,P.y-view.h/2));
+  ctx.fillStyle="#dcd6c6";ctx.fillRect(0,0,view.w,view.h);
+  ctx.drawImage(base,-cam.x|0,-cam.y|0);
+  // 水面波光
+  sparkles.forEach(s=>{if(got&&((now/500+s.p)|0)%3===0){ctx.fillStyle="rgba(255,255,255,.7)";
+    ctx.fillRect(s.x-cam.x|0,s.y-cam.y|0,3,1)}});
+  // 取景点光圈
+  VIEWS.forEach((v,i)=>{if(!got[i]){const a=0.35+0.25*Math.sin(now/300+i);
+    ctx.strokeStyle=`rgba(30,140,120,${a})`;ctx.beginPath();
+    ctx.arc(v.x-cam.x,v.y+8-cam.y,9,0,7);ctx.stroke()}});
+  drawPlayer(ctx);
+  // 漏窗提示
+  if(near>=0&&state==="walk"){const v=VIEWS[near];
+    ctx.fillStyle="#3a3428";ctx.fillRect(v.x-cam.x-14,v.y-cam.y-24,28,12);
+    ctx.fillStyle="#f6f2e6";ctx.font="9px sans-serif";ctx.textAlign="center";
+    ctx.fillText("E 取景",v.x-cam.x,v.y-cam.y-15)}
+  // 树冠与廊顶层（在玩家之上，形成遮挡纵深）
+  ctx.drawImage(roofLayer,-cam.x|0,-cam.y|0);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+// 演示/调试直达：URL 末尾加 #view 可直接打开取景画面
+if(typeof location!=="undefined"&&location.hash==="#view"){setTimeout(()=>{near=0;tryView()},600)}
+</script>
+</body>
+</html>

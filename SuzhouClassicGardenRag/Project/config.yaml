@@ -50,6 +50,7 @@ mineru:
   backend: "hybrid-engine"            # pipeline | vlm-engine | hybrid-engine
   lang: "ch"
   effort: "medium"                    # medium | high
+  task_timeout_seconds: 21600          # 单文档最长等待 6 小时（MinerU 默认仅 1 小时）
 
 # --- 图片检索 ---
 image:

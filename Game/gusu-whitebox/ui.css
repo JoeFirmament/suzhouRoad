@@ -1,0 +1,120 @@
+:root {
+  color-scheme: dark;
+  --ink: #171e1a;
+  --panel: #22372e;
+  --paper: #f2ead6;
+  --muted: #b9b09d;
+  --zhu: #b03a2e;
+  --gold: #c8a04b;
+  --line: rgba(242, 234, 214, .2);
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; min-height: 100%; background: var(--ink); }
+
+body {
+  min-height: 100dvh;
+  color: var(--paper);
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+  overscroll-behavior: none;
+}
+
+button, a { color: inherit; font: inherit; }
+
+.game-shell {
+  width: min(100%, 960px);
+  min-height: 100dvh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mode-nav {
+  min-height: 42px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: rgba(23, 30, 26, .94);
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  font-size: 12px;
+}
+
+.mode-nav strong { color: var(--gold); letter-spacing: .08em; }
+.mode-nav span { display: flex; gap: 14px; }
+.mode-nav a { color: var(--muted); text-decoration: none; }
+.mode-nav a:hover, .mode-nav a:focus-visible { color: var(--paper); }
+.scale-path { align-items: center; }
+.scale-path i { color: var(--zhu); font-style: normal; }
+.scale-path strong { color: var(--paper); }
+.student-mark { color: var(--muted); letter-spacing: .08em; }
+.enter-scene { padding: 5px 9px; border: 1px solid var(--gold); color: var(--paper) !important; }
+
+.stage { width: 100%; line-height: 0; }
+
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: calc(100dvh - 42px);
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, .32);
+  touch-action: none;
+}
+
+.touch-controls { display: none; }
+
+@media (pointer: coarse), (max-width: 760px) {
+  .game-shell { justify-content: flex-start; }
+  .mode-nav { min-height: 38px; }
+  .mode-nav strong { max-width: 42vw; }
+  .mode-nav span { gap: 10px; }
+  .mode-nav span a:not(:first-child) { display: none; }
+  .scale-nav .scale-path a { display: inline !important; }
+  .student-mark { display: none !important; }
+  canvas { max-height: calc(100dvh - 158px); }
+
+  .touch-controls {
+    min-height: 120px;
+    padding: 8px 14px max(8px, env(safe-area-inset-bottom));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-top: 0;
+    touch-action: none;
+  }
+
+  .dpad {
+    width: 150px;
+    display: grid;
+    grid-template-columns: repeat(3, 46px);
+    grid-template-rows: repeat(2, 46px);
+    gap: 4px;
+  }
+
+  .action-pad { display: flex; gap: 8px; }
+
+  .touch-controls button {
+    min-width: 46px;
+    min-height: 46px;
+    padding: 0 12px;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    background: #2a4539;
+    color: var(--paper);
+    font-weight: 600;
+    touch-action: none;
+  }
+
+  .touch-controls button.is-active,
+  .touch-controls button:active { background: var(--zhu); border-color: var(--gold); }
+}

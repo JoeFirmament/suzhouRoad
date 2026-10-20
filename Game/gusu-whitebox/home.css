@@ -1,0 +1,93 @@
+:root {
+  color-scheme:dark;
+  --ink:#171512;
+  --panel:#252720;
+  --paper:#d7ceb6;
+  --muted:#9f9b8c;
+  --gold:#a78d55;
+  --zhu:#7d3d35;
+  --line:rgba(215,206,182,.2);
+}
+* { box-sizing:border-box; }
+html,body { margin:0; min-height:100%; background:var(--ink); }
+body { min-height:100dvh; color:var(--paper); font-family:"PingFang SC","Microsoft YaHei",sans-serif; overscroll-behavior:none; }
+a,button { color:inherit; font:inherit; }
+.home-game-shell { width:min(100%,960px); min-height:100dvh; margin:0 auto; display:flex; flex-direction:column; justify-content:center; }
+.home-nav,.home-legend { min-height:42px; padding:8px 12px; display:flex; align-items:center; justify-content:space-between; gap:16px; border:1px solid var(--line); background:rgba(23,21,18,.96); font-size:12px; }
+.home-nav { border-bottom:0; }
+.home-nav span { display:flex; align-items:center; gap:12px; }
+.home-nav i { color:var(--zhu); font-style:normal; }
+.home-nav a { color:var(--muted); text-decoration:none; }
+.home-nav a:hover,.home-nav a:focus-visible { color:var(--paper); }
+.home-nav strong,.home-legend b { color:var(--gold); font-weight:500; letter-spacing:.08em; }
+.nav-actions a { padding:5px 8px; border:1px solid var(--line); }
+.home-stage { position:relative; width:100%; overflow:hidden; border:1px solid var(--line); background:#252720; line-height:0; }
+#homeGame { display:block; width:100%; height:auto; max-height:calc(100dvh - 92px); object-fit:contain; image-rendering:pixelated; image-rendering:crisp-edges; touch-action:none; }
+.home-hud { position:absolute; top:14px; left:14px; max-width:310px; padding:9px 12px; border-left:3px solid var(--zhu); background:rgba(23,21,18,.86); line-height:1.45; pointer-events:none; box-shadow:4px 4px 0 rgba(23,21,18,.35); }
+.home-hud p { margin:0 0 3px; color:var(--gold); font-size:9px; letter-spacing:.16em; }
+.home-hud strong { color:var(--paper); font-family:"Songti SC",serif; font-size:14px; font-weight:500; }
+.interaction-prompt { position:absolute; left:50%; bottom:24px; translate:-50% 0; display:flex; align-items:center; gap:8px; padding:7px 10px; border:1px solid rgba(167,141,85,.65); background:rgba(23,21,18,.9); color:var(--paper); font-size:12px; line-height:1; pointer-events:none; box-shadow:4px 4px 0 rgba(23,21,18,.4); }
+.interaction-prompt[hidden] { display:none; }
+.interaction-prompt kbd { min-width:22px; padding:4px; border:1px solid var(--gold); color:var(--gold); font-family:monospace; text-align:center; }
+.home-dialogue { position:absolute; z-index:5; left:4%; right:4%; bottom:4%; min-height:126px; padding:16px 18px 14px 116px; border:1px solid rgba(215,206,182,.34); border-left:4px solid var(--zhu); background:rgba(23,21,18,.96); line-height:1.6; box-shadow:8px 8px 0 rgba(23,21,18,.45); }
+.home-dialogue::before { content:""; position:absolute; left:22px; bottom:0; width:76px; height:106px; background:url("../assets/characters/scholar-cute-v1.png") center bottom/contain no-repeat; image-rendering:pixelated; filter:saturate(.7); }
+.home-dialogue[data-portrait="shen"]::before { background-image:url("../assets/characters/shen-yanqiu-sprites-v1.png"); background-size:300% 400%; background-position:0 0; background-repeat:no-repeat; filter:saturate(.78); }
+.home-dialogue[data-portrait="none"] { padding-left:18px; }
+.home-dialogue[data-portrait="none"]::before { display:none; }
+.home-dialogue[hidden] { display:none; }
+.home-dialogue p { margin:0 0 6px; color:var(--gold); font-size:10px; letter-spacing:.14em; line-height:1.2; }
+.home-dialogue strong { display:block; color:var(--paper); font-family:"Songti SC",serif; font-size:18px; font-weight:500; line-height:1.65; }
+.home-dialogue small { display:block; margin-top:3px; color:var(--muted); font-size:11px; line-height:1.55; }
+.home-dialogue .dialogue-actions { position:absolute; right:14px; bottom:12px; display:flex; align-items:flex-end; gap:8px; }
+.home-dialogue button { padding:7px 13px; border:1px solid var(--gold); background:var(--zhu); color:var(--paper); cursor:pointer; }
+.dialogue-choices { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:7px; max-width:650px; }
+.dialogue-choices[hidden] { display:none; }
+.dialogue-choices button { background:#30372f; text-align:left; }
+.album-return { position:absolute; z-index:6; inset:7% 8%; padding:24px; border:1px solid rgba(215,206,182,.38); border-left:4px solid var(--zhu); background:rgba(23,21,18,.97); line-height:1.5; box-shadow:10px 10px 0 rgba(23,21,18,.5); }
+.album-return[hidden] { display:none; }
+.variant-collation { overflow:auto; }
+.variant-collation button { min-height:44px; padding:8px 12px; margin:4px; cursor:pointer; }
+.variant-collation button:focus-visible { outline:3px solid var(--gold); outline-offset:2px; }
+.variant-collation button:disabled { opacity:.5; cursor:default; }
+.album-return > p:first-child { margin:0 0 4px; color:var(--gold); font-size:10px; letter-spacing:.18em; }
+.album-return h2 { margin:0; color:var(--paper); font:500 21px/1.5 "Songti SC",serif; }
+.album-return > small { color:var(--muted); font-size:11px; }
+.album-windows { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:20px 0 14px; }
+.album-windows button { min-height:150px; padding:10px; border:2px solid var(--ink); outline:1px solid rgba(215,206,182,.35); background:#292d27; color:var(--paper); cursor:pointer; image-rendering:pixelated; }
+.album-windows button i { display:block; height:82px; margin-bottom:9px; border:5px solid #6b4c2f; background:repeating-linear-gradient(135deg,#6fa89e 0 8px,#9ecfc9 8px 14px,#d8ceae 14px 18px); filter:grayscale(.8) brightness(.65); }
+.album-windows button:nth-child(2) i { background:linear-gradient(135deg,#78876f 0 42%,#b0bfa8 42% 68%,#d8ceae 68%); }
+.album-windows button:nth-child(3) i { background:repeating-linear-gradient(90deg,#55524a 0 8px,#d8ceae 8px 15px,#6fa89e 15px 24px); }
+.album-windows button b,.album-windows button span { display:block; }
+.album-windows button b { color:var(--gold); font:500 15px "Songti SC",serif; }
+.album-windows button span { color:var(--muted); font-size:10px; }
+.album-windows button[data-placed="true"] { border-color:var(--gold); background:#343a31; cursor:default; }
+.album-windows button[data-placed="true"] i { filter:none; animation:album-place .26s steps(4,end); }
+.album-result { margin:0; color:var(--paper); font:15px/1.6 "Songti SC",serif; }
+.album-close { position:absolute; right:24px; bottom:20px; padding:8px 14px; border:1px solid var(--gold); background:var(--zhu); color:var(--paper); cursor:pointer; }
+.album-close:disabled { opacity:.35; cursor:default; }
+@keyframes album-place { from { opacity:.25; translate:0 6px; } to { opacity:1; translate:0 0; } }
+.home-legend { min-height:38px; border-top:0; color:var(--muted); font-size:10px; }
+.home-legend span { white-space:nowrap; }
+.touch-controls { display:none; }
+
+@media (pointer:coarse), (max-width:760px) {
+  .home-game-shell { justify-content:flex-start; }
+  .home-nav { min-height:38px; }
+  .nav-actions a:first-child { display:none; }
+  #homeGame { max-height:calc(100dvh - 176px); }
+  .home-legend { display:none; }
+  .touch-controls { min-height:122px; padding:8px 14px max(8px,env(safe-area-inset-bottom)); display:flex; align-items:center; justify-content:space-between; gap:24px; border:1px solid var(--line); border-top:0; background:var(--panel); touch-action:none; }
+  .dpad { width:150px; display:grid; grid-template-columns:repeat(3,46px); grid-template-rows:repeat(2,46px); gap:4px; }
+  .action-pad { display:flex; gap:8px; }
+  .touch-controls button { min-width:46px; min-height:46px; padding:0 12px; border:1px solid var(--line); background:#30372f; color:var(--paper); font-weight:600; touch-action:none; }
+  .touch-controls button.is-active,.touch-controls button:active { background:var(--zhu); border-color:var(--gold); }
+  .home-dialogue { left:2%; right:2%; bottom:2%; min-height:118px; padding:14px 12px 13px 88px; }
+  .home-dialogue::before { left:12px; width:62px; height:91px; }
+  .home-dialogue strong { padding-right:56px; font-size:15px; }
+  .home-dialogue .dialogue-actions { right:9px; bottom:9px; max-width:70%; }
+  .dialogue-choices { flex-direction:column; }
+  .album-return { inset:3%; padding:16px; }
+  .album-windows { gap:6px; }
+  .album-windows button { min-height:118px; padding:6px; }
+  .album-windows button i { height:58px; }
+}

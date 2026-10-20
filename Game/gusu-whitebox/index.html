@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111a16">
+  <title>姑苏九园</title>
+  <link rel="stylesheet" href="intro.css">
+  <link rel="stylesheet" href="pixel-theme.css">
+</head>
+<body>
+<main class="title-shell" id="titleScreen">
+  <div class="title-map" aria-hidden="true"></div>
+  <div class="title-wash" aria-hidden="true"></div>
+  <figure class="title-character" aria-label="玩家角色：新入苏州府学的学子">
+    <img src="../assets/characters/scholar-cute-v1.png" alt="抱着苏城地图与空白园谱的年轻书生">
+  </figure>
+  <header class="title-copy">
+    <p class="title-kicker">清末 · 苏州</p>
+    <h1><span>姑苏</span><span>九园</span></h1>
+    <p class="title-subtitle">一名府学学子的城市与园林修业</p>
+  </header>
+
+  <nav class="title-menu" aria-label="主菜单">
+    <button class="menu-primary" id="continueButton" type="button">继续课业</button>
+    <button id="newGameButton" type="button">开始新游</button>
+    <a href="journal.html">学籍、人物与园谱</a>
+    <a href="standard.html">制作与视觉标准</a>
+  </nav>
+
+  <section class="save-glimpse" id="saveGlimpse" aria-live="polite">
+    <p>尚无游历记录</p>
+    <strong>第一章 · 水外有园</strong>
+    <span>从苏州府学开始</span>
+  </section>
+
+  <footer><span>2.5D 像素叙事探索 RPG</span><span>Web Prototype · P0</span></footer>
+</main>
+
+<section class="opening" id="opening" hidden aria-labelledby="openingTitle">
+  <div class="opening-image" id="openingImage" aria-hidden="true"></div>
+  <canvas class="opening-animation" id="openingAnimation" width="320" height="180" aria-hidden="true"></canvas>
+  <div class="opening-shade" aria-hidden="true"></div>
+  <header>
+    <p>姑苏九园 · 序</p>
+    <button id="skipOpening" type="button">略过 Intro</button>
+  </header>
+  <article class="opening-card">
+    <p class="opening-place" id="openingPlace"></p>
+    <p class="opening-speaker" id="openingSpeaker"></p>
+    <h2 id="openingTitle"></h2>
+    <p class="opening-body" id="openingBody"></p>
+    <div class="opening-controls">
+      <span id="openingCount"></span>
+      <button id="openingNext" type="button">继续</button>
+    </div>
+  </article>
+</section>
+
+<section class="confirm-layer" id="newGameConfirm" hidden>
+  <article role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <p>重新入学</p>
+    <h2 id="confirmTitle">开始新游会覆盖当前本地进度。</h2>
+    <span>已经完成的园林、六艺、人物与线索记录将重新开始。</span>
+    <div>
+      <button id="cancelNewGame" type="button">保留当前进度</button>
+      <button class="danger" id="confirmNewGame" type="button">确认开始新游</button>
+    </div>
+  </article>
+</section>
+
+<script src="dist/intro.js?v=time1"></script>
+</body>
+</html>

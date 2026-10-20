@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>姑苏九园 · 沧浪亭整园导航 v1</title>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="story.css">
+<link rel="stylesheet" href="pixel-theme.css">
+</head>
+<body>
+<main class="game-shell">
+  <nav class="mode-nav scale-nav" aria-label="空间层级">
+    <span class="scale-path"><a href="index.html">标题</a><i>›</i><a href="sucheng.html">蘇城全圖</a><i>›</i><strong>沧浪亭园林图</strong></span>
+    <a class="enter-scene" href="corridor.html">进入复廊近景 →</a>
+  </nav>
+  <div class="stage"><canvas id="game" aria-label="沧浪亭 2.5D 整园。使用方向键或 WASD 移动，E 键取景。"></canvas></div>
+  <nav class="touch-controls" data-touch-controls aria-label="触摸操作">
+    <div class="dpad">
+      <span></span><button type="button" data-move="w" aria-label="向上移动">↑</button><span></span>
+      <button type="button" data-move="a" aria-label="向左移动">←</button><button type="button" data-move="s" aria-label="向下移动">↓</button><button type="button" data-move="d" aria-label="向右移动">→</button>
+    </div>
+    <div class="action-pad"><button type="button" data-action="interact">取景</button><button type="button" data-action="cancel">退出</button></div>
+  </nav>
+</main>
+
+<section class="story-layer" id="gardenArrival" hidden>
+  <article class="story-panel" role="dialog" aria-modal="true" aria-labelledby="arrivalTitle">
+    <div class="story-copy">
+      <p class="story-kicker">城南 · 沧浪亭</p>
+      <p class="story-speaker">入园</p>
+      <h2 id="arrivalTitle">水在园外，廊在园内。</h2>
+      <p class="story-aside">先辨认整园与临水复廊的关系；真正的课业，在三扇窗前开始。</p>
+    </div>
+    <div class="story-actions">
+      <button class="story-quiet" id="arrivalExplore" type="button">先看整园</button>
+      <a class="story-primary" id="arrivalCorridor" href="corridor.html">直接前往复廊</a>
+    </div>
+  </article>
+</section>
+<script src="dist/game.js?v=scene-standard-1"></script>
+</body>
+</html>
