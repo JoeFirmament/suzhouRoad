@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>环秀山庄 · 三机位取景原型</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #141613; color: #e6e2d6; font: 15px/1.6 "PingFang SC","Microsoft YaHei",sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 16px 16px 40px; }
+  h1 { font-size: 1.2rem; margin: 4px 0 2px; }
+  .sub { color: #9aa094; font-size: .84rem; margin-bottom: 12px; }
+  .stage { position: relative; border: 1px solid #4b5249; background: #0e100d; }
+  #view { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+  .hud { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0; }
+  button { min-height: 34px; padding: 0 12px; border: 1px solid #5b655b; background: #20251f; color: #e6e2d6; border-radius: 3px; font: inherit; cursor: pointer; }
+  button:hover { background: #2b332a; }
+  button[aria-pressed="true"] { background: #3c4a3c; border-color: #93a58c; }
+  .legend { color: #9aa094; font-size: .8rem; }
+  .strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+  .strip figure { margin: 0; border: 1px solid #4b5249; background: #0e100d; }
+  .strip canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+  .strip figcaption { padding: 4px 8px; font-size: .78rem; color: #b9c0b3; display: flex; justify-content: space-between; }
+  .note { margin-top: 14px; color: #8f968a; font-size: .8rem; }
+  .note b { color: #c9d1c1; }
+  kbd { border: 1px solid #56604f; border-bottom-width: 2px; padding: 0 5px; border-radius: 3px; background: #232823; font-size: .8em; }
+</style>
+</head>
+<body>
+<main>
+  <h1>环秀山庄 · 三机位取景原型</h1>
+  <p class="sub">构图稿 v0 · 不是游戏场景、不写存档 · 只回答：A / B / C 三框的剪影是不是真的不一样。</p>
+
+  <div class="stage"><canvas id="view" width="1008" height="688"></canvas></div>
+
+  <div class="hud">
+    <button data-cam="A" aria-pressed="true">A 东 · 全景</button>
+    <button data-cam="B">B 中 · 洞口</button>
+    <button data-cam="C">C 西 · 侧脸</button>
+    <button id="free">自由</button>
+    <button id="guides" aria-pressed="true">辅助线 G</button>
+    <span class="legend">← → ↑ ↓ 移动 · + − 缩放 · 1/2/3 切机位 · G 辅助线</span>
+  </div>
+
+  <div class="strip">
+    <figure><canvas id="thumbA" width="336" height="229"></canvas><figcaption><span>A 东 · 全景</span><span>峰 + 洞 + 路</span></figcaption></figure>
+    <figure><canvas id="thumbB" width="336" height="229"></canvas><figcaption><span>B 中 · 洞口</span><span>洞 + 石根</span></figcaption></figure>
+    <figure><canvas id="thumbC" width="336" height="229"></canvas><figcaption><span>C 西 · 侧脸</span><span>钩带 + 石笋</span></figcaption></figure>
+  </div>
+
+  <p class="note">
+    <b>怎么判：</b>先看三张缩略图——三张像同一张，构图不成立；一眼能分出“峰 / 洞 / 侧脸”，才成立。
+    <br><b>为什么用不同焦距：</b>A 用广角看山形，B 用长焦看洞，C 用中景看钩带——同一座山，三种取法。
+    <br><b>边界：</b>体块稿，不是测绘；洞不可进入，栏杆外不越界；人 126px 只作比例尺。
+  </p>
+</main>
+<script>
+(() => {
+  const W = 1008, H = 688;
+  // 每个机位：脚点 foot、相机左上 camX/camY、缩放 zoom（屏幕像素/世界像素）
+  const PRESETS = {
+    A: { foot: 220, x: 0,   y: 0,   zoom: 1.0  },
+    B: { foot: 470, x: 200, y: 180, zoom: 1.45 },
+    C: { foot: 700, x: 330, y: 120, zoom: 1.2  },
+  };
+  const canvas = document.getElementById('view');
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  const img = new Image();
+  img.src = 'control/huanxiu/blockout-empty.svg';
+
+  let cam = { ...PRESETS.A }, target = { ...PRESETS.A };
+  let free = false, showGuides = true, active = 'A';
+
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const fix = (c) => {
+    const vw = W / c.zoom, vh = H / c.zoom;
+    return { zoom: c.zoom, x: clamp(c.x, 0, W - vw), y: clamp(c.y, 0, H - vh), foot: c.foot };
+  };
+
+  function drawScene(c, camera) {
+    const w = c.canvas.width, h = c.canvas.height;
+    const k = w / W;
+    c.clearRect(0, 0, w, h);
+    c.save();
+    c.scale(k, k);
+    c.scale(camera.zoom, camera.zoom);
+    c.translate(-camera.x, -camera.y);
+    if (img.complete && img.naturalWidth) c.drawImage(img, 0, 0, W, H);
+    // 脚点标记：倒三角，落在 y=688
+    c.fillStyle = '#7fd6ff';
+    c.beginPath(); c.moveTo(camera.foot - 7, H); c.lineTo(camera.foot + 7, H); c.lineTo(camera.foot, H - 14); c.closePath(); c.fill();
+    c.restore();
+  }
+
+  function drawGuides(c, camera) {
+    const w = c.canvas.width, h = c.canvas.height;
+    c.save();
+    c.strokeStyle = 'rgba(240,210,100,.5)'; c.lineWidth = 1; c.setLineDash([5, 7]);
+    for (let i = 1; i < 3; i++) {
+      c.beginPath(); c.moveTo(w * i / 3, 0); c.lineTo(w * i / 3, h); c.stroke();
+      c.beginPath(); c.moveTo(0, h * i / 3); c.lineTo(w, h * i / 3); c.stroke();
+    }
+    c.setLineDash([]);
+    c.strokeStyle = 'rgba(217,75,63,.8)'; c.lineWidth = 2;
+    c.strokeRect(1, 1, w - 2, h - 2);
+    // 比例尺：126 世界 px
+    const bar = 126 * camera.zoom * (w / W);
+    c.strokeStyle = '#ff6b5e'; c.lineWidth = 2;
+    c.beginPath(); c.moveTo(16, h - 18); c.lineTo(16, h - 18 - bar); c.stroke();
+    c.fillStyle = '#ff6b5e'; c.font = '11px monospace';
+    c.fillText('126px 人', 22, h - 18 - bar / 2);
+    const label = (free ? '自由' : active) + ' · zoom ' + camera.zoom.toFixed(2) + ' · cam ' + Math.round(camera.x) + ',' + Math.round(camera.y);
+    c.fillStyle = 'rgba(14,16,13,.72)'; c.fillRect(6, 6, c.measureText(label).width + 12, 18);
+    c.fillStyle = 'rgba(127,214,255,.95)';
+    c.fillText(label, 12, 20);
+    c.restore();
+  }
+
+  function draw() {
+    drawScene(ctx, cam);
+    if (showGuides) drawGuides(ctx, cam);
+  }
+
+  function thumb(id, preset) {
+    const c = document.getElementById(id).getContext('2d');
+    c.imageSmoothingEnabled = false;
+    const p = fix({ ...preset, x: preset.x, y: preset.y });
+    drawScene(c, p);
+    // 缩略图里也画一个内框，表示取景
+    c.strokeStyle = 'rgba(217,75,63,.75)'; c.lineWidth = 2;
+    c.strokeRect(1, 1, c.canvas.width - 2, c.canvas.height - 2);
+  }
+  function drawThumbs() { thumb('thumbA', PRESETS.A); thumb('thumbB', PRESETS.B); thumb('thumbC', PRESETS.C); }
+
+  function setCam(key) {
+    free = false; active = key;
+    target = fix({ ...PRESETS[key] });
+    document.querySelectorAll('[data-cam]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.cam === key)));
+  }
+
+  document.querySelectorAll('[data-cam]').forEach(btn => btn.addEventListener('click', () => setCam(btn.dataset.cam)));
+  document.getElementById('free').addEventListener('click', () => { free = true; document.querySelectorAll('[data-cam]').forEach(b => b.setAttribute('aria-pressed', 'false')); });
+  document.getElementById('guides').addEventListener('click', (e) => {
+    showGuides = !showGuides; e.currentTarget.setAttribute('aria-pressed', String(showGuides));
+  });
+  addEventListener('keydown', (e) => {
+    const step = 24 / target.zoom;
+    if (e.key === '1') setCam('A');
+    else if (e.key === '2') setCam('B');
+    else if (e.key === '3') setCam('C');
+    else if (e.key.toLowerCase() === 'g') { showGuides = !showGuides; document.getElementById('guides').setAttribute('aria-pressed', String(showGuides)); }
+    else if (e.key === 'ArrowLeft') { free = true; target = fix({ ...target, x: target.x - step }); }
+    else if (e.key === 'ArrowRight') { free = true; target = fix({ ...target, x: target.x + step }); }
+    else if (e.key === 'ArrowUp') { free = true; target = fix({ ...target, y: target.y - step }); }
+    else if (e.key === 'ArrowDown') { free = true; target = fix({ ...target, y: target.y + step }); }
+    else if (e.key === '+' || e.key === '=') { free = true; target = fix({ ...target, zoom: Math.min(2.2, target.zoom + 0.1) }); }
+    else if (e.key === '-') { free = true; target = fix({ ...target, zoom: Math.max(0.9, target.zoom - 0.1) }); }
+    else return;
+    e.preventDefault();
+  });
+
+  img.addEventListener('load', () => {
+    const start = (location.hash || '#A').replace('#', '').toUpperCase();
+    setCam(PRESETS[start] ? start : 'A');
+    cam = { ...target };
+    drawThumbs();
+  });
+
+  function tick() {
+    ['x', 'y', 'zoom'].forEach(k => {
+      cam[k] += (target[k] - cam[k]) * 0.15;
+      if (Math.abs(target[k] - cam[k]) < 0.01) cam[k] = target[k];
+    });
+    draw();
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+</script>
+</body>
+</html>

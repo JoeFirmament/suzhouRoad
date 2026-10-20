@@ -137,6 +137,12 @@ def main():
 </svg>'''
     (OUT / "blockout.svg").write_text(svg, encoding="utf8")
 
+    # 无人物版：给取景原型用（人物只作比例尺，避免重复）
+    import re as _re
+    empty = _re.sub(r'<ellipse cx="\d+" cy="\d+" rx="26" ry="\d+" fill="#c6cbc5" opacity="\.18"/>\n\s*', '', svg)
+    empty = _re.sub(r'<g fill="#23261f">.*?</g>', '', empty, flags=_re.S)
+    (OUT / "blockout-empty.svg").write_text(empty, encoding="utf8")
+
     # overlay：相机框 + 三分线 + 标注 + 比例尺
     ov = [f'<rect width="{W}" height="{H}" fill="none"/>']
     ov.append(f'<rect x="1" y="1" width="{W-2}" height="{H-2}" fill="none" stroke="#d94b3f" stroke-width="3"/>')
