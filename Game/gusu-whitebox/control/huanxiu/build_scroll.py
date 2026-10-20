@@ -103,6 +103,13 @@ def main():
     # 磴道（看得见、上不去）
     parts.append('<path d="M1690 520 L1662 482 L1680 450 L1650 420 L1666 392" stroke="#9a9d8e" stroke-width="4" fill="none" opacity=".5"/>')
     parts.append('<path d="M2440 470 L2412 432 L2430 400 L2400 370 L2416 342" stroke="#9a9d8e" stroke-width="4" fill="none" opacity=".45"/>')
+    # 段缝树：正好长在 1008 的接缝上，树干挡缝、树冠挡天
+    parts.append('<rect x="998" y="176" width="20" height="472" fill="#4a3f32"/>')
+    parts.append('<path d="M1004 300 L960 250 M1012 330 L1058 282 M1008 260 L1030 214" stroke="#4a3f32" stroke-width="10" fill="none"/>')
+    for cx,cy,rx,ry,col in [(1008,120,78,52,C["tree2"]),(952,150,46,34,C["tree3"]),(1066,144,50,34,C["tree1"]),(1008,196,40,24,C["tree3"])]:
+        parts.append(f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="{col}"/>')
+    parts.append(poly([(986,648),(992,600),(1010,588),(1028,604),(1032,648)], C["rock2"]))
+    parts.append(poly([(992,600),(1010,588),(1014,612),(1000,624)], C["rock3"], .5))
     # 石根
     for x,w,h in [(120,60,34),(180,70,26),(250,54,30),(310,66,24),(380,48,26),(450,58,22),(520,62,28),
                   (590,54,24),(660,60,30),(730,50,22),(800,58,26),(870,50,22),(940,56,28),
@@ -141,6 +148,13 @@ def main():
   {"".join(ov)}
 </svg>'''
     (OUT/"scroll-overlay.svg").write_text(overlay, encoding="utf8")
+
+    seam=f'''<svg xmlns="http://www.w3.org/2000/svg" width="2016" height="{H}" viewBox="0 0 2016 {H}" shape-rendering="crispEdges">
+  <title>环秀山庄 · A→B 段缝试段</title>
+  <desc>A（0–1008）→ 缝（1008，树干/树冠/山坳）→ B（1008–2016）。相机固定 1×，连续平移。</desc>
+  {body}
+</svg>'''
+    (OUT/"seam.svg").write_text(seam, encoding="utf8")
     print("wrote scroll.svg / scroll-overlay.svg")
 
 if __name__=="__main__":

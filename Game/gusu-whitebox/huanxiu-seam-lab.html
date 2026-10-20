@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>环秀山庄 · A→B 段缝试段</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #141613; color: #e6e2d6; font: 15px/1.6 "PingFang SC","Microsoft YaHei",sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 16px 16px 40px; }
+  h1 { font-size: 1.2rem; margin: 4px 0 2px; }
+  .sub { color: #9aa094; font-size: .84rem; margin-bottom: 12px; }
+  .stage { position: relative; border: 1px solid #4b5249; background: #0e100d; }
+  #view { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+  .hud { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0; }
+  button { min-height: 34px; padding: 0 12px; border: 1px solid #5b655b; background: #20251f; color: #e6e2d6; border-radius: 3px; font: inherit; cursor: pointer; }
+  button:hover { background: #2b332a; }
+  button[aria-pressed="true"] { background: #3c4a3c; border-color: #93a58c; }
+  input[type=range] { width: 140px; accent-color: #93a58c; }
+  .legend { color: #9aa094; font-size: .8rem; }
+  .note { margin-top: 14px; color: #8f968a; font-size: .8rem; }
+  .note b { color: #c9d1c1; }
+</style>
+</head>
+<body>
+<main>
+  <h1>环秀山庄 · A→B 段缝试段</h1>
+  <p class="sub">2016×688；相机固定 1×，连续平移。只回答一件事：过缝的时候跳不跳。</p>
+
+  <div class="stage"><canvas id="view" width="1008" height="688"></canvas></div>
+
+  <div class="hud">
+    <button data-cam="A" aria-pressed="true">A 起点</button>
+    <button data-cam="S">缝</button>
+    <button data-cam="B">B 终点</button>
+    <button id="play">播放</button>
+    <button id="guides" aria-pressed="true">辅助线 G</button>
+    <label class="legend">速度 <input id="speed" type="range" min="20" max="160" value="60"></label>
+    <span class="legend">← → 平移 · 空格 播放/暂停 · G 辅助线</span>
+  </div>
+
+  <p class="note">
+    <b>怎么判：</b>点“播放”，让镜头从 A 慢慢走到 B。看三样——
+    ① 山形有没有突然换一张；② 树干有没有“贴”在缝上；③ 栏杆、墙、路是不是一根线到底。
+    <br><b>树的作用：</b>树干挡缝、树冠挡天、山坳挡地。三样同时成立，缝才看不见。
+  </p>
+</main>
+<script>
+(() => {
+  const W = 1008, H = 688, SCROLL = 2016, SEAM = 1008;
+  const PRESETS = { A: 0, S: 504, B: 1008 };
+  const canvas = document.getElementById('view');
+  const ctx = canvas.getContext('2d'); ctx.imageSmoothingEnabled = false;
+  const img = new Image(); img.src = 'control/huanxiu/seam.svg';
+  let camX = 0, playing = false, showGuides = true, last = 0, speed = 60, active = 'A';
+
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.save(); ctx.translate(-camX, 0);
+    if (img.complete && img.naturalWidth) ctx.drawImage(img, 0, 0, SCROLL, H);
+    // 脚点：镜头中心的地面
+    const foot = camX + W / 2;
+    ctx.fillStyle = '#7fd6ff';
+    ctx.beginPath(); ctx.moveTo(foot - 7, H); ctx.lineTo(foot + 7, H); ctx.lineTo(foot, H - 14); ctx.closePath(); ctx.fill();
+    ctx.restore();
+
+    if (showGuides) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(240,210,100,.45)'; ctx.lineWidth = 1; ctx.setLineDash([5, 7]);
+      for (let i = 1; i < 3; i++) {
+        ctx.beginPath(); ctx.moveTo(W * i / 3, 0); ctx.lineTo(W * i / 3, H); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, H * i / 3); ctx.lineTo(W, H * i / 3); ctx.stroke();
+      }
+      ctx.setLineDash([]);
+      // 缝的位置
+      const sx = SEAM - camX;
+      if (sx >= 0 && sx <= W) {
+        ctx.strokeStyle = 'rgba(217,75,63,.55)'; ctx.lineWidth = 2; ctx.setLineDash([3, 6]);
+        ctx.beginPath(); ctx.moveTo(sx, 0); ctx.lineTo(sx, H); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(14,16,13,.72)'; ctx.fillRect(sx + 6, 26, 64, 18);
+        ctx.fillStyle = '#ff8a7e'; ctx.font = '12px monospace'; ctx.fillText('缝', sx + 12, 40);
+      }
+      ctx.strokeStyle = 'rgba(217,75,63,.75)'; ctx.lineWidth = 2; ctx.strokeRect(1, 1, W - 2, H - 2);
+      const bar = 126;
+      ctx.strokeStyle = '#ff6b5e'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(16, H - 18); ctx.lineTo(16, H - 18 - bar); ctx.stroke();
+      ctx.fillStyle = '#ff6b5e'; ctx.font = '11px monospace'; ctx.fillText('126px 人', 22, H - 18 - bar / 2);
+      const label = (active === 'S' ? '缝' : active) + ' · x ' + Math.round(camX) + ' · 距缝 ' + Math.round(Math.abs(SEAM - camX)) + 'px';
+      ctx.fillStyle = 'rgba(14,16,13,.72)'; ctx.fillRect(6, 6, ctx.measureText(label).width + 14, 18);
+      ctx.fillStyle = 'rgba(127,214,255,.95)'; ctx.fillText(label, 12, 20);
+      ctx.restore();
+    }
+  }
+
+  function setCam(k) { playing = false; active = k; camX = clamp(PRESETS[k], 0, SCROLL - W); document.querySelectorAll('[data-cam]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.cam === k))); }
+
+  document.querySelectorAll('[data-cam]').forEach(b => b.addEventListener('click', () => setCam(b.dataset.cam)));
+  document.getElementById('play').addEventListener('click', (e) => { playing = !playing; e.currentTarget.textContent = playing ? '暂停' : '播放'; });
+  document.getElementById('guides').addEventListener('click', (e) => { showGuides = !showGuides; e.currentTarget.setAttribute('aria-pressed', String(showGuides)); });
+  document.getElementById('speed').addEventListener('input', (e) => { speed = +e.target.value; });
+  addEventListener('keydown', (e) => {
+    if (e.code === 'Space') { playing = !playing; document.getElementById('play').textContent = playing ? '暂停' : '播放'; e.preventDefault(); }
+    else if (e.key === '1') setCam('A'); else if (e.key === '2') setCam('S'); else if (e.key === '3') setCam('B');
+    else if (e.key.toLowerCase() === 'g') { showGuides = !showGuides; document.getElementById('guides').setAttribute('aria-pressed', String(showGuides)); }
+    else if (e.key === 'ArrowLeft') { playing = false; camX = clamp(camX - 24, 0, SCROLL - W); }
+    else if (e.key === 'ArrowRight') { playing = false; camX = clamp(camX + 24, 0, SCROLL - W); }
+    else return;
+    e.preventDefault();
+  });
+
+  function tick(now) {
+    const dt = Math.min(0.05, (now - (last || now)) / 1000); last = now;
+    if (playing) {
+      camX += speed * dt;
+      if (camX >= SCROLL - W) { camX = SCROLL - W; playing = false; document.getElementById('play').textContent = '播放'; }
+    }
+    draw();
+    requestAnimationFrame(tick);
+  }
+  img.addEventListener('load', () => {
+    const x0 = Number(new URLSearchParams(location.search).get('x'));
+    if (Number.isFinite(x0)) { camX = clamp(x0, 0, SCROLL - W); active = Math.abs(camX - 504) < 60 ? 'S' : 'A'; }
+    else setCam('A');
+  });
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
