@@ -2,9 +2,9 @@
 
 2026-10-10。此页审查**当前文件与试玩使用的底图**，不把美术意见伪装成历史结论或自动化测试结果。府学 Home 是空间层次、镜头和可交互密度的制作样板，**并不是已经达标的像素画母版**。玩家角色亦仍是平滑卡通精灵。项目约定的最终目标是统一的 2.5D 像素游戏，而不是把高分辨率绘画缩小再放大。
 
-2026-10-11 已在独立真实浏览器中截取[八幕运行画面对照](../research-art/liuyuan-ch3-runtime-compare-2026-10-11.png)，逐幕脚本错误为空；[新审计](LIUYUAN_RUNTIME_VISUAL_AUDIT_2026-10-11.md)证实入口白模断层及后续背景/人物的像素语法不统一。它更新了“实际运行画面”证据，但不改变下述美术晋级结论。
+2026-10-11 已在独立真实浏览器中截取[八幕运行画面对照](../research-art/liuyuan-ch3-runtime-compare-2026-10-11.png)，逐幕脚本错误为空；[新审计](archive/LIUYUAN_RUNTIME_VISUAL_AUDIT_2026-10-11.md)证实入口白模断层及后续背景/人物的像素语法不统一。它更新了“实际运行画面”证据，但不改变下述美术晋级结论。
 
-本轮玩家定下共同艺术方向：“粉墙黛瓦，烟雨江南”，并要求所有场景保持统一；新增[全作美术标准](GAME_ART_DIRECTION_STANDARD.md)与[入口—小庭无角色冷调研究对照](liuyuan-style-calibration.html)。冷调两图比晴暖旧稿更接近氛围，但仍有细碎绘画纹理且入口只是门墙裁片，**尚未成为正式像素母版或替换 CH3 底图**。入口裁片另做[独立研究试走](liuyuan-entry-gate-misty-study.html)校脚点与碰撞，使用新编辑器 ID，不挪旧草稿；详见[几何核对](LIUYUAN_MISTY_GATE_GEOMETRY.md)。铺地必须多样且可追溯：弹石／弹街石、花街等候选及图版定位风险见[铺地资料卡](LIUYUAN_PAVING_RESEARCH.md)。
+本轮玩家定下共同艺术方向：“粉墙黛瓦，烟雨江南”，并要求所有场景保持统一；新增[全作美术标准](GAME_ART_DIRECTION_STANDARD.md)与[入口—小庭无角色冷调研究对照](liuyuan-style-calibration.html)。冷调两图比晴暖旧稿更接近氛围，但仍有细碎绘画纹理且入口只是门墙裁片，**尚未成为正式像素母版或替换 CH3 底图**。入口裁片另做[独立研究试走](liuyuan-entry-gate-misty-study.html)校脚点与碰撞，使用新编辑器 ID，不挪旧草稿；详见[几何核对](archive/LIUYUAN_MISTY_GATE_GEOMETRY.md)。铺地必须多样且可追溯：弹石／弹街石、花街等候选及图版定位风险见[铺地资料卡](LIUYUAN_PAVING_RESEARCH.md)。
 
 | 用途 / 当前底图 | 目视结论 | 生产状态 |
 |---|---|---|

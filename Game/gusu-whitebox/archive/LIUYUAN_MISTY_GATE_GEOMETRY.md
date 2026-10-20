@@ -2,12 +2,12 @@
 
 2026-10-10。此项把玩家认可的“粉墙黛瓦、烟雨江南”**单镜研究图**接到统一编辑器和独立试走页，测试人物、地面与门柱关系。它不是整条入口夹弄，也不写 CH3 进度，不会替换原 `liuyuan-entrance-topology-study`／`liuyuan-entry-gate-style-study-v1` 或任何浏览器草稿。
 
-入口：[独立试走](liuyuan-entry-gate-misty-study.html) · [统一编辑器](geometry-editor.html?scene=liuyuan-entry-gate-misty-study-v2) · [并排美术校准](liuyuan-style-calibration.html)
+入口：[独立试走](../liuyuan-entry-gate-misty-study.html) · [统一编辑器](../geometry-editor.html?scene=liuyuan-entry-gate-misty-study-v2) · [并排美术校准](../liuyuan-style-calibration.html)
 
 ## 本次资料与历史边界
 
 - 实际运行 `conda run -n MinerU python Game/tools/query_garden_rag.py '留园 华步小筑 入口 狭长小径 门洞 古木交柯 相邻空间；清末旧门具体方位和植栽是否有可靠记载，反证现状不能证古'`。本地 `garden_knowledge` 文字向量首条命中《园林有境》华步小筑地穴门洞、狭长小径和“今不能证古”（0.7767）；**未给**本图的门高、门扇、柱距、树位、灰石铺地或清末旧门坐标。
-- 本底图来自[入口—小庭艺术研究记录](../research-art/liuyuan-misty-style-pair-v2.prompt.md)，只是视觉候选；[铺地资料卡](LIUYUAN_PAVING_RESEARCH.md)的留园花街图版尚未定位到此门口，所以本镜保持无图案石路，不把图版硬塞进场景。
+- 本底图来自[入口—小庭艺术研究记录](../../research-art/liuyuan-misty-style-pair-v2.prompt.md)，只是视觉候选；[铺地资料卡](../LIUYUAN_PAVING_RESEARCH.md)的留园花街图版尚未定位到此门口，所以本镜保持无图案石路，不把图版硬塞进场景。
 - 门外→门槛→门内的脚点、碰撞和遮挡全部是按**此图**制作的游戏几何；不能反向证明留园原位。图像的使用权和同一逻辑像素网格尚未完成正式审查，故只在 `research-art/` 与研究页使用。
 
 ## 代码与浏览器结果
