@@ -21,7 +21,7 @@ import { carryingLiuyuanPorridge, drawLiuyuanPorridgeBucket, liuyuanBucketAnchor
 import { canEnterModernReturn } from './core/liuyuan-modern-route.js';
 import { chapterSceneHref } from './core/liuyuan-view-memory.js';
 import { liuyuanChapterResumeLink } from './core/liuyuan-chapter-resume-link.js';
-import { entryCameraForFoot } from './core/liuyuan-entry-camera.js';
+import { entryCameraForFoot, LIUYUAN_ENTRY_SHOT_KEYS, LIUYUAN_ENTRY_VIEW } from './core/liuyuan-entry-camera.js';
 
 const canvas = document.getElementById('scene') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d')!;
@@ -41,8 +41,12 @@ const updateChapterEcho = () => {
 };
 updateChapterEcho();
 const params = new URLSearchParams(location.search);
+/** ?debug=plate：把三段落镜框、12 个脚点与可走面叠在真实美术上，供底图对位。 */
+const plateDebug = params.get('debug') === 'plate';
 const atmosphereStudyRequested = params.get('art') === 'atmosphere-v1';
 const atmosphereStudyEnabled = atmosphereStudyRequested && params.get('draft') !== '1';
+/** ?art=plate-v3：只把灰模换进画面做对位试走，不写任何进度；默认仍是 v2。 */
+const plateBlockout = params.get('art') === 'plate-v3' && params.get('draft') !== '1';
 (document.getElementById('returnVariantHome') as HTMLAnchorElement).href=chapterSceneHref('home.html');
 (document.getElementById('returnCityMap') as HTMLAnchorElement).href=chapterSceneHref('sucheng.html');
 (document.getElementById('returnChapterJournal') as HTMLAnchorElement).href=chapterSceneHref('journal.html');
@@ -69,8 +73,10 @@ continueStory.hidden = !savedStory;
 if (savedStory) { continueStory.href=savedStory.href; continueStory.textContent=savedStory.label; }
 const returnStudy = params.get('returnStudy') === '1';
 const artStudyBadge = document.getElementById('artStudyBadge')!;
-artStudyBadge.hidden = !atmosphereStudyRequested;
-artStudyBadge.textContent = atmosphereStudyEnabled
+artStudyBadge.hidden = !(atmosphereStudyRequested || plateBlockout);
+artStudyBadge.textContent = plateBlockout
+  ? '底图灰模预览（v3）· 只回答“画在哪”，屋顶与墙尚未作美术；默认仍是 v2。'
+  : atmosphereStudyEnabled
   ? '美术候选预览 · 仅视觉叠层，原路线、碰撞与草稿不变；非实景复原。'
   : '美术候选叠层不用于编辑器草稿，已保持原样。';
 const completedRevisit = !returnStudy && hasStoryFlag(loadProgress(), 'ly-unlocked')
@@ -129,7 +135,9 @@ else if (draft.assetPath && draft.assetPath !== '../assets/scene25d/liuyuan-entr
 }
 const graph = SCENE_PLATES.find((plate) => plate.id === 'liuyuan-entrance-topology-study')!.routeGraph!;
 const background = new Image();
-background.src = '../assets/scene25d/liuyuan-entrance-walkable-study-v2.svg?v=6';
+background.src = plateBlockout
+  ? '../assets/scene25d/liuyuan-entrance-walkable-study-v3.svg?v=1'
+  : '../assets/scene25d/liuyuan-entrance-walkable-study-v2.svg?v=6';
 const atmosphereLayer = new Image();
 if (atmosphereStudyEnabled) atmosphereLayer.src = '../research-art/liuyuan-entry-atmosphere-layer-v1.svg?v=2';
 const sprite = new Image();
@@ -561,6 +569,41 @@ function redrawBackgroundPolygon(points: readonly WorldPoint[]): void {
   ctx.restore();
 }
 
+function drawPlateDebug(): void {
+  const beatColor: Record<string, string> = { gate: '#ff3b30', bend: '#ffb300', windows: '#34c759' };
+  ctx.save();
+  ctx.globalAlpha = .1;
+  for (let y = 0; y < mapData.h; y++) for (let x = 0; x < mapData.w; x++) {
+    const tile = mapData.map[y * mapData.w + x];
+    if (tile === T.PATH || tile === T.CORR) {
+      ctx.fillStyle = '#00ff88'; ctx.fillRect(x * 16, y * 16, 16, 16);
+    }
+  }
+  ctx.restore();
+  ctx.save();
+  ctx.lineWidth = 2;
+  ctx.font = '11px monospace';
+  LIUYUAN_ENTRY_SHOT_KEYS.forEach((key, index) => {
+    const beat = index < 3 ? 'gate' : index < 8 ? 'bend' : 'windows';
+    ctx.strokeStyle = beatColor[beat];
+    ctx.globalAlpha = .7;
+    ctx.strokeRect(key.cameraX + .5, key.cameraY + .5, LIUYUAN_ENTRY_VIEW.width - 1, LIUYUAN_ENTRY_VIEW.height - 1);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = '#ffe600';
+    ctx.fillRect(key.footX - 3, key.footY - 3, 6, 6);
+    ctx.fillStyle = 'rgba(20,24,20,.72)';
+    ctx.fillRect(key.footX + 5, key.footY - 13, 58, 13);
+    ctx.fillStyle = '#ffe600';
+    ctx.fillText(`${String(index + 1).padStart(2, '0')} ${beat}`, key.footX + 7, key.footY - 3);
+  });
+  ctx.globalAlpha = .9;
+  ctx.strokeStyle = '#2f7bff';
+  ctx.beginPath();
+  LIUYUAN_ENTRY_SHOT_KEYS.forEach((key, index) => index ? ctx.lineTo(key.footX, key.footY) : ctx.moveTo(key.footX, key.footY));
+  ctx.stroke();
+  ctx.restore();
+}
+
 function drawDebug(): void {
   ctx.save();
   ctx.globalAlpha = .55;
@@ -603,6 +646,7 @@ function draw(): void {
   if (background.complete && background.naturalWidth) ctx.drawImage(background, 0, 0, 1008, 688);
   if (atmosphereStudyEnabled && atmosphereLayer.complete && atmosphereLayer.naturalWidth)
     ctx.drawImage(atmosphereLayer, 0, 0, 1008, 688);
+  if (plateDebug) drawPlateDebug();
   if (showTiles.checked) drawDebug();
   // The fictional lamp is already part of the gatekeeper sprite. A small
   // hard-edged warm patch shows that the optional repair changed this place.

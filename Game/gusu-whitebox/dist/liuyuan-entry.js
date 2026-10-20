@@ -2430,8 +2430,10 @@
   };
   updateChapterEcho();
   var params = new URLSearchParams(location.search);
+  var plateDebug = params.get("debug") === "plate";
   var atmosphereStudyRequested = params.get("art") === "atmosphere-v1";
   var atmosphereStudyEnabled = atmosphereStudyRequested && params.get("draft") !== "1";
+  var plateBlockout = params.get("art") === "plate-v3" && params.get("draft") !== "1";
   document.getElementById("returnVariantHome").href = chapterSceneHref("home.html");
   document.getElementById("returnCityMap").href = chapterSceneHref("sucheng.html");
   document.getElementById("returnChapterJournal").href = chapterSceneHref("journal.html");
@@ -2461,8 +2463,8 @@
   }
   var returnStudy = params.get("returnStudy") === "1";
   var artStudyBadge = document.getElementById("artStudyBadge");
-  artStudyBadge.hidden = !atmosphereStudyRequested;
-  artStudyBadge.textContent = atmosphereStudyEnabled ? "\u7F8E\u672F\u5019\u9009\u9884\u89C8 \xB7 \u4EC5\u89C6\u89C9\u53E0\u5C42\uFF0C\u539F\u8DEF\u7EBF\u3001\u78B0\u649E\u4E0E\u8349\u7A3F\u4E0D\u53D8\uFF1B\u975E\u5B9E\u666F\u590D\u539F\u3002" : "\u7F8E\u672F\u5019\u9009\u53E0\u5C42\u4E0D\u7528\u4E8E\u7F16\u8F91\u5668\u8349\u7A3F\uFF0C\u5DF2\u4FDD\u6301\u539F\u6837\u3002";
+  artStudyBadge.hidden = !(atmosphereStudyRequested || plateBlockout);
+  artStudyBadge.textContent = plateBlockout ? "\u5E95\u56FE\u7070\u6A21\u9884\u89C8\uFF08v3\uFF09\xB7 \u53EA\u56DE\u7B54\u201C\u753B\u5728\u54EA\u201D\uFF0C\u5C4B\u9876\u4E0E\u5899\u5C1A\u672A\u4F5C\u7F8E\u672F\uFF1B\u9ED8\u8BA4\u4ECD\u662F v2\u3002" : atmosphereStudyEnabled ? "\u7F8E\u672F\u5019\u9009\u9884\u89C8 \xB7 \u4EC5\u89C6\u89C9\u53E0\u5C42\uFF0C\u539F\u8DEF\u7EBF\u3001\u78B0\u649E\u4E0E\u8349\u7A3F\u4E0D\u53D8\uFF1B\u975E\u5B9E\u666F\u590D\u539F\u3002" : "\u7F8E\u672F\u5019\u9009\u53E0\u5C42\u4E0D\u7528\u4E8E\u7F16\u8F91\u5668\u8349\u7A3F\uFF0C\u5DF2\u4FDD\u6301\u539F\u6837\u3002";
   var completedRevisit = !returnStudy && hasStoryFlag(loadProgress(), "ly-unlocked") && hasStoryFlag(loadProgress(), "ly-leaf-carried");
   var modernReturn = completedRevisit || canEnterModernReturn(location.search, loadProgress(), "court", "ly-leaf-carried") || canEnterModernReturn(location.search, loadProgress(), "flower", "ly-leaf-carried");
   var returnAlreadyComplete = modernReturn && hasStoryFlag(loadProgress(), "ly-unlocked");
@@ -2519,7 +2521,7 @@
   }
   var graph = SCENE_PLATES.find((plate) => plate.id === "liuyuan-entrance-topology-study").routeGraph;
   var background = new Image();
-  background.src = "../assets/scene25d/liuyuan-entrance-walkable-study-v2.svg?v=6";
+  background.src = plateBlockout ? "../assets/scene25d/liuyuan-entrance-walkable-study-v3.svg?v=1" : "../assets/scene25d/liuyuan-entrance-walkable-study-v2.svg?v=6";
   var atmosphereLayer = new Image();
   if (atmosphereStudyEnabled) atmosphereLayer.src = "../research-art/liuyuan-entry-atmosphere-layer-v1.svg?v=2";
   var sprite = new Image();
@@ -2987,6 +2989,41 @@
     ctx.drawImage(background, 0, 0, 1008, 688);
     ctx.restore();
   }
+  function drawPlateDebug() {
+    const beatColor = { gate: "#ff3b30", bend: "#ffb300", windows: "#34c759" };
+    ctx.save();
+    ctx.globalAlpha = 0.1;
+    for (let y = 0; y < mapData.h; y++) for (let x = 0; x < mapData.w; x++) {
+      const tile = mapData.map[y * mapData.w + x];
+      if (tile === T.PATH || tile === T.CORR) {
+        ctx.fillStyle = "#00ff88";
+        ctx.fillRect(x * 16, y * 16, 16, 16);
+      }
+    }
+    ctx.restore();
+    ctx.save();
+    ctx.lineWidth = 2;
+    ctx.font = "11px monospace";
+    LIUYUAN_ENTRY_SHOT_KEYS.forEach((key, index) => {
+      const beat = index < 3 ? "gate" : index < 8 ? "bend" : "windows";
+      ctx.strokeStyle = beatColor[beat];
+      ctx.globalAlpha = 0.7;
+      ctx.strokeRect(key.cameraX + 0.5, key.cameraY + 0.5, LIUYUAN_ENTRY_VIEW.width - 1, LIUYUAN_ENTRY_VIEW.height - 1);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "#ffe600";
+      ctx.fillRect(key.footX - 3, key.footY - 3, 6, 6);
+      ctx.fillStyle = "rgba(20,24,20,.72)";
+      ctx.fillRect(key.footX + 5, key.footY - 13, 58, 13);
+      ctx.fillStyle = "#ffe600";
+      ctx.fillText(`${String(index + 1).padStart(2, "0")} ${beat}`, key.footX + 7, key.footY - 3);
+    });
+    ctx.globalAlpha = 0.9;
+    ctx.strokeStyle = "#2f7bff";
+    ctx.beginPath();
+    LIUYUAN_ENTRY_SHOT_KEYS.forEach((key, index) => index ? ctx.lineTo(key.footX, key.footY) : ctx.moveTo(key.footX, key.footY));
+    ctx.stroke();
+    ctx.restore();
+  }
   function drawDebug() {
     ctx.save();
     ctx.globalAlpha = 0.55;
@@ -3037,6 +3074,7 @@
     if (background.complete && background.naturalWidth) ctx.drawImage(background, 0, 0, 1008, 688);
     if (atmosphereStudyEnabled && atmosphereLayer.complete && atmosphereLayer.naturalWidth)
       ctx.drawImage(atmosphereLayer, 0, 0, 1008, 688);
+    if (plateDebug) drawPlateDebug();
     if (showTiles.checked) drawDebug();
     if (!returnStudy && said("ly-lantern-helped")) {
       ctx.fillStyle = "rgba(218, 170, 101, .12)";
