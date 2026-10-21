@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>环秀山庄 · CH6-06 第一眼山</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #101210; color: #e6e2d6; font: 15px/1.6 "PingFang SC","Microsoft YaHei",sans-serif; }
+  main { max-width: 1000px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 1.15rem; margin: 4px 0 2px; }
+  .sub { color: #9aa094; font-size: .82rem; margin-bottom: 10px; }
+  .stage { position: relative; border: 1px solid #4b5249; background: #0b0d0b; }
+  #view { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+  #hud { position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 12px; background: linear-gradient(transparent, rgba(8,10,8,.88)); font-size: .9rem; min-height: 54px; }
+  #hud b { color: #ffe27a; }
+  #hint { color: #9aa094; font-size: .78rem; margin-top: 8px; }
+  #next { display: none; margin-top: 10px; }
+  button { min-height: 34px; padding: 0 14px; border: 1px solid #5b655b; background: #20251f; color: #e6e2d6; border-radius: 3px; font: inherit; cursor: pointer; }
+</style>
+</head>
+<body>
+<main>
+  <h1>环秀山庄 · CH6-06 第一眼山</h1>
+  <p class="sub">白模试玩：只给看不给动。方向键 / WASD 走；走到栏边看山；看完往东。</p>
+  <div class="stage">
+    <canvas id="view" width="960" height="600"></canvas>
+    <div id="hud"><span id="line">……</span></div>
+  </div>
+  <div id="hint">这一场没有交互点：不按 E，不弹面板。看完两处，往东走。</div>
+  <div id="next"><button onclick="alert('接 CH6-07：账房说“这山是照画堆的”。')">往东走 → CH6-07</button></div>
+</main>
+<script>
+(() => {
+  const VIEW_W = 960, VIEW_H = 600, WORLD_W = 1008, WORLD_H = 688;
+  const canvas = document.getElementById('view'), ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  const img = new Image(); img.src = 'control/huanxiu/plate-02-v1.png';
+  const player = { x: 260, y: 660, h: 126, speed: 2.2 };
+  const walk = { x0: 120, x1: 700, y0: 600, y1: 680 };
+  const state = { seen1: false, seen2: false, line: '', timer: 0 };
+  const lineEl = document.getElementById('line');
+  const nextEl = document.getElementById('next');
+
+  function say(t, ms = 3200) { state.line = t; lineEl.textContent = t; state.timer = ms / 1000; }
+
+  const keys = new Set();
+  addEventListener('keydown', e => { keys.add(e.key.toLowerCase()); if (['arrowup','arrowdown','arrowleft','arrowright',' '].includes(e.key.toLowerCase())) e.preventDefault(); });
+  addEventListener('keyup', e => keys.delete(e.key.toLowerCase()));
+
+  function tick(dt) {
+    let dx = 0, dy = 0;
+    if (keys.has('arrowleft') || keys.has('a')) dx -= 1;
+    if (keys.has('arrowright') || keys.has('d')) dx += 1;
+    if (keys.has('arrowup') || keys.has('w')) dy -= 1;
+    if (keys.has('arrowdown') || keys.has('s')) dy += 1;
+    const len = Math.hypot(dx, dy) || 1;
+    player.x = Math.max(walk.x0, Math.min(walk.x1, player.x + dx / len * player.speed));
+    player.y = Math.max(walk.y0, Math.min(walk.y1, player.y + dy / len * player.speed));
+
+    // 两处“看”
+    if (!state.seen1 && player.x > 400 && player.x < 620 && player.y > 620) {
+      state.seen1 = true; say('石头堆得比屋檐还高。');
+    }
+    if (!state.seen2 && player.x > 520 && player.x < 660 && player.y > 630) {
+      state.seen2 = true; say('山脚有个洞。黑。看不见底。');
+    }
+    if (state.seen1 && state.seen2) nextEl.style.display = 'block';
+
+    if (state.timer > 0) { state.timer -= dt; if (state.timer <= 0 && !(state.seen1 && state.seen2)) lineEl.textContent = '……'; }
+  }
+
+  function draw() {
+    const camX = Math.max(0, Math.min(WORLD_W - VIEW_W, player.x - VIEW_W / 2));
+    const camY = Math.max(0, Math.min(WORLD_H - VIEW_H, player.y - VIEW_H * 0.62));
+    ctx.clearRect(0, 0, VIEW_W, VIEW_H);
+    ctx.save(); ctx.translate(-camX, -camY);
+    if (img.complete) ctx.drawImage(img, 0, 0, WORLD_W, WORLD_H);
+    // 人
+    const px = player.x, py = player.y, ph = player.h;
+    ctx.fillStyle = 'rgba(0,0,0,.28)'; ctx.beginPath(); ctx.ellipse(px, py, 14, 4, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#1b1d18';
+    ctx.fillRect(px - 7, py - ph, 14, ph - 30);
+    ctx.beginPath(); ctx.arc(px, py - ph + 10, 9, 0, Math.PI * 2); ctx.fill();
+    ctx.fillRect(px - 7, py - 34, 6, 34); ctx.fillRect(px + 1, py - 34, 6, 34);
+    ctx.restore();
+    // 暗角
+    const g = ctx.createRadialGradient(VIEW_W/2, VIEW_H/2, VIEW_H*0.35, VIEW_W/2, VIEW_H/2, VIEW_H*0.75);
+    g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.35)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, VIEW_W, VIEW_H);
+  }
+
+  let last = 0;
+  function loop(t) {
+    const dt = Math.min(0.05, (t - (last || t)) / 1000); last = t;
+    tick(dt); draw();
+    requestAnimationFrame(loop);
+  }
+  img.addEventListener('load', () => { requestAnimationFrame(loop); });
+  if (img.complete) requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
