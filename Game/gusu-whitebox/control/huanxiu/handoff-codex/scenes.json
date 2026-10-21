@@ -1,0 +1,11 @@
+[
+  {"id":"HX-03","name":"南平台英雄视角","chapter":"CH6-06/07","priority":1,"size":"960x600","must":["廊/亭在左且屋檐可见","横向岩壁宽≈高2倍","洞口在中下且深","高墙在右","石栏/水/三曲桥在前"],"avoid":["竖峰","石林","水墨","蓝天","文字","人物","现代栏杆"],"refs":["assets/structure-mainface.jpg","assets/style-fuxue.png","assets/plate-02-v1.png"]},
+  {"id":"HX-05","name":"问泉亭→补秋山房","chapter":"CH6-09/10","priority":2,"size":"960x600","must":["问泉亭在左","东南谷壑","谷底水坝/厚石桥/薄石板桥三层","补秋山房/洞口在尽头"],"avoid":["南平台","竖峰","水墨","文字","人物"],"refs":["assets/route-plan.png","assets/style-fuxue.png"]},
+  {"id":"HX-07","name":"山腹内部","chapter":"CH6-11","priority":3,"size":"960x600","must":["洞壁两侧","中央通道","湿石地面","远处一点光"],"avoid":["门洞","台阶","游客","现代灯","文字"],"refs":["assets/cave-2x.png","assets/palette-24.png"]},
+  {"id":"HX-04","name":"水榭/传闻","chapter":"CH6-07","priority":4,"size":"960x600","must":["复用HX-03","水榭槛","背景山"],"avoid":["把账房画进底图"],"refs":["assets/plate-02-v1.png"]},
+  {"id":"HX-02","name":"东偏入园","chapter":"CH6-05","priority":5,"size":"960x600","must":["院墙","嵌墙壁碑","老藤","入口"],"avoid":["主山","可读碑文"],"refs":["assets/style-fuxue.png"]},
+  {"id":"HX-01","name":"义庄门/景德路","chapter":"CH6-02/03","priority":6,"size":"960x600","must":["门","门房","货担","石板街"],"avoid":["现代街景","文字招牌"],"refs":["assets/style-fuxue.png"]},
+  {"id":"HX-08","name":"义塾/阿留","chapter":"CH6-12","priority":6,"size":"960x600","must":["侧院","界墙","墙外孩子位"],"avoid":["主山","文字"],"refs":["assets/style-fuxue.png"]},
+  {"id":"HX-09","name":"账房","chapter":"CH6-04","priority":6,"size":"960x600","must":["账桌","算盘","谱册","阿留位"],"avoid":["现代办公","文字"],"refs":["assets/style-fuxue.png"]},
+  {"id":"HX-10","name":"庄屋旧箱","chapter":"CH6-08","priority":6,"size":"960x600","must":["旧箱","灰","卷子"],"avoid":["现代储物","文字"],"refs":["assets/style-fuxue.png"]}
+]
